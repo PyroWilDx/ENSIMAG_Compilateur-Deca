@@ -17,6 +17,8 @@ SEMI : ';';
 
 COMMA : ',';
 
+DOUBLEQUOTATION : '"';
+
 OBRACE : '{';
 CBRACE : '}';
 
@@ -81,5 +83,7 @@ MULTI_LINE_STRING : '\\';
 ASM : 'asm';
 
 RTL : '\n';
+SPACE : ' ';
+
 
 DUMMY_TOKEN: .;
