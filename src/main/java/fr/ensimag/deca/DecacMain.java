@@ -2,7 +2,7 @@ package fr.ensimag.deca;
 
 import java.io.File;
 import org.apache.log4j.Logger;
-
+import java.util.concurrent.*;
 /**
  * Main class for the command-line Deca compiler.
  *
@@ -36,7 +36,21 @@ public class DecacMain {
             // compiler, et lancer l'exécution des méthodes compile() de chaque
             // instance en parallèle. Il est conseillé d'utiliser
             // java.util.concurrent de la bibliothèque standard Java.
-            throw new UnsupportedOperationException("Parallel build not yet implemented");
+            ExecutorService executorService = Executors.newFixedThreadPool(options.getSourceFiles().size());
+            for (File source : options.getSourceFiles()) {
+                executorService.execute(() -> {
+                    DecacCompiler compiler = new DecacCompiler(options, source);
+                    compiler.compile();
+                });
+            }
+            executorService.shutdown();
+
+            try {
+                executorService.awaitTermination(10, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+//            throw new UnsupportedOperationException("Parallel build not yet implemented");
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);

@@ -12,7 +12,6 @@ options {
 }
 
 // Deca lexer rules.
-DUMMY_TOKEN: .;
 
 SEMI : ';';
 
@@ -80,3 +79,7 @@ PROTECTED : 'protected';
 MULTI_LINE_STRING : '\\';
 
 ASM : 'asm';
+
+RTL : '\n';
+
+DUMMY_TOKEN: .;

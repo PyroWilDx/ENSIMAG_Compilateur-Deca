@@ -18,14 +18,23 @@ import java.util.Map;
 public class SymbolTable {
     private Map<String, Symbol> map = new HashMap<String, Symbol>();
 
+    public SymbolTable() {
+
+    }
+
     /**
      * Create or reuse a symbol.
-     * 
+     *
      * If a symbol already exists with the same name in this table, then return
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */
     public Symbol create(String name) {
-        throw new UnsupportedOperationException("Symbol creation");
+        if (map.containsKey(name)) {
+            return map.get(name);
+        }
+        Symbol symbol = new Symbol(name);
+        map.put(name, symbol);
+        return symbol;
     }
 
     public static class Symbol {
