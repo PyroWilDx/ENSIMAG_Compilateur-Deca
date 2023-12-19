@@ -12,5 +12,71 @@ options {
 }
 
 // Deca lexer rules.
-DUMMY_TOKEN: .; // A FAIRE : Règle bidon qui reconnait tous les caractères.
-                // A FAIRE : Il faut la supprimer et la remplacer par les vraies règles.
+DUMMY_TOKEN: .;
+
+SEMI : ';';
+
+COMMA : ',';
+
+OBRACE : '{';
+CBRACE : '}';
+
+OPARENT : '(';
+CPARENT : ')';
+
+EQUALS : '=';
+
+OR : '||';
+AND : '&&';
+EQEQ : '==';
+NEQ : '!=';
+LEQ : '<=';
+GEQ : '>=';
+LT : '<';
+GT : '>';
+
+INSTANCEOF : 'instanceof';
+
+PLUS : '+';
+MINUS : '-';
+TIMES : '*';
+SLASH : '/';
+PERCENT : '%';
+
+EXCLAM : '!';
+
+DOT : '.';
+
+READINT : 'readInt';
+READFLOAT : 'readFloat';
+NEW : 'new';
+
+INT : 'int';
+FLOAT : 'float';
+STRING : 'String';
+TRUE : 'true';
+FALSE : 'false';
+THIS : 'this';
+NULL : 'null';
+
+IF : 'if';
+ELSE : 'else';
+
+WHILE : 'while';
+
+RETURN : 'return';
+
+PRINT : 'print';
+PRINTLN : 'println';
+PRINTX : 'printx';
+PRINTLNX : 'printlnx';
+
+IDENT : '   ';
+
+CLASS : 'class';
+EXTENDS : 'extends';
+PROTECTED : 'protected';
+
+MULTI_LINE_STRING : '\\';
+
+ASM : 'asm';
