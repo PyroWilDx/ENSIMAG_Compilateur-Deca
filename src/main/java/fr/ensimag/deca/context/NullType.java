@@ -17,7 +17,8 @@ public class NullType extends Type {
 
     @Override
     public boolean sameType(Type otherType) {
-        throw new UnsupportedOperationException("not yet implemented");
+        return (otherType instanceof NullType);
+//        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
