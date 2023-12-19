@@ -58,20 +58,28 @@
         </predecessors>
       </task>
     </task>
-    <task id="17" name="Compilateur pour la totalit&#xE9; du langage" note="" work="86400" start="20240103T000000Z" end="20240105T170000Z" work-start="20240103T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
-    <task id="18" name="Rendu version interm&#xE9;diaire" note="" work="0" start="20240115T000000Z" end="20240115T000000Z" work-start="20240115T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
+    <task id="17" name="Compilateur pour la totalit&#xE9; du langage" note="" work="115200" start="20240103T000000Z" end="20240103T170000Z" work-start="20240103T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+      <task id="18" name="Analyse lexicosyntaxique" note="" work="57600" start="20240103T000000Z" end="20240103T170000Z" work-start="20240103T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+        <task id="19" name="Lexeur" note="" work="28800" start="20240103T000000Z" end="20240103T170000Z" work-start="20240103T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+        <task id="20" name="Parseur" note="" work="28800" start="20240103T000000Z" end="20240103T170000Z" work-start="20240103T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+      </task>
+      <task id="21" name="Analyse contextuelle" note="" work="28800" start="20240103T000000Z" end="20240103T170000Z" work-start="20240103T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+      <task id="22" name="G&#xE9;n&#xE9;ration de code" note="" work="28800" start="20240103T000000Z" end="20240103T170000Z" work-start="20240103T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+    </task>
+    <task id="23" name="" note="" work="28800" start="20240103T000000Z" end="20240103T170000Z" work-start="20240103T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+    <task id="24" name="Rendu version interm&#xE9;diaire" note="" work="0" start="20240115T000000Z" end="20240115T000000Z" work-start="20240115T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
       <constraint type="must-start-on" time="20240115T000000Z"/>
     </task>
-    <task id="19" name="Rendu Final" note="" work="0" start="20240122T000000Z" end="20240122T000000Z" work-start="20240122T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
+    <task id="25" name="Rendu Final" note="" work="0" start="20240122T000000Z" end="20240122T000000Z" work-start="20240122T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
       <constraint type="must-start-on" time="20240122T000000Z"/>
     </task>
-    <task id="20" name="Rendu Bilan" note="" work="0" start="20240124T000000Z" end="20240124T000000Z" work-start="20240124T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
+    <task id="26" name="Rendu Bilan" note="" work="0" start="20240124T000000Z" end="20240124T000000Z" work-start="20240124T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
       <constraint type="must-start-on" time="20240124T000000Z"/>
     </task>
-    <task id="21" name="Rendu documentation" note="" work="0" start="20240122T000000Z" end="20240122T000000Z" work-start="20240122T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
+    <task id="27" name="Rendu documentation" note="" work="0" start="20240122T000000Z" end="20240122T000000Z" work-start="20240122T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
       <constraint type="must-start-on" time="20240122T000000Z"/>
     </task>
-    <task id="22" name="Soutenance" note="" work="0" start="20240125T000000Z" end="20240125T000000Z" work-start="20240125T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
+    <task id="28" name="Soutenance" note="" work="0" start="20240125T000000Z" end="20240125T000000Z" work-start="20240125T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
       <constraint type="must-start-on" time="20240125T000000Z"/>
     </task>
   </tasks>
