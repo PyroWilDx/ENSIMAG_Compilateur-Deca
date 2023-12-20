@@ -22,22 +22,17 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        EnvironmentType envType = compiler.environmentType;
-
         throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
-    protected void verifyClassMembers(DecacCompiler compiler)
-            throws ContextualError {
+    protected void verifyClassMembers(DecacCompiler compiler) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
     
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-
-
-//        throw new UnsupportedOperationException("not yet implemented");
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
 
@@ -48,8 +43,6 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-
-
         throw new UnsupportedOperationException("Not yet supported");
     }
 

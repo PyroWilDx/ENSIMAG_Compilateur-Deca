@@ -179,9 +179,7 @@ public class Identifier extends AbstractIdentifier {
         throw new UnsupportedOperationException("not yet implemented");
     }
     
-    
     private Definition definition;
-
 
     @Override
     protected void iterChildren(TreeFunction f) {

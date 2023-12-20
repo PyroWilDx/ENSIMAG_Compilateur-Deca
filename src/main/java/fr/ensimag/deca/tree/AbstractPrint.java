@@ -37,9 +37,14 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
-            throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+            ClassDefinition currentClass, Type returnType) throws ContextualError {
+        for (AbstractExpr arg : arguments.getList()) {
+            Type argType = arg.verifyExpr(compiler, localEnv, currentClass);
+            if (!argType.isString() && !argType.isInt() && !argType.isFloat()) {
+                throw new ContextualError("Invalid argument type for print" + getSuffix(), getLocation());
+            }
+        }
+        // Done
     }
 
     @Override

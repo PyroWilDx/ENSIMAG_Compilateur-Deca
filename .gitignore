@@ -10,6 +10,9 @@
 .settings
 .idea
 
+global
 gen
 
+*.iml
 *.tokens
+*.interp

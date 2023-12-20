@@ -23,7 +23,7 @@ public class FloatType extends Type {
     @Override
     public boolean sameType(Type otherType) {
         return (otherType instanceof FloatType);
-//        throw new UnsupportedOperationException("not yet implemented");
+        // Done
     }
 
 

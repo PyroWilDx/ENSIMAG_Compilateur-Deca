@@ -23,7 +23,7 @@ public class IntType extends Type {
     @Override
     public boolean sameType(Type otherType) {
         return (otherType instanceof IntType);
-//        throw new UnsupportedOperationException("not yet implemented");
+        // Done
     }
 
 

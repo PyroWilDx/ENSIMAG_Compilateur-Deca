@@ -13,7 +13,6 @@ public class GreaterOrEqual extends AbstractOpIneq {
         super(leftOperand, rightOperand);
     }
 
-
     @Override
     protected String getOperatorName() {
         return ">=";

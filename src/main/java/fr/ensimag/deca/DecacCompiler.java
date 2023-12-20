@@ -126,9 +126,8 @@ public class DecacCompiler {
     public final SymbolTable symbolTable = new SymbolTable();
 
     public Symbol createSymbol(String name) {
-        if (symbolTable == null) return null;
-        System.out.println("ddddddddddddddddddddddddddddddddddddddddddddddddddddddd" + symbolTable);
          return symbolTable.create(name);
+        // Done
     }
 
     /**
@@ -138,10 +137,12 @@ public class DecacCompiler {
      */
     public boolean compile() {
         String sourceFile = source.getAbsolutePath();
-        String destFile = null;
-        System.out.println("nnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn " + sourceFile);
-        // A FAIRE: calculer le nom du fichier .ass à partir du nom du
-        // A FAIRE: fichier .deca.
+        int extensionIndex = sourceFile.lastIndexOf('.');
+        String destFile;
+        if (extensionIndex != -1) destFile = sourceFile.substring(0, extensionIndex);
+        else destFile = sourceFile;
+        destFile += ".ass";
+        // Done
         PrintStream err = System.err;
         PrintStream out = System.out;
         LOG.debug("Compiling file " + sourceFile + " to assembly file " + destFile);
