@@ -72,7 +72,7 @@ PRINTLN : 'println';
 PRINTX : 'printx';
 PRINTLNX : 'printlnx';
 
-//IDENT : '   ';
+//IDENT : '';
 
 CLASS : 'class';
 EXTENDS : 'extends';

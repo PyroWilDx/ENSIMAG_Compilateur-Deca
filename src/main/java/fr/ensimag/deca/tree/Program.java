@@ -35,8 +35,14 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-        throw new UnsupportedOperationException("not yet implemented");
-        // LOG.debug("verify program: end");
+        iter(new TreeFunction() {
+            @Override
+            public void apply(Tree t) {
+                t.setLocation(0, 0, "Merde");
+            }
+        });
+        LOG.debug("verify program: end");
+        // TODO
     }
 
     @Override

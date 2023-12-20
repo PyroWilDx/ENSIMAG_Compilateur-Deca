@@ -1,0 +1,12 @@
+; start main program
+; Main program
+; Beginning of main instructions:
+	WSTR "Hello World !"
+	WSTR " 2ème Argument"
+	WNL
+	WSTR "2ème Println"
+	WNL
+	WSTR "Print Normal 1, "
+	WSTR "Print Normal 2"
+	HALT
+; end main program

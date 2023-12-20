@@ -43,6 +43,7 @@ public abstract class AbstractPrint extends AbstractInst {
             if (!argType.isString() && !argType.isInt() && !argType.isFloat()) {
                 throw new ContextualError("Invalid argument type for print" + getSuffix(), getLocation());
             }
+            arg.setType(argType);
         }
         // Done
     }
