@@ -126,6 +126,10 @@ public class DecacCompiler {
     public final SymbolTable symbolTable = new SymbolTable();
 
     public Symbol createSymbol(String name) {
+        if (symbolTable == null) {
+            System.out.println("CEST PAS CENSE ETRE NULL");
+            return null;
+        }
          return symbolTable.create(name);
         // Done
     }

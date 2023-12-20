@@ -29,7 +29,8 @@ public class DecacMain {
             throw new UnsupportedOperationException("decac -b not yet implemented");
         }
         if (options.getSourceFiles().isEmpty()) {
-            throw new UnsupportedOperationException("decac without argument not yet implemented");
+            System.out.println("Usage : ./decac <Source File> -Options");
+            // TODO
         }
         if (options.getParallel()) {
             ExecutorService executorService = Executors.newFixedThreadPool(options.getSourceFiles().size());
