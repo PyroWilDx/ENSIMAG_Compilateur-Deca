@@ -17,7 +17,7 @@ SEMI : ';';
 
 COMMA : ',';
 
-DOUBLEQUOTATION : '"';
+// DOUBLEQUOTATION : '"';
 
 OBRACE : '{';
 CBRACE : '}';
@@ -80,10 +80,11 @@ PROTECTED : 'protected';
 
 MULTI_LINE_STRING : '\\';
 
+STRING_LITERAL : '"'(  ~ ('"' | '\n'))*'"';
+
 ASM : 'asm';
 
 RTL : '\n';
 SPACE : ' ';
 
-
-DUMMY_TOKEN: .;
+//DUMMY_TOKEN: .;

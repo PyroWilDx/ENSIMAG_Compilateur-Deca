@@ -99,6 +99,8 @@ list_inst returns[ListInst tree]
 @init {
 }
     : (inst {
+        $tree.add($inst.tree);
+
         }
       )*
     ;
@@ -114,6 +116,8 @@ inst returns[AbstractInst tree]
         }
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
+            $tree = new Println(false, $list_expr.tree);
+
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -148,10 +152,13 @@ if_then_else returns[IfThenElse tree]
 
 list_expr returns[ListExpr tree]
 @init   {
+        $tree = new ListExpr();
         }
     : (e1=expr {
+        $tree.add($e1.tree);
         }
        (COMMA e2=expr {
+        $tree.add($e2.tree);
         }
        )* )?
     ;
@@ -160,7 +167,17 @@ expr returns[AbstractExpr tree]
     : assign_expr {
             assert($assign_expr.tree != null);
         }
+        | string_literal{
+            assert($string_literal.tree != null);
+            $tree = $string_literal.tree;
+        }
     ;
+
+string_literal returns[AbstractExpr tree]
+    : STRING_LITERAL{
+
+    $tree = new StringLiteral($STRING_LITERAL.text);
+    };
 
 assign_expr returns[AbstractExpr tree]
     : e=or_expr (
