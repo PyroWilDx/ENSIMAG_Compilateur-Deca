@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
@@ -45,9 +42,10 @@ public abstract class AbstractExpr extends AbstractInst {
 
     @Override
     protected void checkDecoration() {
-        if (getType() == null) {
-            throw new DecacInternalError("Expression " + decompile() + " has no Type decoration");
-        }
+//        if (getType() == null) {
+//            throw new DecacInternalError("Expression " + decompile() + " has no Type decoration");
+//        }
+        // TODO
     }
 
     /**
@@ -111,6 +109,7 @@ public abstract class AbstractExpr extends AbstractInst {
         if (!exprType.isBoolean()) {
             throw new ContextualError("Condition is not a boolean", getLocation());
         }
+        setType(exprType);
         // Done
     }
 

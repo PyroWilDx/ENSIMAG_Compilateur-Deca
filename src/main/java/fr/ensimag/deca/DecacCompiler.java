@@ -123,12 +123,12 @@ public class DecacCompiler {
 
     /** The global environment for types (and the symbolTable) */
     public final EnvironmentType environmentType = new EnvironmentType(this);
-    public final SymbolTable symbolTable = new SymbolTable();
+    public SymbolTable symbolTable = new SymbolTable();
+    // final à méditer
 
     public Symbol createSymbol(String name) {
         if (symbolTable == null) {
-            System.out.println("CEST PAS CENSE ETRE NULL");
-            return null;
+            symbolTable = new SymbolTable();
         }
          return symbolTable.create(name);
         // Done

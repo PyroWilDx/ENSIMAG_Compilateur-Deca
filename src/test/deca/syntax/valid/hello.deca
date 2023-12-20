@@ -1,1 +1,14 @@
-{println("Hello");}
+{
+// Commentaire
+/* Commentaire
+    Commentaire
+*/
+/*
+    print("Salut
+*/
+
+    println("Hello World !", " 2ème Argument");
+    println("2ème Println");
+    print("Print Normal 1, ");
+    print("Print Normal 2");
+}
