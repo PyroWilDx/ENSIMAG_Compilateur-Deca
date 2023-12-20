@@ -12,7 +12,6 @@ public class Greater extends AbstractOpIneq {
         super(leftOperand, rightOperand);
     }
 
-
     @Override
     protected String getOperatorName() {
         return ">";

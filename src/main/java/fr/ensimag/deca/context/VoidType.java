@@ -23,7 +23,7 @@ public class VoidType extends Type {
     @Override
     public boolean sameType(Type otherType) {
         return (otherType instanceof VoidType);
-//        throw new UnsupportedOperationException("not yet implemented");
+        // Done
     }
 
 

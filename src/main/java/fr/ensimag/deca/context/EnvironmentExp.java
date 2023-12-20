@@ -47,7 +47,7 @@ public class EnvironmentExp {
         if (parentEnvironment == null) return null;
 
         return parentEnvironment.get(key);
-//        throw new UnsupportedOperationException("not yet implemented");
+        // Done
     }
 
     /**
@@ -70,7 +70,7 @@ public class EnvironmentExp {
             throw new DoubleDefException();
         }
         env.put(name, def);
-//        throw new UnsupportedOperationException("not yet implemented");
+        // Done
     }
 
 }

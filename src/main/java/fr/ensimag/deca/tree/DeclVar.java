@@ -31,8 +31,8 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void verifyDeclVar(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError {
+            EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     

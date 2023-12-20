@@ -24,22 +24,24 @@ public class EnvironmentExpTest {
             env2.declare(zSymbol, new VariableDefinition(new IntType(zSymbol), new Location(0, 0, "a.deca")));
             env2.declare(xSymbol, new VariableDefinition(new IntType(xSymbol), new Location(0, 0, "a.deca")));
             env2.declare(ySymbol, new VariableDefinition(new IntType(ySymbol), new Location(0, 0, "a.deca")));
-            System.out.println("OK");
+            System.out.println("Normal Definition : OK");
         } catch (EnvironmentExp.DoubleDefException e) {
-            System.out.println("Erreur");
+            System.out.println("Normal Definition : Error");
             assert(false);
         }
 
         try {
             env2.declare(ySymbol, new VariableDefinition(new IntType(ySymbol), new Location(0, 0, "a.deca")));
+            System.out.println("Double Definition : Error");
+            assert(false);
         } catch (EnvironmentExp.DoubleDefException e) {
-            System.out.println("OK");
+            System.out.println("Double Definition : OK");
         }
 
         if (env2.get(uSymbol).equals(uExpDef)) {
-            System.out.println("OK");
+            System.out.println("Get : OK");
         } else {
-            System.out.println("Erreur");
+            System.out.println("Get : Error");
             assert(false);
         }
     }

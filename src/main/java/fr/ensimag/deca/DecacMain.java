@@ -32,10 +32,6 @@ public class DecacMain {
             throw new UnsupportedOperationException("decac without argument not yet implemented");
         }
         if (options.getParallel()) {
-            // A FAIRE : instancier DecacCompiler pour chaque fichier à
-            // compiler, et lancer l'exécution des méthodes compile() de chaque
-            // instance en parallèle. Il est conseillé d'utiliser
-            // java.util.concurrent de la bibliothèque standard Java.
             ExecutorService executorService = Executors.newFixedThreadPool(options.getSourceFiles().size());
             for (File source : options.getSourceFiles()) {
                 executorService.execute(() -> {
@@ -50,7 +46,7 @@ public class DecacMain {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-//            throw new UnsupportedOperationException("Parallel build not yet implemented");
+            // Done
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);

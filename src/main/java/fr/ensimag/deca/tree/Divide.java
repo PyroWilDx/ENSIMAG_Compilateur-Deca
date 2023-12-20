@@ -11,7 +11,6 @@ public class Divide extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
-
     @Override
     protected String getOperatorName() {
         return "/";
