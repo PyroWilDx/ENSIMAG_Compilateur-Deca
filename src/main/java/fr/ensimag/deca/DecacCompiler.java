@@ -197,7 +197,6 @@ public class DecacCompiler {
         }
         assert(prog.checkAllLocations());
 
-
         prog.verifyProgram(this);
         assert(prog.checkAllDecorations());
 

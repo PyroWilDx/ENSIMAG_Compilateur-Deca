@@ -38,7 +38,15 @@ public class Program extends AbstractProgram {
         iter(new TreeFunction() {
             @Override
             public void apply(Tree t) {
-                t.setLocation(0, 0, "Merde");
+//                Program program = (Program) t;
+//                try {
+//                    program.main.verifyMain(compiler);
+//                    program.classes.verifyListClass(compiler);
+//                    program.classes.verifyListClassMembers(compiler);
+//                    program.classes.verifyListClassBody(compiler);
+//                } catch (ContextualError e) {
+//                    e.printStackTrace();
+//                }
             }
         });
         LOG.debug("verify program: end");

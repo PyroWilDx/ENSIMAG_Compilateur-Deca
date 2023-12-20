@@ -47,7 +47,7 @@ public class DecacMain {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            // Done
+            // TODO Test
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);
