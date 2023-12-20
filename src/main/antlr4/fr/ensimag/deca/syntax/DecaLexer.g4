@@ -80,11 +80,14 @@ PROTECTED : 'protected';
 
 MULTI_LINE_STRING : '\\';
 
+COMMENT : ('//'.*? '\n'|'/*' .*? '*/') {skip();};
+
 STRING_LITERAL : '"'(  ~ ('"' | '\n'))*'"';
 
 ASM : 'asm';
 
-RTL : '\n';
-SPACE : ' ';
+RTL : '\n' {skip();};
+TAB : '\t' {skip();};
+SPACE : ' ' {skip();};
 
-//DUMMY_TOKEN: .;
+DUMMY_TOKEN: .;
