@@ -16,8 +16,8 @@ import org.apache.log4j.Logger;
 public class Main extends AbstractMain {
     private static final Logger LOG = Logger.getLogger(Main.class);
     
-    private ListDeclVar declVariables;
-    private ListInst insts;
+        private ListDeclVar declVariables;
+        private ListInst insts;
     public Main(ListDeclVar declVariables,
             ListInst insts) {
         Validate.notNull(declVariables);
@@ -26,12 +26,13 @@ public class Main extends AbstractMain {
         this.insts = insts;
     }
 
+    // TODO: Peut etre penser a creer une nouveelle classe bloc pour factorisation
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
 
         EnvironmentExp env = new EnvironmentExp(null);
-//        declVariables.verifyListDeclVariable(compiler, env, null);
+        declVariables.verifyListDeclVariable(compiler, env, null);
 
         insts.verifyListInst(compiler, env, null,
                 compiler.environmentType.VOID);

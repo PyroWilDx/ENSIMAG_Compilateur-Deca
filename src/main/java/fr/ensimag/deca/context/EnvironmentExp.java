@@ -1,8 +1,14 @@
 package fr.ensimag.deca.context;
 
+import com.sun.tools.javac.util.Iterators;
+import fr.ensimag.deca.context.exceptions.NonDisjointUnionException;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.Location;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Dictionary associating identifier's ExpDefinition to their names.
@@ -25,16 +31,41 @@ public class EnvironmentExp {
     // A FAIRE : implémenter la structure de donnée représentant un
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
-    EnvironmentExp parentEnvironment;
-    private HashMap<Symbol, ExpDefinition> env;
+    private final EnvironmentExp parentEnvironment;
+    private final HashMap<Symbol, ExpDefinition> env;
     
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
         this.env = new HashMap<>();
     }
+    public void disjointUnion(EnvironmentExp envExp, Location location) throws NonDisjointUnionException{
+        for (Symbol s1 :
+                envExp.getKeys()) {
+            if (this.get(s1) != null) throw new NonDisjointUnionException();
+            ExpDefinition def = envExp.env.get(s1);
+            this.env.put(s1, def);
+        }
+    }
+
+
+    public Set<Symbol> getKeys() {
+        if (this.parentEnvironment == null) {
+            return this.env.keySet();
+        }
+        this.env.keySet().iterator();
+        Set<Symbol> concat = new HashSet<>(this.env.keySet());
+        concat.addAll(this.parentEnvironment.getKeys());
+        return concat;
+    }
+
+
 
     public static class DoubleDefException extends Exception {
         private static final long serialVersionUID = -2733379901827316441L;
+    }
+
+    public void Empile(EnvironmentExp env)  {
+
     }
 
     /**

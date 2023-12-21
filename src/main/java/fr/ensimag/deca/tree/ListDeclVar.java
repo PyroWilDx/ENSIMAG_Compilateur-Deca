@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import com.sun.tools.javac.comp.Env;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -31,8 +32,13 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      * @param currentClass 
      *          corresponds to "class" attribute (null in the main bloc).
      */    
-    void verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
+    EnvironmentExp verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
+        EnvironmentExp envr = new EnvironmentExp(localEnv);
+        for (AbstractDeclVar declVar : this.getList()) {
+            declVar.verifyDeclVar(compiler, localEnv, currentClass);
+        }
+        return envr;
         throw new UnsupportedOperationException("not yet implemented");
     }
 
