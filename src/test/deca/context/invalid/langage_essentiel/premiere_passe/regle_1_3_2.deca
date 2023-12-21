@@ -1,0 +1,4 @@
+class A extends int {
+}
+// raison : condition
+// message : « identificateur de classe attendu »

@@ -1,0 +1,6 @@
+{
+    A a;
+}
+
+// raison : opération partielle
+// “Identificateur de type non déclaré”

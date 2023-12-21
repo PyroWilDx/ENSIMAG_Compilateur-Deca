@@ -1,0 +1,7 @@
+class A {
+}
+class A {
+}
+
+// raison : opération partielle ⊕
+// message : « classe ou type déjà déclaré »
