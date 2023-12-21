@@ -6,6 +6,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.VoidType;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -43,9 +45,12 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        // A FAIRE: traiter les déclarations de variables.
         compiler.addComment("Beginning of main instructions:");
+        for (AbstractDeclVar var : declVariables.getList()) {
+            
+        }
         insts.codeGenListInst(compiler);
+        // TODO
     }
     
     @Override
