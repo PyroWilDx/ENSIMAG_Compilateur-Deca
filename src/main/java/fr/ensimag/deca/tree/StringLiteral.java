@@ -39,14 +39,14 @@ public class StringLiteral extends AbstractStringLiteral {
 
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
-        String pValue = value.substring(1, value.length() - 1);
-        compiler.addInstruction(new WSTR(new ImmediateString(pValue)));
+        String printValue = value.substring(1, value.length() - 1);
+        compiler.addInstruction(new WSTR(printValue));
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(value);
-        // TODO
+        // Done
     }
 
     @Override
