@@ -39,10 +39,10 @@ public class Program extends AbstractProgram {
             @Override
             public void apply(Tree t) {
                 try {
-                    main.verifyMain(compiler);
 //                  classes.verifyListClass(compiler);
 //                  classes.verifyListClassMembers(compiler);
 //                  classes.verifyListClassBody(compiler);
+                    main.verifyMain(compiler);
                 } catch (ContextualError e) {
                     e.printStackTrace();
                 }

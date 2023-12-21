@@ -30,7 +30,7 @@ public class DecacMain {
         }
         if (options.getSourceFiles().isEmpty()) {
             System.out.println("Usage : ./decac <Source File> -Options");
-            // TODO
+            // TODO Better Message
         }
         if (options.getParallel()) {
             ExecutorService executorService = Executors.newFixedThreadPool(options.getSourceFiles().size());
@@ -47,7 +47,7 @@ public class DecacMain {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            // TODO Test
+            // TODO Test Parallèle
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);

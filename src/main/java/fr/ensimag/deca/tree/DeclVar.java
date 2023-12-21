@@ -34,7 +34,6 @@ public class DeclVar extends AbstractDeclVar {
             EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-
     
     @Override
     public void decompile(IndentPrintStream s) {
