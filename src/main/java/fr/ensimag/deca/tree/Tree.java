@@ -252,13 +252,12 @@ public abstract class Tree {
      * information.
      */
     protected void checkLocation() {
-//        if (getLocation() == null) {
-//            LOG.info(prettyPrint());
-//            throw new DecacInternalError("Tree "
-//                    + getClass().getName()
-//                    + " has no location set");
-//        }
-        // TODO
+        if (getLocation() == null) {
+            LOG.info(prettyPrint());
+            throw new DecacInternalError("Tree "
+                    + getClass().getName()
+                    + " has no location set");
+        }
     }
 
     /**

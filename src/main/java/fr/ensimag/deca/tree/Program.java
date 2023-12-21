@@ -38,15 +38,14 @@ public class Program extends AbstractProgram {
         iter(new TreeFunction() {
             @Override
             public void apply(Tree t) {
-//                Program program = (Program) t;
-//                try {
-//                    program.main.verifyMain(compiler);
-//                    program.classes.verifyListClass(compiler);
-//                    program.classes.verifyListClassMembers(compiler);
-//                    program.classes.verifyListClassBody(compiler);
-//                } catch (ContextualError e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    main.verifyMain(compiler);
+//                  classes.verifyListClass(compiler);
+//                  classes.verifyListClassMembers(compiler);
+//                  classes.verifyListClassBody(compiler);
+                } catch (ContextualError e) {
+                    e.printStackTrace();
+                }
             }
         });
         LOG.debug("verify program: end");

@@ -12,6 +12,7 @@
 
 global
 gen
+docker/ima_sources/
 
 *.iml
 *.tokens

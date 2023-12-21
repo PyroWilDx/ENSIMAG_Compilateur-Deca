@@ -72,7 +72,7 @@ PRINTLN : 'println';
 PRINTX : 'printx';
 PRINTLNX : 'printlnx';
 
-//IDENT : '';
+IDENT : ('a'..'z'|'A'..'Z'|'_')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
 
 CLASS : 'class';
 EXTENDS : 'extends';
@@ -83,6 +83,10 @@ MULTI_LINE_STRING : '\\';
 COMMENT : ('//'.*? '\n'|'/*' .*? '*/') {skip();};
 
 STRING_LITERAL : '"'(  ~ ('"' | '\n'))*'"';
+INT_LITERAL : ('+' | '-')?DIGIT+;
+FLOAT_LITERAL : ('+' | '-')?((DIGIT+'.'DIGIT*) | (DIGIT*'.'DIGIT+));
+
+DIGIT : (('0'..'9')|'1');
 
 ASM : 'asm';
 

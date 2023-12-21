@@ -115,26 +115,31 @@ inst returns[AbstractInst tree]
     : e1=expr SEMI {
             assert($e1.tree != null);
             $tree = $expr.tree;
+            setLocation($tree, $e1.start);
         }
     | SEMI {
         }
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Print(false, $list_expr.tree);
+            setLocation($tree, $list_expr.start);
 
         }
     | PRINTLN OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Println(false, $list_expr.tree);
+            setLocation($tree, $list_expr.start);
 
         }
     | PRINTX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Print(true, $list_expr.tree);
+            setLocation($tree, $list_expr.start);
         }
     | PRINTLNX OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
             $tree = new Println(true, $list_expr.tree);
+            setLocation($tree, $list_expr.start);
         }
     | if_then_else {
             assert($if_then_else.tree != null);
@@ -178,16 +183,35 @@ expr returns[AbstractExpr tree]
     : assign_expr {
             assert($assign_expr.tree != null);
         }
-        | string_literal{
+        | string_literal {
             assert($string_literal.tree != null);
             $tree = $string_literal.tree;
+            setLocation($tree, $string_literal.start);
+        }
+        | int_literal {
+            assert($int_literal.tree != null);
+            $tree = $int_literal.tree;
+            setLocation($tree, $int_literal.start);
+        }
+        | float_literal {
+            assert($float_literal.tree != null);
+            $tree = $float_literal.tree;
+            setLocation($tree, $float_literal.start);
         }
     ;
 
+int_literal returns[AbstractExpr tree]
+    : INT_LITERAL {
+        $tree = new IntLiteral(Integer.parseInt($INT_LITERAL.text));
+    };
+float_literal returns[AbstractExpr tree]
+    : FLOAT_LITERAL {
+        $tree = new FloatLiteral(Float.parseFloat($FLOAT_LITERAL.text));
+    };
 string_literal returns[AbstractExpr tree]
     : STRING_LITERAL{
 
-    $tree = new StringLiteral($STRING_LITERAL.text);
+        $tree = new StringLiteral($STRING_LITERAL.text);
     };
 
 assign_expr returns[AbstractExpr tree]
