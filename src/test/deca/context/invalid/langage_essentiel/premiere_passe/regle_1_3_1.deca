@@ -1,0 +1,4 @@
+class A extends B  {
+}
+// raison : opération partielle env _types(super )
+//        	message : “identificateur non déclaré”

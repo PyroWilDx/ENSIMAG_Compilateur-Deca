@@ -1,3 +1,6 @@
 {
-    A a = new A();
+    A a;
 }
+
+// raison : opération partielle
+// “Identificateur de type non déclaré”
