@@ -10,6 +10,8 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+import java.util.Iterator;
+
 import org.apache.commons.lang.Validate;
 
 /**
@@ -61,7 +63,19 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print("print" + getSuffix() + "(");
+        Iterator<AbstractExpr> iterator = arguments.iterator();
+        if (iterator.hasNext()) {
+            AbstractExpr arg = iterator.next();
+            arg.decompile(s);
+        }
+        while (iterator.hasNext()) {
+            AbstractExpr arg = iterator.next();
+            s.print(", ");
+            arg.decompile(s);
+        }
+        s.print(")");
+        // Done
     }
 
     @Override
