@@ -25,6 +25,8 @@ public class IfThenElse extends AbstractInst {
     private final ListInst thenBranch;
     private final ListInst elseBranch;
 
+    private static int ifThenElseCpt = 0;
+
     public IfThenElse(AbstractExpr condition, ListInst thenBranch, ListInst elseBranch) {
         Validate.notNull(condition);
         Validate.notNull(thenBranch);
@@ -42,9 +44,9 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        // TODO y a t-il besoin d'un compteur pour les labels ?
-        Label startElseLabel = new Label("startElse");
-        Label endIfThenElseLaBel = new Label("endIfThenElse");
+        Label startElseLabel = new Label("startElse" + ifThenElseCpt);
+        Label endIfThenElseLaBel = new Label("endIfThenElse" + ifThenElseCpt);
+        ifThenElseCpt++;
 
         condition.codeGenInst(compiler);
         // TODO sur quel registre se fait la condition ?

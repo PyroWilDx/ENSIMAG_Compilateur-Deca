@@ -40,7 +40,7 @@ public class Main extends AbstractMain {
                 compiler.environmentType.VOID);
 
         LOG.debug("verify Main: end");
-        // TODO
+        // Done
     }
 
     @Override
