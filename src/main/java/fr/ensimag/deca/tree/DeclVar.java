@@ -2,7 +2,6 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.exceptions.NonDisjointUnionException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
@@ -33,14 +32,17 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler,
                                  EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         EnvironmentExp declEnv = new EnvironmentExp(null);
+        TypeDefinition typeDef = compiler.environmentType.defOfType((this.type.getName()));
         try {
-            declEnv.declare(varName.getName(), new VariableDefinition(compiler.environmentType.defOfType(type.getName()).getType(), this.getLocation()));
-            localEnv.disjointUnion(declEnv, this.getLocation());
-        } catch(NonDisjointUnionException e) {
-            System.out.println(e.getMessage() + "Variable non délarée..."); // cf regle 3.17
+            declEnv.declare(varName.getName(), new VariableDefinition(typeDef.getType(), this.getLocation()));
+            // CONDITION type != void
         } catch(EnvironmentExp.DoubleDefException e) { // pas possible d'avoir cette erreur mais idea pas content
             throw new UnknownError();
         }
+        if (!localEnv.disjointUnion(declEnv, this.getLocation())) {
+            throw new ContextualError("Variable déjà déclarée" ,this.getLocation());
+        }
+        if (typeDef.getType() == compiler.environmentType.VOID);
         //throw new UnsupportedOperationException("not yet implemented");
     }
 

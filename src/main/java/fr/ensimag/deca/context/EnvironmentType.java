@@ -40,8 +40,8 @@ public class EnvironmentType {
         STRING = new StringType(stringSymb);
         // not added to envTypes, it's not visible for the user.
 
-        //Symbol objectSymb = compiler.createSymbol("object");
-
+        Symbol objectSymb = compiler.createSymbol("object");
+        OBJECT = new ClassType(objectSymb);
         
     }
 
@@ -56,5 +56,5 @@ public class EnvironmentType {
     public final FloatType   FLOAT;
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
-    //public final TypeClass OBJECT;
+    public final ClassType OBJECT;
 }

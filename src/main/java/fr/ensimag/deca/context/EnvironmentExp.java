@@ -1,12 +1,10 @@
 package fr.ensimag.deca.context;
 
-import fr.ensimag.deca.context.exceptions.NonDisjointUnionException;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 /**
@@ -37,13 +35,13 @@ public class EnvironmentExp {
         this.parentEnvironment = parentEnvironment;
         this.env = new HashMap<>();
     }
-    public void disjointUnion(EnvironmentExp envExp, Location location) throws NonDisjointUnionException{
-        for (Symbol s1 :
-                envExp.getKeys()) {
-            if (this.get(s1) != null) throw new NonDisjointUnionException(location);
+    public boolean disjointUnion(EnvironmentExp envExp, Location location) {
+        for (Symbol s1 : envExp.getKeys()) {
+            if (this.get(s1) != null) return false;
             ExpDefinition def = envExp.env.get(s1);
             this.env.put(s1, def);
         }
+        return true;
     }
 
 
