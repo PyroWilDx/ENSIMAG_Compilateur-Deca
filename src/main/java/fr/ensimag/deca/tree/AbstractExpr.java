@@ -82,11 +82,6 @@ public abstract class AbstractExpr extends AbstractInst {
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
-<<<<<<< HEAD
-                                     EnvironmentExp localEnv, ClassDefinition currentClass,
-                                     Type expectedType) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
-=======
             EnvironmentExp localEnv, ClassDefinition currentClass, 
             Type expectedType) throws ContextualError { // regle 3.28
         Type type2 = this.verifyExpr(compiler, localEnv, currentClass);
@@ -96,7 +91,6 @@ public abstract class AbstractExpr extends AbstractInst {
         }
         //throw new UnsupportedOperationException("not yet implemented");
         return this; // TODO j'ai pas compris cette histoire de return un convfloat, il suffit que ce soit compatible non ?
->>>>>>> fa1e6d3002c84f7b49c64d29b78c3832c5ac1346
     }
 
 
