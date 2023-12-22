@@ -31,13 +31,13 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
      * @param currentClass 
      *          corresponds to "class" attribute (null in the main bloc).
      */    
-    EnvironmentExp verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp localEnv,
+    EnvironmentExp verifyListDeclVariable(DecacCompiler compiler, EnvironmentExp envExpSup, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        EnvironmentExp envr = new EnvironmentExp(localEnv);
+        EnvironmentExp envReturn = localEnv.copy();
         for (AbstractDeclVar declVar : this.getList()) {
-            declVar.verifyDeclVar(compiler, localEnv, currentClass);
+            declVar.verifyDeclVar(compiler, envExpSup, envReturn, currentClass);
         }
-        return envr;
+        return envReturn;
     }
 
 }

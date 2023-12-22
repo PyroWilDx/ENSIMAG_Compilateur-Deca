@@ -50,6 +50,11 @@ public class EnvironmentType {
         return envTypes.get(s);
     }
 
+    public boolean assignCompatible(Type type1, Type type2) {
+        //TODO remplir tout ça pour la deuxieme condition possible (si subtype(env, T2, T1) peut être avec un dictionnaire de compatibilités...........
+        return type1 == FLOAT && type2 == INT;
+    }
+
     public final VoidType    VOID;
     public final IntType     INT;
     public final FloatType   FLOAT;

@@ -26,7 +26,7 @@ public abstract class AbstractDeclVar extends Tree {
      * @param currentClass 
      *          corresponds to the "class" attribute (null in the main bloc).
      */    
-    protected abstract void verifyDeclVar(DecacCompiler compiler,
+    protected abstract void verifyDeclVar(DecacCompiler compiler, EnvironmentExp envExpSup,
             EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
 
     protected abstract void codeGenDeclVar(DecacCompiler compiler);

@@ -52,5 +52,10 @@ public class SymbolTable {
         }
 
         private String name;
+
+        @Override
+        public int hashCode() {
+            return this.name.hashCode();
+        }
     }
 }
