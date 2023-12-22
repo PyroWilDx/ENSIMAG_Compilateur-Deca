@@ -8,6 +8,10 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.BNE;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -18,6 +22,7 @@ import org.apache.commons.lang.Validate;
 public class While extends AbstractInst {
     private AbstractExpr condition;
     private ListInst body;
+    private static int whileCpt = 0;
 
     public AbstractExpr getCondition() {
         return condition;
@@ -36,7 +41,18 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("not yet implemented");
+        Label startWhileLabel = new Label("startWhile" + whileCpt);
+        Label endWhileLabel = new Label("endWhile" + whileCpt);
+        whileCpt++;
+
+        compiler.addLabel(startWhileLabel);
+        condition.codeGenInst(compiler);
+        // TODO sur quel registre se fait la condition ?
+        compiler.addInstruction(new BEQ(endWhileLabel));
+        body.codeGenListInst(compiler);
+        compiler.addInstruction(new BRA(startWhileLabel));
+        compiler.addLabel(endWhileLabel);
+        // Done
     }
 
     @Override

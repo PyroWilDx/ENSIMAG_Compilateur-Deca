@@ -59,7 +59,7 @@ public class IntLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(value, Register.getR(1)));
+        compiler.addInstruction(new LOAD(value, Register.R1));
     }
 
 }

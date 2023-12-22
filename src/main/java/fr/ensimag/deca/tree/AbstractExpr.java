@@ -6,6 +6,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.ImmediateString;
 import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.Register;
@@ -41,6 +42,7 @@ public abstract class AbstractExpr extends AbstractInst {
         Validate.notNull(type);
         this.type = type;
     }
+
     private Type type;
 
     @Override
@@ -52,45 +54,43 @@ public abstract class AbstractExpr extends AbstractInst {
 
     /**
      * Verify the expression for contextual error.
-     * 
-     * implements non-terminals "expr" and "lvalue" 
-     *    of [SyntaxeContextuelle] in pass 3
+     * <p>
+     * implements non-terminals "expr" and "lvalue"
+     * of [SyntaxeContextuelle] in pass 3
      *
-     * @param compiler  (contains the "env_types" attribute)
-     * @param localEnv
-     *            Environment in which the expression should be checked
-     *            (corresponds to the "env_exp" attribute)
-     * @param currentClass
-     *            Definition of the class containing the expression
-     *            (corresponds to the "class" attribute)
-     *             is null in the main bloc.
+     * @param compiler     (contains the "env_types" attribute)
+     * @param localEnv     Environment in which the expression should be checked
+     *                     (corresponds to the "env_exp" attribute)
+     * @param currentClass Definition of the class containing the expression
+     *                     (corresponds to the "class" attribute)
+     *                     is null in the main bloc.
      * @return the Type of the expression
-     *            (corresponds to the "type" attribute)
+     * (corresponds to the "type" attribute)
      */
     public abstract Type verifyExpr(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
+                                    EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
 
     /**
-     * Verify the expression in right hand-side of (implicit) assignments 
-     * 
+     * Verify the expression in right hand-side of (implicit) assignments
+     * <p>
      * implements non-terminal "rvalue" of [SyntaxeContextuelle] in pass 3
      *
-     * @param compiler  contains the "env_types" attribute
-     * @param localEnv corresponds to the "env_exp" attribute
+     * @param compiler     contains the "env_types" attribute
+     * @param localEnv     corresponds to the "env_exp" attribute
      * @param currentClass corresponds to the "class" attribute
-     * @param expectedType corresponds to the "type1" attribute            
+     * @param expectedType corresponds to the "type1" attribute
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass, 
-            Type expectedType) throws ContextualError {
+                                     EnvironmentExp localEnv, ClassDefinition currentClass,
+                                     Type expectedType) throws ContextualError {
         throw new UnsupportedOperationException("not yet implemented");
     }
-    
-    
+
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType) throws ContextualError {
+                              ClassDefinition currentClass, Type returnType) throws ContextualError {
         verifyExpr(compiler, localEnv, currentClass);
         // TODO
     }
@@ -99,14 +99,12 @@ public abstract class AbstractExpr extends AbstractInst {
      * Verify the expression as a condition, i.e. check that the type is
      * boolean.
      *
-     * @param localEnv
-     *            Environment in which the condition should be checked.
-     * @param currentClass
-     *            Definition of the class containing the expression, or null in
-     *            the main program.
+     * @param localEnv     Environment in which the condition should be checked.
+     * @param currentClass Definition of the class containing the expression, or null in
+     *                     the main program.
      */
     void verifyCondition(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+                         ClassDefinition currentClass) throws ContextualError {
         Type exprType = verifyExpr(compiler, localEnv, currentClass);
         if (!exprType.isBoolean()) {
             throw new ContextualError("Condition is not a boolean", getLocation());
@@ -130,11 +128,14 @@ public abstract class AbstractExpr extends AbstractInst {
         }
     }
 
+//    @Override
+//    protected abstract void codeGenInst(DecacCompiler compiler);
+
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        // TODO
+//         TODO
     }
-    
+
 
     @Override
     protected void decompileInst(IndentPrintStream s) {

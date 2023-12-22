@@ -9,6 +9,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import org.apache.commons.lang.Validate;
@@ -50,7 +51,7 @@ public class IfThenElse extends AbstractInst {
 
         condition.codeGenInst(compiler);
         // TODO sur quel registre se fait la condition ?
-        compiler.addInstruction(new BNE(startElseLabel));
+        compiler.addInstruction(new BEQ(startElseLabel));
         thenBranch.codeGenListInst(compiler);
         compiler.addInstruction(new BRA(endIfThenElseLaBel));
         compiler.addLabel(startElseLabel);
