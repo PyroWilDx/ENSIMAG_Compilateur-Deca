@@ -28,8 +28,8 @@ public class EnvironmentExp {
     // A FAIRE : implémenter la structure de donnée représentant un
     // environnement (association nom -> définition, avec possibilité
     // d'empilement).
-    private final EnvironmentExp parentEnvironment;
-    private final HashMap<Symbol, ExpDefinition> env;
+    private EnvironmentExp parentEnvironment;
+    private HashMap<Symbol, ExpDefinition> env;
     
     public EnvironmentExp(EnvironmentExp parentEnvironment) {
         this.parentEnvironment = parentEnvironment;
@@ -44,6 +44,9 @@ public class EnvironmentExp {
         return true;
     }
 
+    public void setEnv(HashMap<Symbol, ExpDefinition> env) {
+        this.env = env;
+    }
 
     public Set<Symbol> getKeys() {
         if (this.parentEnvironment == null) {
@@ -61,8 +64,13 @@ public class EnvironmentExp {
         private static final long serialVersionUID = -2733379901827316441L;
     }
 
-    public void Empile(EnvironmentExp env)  {
-
+    public static EnvironmentExp empile(EnvironmentExp env1, EnvironmentExp env2)  {
+        EnvironmentExp copyEnv1 = env1.copy();
+        EnvironmentExp copyEnv2 = env2.copy();
+        EnvironmentExp dernier = copyEnv1;
+        while (dernier.parentEnvironment != null) dernier = dernier.parentEnvironment;
+        dernier.parentEnvironment = copyEnv2;
+        return copyEnv1;
     }
 
     /**
@@ -99,6 +107,13 @@ public class EnvironmentExp {
         }
         env.put(name, def);
         // Done
+    }
+    public EnvironmentExp copy() {
+        EnvironmentExp copy;
+        if (this.parentEnvironment == null) copy = new EnvironmentExp(null);
+        else copy = new EnvironmentExp(this.parentEnvironment.copy());
+        this.setEnv((HashMap<Symbol, ExpDefinition>) this.env.clone()); //TODO pas de problème
+        return copy;
     }
 
 }
