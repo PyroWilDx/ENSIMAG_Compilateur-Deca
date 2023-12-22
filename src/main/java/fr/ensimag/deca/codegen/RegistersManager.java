@@ -5,7 +5,7 @@ import fr.ensimag.ima.pseudocode.Register;
 
 public class RegistersManager {
 
-    private static final int nRegs = 16;
+    public static final int nRegs = 16;
     private static final boolean[] stateRegs = new boolean[] {
             true, true, false, false,
             false, false, false, false,
