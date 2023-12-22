@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.exceptions.NonDisjointUnionException;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
@@ -34,12 +35,13 @@ public class DeclVar extends AbstractDeclVar {
         EnvironmentExp declEnv = new EnvironmentExp(null);
         try {
             declEnv.declare(varName.getName(), new VariableDefinition(compiler.environmentType.defOfType(type.getName()).getType(), this.getLocation()));
-        } catch (EnvironmentExp.DoubleDefException e) {
-            throw new UnknownError();                // Cas impossible!
-
+            localEnv.disjointUnion(declEnv, this.getLocation());
+        } catch(NonDisjointUnionException e) {
+            System.out.println(e.getMessage() + "Variable non délarée..."); // cf regle 3.17
+        } catch(EnvironmentExp.DoubleDefException e) { // pas possible d'avoir cette erreur mais idea pas content
+            throw new UnknownError();
         }
-        localEnv.disjointUnion(declEnv, this.getLocation());
-        throw new UnsupportedOperationException("not yet implemented");
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
