@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
-import jdk.internal.foreign.abi.aarch64.TypeClass;
 
 // A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
 /**

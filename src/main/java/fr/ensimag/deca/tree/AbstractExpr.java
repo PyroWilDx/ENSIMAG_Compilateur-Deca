@@ -122,6 +122,9 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrint(DecacCompiler compiler) {
         codeGenInst(compiler);
+        if (type.isInt()) {
+            compiler.addInstruction(new WINT());
+        }
         if (type.isFloat()) {
             compiler.addInstruction(new WFLOAT());
         }

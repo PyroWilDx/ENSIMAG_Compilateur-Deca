@@ -15,7 +15,6 @@ import org.apache.commons.lang.Validate;
  */
 public class DeclVar extends AbstractDeclVar {
 
-
     final private AbstractIdentifier type;
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
@@ -42,6 +41,12 @@ public class DeclVar extends AbstractDeclVar {
             throw new UnknownError();
         }
         //throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    @Override
+    protected void codeGenDeclVar(DecacCompiler compiler) {
+        initialization.codeGenInit(compiler, varName.getExpDefinition().getOperand());
+        // TODO
     }
 
     @Override
