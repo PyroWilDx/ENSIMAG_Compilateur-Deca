@@ -1,6 +1,5 @@
 package fr.ensimag.deca.context;
 
-import com.sun.tools.javac.util.Iterators;
 import fr.ensimag.deca.context.exceptions.NonDisjointUnionException;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
@@ -41,7 +40,7 @@ public class EnvironmentExp {
     public void disjointUnion(EnvironmentExp envExp, Location location) throws NonDisjointUnionException{
         for (Symbol s1 :
                 envExp.getKeys()) {
-            if (this.get(s1) != null) throw new NonDisjointUnionException();
+            if (this.get(s1) != null) throw new NonDisjointUnionException(location);
             ExpDefinition def = envExp.env.get(s1);
             this.env.put(s1, def);
         }
