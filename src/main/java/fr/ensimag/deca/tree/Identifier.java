@@ -167,7 +167,13 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        Definition def = localEnv.get(this.name);
+        if (def == null) {
+            throw new ContextualError("Undiclared identifier : "
+                    + this.name.toString(), this.getLocation());
+        }
+        return def.getType();
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     /**
@@ -212,4 +218,10 @@ public class Identifier extends AbstractIdentifier {
         }
     }
 
+    @Override
+    public Type verifyLValue(DecacCompiler compiler,
+                             EnvironmentExp localEnv,
+                             ClassDefinition currentClass) throws ContextualError {
+        return this.verifyExpr(compiler, localEnv, currentClass);
+    }
 }

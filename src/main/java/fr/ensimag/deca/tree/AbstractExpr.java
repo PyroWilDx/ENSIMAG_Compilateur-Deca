@@ -98,7 +98,6 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
                               ClassDefinition currentClass, Type returnType) throws ContextualError {
         verifyExpr(compiler, localEnv, currentClass);
-        // TODO
     }
 
     /**
