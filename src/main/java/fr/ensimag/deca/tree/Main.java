@@ -32,9 +32,9 @@ public class Main extends AbstractMain {
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");
-
         EnvironmentExp env = new EnvironmentExp(null);
-        EnvironmentExp envReturn = declVariables.verifyListDeclVariable(compiler, new EnvironmentExp(null), env, compiler.environmentType.OBJECT.getDefinition());
+        EnvironmentExp envExpSup = new EnvironmentExp(null);
+        EnvironmentExp envReturn = declVariables.verifyListDeclVariable(compiler, envExpSup, env, compiler.environmentType.OBJECT.getDefinition());
         insts.verifyListInst(compiler, envReturn, compiler.environmentType.OBJECT.getDefinition(),
                 compiler.environmentType.VOID);
 

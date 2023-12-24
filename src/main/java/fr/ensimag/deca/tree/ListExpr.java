@@ -14,7 +14,12 @@ import fr.ensimag.deca.tools.IndentPrintStream;
  * @date 01/01/2024
  */
 public class ListExpr extends TreeList<AbstractExpr> {
-
+    public void verifyListExprPrint(DecacCompiler compiler, EnvironmentExp localEnv,
+                                    ClassDefinition currentClass) throws ContextualError {
+        for (AbstractExpr expr : this.getList()) {
+            expr.verifyExprPrint(compiler, localEnv, currentClass);
+        }
+    }
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("Not yet implemented");

@@ -33,9 +33,10 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler, EnvironmentExp envExpSup,
                                  EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError { //regle 3.17
         EnvironmentExp declEnv = new EnvironmentExp(null);
-        TypeDefinition typeDef = compiler.environmentType.defOfType((this.type.getName()));
+        //TypeDefinition typeDef = compiler.environmentType.defOfType((this.type.getName()));
+        Type varType = this.type.verifyType(compiler);
         try {
-            declEnv.declare(varName.getName(), new VariableDefinition(typeDef.getType(), this.getLocation()));
+            declEnv.declare(varName.getName(), new VariableDefinition(varType, this.getLocation()));
             // CONDITION type != void
         } catch(EnvironmentExp.DoubleDefException e) { // pas possible d'avoir cette erreur mais idea pas content
             throw new UnknownError();
@@ -43,12 +44,12 @@ public class DeclVar extends AbstractDeclVar {
         if (!localEnv.disjointUnion(declEnv, this.getLocation())) {
             throw new ContextualError("Variable " + varName.getName().toString() + " already declared." ,this.getLocation());
         }
-        if (typeDef.getType() == compiler.environmentType.VOID) {
+        if (varType == compiler.environmentType.VOID) {
             throw new ContextualError("Variable type cannot be void", this.getLocation());
         }
         EnvironmentExp localEnvInit = EnvironmentExp.empile(localEnv, envExpSup);
-        this.initialization.verifyInitialization(compiler, typeDef.getType(), localEnvInit, currentClass);
-        //throw new UnsupportedOperationException("not yet implemented");
+        this.initialization.verifyInitialization(compiler, varType, localEnvInit, currentClass);
+        // Done
     }
 
     @Override

@@ -24,7 +24,7 @@ public class NoInitialization extends AbstractInitialization {
             EnvironmentExp localEnv, ClassDefinition currentClass)
             throws ContextualError {
         // rien à faire ici
-        //throw new UnsupportedOperationException("not yet implemented");
+        // Done;
     }
 
     protected void codeGenInit(DecacCompiler compiler, DAddr operand) {

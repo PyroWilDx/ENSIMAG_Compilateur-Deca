@@ -39,7 +39,7 @@ public class Initialization extends AbstractInitialization {
     protected void verifyInitialization(DecacCompiler compiler, Type t,
             EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError { // regles 3.8 et 3.9
         expression.verifyRValue(compiler, localEnv, currentClass, t);
-        //throw new UnsupportedOperationException("not yet implemented");
+        // Done
     }
 
     @Override

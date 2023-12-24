@@ -93,11 +93,22 @@ public abstract class AbstractExpr extends AbstractInst {
         return this; // TODO j'ai pas compris cette histoire de return un convfloat, il suffit que ce soit compatible non ?
     }
 
-
+    public void verifyExprPrint(DecacCompiler compiler, EnvironmentExp localEnv,
+                                ClassDefinition currentClass) throws ContextualError {
+        Type exprType = this.verifyExpr(compiler, localEnv, currentClass);
+        if (!exprType.equals(compiler.environmentType.INT) &&
+        !exprType.equals(compiler.environmentType.FLOAT) &&
+                !exprType.equals(compiler.environmentType.STRING)) {
+            throw new ContextualError("Invalid argument type for print : '"
+                    + exprType.getName() +
+                    "'\nArgument type must be 'int', 'float' or 'string'", this.getLocation());
+        }
+    }
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
                               ClassDefinition currentClass, Type returnType) throws ContextualError {
         verifyExpr(compiler, localEnv, currentClass);
+        // Done
     }
 
     /**
