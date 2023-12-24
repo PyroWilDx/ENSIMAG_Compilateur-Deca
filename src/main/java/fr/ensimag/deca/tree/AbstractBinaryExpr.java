@@ -47,12 +47,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         String op = this.getOperatorName();
-        Type type1 = this.getLeftOperand().getType();
-        Type type2 = this.getRightOperand().getType();
+        Type type1 = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
+        Type type2 = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         Type type = compiler.environmentType.getTypeBinaryOp(op, type1, type2);
         if (type == null) {
             throw new ContextualError("Operation : " + op +
-                    "cannot have operands : " + type1.getName() + ", " + type2.getName(), this.getLocation());
+                    "cannot have operands of types : " + type1.getName() + ", " + type2.getName(), this.getLocation());
         }
         return type;
     }

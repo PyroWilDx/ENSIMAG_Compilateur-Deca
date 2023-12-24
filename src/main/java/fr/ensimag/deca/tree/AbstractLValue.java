@@ -17,4 +17,9 @@ public abstract class AbstractLValue extends AbstractExpr {
                                       EnvironmentExp localEnv,
                                       ClassDefinition currentClass)
             throws ContextualError;
+
+    @Override
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        return verifyLValue(compiler, localEnv, currentClass);
+    }
 }

@@ -1,6 +1,11 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
@@ -24,7 +29,20 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     }
 
     protected abstract String getOperatorName();
-  
+
+    @Override
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
+                           ClassDefinition currentClass) throws ContextualError {
+        String op = this.getOperatorName();
+        Type operandType = this.operand.verifyExpr(compiler, localEnv, currentClass);
+        Type type = compiler.environmentType.getTypeUnaryOp(op, operandType);
+        if (type == null) {
+            throw new ContextualError("Operation : " + op
+                    + " cannot have operand of type : " + operandType.getName() , this.getLocation());
+        }
+        return type;
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("not yet implemented");
