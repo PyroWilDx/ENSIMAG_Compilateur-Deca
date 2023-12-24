@@ -7,7 +7,6 @@ import java.util.Set;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
-import jdk.javadoc.internal.doclets.toolkit.taglets.SeeTaglet;
 
 // A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
 /**
