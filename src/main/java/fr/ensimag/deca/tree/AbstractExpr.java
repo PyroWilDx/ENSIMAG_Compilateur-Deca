@@ -112,7 +112,8 @@ public abstract class AbstractExpr extends AbstractInst {
                          ClassDefinition currentClass) throws ContextualError {
         Type exprType = verifyExpr(compiler, localEnv, currentClass);
         if (!exprType.isBoolean()) {
-            throw new ContextualError("Condition is not a boolean", getLocation());
+            throw new ContextualError("Condition is of type '"
+                    + exprType.getName() + "' it must be boolean", getLocation());
         }
         setType(exprType);
         // Done
