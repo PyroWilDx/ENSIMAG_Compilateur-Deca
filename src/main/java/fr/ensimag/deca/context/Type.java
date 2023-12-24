@@ -32,6 +32,13 @@ public abstract class Type {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Type)) return false;
+        Type type = (Type) obj;
+        return this.name.equals(type.name);
+    }
+
+    @Override
     public String toString() {
         return getName().toString();
     }
