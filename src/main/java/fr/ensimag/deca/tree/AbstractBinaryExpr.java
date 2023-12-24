@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 import org.apache.commons.lang.Validate;
@@ -41,6 +42,19 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         Validate.isTrue(leftOperand != rightOperand, "Sharing subtrees is forbidden");
         this.leftOperand = leftOperand;
         this.rightOperand = rightOperand;
+    }
+
+    @Override
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        String op = this.getOperatorName();
+        Type type1 = this.getLeftOperand().getType();
+        Type type2 = this.getRightOperand().getType();
+        Type type = compiler.environmentType.getTypeBinaryOp(op, type1, type2);
+        if (type == null) {
+            throw new ContextualError("Operation : " + op +
+                    "cannot have operands : " + type1.getName() + ", " + type2.getName(), this.getLocation());
+        }
+        return type;
     }
 
     @Override
