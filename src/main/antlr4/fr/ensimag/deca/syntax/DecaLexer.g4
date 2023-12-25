@@ -81,14 +81,12 @@ COMMENT : ('//'.*? '\n'|'/*' .*? '*/') {skip();};
 STRING : '"'(STRING_CAR | '\\' | '\\\\')*'"';
 INT : '0' | (POSITIVE_DIGIT DIGIT*);
 FLOAT : FLOATDEC | FLOATHEX;
-FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 INCLUDE : '#include' (' ')* '"' FILENAME '"';
 IDENT : (LETTER | '$' | '_')(LETTER | DIGIT |'_')*;
 
 
 
 MULTI_LINE_STRING : '"'(STRING_CAR | '\\' | '\\\\' | '\n')*'"';
-STRING_CAR : ~ ('"' | '\\' | '\n');
 
 
 POSITIVE_DIGIT : '1'..'9';
@@ -104,11 +102,14 @@ DIGITHEX : DIGIT | ('A'..'F') | ('a'..'f');
 NUMHEX : DIGITHEX+;
 FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' + 'p') ('+' | '-')? NUM ('F' | 'f')?;
 
+FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 
 ASM : 'asm';
 
 RTL : '\n' {skip();};
 TAB : '\t' {skip();};
 SPACE : ' ' {skip();};
+STRING_CAR : ~ ('"' | '\\' | '\n');
+
 
 DUMMY_TOKEN: .;

@@ -80,8 +80,9 @@ decl_var_set[ListDeclVar l]
 list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
         $l.add($dv1.tree);
+        setLocation($l, $dv1.start);
         } (COMMA dv2=decl_var[$t] {
-            l.add($dv2.tree);
+            $l.add($dv2.tree);
         }
       )*
     ;
@@ -91,7 +92,8 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
 
         }
     : i=ident {
-
+        $tree = new DeclVar($t, $i.tree, new NoInitialization());
+        setLocation($tree, $i.start);
         }
       (EQUALS e=expr {
       Initialization init = new Initialization($e.tree);
@@ -107,7 +109,7 @@ list_inst returns[ListInst tree]
 }
     : (inst {
         $tree.add($inst.tree);
-
+        setLocation($tree, $inst.start);
         }
       )*
     ;
@@ -116,7 +118,6 @@ inst returns[AbstractInst tree]
     : e1=expr SEMI {
             assert($e1.tree != null);
             $tree = $expr.tree;
-            setLocation($tree, $e1.start);
         }
     | SEMI {
         }
@@ -173,6 +174,7 @@ list_expr returns[ListExpr tree]
         }
     : (e1=expr {
         $tree.add($e1.tree);
+        setLocation($tree, $e1.start);
         }
        (COMMA e2=expr {
         $tree.add($e2.tree);
@@ -183,6 +185,7 @@ list_expr returns[ListExpr tree]
 expr returns[AbstractExpr tree]
     : assign_expr {
             assert($assign_expr.tree != null);
+            $tree = $assign_expr.tree;
         }
     ;
 
@@ -432,8 +435,7 @@ literal returns[AbstractExpr tree]
 
 ident returns[AbstractIdentifier tree]
     : IDENT {
-        Symbol symbol = SymbolTable.create($IDENT.text);
-        $tree = new Identifier(symbol);
+        $tree = new Identifier(this.getDecacCompiler().createSymbol($IDENT.text));
         }
     ;
 
