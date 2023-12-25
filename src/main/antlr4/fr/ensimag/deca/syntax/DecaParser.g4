@@ -377,13 +377,16 @@ select_expr returns[AbstractExpr tree]
 primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
+            $tree = $ident.tree;
         }
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
+            // TODO
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
+            // TODO
         }
     | READINT OPARENT CPARENT {
         }
