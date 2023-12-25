@@ -52,9 +52,7 @@ READINT : 'readInt';
 READFLOAT : 'readFloat';
 NEW : 'new';
 
-INT : 'int';
-FLOAT : 'float';
-STRING : 'String';
+
 TRUE : 'true';
 FALSE : 'false';
 THIS : 'this';
@@ -72,21 +70,40 @@ PRINTLN : 'println';
 PRINTX : 'printx';
 PRINTLNX : 'printlnx';
 
-IDENT : ('a'..'z'|'A'..'Z'|'_')('a'..'z'|'A'..'Z'|'0'..'9'|'_')*;
 
 CLASS : 'class';
 EXTENDS : 'extends';
 PROTECTED : 'protected';
 
-MULTI_LINE_STRING : '\\';
 
 COMMENT : ('//'.*? '\n'|'/*' .*? '*/') {skip();};
 
-STRING_LITERAL : '"'(  ~ ('"' | '\n'))*'"';
-INT_LITERAL : ('+' | '-')?DIGIT+;
-FLOAT_LITERAL : ('+' | '-')?((DIGIT+'.'DIGIT*) | (DIGIT*'.'DIGIT+));
+STRING : '"'(STRING_CAR | '\\' | '\\\\')*'"';
+INT : '0' | (POSITIVE_DIGIT DIGIT*);
+FLOAT : FLOATDEC | FLOATHEX;
+FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
+INCLUDE : '#include' (' ')* '"' FILENAME '"';
+IDENT : (LETTER | '$' | '_')(LETTER | DIGIT |'_')*;
 
-DIGIT : (('0'..'9')|'1');
+
+
+MULTI_LINE_STRING : '"'(STRING_CAR | '\\' | '\\\\' | '\n')*'"';
+STRING_CAR : ~ ('"' | '\\' | '\n');
+
+
+POSITIVE_DIGIT : '1'..'9';
+DIGIT : '0'..'9';
+LETTER : ('a'..'z'|'A'..'Z');
+
+
+NUM : DIGIT+;
+EXP : ('E' | 'e') ('+' | '-')? NUM;
+DEC : NUM '.' NUM;
+FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
+DIGITHEX : DIGIT | ('A'..'F') | ('a'..'f');
+NUMHEX : DIGITHEX+;
+FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' + 'p') ('+' | '-')? NUM ('F' | 'f')?;
+
 
 ASM : 'asm';
 
