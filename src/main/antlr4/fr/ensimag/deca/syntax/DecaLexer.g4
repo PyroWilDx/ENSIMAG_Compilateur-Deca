@@ -17,8 +17,6 @@ SEMI : ';';
 
 COMMA : ',';
 
-// DOUBLEQUOTATION : '"';
-
 OBRACE : '{';
 CBRACE : '}';
 
@@ -52,7 +50,6 @@ READINT : 'readInt';
 READFLOAT : 'readFloat';
 NEW : 'new';
 
-
 TRUE : 'true';
 FALSE : 'false';
 THIS : 'this';
@@ -70,7 +67,6 @@ PRINTLN : 'println';
 PRINTX : 'printx';
 PRINTLNX : 'printlnx';
 
-
 CLASS : 'class';
 EXTENDS : 'extends';
 PROTECTED : 'protected';
@@ -83,7 +79,6 @@ INT : '0' | (POSITIVE_DIGIT DIGIT*);
 FLOAT : FLOATDEC | FLOATHEX;
 INCLUDE : '#include' (' ')* '"' FILENAME '"';
 IDENT : (LETTER | '$' | '_')(LETTER | DIGIT |'_')*;
-
 
 
 MULTI_LINE_STRING : '"'(STRING_CAR | '\\' | '\\\\' | '\n')*'"';
@@ -101,6 +96,7 @@ FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
 DIGITHEX : DIGIT | ('A'..'F') | ('a'..'f');
 NUMHEX : DIGITHEX+;
 FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' + 'p') ('+' | '-')? NUM ('F' | 'f')?;
+
 
 FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 
