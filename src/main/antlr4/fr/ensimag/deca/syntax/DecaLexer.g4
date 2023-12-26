@@ -13,38 +13,11 @@ options {
 
 // Deca lexer rules.
 
-//Mots réservés:
-ASM : 'asm';
-
-INSTANCEOF : 'instanceof';
-
-READINT : 'readInt';
-READFLOAT : 'readFloat';
-
-TRUE : 'true';
-FALSE : 'false';
-
-THIS : 'this';
-
-NEW : 'new';
-NULL : 'null';
-
-IF : 'if';
-ELSE : 'else';
-
-WHILE : 'while';
-
-RETURN : 'return';
-
-PRINT : 'print';
-PRINTLN : 'println';
-PRINTX : 'printx';
-PRINTLNX : 'printlnx';
-
-
-//Symboles spéciaux
 SEMI : ';';
+
 COMMA : ',';
+
+// DOUBLEQUOTATION : '"';
 
 OBRACE : '{';
 CBRACE : '}';
@@ -63,6 +36,8 @@ GEQ : '>=';
 LT : '<';
 GT : '>';
 
+INSTANCEOF : 'instanceof';
+
 PLUS : '+';
 MINUS : '-';
 TIMES : '*';
@@ -70,48 +45,71 @@ SLASH : '/';
 PERCENT : '%';
 
 EXCLAM : '!';
+
 DOT : '.';
 
-
-//Identificateurs
-LETTER : 'a'..'z'|'A'..'Z';
-DIGIT : ('0'..'9');
-IDENT : (LETTER|'$'|'_')(LETTER|DIGIT|'$'|'_')*;
+READINT : 'readInt';
+READFLOAT : 'readFloat';
+NEW : 'new';
 
 
-//Littéraux entiers
-POSITIVE_DIGIT : ('1'..'9');
-INT : '0'| POSITIVE_DIGIT DIGIT* ;
+TRUE : 'true';
+FALSE : 'false';
+THIS : 'this';
+NULL : 'null';
+
+IF : 'if';
+ELSE : 'else';
+
+WHILE : 'while';
+
+RETURN : 'return';
+
+PRINT : 'print';
+PRINTLN : 'println';
+PRINTX : 'printx';
+PRINTLNX : 'printlnx';
 
 
-//Littéraux flottants
-NUM : DIGIT+;
-SIGN : ('+' | '-')?;
-EXP : ('E' | 'e') SIGN NUM;
-DEC : NUM '.' NUM;
-FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
-DIGITHEX : DIGIT | 'A'..'F' | 'a'..'f';
-NUMHEX : DIGITHEX+;
-FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') SIGN NUM ('F' | 'f')?;
-FLOAT : FLOATDEC + FLOATHEX;
+CLASS : 'class';
+EXTENDS : 'extends';
+PROTECTED : 'protected';
 
 
-//Chaines de caractères
-STRING_CAR : ~ ('"' | '\\' | '\n');
+COMMENT : ('//'.*? '\n'|'/*' .*? '*/') {skip();};
+
 STRING : '"'(STRING_CAR | '\\' | '\\\\')*'"';
+INT : '0' | (POSITIVE_DIGIT DIGIT*);
+FLOAT : FLOATDEC | FLOATHEX;
+INCLUDE : '#include' (' ')* '"' FILENAME '"';
+IDENT : (LETTER | '$' | '_')(LETTER | DIGIT |'_')*;
+
+
+
 MULTI_LINE_STRING : '"'(STRING_CAR | '\\' | '\\\\' | '\n')*'"';
 
 
-//Commentaires
-COMMENT : ('//'.*? '\n'|'/*' .*? '*/') {skip();};
+POSITIVE_DIGIT : '1'..'9';
+DIGIT : '0'..'9';
+LETTER : ('a'..'z'|'A'..'Z');
 
 
-//Séparateurs
+NUM : DIGIT+;
+EXP : ('E' | 'e') ('+' | '-')? NUM;
+DEC : NUM '.' NUM;
+FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
+DIGITHEX : DIGIT | ('A'..'F') | ('a'..'f');
+NUMHEX : DIGITHEX+;
+FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' + 'p') ('+' | '-')? NUM ('F' | 'f')?;
+
+FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
+
+ASM : 'asm';
+
 RTL : '\n' {skip();};
 TAB : '\t' {skip();};
 SPACE : ' ' {skip();};
+STRING_CAR : ~ ('"' | '\\' | '\n');
 
-//Inclusion de fichier
-FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
-INCLUDE : '#include' (' ')* '"' FILENAME '"';
+
 DUMMY_TOKEN: .;
