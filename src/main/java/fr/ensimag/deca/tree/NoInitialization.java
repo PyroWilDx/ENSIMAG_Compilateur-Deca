@@ -21,14 +21,12 @@ public class NoInitialization extends AbstractInitialization {
 
     @Override
     protected void verifyInitialization(DecacCompiler compiler, Type t,
-            EnvironmentExp localEnv, ClassDefinition currentClass)
-            throws ContextualError {
-        // rien à faire ici
-        // Done;
+            EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        // nothing
     }
 
-    protected void codeGenInit(DecacCompiler compiler, DAddr operand) {
-        // TODO
+    protected void codeGenInit(DecacCompiler compiler) {
+        // Done
     }
 
     /**

@@ -195,6 +195,16 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        // TODO (Not Implemented Yet)
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // TODO (Not Implemented Yet)
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(name.toString());
     }

@@ -2,9 +2,8 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.RegistersManager;
+import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.SGT;
 
 /**
@@ -20,10 +19,9 @@ public class Greater extends AbstractOpIneq {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        super.codeGenInst(compiler);
-        GPRegister reg = RegistersManager.getUnusedReg();
-        compiler.addInstruction(new SGT(reg));
-        // TODO
+//        GPRegister reg = RegUtils.getUnusedReg();
+//        compiler.addInstruction(new SGT(reg));
+        // TODO (Not Implemented Yet)
     }
 
     @Override

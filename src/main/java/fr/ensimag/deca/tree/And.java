@@ -16,8 +16,7 @@ public class And extends AbstractOpBool {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        super.codeGenInst(compiler);
-        // TODO
+        // TODO (Not Implemented Yet)
     }
 
     @Override

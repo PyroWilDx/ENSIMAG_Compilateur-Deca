@@ -43,10 +43,10 @@ public class Initialization extends AbstractInitialization {
     }
 
     @Override
-    protected void codeGenInit(DecacCompiler compiler, DAddr operand) {
+    protected void codeGenInit(DecacCompiler compiler) {
         expression.codeGenInst(compiler);
-        compiler.addInstruction(new STORE(Register.GB, operand));
-        // TODO
+        // TODO (Mettre dans un Reg ?)
+        // Done
     }
 
     @Override

@@ -38,7 +38,7 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
             declVar.verifyDeclVar(compiler, envExpSup, envReturn, currentClass);
         }
         return envReturn;
+        // Done
     }
-    // Done
 
 }

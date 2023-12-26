@@ -17,7 +17,10 @@ public class Modulo extends AbstractOpArith {
         super(leftOperand, rightOperand);
     }
 
-
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // TODO (Not Implemented Yet)
+    }
 
     @Override
     protected String getOperatorName() {

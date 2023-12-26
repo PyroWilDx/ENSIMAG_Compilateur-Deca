@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+
 /**
  *
  * @author gl47
@@ -12,6 +14,10 @@ public class Lower extends AbstractOpIneq {
         super(leftOperand, rightOperand);
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // TODO (Not Implemented Yet)
+    }
 
     @Override
     protected String getOperatorName() {

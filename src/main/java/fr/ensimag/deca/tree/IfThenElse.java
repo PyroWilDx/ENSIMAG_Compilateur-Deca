@@ -53,7 +53,7 @@ public class IfThenElse extends AbstractInst {
         ifThenElseCpt++;
 
         condition.codeGenInst(compiler);
-        // TODO sur quel registre se fait la condition ?
+        // TODO (Sur quel Registre se fait la Condition ?)
         compiler.addInstruction(new BEQ(startElseLabel));
         thenBranch.codeGenListInst(compiler);
         compiler.addInstruction(new BRA(endIfThenElseLaBel));

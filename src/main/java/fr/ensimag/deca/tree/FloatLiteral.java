@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -8,8 +9,11 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WINT;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -44,6 +48,22 @@ public class FloatLiteral extends AbstractExpr {
     }
 
     @Override
+    protected void codeGenPrint(DecacCompiler compiler) {
+        GPRegister reg = Register.R1;
+        compiler.addInstruction(new LOAD(value, reg));
+        compiler.addInstruction(new WFLOAT());
+        // Done
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        GPRegister reg = RegUtils.getUnusedReg();
+        compiler.addInstruction(new LOAD(value, reg));
+        RegUtils.setCurrReg(reg);
+        // Done
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(java.lang.Float.toHexString(value));
     }
@@ -61,11 +81,6 @@ public class FloatLiteral extends AbstractExpr {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // leaf node => nothing to do
-    }
-
-    @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        compiler.addInstruction(new LOAD(value, Register.R1));
     }
 
 }

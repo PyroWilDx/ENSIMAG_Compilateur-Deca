@@ -1,11 +1,18 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.DeclVarUtils;
+import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -18,7 +25,8 @@ public class DeclVar extends AbstractDeclVar {
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
 
-    public void type(){};
+    public void type() {
+    }
 
     public DeclVar(AbstractIdentifier type, AbstractIdentifier varName, AbstractInitialization initialization) {
         Validate.notNull(type);
@@ -38,11 +46,11 @@ public class DeclVar extends AbstractDeclVar {
         try {
             declEnv.declare(varName.getName(), new VariableDefinition(varType, this.getLocation()));
             // CONDITION type != void
-        } catch(EnvironmentExp.DoubleDefException e) { // pas possible d'avoir cette erreur mais idea pas content
+        } catch (EnvironmentExp.DoubleDefException e) { // pas possible d'avoir cette erreur mais idea pas content
             throw new UnknownError();
         }
         if (!localEnv.disjointUnion(declEnv, this.getLocation())) {
-            throw new ContextualError("Variable " + varName.getName().toString() + " already declared." ,this.getLocation());
+            throw new ContextualError("Variable " + varName.getName().toString() + " already declared.", this.getLocation());
         }
         if (varType == compiler.environmentType.VOID) {
             throw new ContextualError("Variable type cannot be void", this.getLocation());
@@ -54,8 +62,15 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
-        initialization.codeGenInit(compiler, varName.getExpDefinition().getOperand());
-        // TODO
+        initialization.codeGenInit(compiler);
+//        DAddr dAddr = varName.getExpDefinition().getOperand();
+        DAddr dAddr = new RegisterOffset(DeclVarUtils.getGbOffset(), Register.GB);
+        varName.getExpDefinition().setOperand(dAddr); // TODO (Remove and Replace)
+        GPRegister reg = RegUtils.getCurrReg();
+        compiler.addInstruction(new STORE(RegUtils.getCurrReg(), dAddr));
+        RegUtils.freeReg(reg);
+        DeclVarUtils.incrGbVarCount();
+        // Done
     }
 
     @Override

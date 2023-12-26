@@ -34,7 +34,6 @@ public class StringLiteral extends AbstractStringLiteral {
         Type exprType = compiler.environmentType.STRING;
         setType(exprType);
         return exprType;
-        // Done
     }
 
     @Override
@@ -46,7 +45,6 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     public void decompile(IndentPrintStream s) {
         s.print(value);
-        // Done
     }
 
     @Override

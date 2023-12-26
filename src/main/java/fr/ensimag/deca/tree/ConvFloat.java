@@ -22,6 +22,10 @@ public class ConvFloat extends AbstractUnaryExpr {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // TODO (Not Implemented Yet)
+    }
 
     @Override
     protected String getOperatorName() {

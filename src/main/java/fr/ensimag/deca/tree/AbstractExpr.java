@@ -82,8 +82,8 @@ public abstract class AbstractExpr extends AbstractInst {
      * @return this with an additional ConvFloat if needed...
      */
     public AbstractExpr verifyRValue(DecacCompiler compiler,
-            EnvironmentExp localEnv, ClassDefinition currentClass, 
-            Type expectedType) throws ContextualError { // regle 3.28
+                                     EnvironmentExp localEnv, ClassDefinition currentClass,
+                                     Type expectedType) throws ContextualError { // regle 3.28
         Type type2 = this.verifyExpr(compiler, localEnv, currentClass);
         if (!compiler.environmentType.assignCompatible(expectedType, type2)) {
             throw new ContextualError("type '" + type2.toString() +
@@ -97,13 +97,14 @@ public abstract class AbstractExpr extends AbstractInst {
                                 ClassDefinition currentClass) throws ContextualError {
         Type exprType = this.verifyExpr(compiler, localEnv, currentClass);
         if (!exprType.equals(compiler.environmentType.INT) &&
-        !exprType.equals(compiler.environmentType.FLOAT) &&
+                !exprType.equals(compiler.environmentType.FLOAT) &&
                 !exprType.equals(compiler.environmentType.STRING)) {
             throw new ContextualError("Invalid argument type for print : '"
                     + exprType.getName() +
                     "'\nArgument type must be 'int', 'float' or 'string'", this.getLocation());
         }
     }
+
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
                               ClassDefinition currentClass, Type returnType) throws ContextualError {
@@ -136,21 +137,12 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        codeGenInst(compiler);
-        if (type.isInt()) {
-            compiler.addInstruction(new WINT());
-        }
-        if (type.isFloat()) {
-            compiler.addInstruction(new WFLOAT());
-        }
+        // defined in child classes (Int/Float/String Literal)
     }
-
-//    @Override
-//    protected abstract void codeGenInst(DecacCompiler compiler);
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-//         TODO
+        // defined in child classes
     }
 
 

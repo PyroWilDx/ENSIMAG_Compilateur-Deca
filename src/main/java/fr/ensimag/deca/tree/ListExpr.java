@@ -20,6 +20,7 @@ public class ListExpr extends TreeList<AbstractExpr> {
             expr.verifyExprPrint(compiler, localEnv, currentClass);
         }
     }
+
     @Override
     public void decompile(IndentPrintStream s) {
         throw new UnsupportedOperationException("Not yet implemented");
