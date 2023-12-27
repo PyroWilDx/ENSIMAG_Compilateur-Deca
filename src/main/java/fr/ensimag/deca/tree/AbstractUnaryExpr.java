@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -9,6 +10,8 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.SUB;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -45,8 +48,22 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        getOperand().codeGenInst(compiler);
+        GPRegister reg = RegUtils.getCurrReg();
+        codeGenOpUnary(compiler, reg);
+        // TODO (Not Enough Registers) and (When Register is Freed ?)
+    }
+
+    protected abstract void codeGenOpUnary(DecacCompiler compiler, GPRegister reg);
+
+    @Override
     public void decompile(IndentPrintStream s) {
-        throw new UnsupportedOperationException("not yet implemented");
+        s.print("(");
+        s.print(getOperatorName());
+        getOperand().decompile(s);
+        s.print(")");
+        // Done
     }
 
     @Override

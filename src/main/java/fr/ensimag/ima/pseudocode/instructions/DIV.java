@@ -5,7 +5,6 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 
 /**
- *
  * @author Ensimag
  * @date 01/01/2024
  */

@@ -18,14 +18,10 @@ public class Plus extends AbstractOpArith {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        getLeftOperand().codeGenInst(compiler);
-        GPRegister lReg = RegUtils.getCurrReg();
-        getRightOperand().codeGenInst(compiler);
-        GPRegister rReg = RegUtils.getCurrReg();
+    protected void codeGenOpArith(DecacCompiler compiler,
+                                  GPRegister lReg, GPRegister rReg) {
         compiler.addInstruction(new ADD(lReg, rReg));
-        RegUtils.freeReg(lReg);
-        // TODO (Not Enough Registers)
+        // Done
     }
 
     @Override
