@@ -50,7 +50,7 @@ public class DeclVar extends AbstractDeclVar {
             throw new UnknownError();
         }
         if (!localEnv.disjointUnion(declEnv, this.getLocation())) {
-            throw new ContextualError("Variable " + varName.getName().toString() + " already declared.", this.getLocation());
+            throw new ContextualError("Variable '" + varName.getName().toString() + "' already declared.", this.getLocation());
         }
         if (varType == compiler.environmentType.VOID) {
             throw new ContextualError("Variable type cannot be void", this.getLocation());
