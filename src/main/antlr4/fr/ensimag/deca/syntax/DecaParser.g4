@@ -147,14 +147,12 @@ inst returns[AbstractInst tree]
     | if_then_else {
             assert($if_then_else.tree != null);
             $tree = $if_then_else.tree ;
-            //TODO add location
         }
     | WHILE OPARENT condition=expr CPARENT OBRACE body=list_inst CBRACE {
             assert($condition.tree != null);
             assert($body.tree != null);
             $tree = new While($condition.tree, $body.tree);
             setLocation($tree,$condition.start);
-            //TODO add location
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
@@ -165,23 +163,26 @@ inst returns[AbstractInst tree]
 
 if_then_else returns[IfThenElse tree]
 @init {
+        ListInst a = new ListInst() ;
+        ListInst b;
 }
     : if1=IF OPARENT condition=expr CPARENT OBRACE li_if=list_inst CBRACE {
         assert($condition.tree != null) ;
         assert($li_if.tree != null) ;
-        $tree = new IfThenElse($condition.tree,$li_if.tree,new ListInst());
+        $tree = new IfThenElse($condition.tree,$li_if.tree,a);
+        setLocation($tree, $expr.start);
         }
       (ELSE elsif=IF OPARENT elsif_cond=expr CPARENT OBRACE elsif_li=list_inst CBRACE {
         assert($elsif_cond.tree != null) ;
         assert($elsif_li.tree != null) ;
-//        $tree = new IfThenElse($condition.tree,$li_if.tree,$elsif_li.tree);
-//        $tree = new IfThenElse($condition.tree,$li_if.tree,(ListInst) new IfThenElse($elsif_cond.tree,$elsif_li.tree,new ListInst()));
-        $tree = new IfThenElse($condition.tree,$li_if.tree,$elsif_li.tree);
+        b = new ListInst() ;
+        a.add(new IfThenElse($elsif_cond.tree,$elsif_li.tree,b));
+        a = b ;
         }
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
         assert($li_else.tree != null ) ;
-        $tree = new IfThenElse($condition.tree,$li_if.tree,$li_else.tree);
+        a.add($li_else.tree.getElement());
         }
       )?
 
