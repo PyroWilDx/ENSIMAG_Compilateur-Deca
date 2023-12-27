@@ -2,6 +2,8 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.SLE;
 
 /**
  *
@@ -14,8 +16,8 @@ public class LowerOrEqual extends AbstractOpIneq {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        // TODO (Not Implemented Yet)
+    protected void codeGenOpCmp(DecacCompiler compiler, GPRegister reg) {
+        compiler.addInstruction(new SLE(reg));
     }
 
     @Override

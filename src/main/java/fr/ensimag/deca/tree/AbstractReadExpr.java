@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+
 /**
  * read...() statement.
  *
@@ -13,5 +15,8 @@ public abstract class AbstractReadExpr extends AbstractExpr {
         super();
     }
 
-
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // TODO (Not Implemented Yet)
+    }
 }

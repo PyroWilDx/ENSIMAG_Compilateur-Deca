@@ -24,7 +24,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         GPRegister rReg = RegUtils.getCurrReg();
         codeGenOpArith(compiler, lReg, rReg);
         RegUtils.freeReg(lReg);
-        // TODO (Not Enough Registers)  and (When Register is Freed ?)
+        // TODO (Not Enough Registers) and (When Register is Freed ?)
     }
 
     protected abstract void codeGenOpArith(DecacCompiler compiler,

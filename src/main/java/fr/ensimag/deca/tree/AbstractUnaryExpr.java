@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -25,7 +26,9 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     public AbstractExpr getOperand() {
         return operand;
     }
+
     private AbstractExpr operand;
+
     public AbstractUnaryExpr(AbstractExpr operand) {
         Validate.notNull(operand);
         this.operand = operand;

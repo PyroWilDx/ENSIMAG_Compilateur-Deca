@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
+
 /**
  *
  * @author gl47
@@ -8,5 +10,9 @@ package fr.ensimag.deca.tree;
 public abstract class AbstractStringLiteral extends AbstractExpr {
 
     public abstract String getValue();
-    
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // Done
+    }
 }

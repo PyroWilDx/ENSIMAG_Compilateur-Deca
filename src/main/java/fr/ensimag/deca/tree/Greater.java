@@ -7,7 +7,6 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.SGT;
 
 /**
- *
  * @author gl47
  * @date 01/01/2024
  */
@@ -18,10 +17,8 @@ public class Greater extends AbstractOpIneq {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-//        GPRegister reg = RegUtils.getUnusedReg();
-//        compiler.addInstruction(new SGT(reg));
-        // TODO (Not Implemented Yet)
+    protected void codeGenOpCmp(DecacCompiler compiler, GPRegister reg) {
+        compiler.addInstruction(new SGT(reg));
     }
 
     @Override
