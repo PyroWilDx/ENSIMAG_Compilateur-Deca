@@ -17,4 +17,9 @@ public class KeyTypeBinaryOp {
         return this.op.equals(key.op) && this.type1.equals(key.type1)
                 && this.type2.equals(key.type2);
     }
+
+    @Override
+    public int hashCode() {
+        return op.hashCode() + type1.getName().hashCode() + type2.getName().hashCode();
+    }
 }
