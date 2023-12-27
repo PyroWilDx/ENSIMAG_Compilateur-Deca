@@ -100,7 +100,7 @@ public class EnvironmentType {
 
     public boolean assignCompatible(Type type1, Type type2) {
         //TODO remplir tout ça pour la deuxieme condition possible (si subtype(env, T2, T1) peut être avec un dictionnaire de compatibilités...........
-        return type1 == FLOAT && type2 == INT;
+        return type1 == type2 || type1 == FLOAT && type2 == INT;
     }
 
     public final VoidType    VOID;
