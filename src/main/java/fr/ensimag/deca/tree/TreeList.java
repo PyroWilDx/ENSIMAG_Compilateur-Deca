@@ -51,6 +51,8 @@ public abstract class TreeList<TreeType extends Tree> extends Tree {
         return list.size();
     }
 
+    public TreeType getElement(){Validate.notNull(0);return list.get(0);}
+
     /**
      * Do not check anything about the location.
      * 
