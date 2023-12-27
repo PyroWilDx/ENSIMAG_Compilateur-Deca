@@ -1,19 +1,18 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.ImmediateString;
-import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.GPRegister;
 
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
+import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
-import fr.ensimag.ima.pseudocode.instructions.WSTR;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -131,13 +130,24 @@ public abstract class AbstractExpr extends AbstractInst {
         // Done
     }
 
+    private boolean printHex = false;
+
     /**
      * Generate code to print the expression
      *
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
-        // defined in child classes (Int/Float/String Literal)
+        codeGenInst(compiler);
+        GPRegister reg = RegUtils.getCurrReg();
+        compiler.addInstruction(RegUtils.getInstSetRegValToReg(reg, Register.R1));
+        if (getType().isInt()) {
+            compiler.addInstruction(new WINT());
+        } else if (getType().isFloat()) {
+            if (!getPrintHex()) compiler.addInstruction(new WFLOAT());
+            else compiler.addInstruction(new WFLOATX());
+        }
+        // Done
     }
 
     @Override
@@ -155,5 +165,13 @@ public abstract class AbstractExpr extends AbstractInst {
             s.print(t);
             s.println();
         }
+    }
+
+    public void setPrintHex(boolean value) {
+        printHex = value;
+    }
+
+    public boolean getPrintHex() {
+        return printHex;
     }
 }

@@ -16,6 +16,11 @@ out = subprocess.check_output("./global/bin/ima ./src/test/deca/printIntFloat.as
 assert (out == b"Chaine de Int : 1 2 42 -1 0 -42\n"
                b"Chaine de Float : 1.22000e+00 -4.24242e+01 0.00000e+003.1416 -2.78000e+00\n")
 
+print("=========== printFloatHexa.deca ===========")
+os.system("./src/main/bin/decac ./src/test/deca/printFloatHexa.deca")
+out = subprocess.check_output("./global/bin/ima ./src/test/deca/printFloatHexa.ass", shell=True)
+print(out)
+
 print("=========== variableDeclarationEasy.deca ===========")
 os.system("./src/main/bin/decac ./src/test/deca/variableDeclarationEasy.deca")
 out = subprocess.check_output("./global/bin/ima ./src/test/deca/variableDeclarationEasy.ass", shell=True)

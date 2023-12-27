@@ -47,6 +47,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
                     + "' cannot have operand of type : '"
                     + operandType.getName() + "'", this.getLocation());
         }
+        setType(type);
         return type;
     }
 

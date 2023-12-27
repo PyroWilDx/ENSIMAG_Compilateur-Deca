@@ -47,13 +47,14 @@ public class FloatLiteral extends AbstractExpr {
         // Done
     }
 
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        GPRegister reg = Register.R1;
-        compiler.addInstruction(new LOAD(value, reg));
-        compiler.addInstruction(new WFLOAT());
-        // Done
-    }
+//    @Override
+//    protected void codeGenPrint(DecacCompiler compiler) {
+//        GPRegister reg = Register.R1;
+//        compiler.addInstruction(new LOAD(value, Register.R1));
+//        if ()
+//        compiler.addInstruction(new WFLOAT());
+//        // Done
+//    }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {

@@ -45,13 +45,13 @@ public class IntLiteral extends AbstractExpr {
         return "Int (" + getValue() + ")";
     }
 
-    @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        GPRegister reg = Register.R1;
-        compiler.addInstruction(new LOAD(value, reg));
-        compiler.addInstruction(new WINT());
-        // Done
-    }
+//    @Override
+//    protected void codeGenPrint(DecacCompiler compiler) {
+//        GPRegister reg = Register.R1;
+//        compiler.addInstruction(new LOAD(value, reg));
+//        compiler.addInstruction(new WINT());
+//        // Done
+//    }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {

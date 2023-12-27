@@ -4,7 +4,9 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.*;
+
 import java.io.PrintStream;
+
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -16,48 +18,42 @@ import org.apache.log4j.Logger;
  */
 public class Program extends AbstractProgram {
     private static final Logger LOG = Logger.getLogger(Program.class);
-    
+
     public Program(ListDeclClass classes, AbstractMain main) {
         Validate.notNull(classes);
         Validate.notNull(main);
         this.classes = classes;
         this.main = main;
     }
+
     public ListDeclClass getClasses() {
         return classes;
     }
+
     public AbstractMain getMain() {
         return main;
     }
+
     private ListDeclClass classes;
     private AbstractMain main;
 
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-        iter(new TreeFunction() {
-            @Override
-            public void apply(Tree t) {
-                try {
-//                  classes.verifyListClass(compiler);
-//                  classes.verifyListClassMembers(compiler);
-//                  classes.verifyListClassBody(compiler);
-                    main.verifyMain(compiler);
-                } catch (ContextualError e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+//        getClasses().verifyListClass(compiler);
+//        getClasses().verifyListClassMembers(compiler);
+//        getClasses().verifyListClassBody(compiler);
+        getMain().verifyMain(compiler);
         LOG.debug("verify program: end");
-        // TODO
+        // TODO (Avec Objet -> Enlever Comm)
     }
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        // A FAIRE: compléter ce squelette très rudimentaire de code
         compiler.addComment("Main program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+        // TODO (Avec Object)
     }
 
     @Override
@@ -65,12 +61,13 @@ public class Program extends AbstractProgram {
         getClasses().decompile(s);
         getMain().decompile(s);
     }
-    
+
     @Override
     protected void iterChildren(TreeFunction f) {
         classes.iter(f);
         main.iter(f);
     }
+
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         classes.prettyPrint(s, prefix, false);
