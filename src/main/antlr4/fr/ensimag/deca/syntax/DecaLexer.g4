@@ -98,7 +98,7 @@ NUMHEX : DIGITHEX+;
 FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' + 'p') ('+' | '-')? NUM ('F' | 'f')?;
 
 
-FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
+FILENAME : (LETTER | DIGIT | '.' | '_')+; //FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
 
 ASM : 'asm';
 
