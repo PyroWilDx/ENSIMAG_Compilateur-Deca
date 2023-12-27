@@ -50,7 +50,10 @@ public abstract class TreeList<TreeType extends Tree> extends Tree {
     public int size() {
         return list.size();
     }
-
+/**
+ * @return the first element of a TreeList
+ * used for the parser part in IfThenElse
+ * */
     public TreeType getElement(){Validate.notNull(0);return list.get(0);}
 
     /**
