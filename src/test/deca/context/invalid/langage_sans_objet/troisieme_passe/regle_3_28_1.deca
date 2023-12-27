@@ -1,0 +1,5 @@
+{
+    int a = 1.0;
+}
+// raison : condition assign compatible
+// message : type 'float' must be compatible with type 'int'

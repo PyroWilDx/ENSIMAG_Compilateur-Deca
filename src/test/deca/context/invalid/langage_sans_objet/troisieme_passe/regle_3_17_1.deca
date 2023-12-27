@@ -1,0 +1,6 @@
+{
+    int a;
+    int a;
+}
+// raison : operation partielle.
+// message : Variable 'a' already declared

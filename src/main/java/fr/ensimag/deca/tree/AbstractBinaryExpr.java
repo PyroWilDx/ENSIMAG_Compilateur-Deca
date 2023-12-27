@@ -51,8 +51,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         Type type2 = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
         Type type = compiler.environmentType.getTypeBinaryOp(op, type1, type2);
         if (type == null) {
-            throw new ContextualError("Operation : " + op +
-                    "cannot have operands of types : " + type1.getName() + ", " + type2.getName(), this.getLocation());
+            throw new ContextualError("Binary operation : '" + op +
+                    "' cannot have operands of types : '" + type1.getName() + "', '"
+                    + type2.getName() + "'.", this.getLocation());
         }
         return type;
     }
