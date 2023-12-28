@@ -1,0 +1,23 @@
+/*
+Test des Opérations Arithmétiques
+*/
+
+{
+    println("1 + 1 = ", 1 + 1);
+    println("1 - 1 = ", 1 - 1);
+    println("0 * 1 = ", 0 * 1);
+    println("1 * 0 = ", 1 * 0);
+    println("1 * 1 = ", 1 * 1);
+    println("10 * 42 = ", 10 * 42);
+    println("4 / 3 = ", 4 / 3);
+    println("0 / 1 = ", 0 / 1);
+
+    println("1.1 + 2.2 = ", 1.1 + 2.2);
+    println("1.1 - 2.2 = ", 1.1 - 2.2);
+    println("3.14 * 3.14 = ", 3.14 * 3.14);
+    println("10 * 4.2 = ", 10 * 4.2);
+    println("4. / 3. = ", 4. / 3.);
+    println("4. / 3 = ", 4. / 3);
+    println("4 / 3. = ", 4 / 3.);
+    println("0. / 1. = ", 0. / 1.);
+}
