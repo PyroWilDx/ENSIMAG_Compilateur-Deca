@@ -153,6 +153,11 @@ public abstract class AbstractExpr extends AbstractInst {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        // See Children
+    }
+
+    @Override
     protected void decompileInst(IndentPrintStream s) {
         decompile(s);
         s.print(";");
