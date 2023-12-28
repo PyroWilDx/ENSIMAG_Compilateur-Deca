@@ -31,9 +31,20 @@ doVerify("printFloatHexa.deca",
          b"Meme Chaine de Float Hexa : 0x1.3851ecp+0 -0x1.5364d8p+5 0x0p+03.1416 -0x1.63d70ap+1\n"
          )
 
+doVerify("include.deca",
+         b"Hello World\n"
+         )
+
 doVerify("variableDeclarationEasy.deca",
          "TODO",
          False
+         )
+
+doVerify("whileAndIfThenElse.deca",
+         b"4\n"
+         b"3\n"
+         b"2\n"
+         b"1\n"
          )
 
 # doVerify("variableDeclaration.deca",
