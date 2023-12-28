@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 public class RegUtils {
 
     public static final int nRegs = 16;
+    public static int usedRegCpt = 2;
     private static final boolean[] stateRegs = new boolean[]{
             true, true, false, false,
             false, false, false, false,
@@ -31,8 +32,13 @@ public class RegUtils {
         return null;
     }
 
+    public static boolean isUsingAllRegs() {
+        return (usedRegCpt == nRegs);
+    }
+
     public static void useReg(int i) {
         stateRegs[i] = true;
+        usedRegCpt++;
     }
 
     public static void useReg(GPRegister reg) {
@@ -41,6 +47,7 @@ public class RegUtils {
 
     public static void freeReg(int i) {
         stateRegs[i] = false;
+        usedRegCpt--;
     }
 
     public static void freeReg(GPRegister reg) {
