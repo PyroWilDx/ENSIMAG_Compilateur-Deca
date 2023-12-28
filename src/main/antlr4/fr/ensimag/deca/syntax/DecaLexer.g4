@@ -77,12 +77,11 @@ COMMENT : ('//'.*? '\n'|'/*' .*? '*/') {skip();};
 STRING : '"'(STRING_CAR | '\\' | '\\\\')*'"';
 INT : '0' | (POSITIVE_DIGIT DIGIT*);
 FLOAT : FLOATDEC | FLOATHEX;
-INCLUDE : '#include' (' ')* '"' FILENAME '"';
+INCLUDE : '#include' (' ')* ' "'(LETTER | DIGIT | '.' | '-' | '_')+ '"'{doInclude(getText());};
 IDENT : (LETTER | '$' | '_')(LETTER | DIGIT |'_')*;
 
 
 MULTI_LINE_STRING : '"'(STRING_CAR | '\\' | '\\\\' | '\n')*'"';
-
 
 POSITIVE_DIGIT : '1'..'9';
 DIGIT : '0'..'9';
@@ -95,10 +94,7 @@ DEC : NUM '.' NUM;
 FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
 DIGITHEX : DIGIT | ('A'..'F') | ('a'..'f');
 NUMHEX : DIGITHEX+;
-FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' + 'p') ('+' | '-')? NUM ('F' | 'f')?;
-
-
-FILENAME : (LETTER | DIGIT | '.' | '_')+; //FILENAME : (LETTER | DIGIT | '.' | '-' | '_')+;
+FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') ('+' | '-')? NUM ('F' | 'f')?;
 
 ASM : 'asm';
 
