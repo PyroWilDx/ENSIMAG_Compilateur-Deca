@@ -59,26 +59,44 @@ doVerify("variableDeclarationMany.deca",
          )
 
 doVerify("variableDeclarationNoInit.deca",
-         "TODO",
-         False
+         b"1 20 42\n"
          )
 
-# doVerify("opArith.deca",
+doVerify("opArith.deca",
+         b"1 + 1 = 2\n"
+         b"1 - 1 = 0\n1 - 42 = 41\n"
+         b"0 * 1 = 0\n1 * 0 = 0\n"
+         b"1 * 1 = 1\n10 * 42 = 420\n"
+         b"10 / 3 = 3\n0 / 1 = 0\n"
+         b"1.1 + 3.2 = 4.30000e+00\n"
+         b"1.1 - 3.2 = 2.10000e+00\n"
+         b"3.14 * 3.14 = 9.85960e+00\n"
+         b"10.0 / 3.0 = 3.33333e+00\n"
+         b"0.0 / 1.0 = 0.00000e+00\n"
+         b"20.8 / 4.0 = 5.20000e+00\n"
+         )
+
+# doVerify("opArithConv.deca",
 #          "TODO",
 #          False
 #          )
+
+doVerify("ifThenElse.deca",
+         b"1234567\n",
+         )
+
+# doVerify("while.deca",
+#          "TODO",
+#          False)
+
+doVerify("whileAndIfThenElse.deca",
+         b"4321\n",
+         False)
 
 # doVerify("registerOverflow.deca",
 #          "TODO",
 #          False
 #          )
-
-doVerify("whileAndIfThenElse.deca",
-         b"4\n"
-         b"3\n"
-         b"2\n"
-         b"1\n"
-         )
 
 """
 ==============================================

@@ -1,0 +1,57 @@
+/*
+Test IfThenElse Simple
+*/
+
+{
+    if (1 == 1) {
+        print(1);
+    } else {
+        println("KO_1_1");
+    }
+
+    if (0 == 1) {
+        println("KO_2_1");
+    } else {
+        print(2);
+    }
+
+    if (1 != 1) {
+        println("KO_3_1");
+    } else {
+        print(3);
+    }
+
+    if (0 != 1) {
+        print(4);
+    } else {
+        println("KO_4_1");
+    }
+
+    if (false) {
+        println("KO_5_1");
+    } else if (true) {
+        print(5);
+    } else {
+        println("KO_5_2");
+    }
+
+    if (false) {
+        println("KO_6_1");
+    } else if (false) {
+        println("KO_6_2");
+    } else if (false) {
+        println("KO_6_3");
+    } else if (false) {
+        println("KO_6_4");
+    } else {
+        print(6);
+    }
+
+    if (true) {
+        println(7);
+    }
+
+    if (false) {
+        println("KO_8_1");
+    }
+}

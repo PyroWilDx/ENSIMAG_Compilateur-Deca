@@ -1,9 +1,18 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.DVal;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.POP;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -36,7 +45,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     private AbstractExpr rightOperand;
 
     public AbstractBinaryExpr(AbstractExpr leftOperand,
-            AbstractExpr rightOperand) {
+                              AbstractExpr rightOperand) {
         Validate.notNull(leftOperand, "left operand cannot be null");
         Validate.notNull(rightOperand, "right operand cannot be null");
         Validate.isTrue(leftOperand != rightOperand, "Sharing subtrees is forbidden");
@@ -58,6 +67,37 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         setType(type);
         return type;
     }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        getLeftOperand().codeGenInst(compiler);
+        GPRegister lReg = RegUtils.getAndUseCurrReg();
+
+        boolean pushed = false;
+        if (RegUtils.isUsingAllRegs()) {
+            compiler.addInstruction(new PUSH(lReg));
+            RegUtils.freeReg(lReg);
+            pushed = true;
+        }
+
+        getRightOperand().codeGenInst(compiler);
+        GPRegister rReg = RegUtils.getAndUseCurrReg();
+
+        if (pushed) {
+            lReg = Register.R0;
+            compiler.addInstruction(new LOAD(rReg, lReg));
+            compiler.addInstruction(new POP(rReg));
+        }
+
+        codeGenOp(compiler, lReg, rReg);
+
+        RegUtils.freeReg(lReg);
+        RegUtils.freeReg(rReg);
+        // Done
+    }
+
+    protected abstract void codeGenOp(DecacCompiler compiler,
+                                      DVal lReg, GPRegister rReg);
 
     @Override
     public void decompile(IndentPrintStream s) {

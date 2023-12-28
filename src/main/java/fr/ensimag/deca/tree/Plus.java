@@ -1,12 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.RegUtils;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.POP;
 
 /**
  * @author gl47
@@ -19,7 +16,7 @@ public class Plus extends AbstractOpArith {
 
     @Override
     protected void codeGenOpArith(DecacCompiler compiler,
-                                  GPRegister lReg, GPRegister rReg) {
+                                  DVal lReg, GPRegister rReg) {
         compiler.addInstruction(new ADD(lReg, rReg));
         // Done
     }

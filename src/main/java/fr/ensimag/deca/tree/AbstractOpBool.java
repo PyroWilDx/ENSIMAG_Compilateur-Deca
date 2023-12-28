@@ -1,11 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegUtils;
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 
 /**
@@ -19,16 +15,11 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        getLeftOperand().codeGenInst(compiler);
-        GPRegister lReg = RegUtils.getCurrReg();
-        getRightOperand().codeGenInst(compiler);
-        GPRegister rReg = RegUtils.getCurrReg();
+    protected void codeGenOp(DecacCompiler compiler,
+                             DVal lReg, GPRegister rReg) {
         codeGenOpBool(compiler, lReg, rReg);
-        RegUtils.freeReg(lReg);
-        // TODO (Not Enough Registers)  and (When Register is Freed ?)
     }
 
     protected abstract void codeGenOpBool(DecacCompiler compiler,
-                                          GPRegister lReg, GPRegister rReg);
+                                          DVal lReg, GPRegister rReg);
 }
