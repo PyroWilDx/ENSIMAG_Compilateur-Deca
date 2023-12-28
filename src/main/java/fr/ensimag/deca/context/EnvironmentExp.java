@@ -35,7 +35,7 @@ public class EnvironmentExp {
         this.parentEnvironment = parentEnvironment;
         this.env = new HashMap<>();
     }
-    public boolean disjointUnion(EnvironmentExp envExp, Location location) {
+    public boolean disjointUnion(EnvironmentExp envExp) {
         for (Symbol s1 : envExp.getKeys()) {
             if (this.get(s1) != null) return false;
             ExpDefinition def = envExp.env.get(s1);
@@ -116,4 +116,9 @@ public class EnvironmentExp {
         return copy;
     }
 
+    @Override
+    public String toString() {
+        if (this.parentEnvironment == null) return this.env.toString();
+        return this.env.toString() + "\n" + this.parentEnvironment.toString();
+    }
 }

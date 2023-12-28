@@ -167,6 +167,7 @@ public class Identifier extends AbstractIdentifier {
             throw new ContextualError("Undiclared identifier : "
                     + this.name.toString(), this.getLocation());
         }
+        setDefinition(def);
         return def.getType();
         // Done
     }
@@ -178,7 +179,7 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         TypeDefinition typeDef = compiler.environmentType.defOfType(this.name);
-        setDefinition(compiler.environmentType.defOfType(name));
+        setDefinition(typeDef);
         if (typeDef == null) {
             throw new ContextualError("Undeclared type identifier : "
                     + this.name.toString(), this.getLocation());

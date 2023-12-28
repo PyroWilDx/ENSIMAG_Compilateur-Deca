@@ -45,13 +45,13 @@ public class DeclVar extends AbstractDeclVar {
         Type varType = this.type.verifyType(compiler);
         try {
             ExpDefinition def = new VariableDefinition(varType, this.getLocation());
-            declEnv.declare(varName.getName(), def);
             this.varName.setDefinition(def);
+            declEnv.declare(varName.getName(), def);
             // CONDITION type != void
         } catch (EnvironmentExp.DoubleDefException e) { // pas possible d'avoir cette erreur mais idea pas content
             throw new UnknownError();
         }
-        if (!localEnv.disjointUnion(declEnv, this.getLocation())) {
+        if (!localEnv.disjointUnion(declEnv)) {
             throw new ContextualError("Variable '" + varName.getName().toString() + "' already declared.", this.getLocation());
         }
         if (varType == compiler.environmentType.VOID) {
