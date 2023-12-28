@@ -91,6 +91,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         }
     : i=ident {
         assert($i.tree != null);
+        setLocation($i.tree, $i.start);
         $tree = new DeclVar($t, $i.tree, new NoInitialization());
         setLocation($tree, $i.start);
         }
