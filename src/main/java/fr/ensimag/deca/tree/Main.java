@@ -35,7 +35,6 @@ public class Main extends AbstractMain {
         EnvironmentExp env = new EnvironmentExp(null);
         EnvironmentExp envExpSup = new EnvironmentExp(null);
         EnvironmentExp envReturn = declVariables.verifyListDeclVariable(compiler, envExpSup, env, compiler.environmentType.OBJECT.getDefinition());
-        System.out.println(envReturn);
         insts.verifyListInst(compiler, envReturn, compiler.environmentType.OBJECT.getDefinition(),
                 compiler.environmentType.VOID);
 

@@ -142,7 +142,6 @@ public abstract class AbstractExpr extends AbstractInst {
         codeGenInst(compiler);
         GPRegister reg = RegUtils.getCurrReg();
         compiler.addInstruction(new LOAD(reg, Register.R1));
-        System.out.println(this.toString() + getType() + "BBBBBBBBB");
         if (getType().isInt()) {
             compiler.addInstruction(new WINT());
         } else if (getType().isFloat()) {

@@ -144,6 +144,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public void setDefinition(Definition definition) {
+        this.setType(definition.getType());
         this.definition = definition;
     }
 
