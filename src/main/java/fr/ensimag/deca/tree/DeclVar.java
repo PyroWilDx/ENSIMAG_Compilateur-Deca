@@ -44,7 +44,9 @@ public class DeclVar extends AbstractDeclVar {
         //TypeDefinition typeDef = compiler.environmentType.defOfType((this.type.getName()));
         Type varType = this.type.verifyType(compiler);
         try {
-            declEnv.declare(varName.getName(), new VariableDefinition(varType, this.getLocation()));
+            ExpDefinition def = new VariableDefinition(varType, this.getLocation());
+            declEnv.declare(varName.getName(), def);
+            this.varName.setDefinition(def);
             // CONDITION type != void
         } catch (EnvironmentExp.DoubleDefException e) { // pas possible d'avoir cette erreur mais idea pas content
             throw new UnknownError();
