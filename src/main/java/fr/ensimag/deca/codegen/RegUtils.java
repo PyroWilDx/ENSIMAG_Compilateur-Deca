@@ -22,13 +22,21 @@ public class RegUtils {
     public static GPRegister getUnusedReg() {
         for (int i = 0; i < nRegs; i++) {
             if (!stateRegs[i]) {
-                stateRegs[i] = true;
                 GPRegister reg = Register.getR(i);
                 setCurrReg(reg);
+                useReg(i);
                 return reg;
             }
         }
         return null;
+    }
+
+    public static void useReg(int i) {
+        stateRegs[i] = true;
+    }
+
+    public static void useReg(GPRegister reg) {
+        useReg(reg.getNumber());
     }
 
     public static void freeReg(int i) {
