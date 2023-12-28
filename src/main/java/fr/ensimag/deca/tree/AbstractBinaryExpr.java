@@ -55,6 +55,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                     "' cannot have operands of types : '" + type1.getName() + "', '"
                     + type2.getName() + "'.", this.getLocation());
         }
+        setType(type);
         return type;
     }
 

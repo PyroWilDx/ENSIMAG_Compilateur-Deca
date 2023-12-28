@@ -68,12 +68,12 @@ doVerify("variableDeclarationNoInit.deca",
 #          False
 #          )
 
-# doVerify("whileAndIfThenElse.deca",
-#          b"4\n"
-#          b"3\n"
-#          b"2\n"
-#          b"1\n"
-#          )
+doVerify("whileAndIfThenElse.deca",
+         b"4\n"
+         b"3\n"
+         b"2\n"
+         b"1\n"
+         )
 
 """
 ==============================================
