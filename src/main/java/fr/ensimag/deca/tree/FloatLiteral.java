@@ -49,8 +49,9 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = RegUtils.getUnusedReg();
+        GPRegister reg = RegUtils.getUnusedReg(); // Shouldn't be NULL
         compiler.addInstruction(new LOAD(value, reg));
+        RegUtils.freeReg(reg);
         // Done
     }
 

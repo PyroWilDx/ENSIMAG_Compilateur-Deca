@@ -37,23 +37,27 @@ doVerify("include.deca",
          )
 
 doVerify("variableDeclarationEasy.deca",
+         b"x = 1 | y = 2\n"
+         )
+
+doVerify("variableDeclarationMany.deca",
          "TODO",
          False
          )
 
-doVerify("whileAndIfThenElse.deca",
-         b"4\n"
-         b"3\n"
-         b"2\n"
-         b"1\n"
+doVerify("variableDeclarationNoInit.deca",
+         "TODO",
+         False
          )
-
-# doVerify("variableDeclaration.deca",
-#          "TODO",
-#          False
-#          )
 
 # doVerify("opArith.deca",
 #          "TODO",
 #          False
+#          )
+
+# doVerify("whileAndIfThenElse.deca",
+#          b"4\n"
+#          b"3\n"
+#          b"2\n"
+#          b"1\n"
 #          )

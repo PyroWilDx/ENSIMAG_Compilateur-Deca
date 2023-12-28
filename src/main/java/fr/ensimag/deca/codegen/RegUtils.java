@@ -21,7 +21,7 @@ public class RegUtils {
     }
 
     public static GPRegister getUnusedReg() {
-        for (int i = 0; i < nRegs; i++) {
+        for (int i = 2; i < nRegs; i++) {
             if (!stateRegs[i]) {
                 GPRegister reg = Register.getR(i);
                 setCurrReg(reg);
@@ -37,29 +37,38 @@ public class RegUtils {
     }
 
     public static void useReg(int i) {
+        if (i < 2) return;
+
+        if (!stateRegs[i]) usedRegCpt++;
         stateRegs[i] = true;
-        usedRegCpt++;
     }
 
     public static void useReg(GPRegister reg) {
-        useReg(reg.getNumber());
+        if (reg != null) useReg(reg.getNumber());
     }
 
     public static void freeReg(int i) {
+        if (i < 2) return;
+
+        if (stateRegs[i]) usedRegCpt--;
         stateRegs[i] = false;
-        usedRegCpt--;
     }
 
     public static void freeReg(GPRegister reg) {
-        freeReg(reg.getNumber());
+        if (reg != null) freeReg(reg.getNumber());
     }
 
     public static void setCurrReg(GPRegister reg) {
-        currReg = reg;
+        if (reg != null) currReg = reg;
     }
 
     public static GPRegister getCurrReg() {
         return currReg;
+    }
+
+    public static GPRegister getAndUseCurrReg() {
+        useReg(currReg);
+        return getCurrReg();
     }
 
 }
