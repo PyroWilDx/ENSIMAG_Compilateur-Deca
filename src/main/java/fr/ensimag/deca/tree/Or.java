@@ -18,8 +18,8 @@ public class Or extends AbstractOpBool {
 
     @Override
     protected void codeGenOpBool(DecacCompiler compiler,
-                                 DVal lReg, GPRegister rReg) {
-        compiler.addInstruction(new ADD(lReg, rReg));
+                                 DVal valReg, GPRegister saveReg) {
+        compiler.addInstruction(new ADD(valReg, saveReg));
         // Done
     }
 

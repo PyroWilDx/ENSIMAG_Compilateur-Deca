@@ -17,8 +17,8 @@ public class Modulo extends AbstractOpArith {
 
     @Override
     protected void codeGenOpArith(DecacCompiler compiler,
-                                  DVal lReg, GPRegister rReg) {
-        compiler.addInstruction(new REM(lReg, rReg));
+                                  DVal valReg, GPRegister saveReg) {
+        compiler.addInstruction(new REM(valReg, saveReg));
         // Done
     }
 

@@ -18,8 +18,8 @@ public class And extends AbstractOpBool {
 
     @Override
     protected void codeGenOpBool(DecacCompiler compiler,
-                                 DVal lReg, GPRegister rReg) {
-        compiler.addInstruction(new MUL(lReg, rReg));
+                                 DVal valReg, GPRegister saveReg) {
+        compiler.addInstruction(new MUL(valReg, saveReg));
         // Done
     }
 

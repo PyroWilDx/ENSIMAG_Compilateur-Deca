@@ -40,7 +40,7 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenOp(DecacCompiler compiler,
-                             DVal lReg, GPRegister rReg) {
+                             DVal valReg, GPRegister saveReg) {
         // Done (Not Used)
     }
 

@@ -16,10 +16,10 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenOp(DecacCompiler compiler,
-                             DVal lReg, GPRegister rReg) {
-        codeGenOpBool(compiler, lReg, rReg);
+                             DVal valReg, GPRegister saveReg) {
+        codeGenOpBool(compiler, valReg, saveReg);
     }
 
     protected abstract void codeGenOpBool(DecacCompiler compiler,
-                                          DVal lReg, GPRegister rReg);
+                                          DVal valReg, GPRegister saveReg);
 }

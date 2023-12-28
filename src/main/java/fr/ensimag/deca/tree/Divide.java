@@ -19,21 +19,11 @@ public class Divide extends AbstractOpArith {
 
     @Override
     protected void codeGenOpArith(DecacCompiler compiler,
-                                  DVal lReg, GPRegister rReg) {
-        // Version utilisant R1 faisant 6 cycles
-//        compiler.addInstruction(new LOAD(rReg, Register.R1));
-//        compiler.addInstruction(new LOAD(lReg, rReg));
-//        compiler.addInstruction(new LOAD(Register.R1, Register.R0));
-
-        // Version n'utilisant pas R1 faisant 8 cycles
-        compiler.addInstruction(new PUSH(rReg));
-        compiler.addInstruction(new LOAD(lReg, rReg));
-        compiler.addInstruction(new POP(Register.R0));
-
+                                  DVal valReg, GPRegister saveReg) {
         if (getLeftOperand().getType().isInt() && getRightOperand().getType().isInt()) {
-            compiler.addInstruction(new QUO(Register.R0, rReg));
+            compiler.addInstruction(new QUO(valReg, saveReg));
         } else {
-            compiler.addInstruction(new DIV(Register.R0, rReg));
+            compiler.addInstruction(new DIV(valReg, saveReg));
         }
         // Done
     }

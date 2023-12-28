@@ -71,33 +71,33 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         getLeftOperand().codeGenInst(compiler);
-        GPRegister lReg = RegUtils.takeBackLastReg();
+        GPRegister saveReg = RegUtils.takeBackLastReg();
 
         boolean pushed = false;
         if (RegUtils.isUsingAllRegs()) {
-            compiler.addInstruction(new PUSH(lReg));
-            RegUtils.freeReg(lReg);
+            compiler.addInstruction(new PUSH(saveReg));
+            RegUtils.freeReg(saveReg);
             pushed = true;
         }
 
         getRightOperand().codeGenInst(compiler);
-        GPRegister rReg = RegUtils.takeBackLastReg();
+        GPRegister valReg = RegUtils.takeBackLastReg();
 
         if (pushed) {
-            lReg = Register.R0;
-            compiler.addInstruction(new LOAD(rReg, lReg));
-            compiler.addInstruction(new POP(rReg));
+            compiler.addInstruction(new LOAD(valReg, Register.R0));
+            saveReg = valReg;
+            valReg = Register.R0;
+            compiler.addInstruction(new POP(saveReg));
         }
 
-        codeGenOp(compiler, lReg, rReg);
-
-        RegUtils.freeReg(lReg);
-        RegUtils.freeReg(rReg);
+        codeGenOp(compiler, valReg, saveReg);
+        RegUtils.freeReg(valReg);
+        RegUtils.freeReg(saveReg);
         // Done
     }
 
     protected abstract void codeGenOp(DecacCompiler compiler,
-                                      DVal lReg, GPRegister rReg);
+                                      DVal valReg, GPRegister saveReg);
 
     @Override
     public void decompile(IndentPrintStream s) {
