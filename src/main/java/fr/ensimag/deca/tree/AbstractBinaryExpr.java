@@ -71,7 +71,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         getLeftOperand().codeGenInst(compiler);
-        GPRegister lReg = RegUtils.getAndUseCurrReg();
+        GPRegister lReg = RegUtils.takeBackLastReg();
 
         boolean pushed = false;
         if (RegUtils.isUsingAllRegs()) {
@@ -81,7 +81,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         }
 
         getRightOperand().codeGenInst(compiler);
-        GPRegister rReg = RegUtils.getAndUseCurrReg();
+        GPRegister rReg = RegUtils.takeBackLastReg();
 
         if (pushed) {
             lReg = Register.R0;

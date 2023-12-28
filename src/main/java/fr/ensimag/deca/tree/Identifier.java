@@ -11,7 +11,6 @@ import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
-import org.apache.log4j.Logger;
 
 /**
  * Deca Identifier
@@ -203,8 +202,9 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = RegUtils.getUnusedReg();
+        GPRegister reg = RegUtils.getFreeReg();
         compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), reg));
+        RegUtils.freeReg(reg);
         // Done
     }
 

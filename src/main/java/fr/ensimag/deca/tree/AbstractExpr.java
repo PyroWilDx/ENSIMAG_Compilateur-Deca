@@ -140,15 +140,16 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrint(DecacCompiler compiler) {
         codeGenInst(compiler);
-        GPRegister reg = RegUtils.getCurrReg();
+        GPRegister reg = RegUtils.takeBackLastReg();
         compiler.addInstruction(new LOAD(reg, Register.R1));
+        RegUtils.freeReg(reg);
+
         if (getType().isInt()) {
             compiler.addInstruction(new WINT());
         } else if (getType().isFloat()) {
             if (!getPrintHex()) compiler.addInstruction(new WFLOAT());
             else compiler.addInstruction(new WFLOATX());
         }
-        RegUtils.freeReg(reg);
         // Done
     }
 

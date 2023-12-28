@@ -10,10 +10,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
-import fr.ensimag.ima.pseudocode.instructions.WINT;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -49,7 +46,7 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = RegUtils.getUnusedReg(); // Shouldn't be NULL
+        GPRegister reg = RegUtils.getFreeReg(); // Shouldn't be NULL
         compiler.addInstruction(new LOAD(value, reg));
         RegUtils.freeReg(reg);
         // Done

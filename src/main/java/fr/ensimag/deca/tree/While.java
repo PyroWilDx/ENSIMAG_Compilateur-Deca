@@ -12,7 +12,6 @@ import fr.ensimag.ima.pseudocode.Label;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import org.apache.commons.lang.Validate;
@@ -50,8 +49,9 @@ public class While extends AbstractInst {
 
         compiler.addLabel(startWhileLabel);
         condition.codeGenInst(compiler);
-        GPRegister reg = RegUtils.getAndUseCurrReg();
+        GPRegister reg = RegUtils.takeBackLastReg();
         compiler.addInstruction(new CMP(0, reg));
+        RegUtils.freeReg(reg);
         compiler.addInstruction(new BEQ(endWhileLabel));
         body.codeGenListInst(compiler);
         compiler.addInstruction(new BRA(startWhileLabel));

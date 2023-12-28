@@ -68,8 +68,8 @@ public class DeclVar extends AbstractDeclVar {
 //        DAddr dAddr = varName.getExpDefinition().getOperand();
         DAddr dAddr = new RegisterOffset(DeclVarUtils.getGbOffset(), Register.GB);
         varName.getExpDefinition().setOperand(dAddr); // TODO (Remove and Replace)
-        GPRegister reg = RegUtils.getCurrReg();
-        compiler.addInstruction(new STORE(RegUtils.getCurrReg(), dAddr));
+        GPRegister reg = RegUtils.takeBackLastReg();
+        compiler.addInstruction(new STORE(reg, dAddr));
         RegUtils.freeReg(reg);
         DeclVarUtils.incrGbVarCount();
         // Done

@@ -54,9 +54,10 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         getOperand().codeGenInst(compiler);
-        GPRegister reg = RegUtils.getCurrReg();
+        GPRegister reg = RegUtils.takeBackLastReg();
         codeGenOpUnary(compiler, reg);
-        // TODO (Not Enough Registers) and (When Register is Freed ?)
+        RegUtils.freeReg(reg);
+        // TODO (Not Enough Registers)
     }
 
     protected abstract void codeGenOpUnary(DecacCompiler compiler, GPRegister reg);

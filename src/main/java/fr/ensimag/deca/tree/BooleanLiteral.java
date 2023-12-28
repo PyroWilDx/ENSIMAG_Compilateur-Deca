@@ -8,7 +8,6 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
@@ -40,7 +39,7 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = RegUtils.getUnusedReg(); // Shouldn't be NULL
+        GPRegister reg = RegUtils.getFreeReg(); // Shouldn't be NULL
         compiler.addInstruction(new LOAD((value) ? 1 : 0, reg));
         RegUtils.freeReg(reg);
         // Done
