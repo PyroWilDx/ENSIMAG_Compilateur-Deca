@@ -5,16 +5,29 @@ import subprocess
 
 def doVerify(decaFilePath, expectedResult, doAssert=True):
     print(f"=========== {decaFilePath} ===========")
-    os.system(f"./src/main/bin/decac ./src/test/deca/{decaFilePath}")
-    extIndex = decaFilePath.rfind(".");
-    out = subprocess.check_output(f"./global/bin/ima ./src/test/deca/{decaFilePath[:extIndex]}.ass", shell=True)
-    if doAssert:
-        assert (out == expectedResult)
+    cpCmd = f"./src/main/bin/decac ./src/test/deca/{decaFilePath}"
+    if expectedResult != "FAIL":
+        os.system(cpCmd)
+        extIndex = decaFilePath.rfind(".")
+        execCmd = f"./global/bin/ima ./src/test/deca/{decaFilePath[:extIndex]}.ass"
+        out = subprocess.check_output(execCmd, shell=True)
+        if doAssert:
+            assert (out == expectedResult)
+        else:
+            print(out)
     else:
-        print(out)
+        cpCmd += " > /dev/null 2>&1"
+        out = os.system(cpCmd)
+        assert (os.WEXITSTATUS(out) != 0)
 
 
 os.chdir("../../../")
+
+"""
+==============================================
+TESTS QUI MARCHENT
+==============================================
+"""
 
 doVerify("printString.deca",
          b"Hello World ! Second Argument\n"
@@ -41,8 +54,8 @@ doVerify("variableDeclarationEasy.deca",
          )
 
 doVerify("variableDeclarationMany.deca",
-         "TODO",
-         False
+         b"x = 1\n"
+         b"y = 42 | z = 3.14160e+00\n"
          )
 
 doVerify("variableDeclarationNoInit.deca",
@@ -61,3 +74,12 @@ doVerify("variableDeclarationNoInit.deca",
 #          b"2\n"
 #          b"1\n"
 #          )
+
+"""
+==============================================
+TESTS QUI NE MARCHENT PAS
+==============================================
+"""
+
+doVerify("context/invalid/langage_sans_objet/troisieme_passe/regle_3_17_1.deca",
+         "FAIL")
