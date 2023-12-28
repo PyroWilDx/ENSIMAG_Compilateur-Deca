@@ -98,6 +98,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
       assert($e.tree != null) ; //ana
       Initialization init = new Initialization($e.tree);
       $tree = new DeclVar($t, $i.tree, init);
+      setLocation($tree, $i.start);
         }
       )? {
         }
