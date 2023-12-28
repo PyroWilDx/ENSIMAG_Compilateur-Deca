@@ -68,6 +68,11 @@ doVerify("variableDeclarationNoInit.deca",
 #          False
 #          )
 
+# doVerify("registerOverflow.deca",
+#          "TODO",
+#          False
+#          )
+
 # doVerify("whileAndIfThenElse.deca",
 #          b"4\n"
 #          b"3\n"
