@@ -10,6 +10,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
 import fr.ensimag.ima.pseudocode.instructions.WFLOATX;
 import fr.ensimag.ima.pseudocode.instructions.WINT;
@@ -140,13 +141,14 @@ public abstract class AbstractExpr extends AbstractInst {
     protected void codeGenPrint(DecacCompiler compiler) {
         codeGenInst(compiler);
         GPRegister reg = RegUtils.getCurrReg();
-        compiler.addInstruction(RegUtils.getInstSetRegValToReg(reg, Register.R1));
+        compiler.addInstruction(new LOAD(reg, Register.R1));
         if (getType().isInt()) {
             compiler.addInstruction(new WINT());
         } else if (getType().isFloat()) {
             if (!getPrintHex()) compiler.addInstruction(new WFLOAT());
             else compiler.addInstruction(new WFLOATX());
         }
+        RegUtils.freeReg(reg);
         // Done
     }
 

@@ -42,7 +42,6 @@ public class BooleanLiteral extends AbstractExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         GPRegister reg = RegUtils.getUnusedReg();
         compiler.addInstruction(new LOAD((value) ? 1 : 0, reg));
-        RegUtils.setCurrReg(reg);
         // Done
     }
 

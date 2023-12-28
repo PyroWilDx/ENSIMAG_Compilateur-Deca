@@ -1,11 +1,15 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
+
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -164,7 +168,7 @@ public class Identifier extends AbstractIdentifier {
                     + this.name.toString(), this.getLocation());
         }
         return def.getType();
-        //throw new UnsupportedOperationException("not yet implemented");
+        // Done
     }
 
     /**
@@ -195,13 +199,10 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
-    protected void codeGenPrint(DecacCompiler compiler) {
-        // TODO (Not Implemented Yet)
-    }
-
-    @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        // TODO (Not Implemented Yet)
+        GPRegister reg = RegUtils.getUnusedReg();
+        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), reg));
+        // Done
     }
 
     @Override
