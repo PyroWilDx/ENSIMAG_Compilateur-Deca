@@ -1,0 +1,6 @@
+/*
+Test de include
+*/
+
+#include "toInclude1.decah"
+#include "toInclude2.decah"
