@@ -163,7 +163,6 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
             ClassDefinition currentClass) throws ContextualError {
         Definition def = localEnv.get(this.name);
-        setDefinition(def);
         if (def == null) {
             throw new ContextualError("Undiclared identifier : "
                     + this.name.toString(), this.getLocation());
