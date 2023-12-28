@@ -18,14 +18,13 @@ public class NoOperation extends AbstractInst {
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
-            throws ContextualError {
+            ClassDefinition currentClass, Type returnType) throws ContextualError {
         // Done
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        // TODO (Not Implemented Yet)
+        // Done
     }
 
     @Override

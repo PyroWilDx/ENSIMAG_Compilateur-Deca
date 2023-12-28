@@ -1,6 +1,5 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Register;
@@ -24,7 +23,9 @@ public class RegUtils {
         for (int i = 0; i < nRegs; i++) {
             if (!stateRegs[i]) {
                 stateRegs[i] = true;
-                return Register.getR(i);
+                GPRegister reg = Register.getR(i);
+                setCurrReg(reg);
+                return reg;
             }
         }
         return null;
@@ -44,10 +45,6 @@ public class RegUtils {
 
     public static GPRegister getCurrReg() {
         return currReg;
-    }
-
-    public static Instruction getInstSetRegValToReg(GPRegister reg1, GPRegister reg2) {
-        return new LOAD(reg1, reg2);
     }
 
 }

@@ -28,6 +28,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         compiler.addInstruction(new CMP(lReg, rReg));
         RegUtils.freeReg(lReg);
         codeGenOpCmp(compiler, rReg);
+        // TODO (Not Enough Registers) and (When Register is Freed ?)
     }
 
     protected abstract void codeGenOpCmp(DecacCompiler compiler, GPRegister reg);

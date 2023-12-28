@@ -51,7 +51,6 @@ public class FloatLiteral extends AbstractExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         GPRegister reg = RegUtils.getUnusedReg();
         compiler.addInstruction(new LOAD(value, reg));
-        RegUtils.setCurrReg(reg);
         // Done
     }
 

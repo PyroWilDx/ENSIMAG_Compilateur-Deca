@@ -2,6 +2,10 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.RegUtils;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  * read...() statement.
@@ -17,6 +21,11 @@ public abstract class AbstractReadExpr extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        // TODO (Not Implemented Yet)
+        codeGenOpRead(compiler);
+        GPRegister reg = RegUtils.getUnusedReg();
+        compiler.addInstruction(new LOAD(Register.R1, reg));
+        // TODO (Not Enough Registers)  and (When Register is Freed ?)
     }
+
+    protected abstract void codeGenOpRead(DecacCompiler compiler);
 }
