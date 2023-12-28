@@ -4,9 +4,9 @@ Test de Plusieurs Déclarations de Variables.
 
 {
     int x = 1;
-    println("x = ", x);
-
     int y = 42;
     float z = 3.1416;
+
+    println("x = ", x);
     println("y = ", y, " | z = ", z);
 }
