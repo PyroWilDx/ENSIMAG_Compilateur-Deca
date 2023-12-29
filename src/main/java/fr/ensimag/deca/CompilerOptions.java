@@ -18,9 +18,10 @@ import org.apache.log4j.Logger;
  */
 public class CompilerOptions {
     public static final int QUIET = 0;
-    public static final int INFO  = 1;
+    public static final int INFO = 1;
     public static final int DEBUG = 2;
     public static final int TRACE = 3;
+
     public int getDebug() {
         return debug;
     }
@@ -32,7 +33,15 @@ public class CompilerOptions {
     public boolean getPrintBanner() {
         return printBanner;
     }
-    
+
+    public boolean getParse() {
+        return parse;
+    }
+
+    public boolean getVerification() {
+        return verification;
+    }
+
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
     }
@@ -40,6 +49,8 @@ public class CompilerOptions {
     private int debug = 0;
     private boolean parallel = false;
     private boolean printBanner = false;
+    private boolean parse = false;
+    private boolean verification = false;
     private List<File> sourceFiles = new ArrayList<File>();
 
     public void parseArgs(String[] args) throws CLIException {
@@ -51,13 +62,19 @@ public class CompilerOptions {
             } else {
                 switch (arg.charAt(1)) {
                     case 'b': // Banner
-                        // TODO (Option)
+                        printBanner = true;
                         break;
                     case 'p': // Parse
-                        // TODO (Option)
+                        if (verification) {
+                            throwError("You can't use -v and -p at the same time.");
+                        }
+                        parse = true;
                         break;
                     case 'v': // Verification
-                        // TODO (Option)
+                        if (parse) {
+                            throwError("You can't use -p and -v at the same time.");
+                        }
+                        verification = true;
                         break;
                     case 'n': // No Check
                         // TODO (Option)
@@ -72,14 +89,14 @@ public class CompilerOptions {
                             }
                             RegUtils.setNRegs(nOfRegs);
                         } catch (NumberFormatException e) {
-                            throw new CLIException("You must specify an integer between 4 and 16 after -r : -r <Number of Registers>");
+                            throwError("You must specify an integer between 4 and 16 after -r : -r <Number of Registers>.");
                         }
                         break;
                     case 'd': // Debug
                         // TODO (Option)
                         break;
                     case 'P': // Parallel
-                        // TODO (Option)
+                        parallel = true;
                         break;
                     default:
                         throw new CLIException("-" + arg.charAt(1) + " is not an option");
@@ -91,15 +108,20 @@ public class CompilerOptions {
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
         switch (getDebug()) {
-        case QUIET: break; // keep default
-        case INFO:
-            logger.setLevel(Level.INFO); break;
-        case DEBUG:
-            logger.setLevel(Level.DEBUG); break;
-        case TRACE:
-            logger.setLevel(Level.TRACE); break;
-        default:
-            logger.setLevel(Level.ALL); break;
+            case QUIET:
+                break; // keep default
+            case INFO:
+                logger.setLevel(Level.INFO);
+                break;
+            case DEBUG:
+                logger.setLevel(Level.DEBUG);
+                break;
+            case TRACE:
+                logger.setLevel(Level.TRACE);
+                break;
+            default:
+                logger.setLevel(Level.ALL);
+                break;
         }
         logger.info("Application-wide trace level set to " + logger.getLevel());
 
@@ -116,5 +138,9 @@ public class CompilerOptions {
 
     protected void displayUsage() {
         throw new UnsupportedOperationException("not yet implemented");
+    }
+
+    private static void throwError(String msg) throws CLIException {
+        throw new CLIException("Compiler Option Error : " + msg);
     }
 }

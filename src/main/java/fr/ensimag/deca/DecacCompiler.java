@@ -189,17 +189,33 @@ public class DecacCompiler {
     private boolean doCompile(String sourceName, String destName,
             PrintStream out, PrintStream err)
             throws DecacFatalError, LocationException {
+        LOG.info("Lexing and parsing of " + sourceName + "...");
         AbstractProgram prog = doLexingAndParsing(sourceName, err);
-
         if (prog == null) {
             LOG.info("Parsing failed");
             return true;
         }
         assert(prog.checkAllLocations());
+        LOG.info("Lexing and parsing of " + sourceName + " successful.");
 
+        LOG.info("Verification of " + sourceName + "...");
         prog.verifyProgram(this);
         assert(prog.checkAllDecorations());
+        LOG.info("Verification of " + sourceName + " successful.");
 
+        if (compilerOptions.getVerification()) {
+            LOG.info("Stopping because of -v...");
+            return false;
+        }
+
+        if (compilerOptions.getParse()) {
+            LOG.info("Decompiling " + sourceName + "...");
+            System.out.println(prog.decompile());
+            LOG.info("Decompilation of " + sourceName + " successful.");
+            return false;
+        }
+
+        LOG.info("Compiling " + sourceName + "...");
         prog.codeGenProgram(this);
 
         LOG.debug("Generated assembly code:" + nl + program.display());
@@ -212,7 +228,7 @@ public class DecacCompiler {
             throw new DecacFatalError("Failed to open output file: " + e.getLocalizedMessage());
         }
 
-        LOG.info("Writing assembler file ...");
+        LOG.info("Writing assembler file...");
 
         program.display(new PrintStream(fstream));
         LOG.info("Compilation of " + sourceName + " successful.");
