@@ -102,6 +102,3 @@ RTL : '\n' {skip();};
 TAB : '\t' {skip();};
 SPACE : ' ' {skip();};
 STRING_CAR : ~ ('"' | '\\' | '\n');
-
-
-DUMMY_TOKEN: .;
