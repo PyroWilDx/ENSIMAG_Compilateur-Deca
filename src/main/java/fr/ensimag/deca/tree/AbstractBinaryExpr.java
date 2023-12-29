@@ -67,9 +67,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         if (type.equals(compiler.environmentType.FLOAT)) {
             if (type2.equals(compiler.environmentType.INT)) {
                 this.rightOperand = new ConvFloat(this.rightOperand);
+                this.rightOperand.verifyExpr(compiler, localEnv, currentClass); // TODO tout pourri
             }
             if (type1.equals(compiler.environmentType.INT)) {
                 this.leftOperand = new ConvFloat(this.leftOperand);
+                this.leftOperand.verifyExpr(compiler, localEnv, currentClass); //TODO de même
             }
         }
         this.leftOperand.setType(type); // TODO pas forcement la meilleure idée
