@@ -4,8 +4,8 @@ Test de Lecture d'un Int/Float.
 
 {
     int x;
-    int y;
-    int z;
+    float y;
+    float z;
 
     x = readInt();
     y = readFloat();
