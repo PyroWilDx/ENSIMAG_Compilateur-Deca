@@ -96,7 +96,7 @@ doVerify("opArith.deca",
 #          False)
 
 doVerifyError("divisionBy0.deca",
-         b"Error: Division by 0\n")
+         b"Error: Division by 0.\n")
 
 doVerify("ifThenElse.deca",
          b"1234567\n", )
@@ -107,8 +107,8 @@ doVerify("while.deca",
 doVerify("whileAndIfThenElse.deca",
          b"4321\n")
 
-# doVerify("readIntFloat.deca",
-#          "TODO", False)
+doVerify("readIntFloat.deca",
+         "TODO", False)
 
 doVerify("registerOverflow.deca",
          b"42\n")
