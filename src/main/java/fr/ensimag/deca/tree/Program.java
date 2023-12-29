@@ -67,8 +67,7 @@ public class Program extends AbstractProgram {
                 "Error: Input/Output Error",
                 ErrorUtils.ioErrLabel);
         compiler.addComment("End of Error Labels");
-
-        // TODO (Avec Object)
+        // TODO (Avec Objet)
     }
 
     @Override

@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import fr.ensimag.deca.codegen.RegUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -42,15 +43,50 @@ public class CompilerOptions {
     private List<File> sourceFiles = new ArrayList<File>();
 
     public void parseArgs(String[] args) throws CLIException {
-        for (String arg : args) {
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
             if (arg.charAt(0) != '-') {
                 File decaFile = new File(arg);
                 sourceFiles.add(decaFile);
             } else {
+                switch (arg.charAt(1)) {
+                    case 'b': // Banner
+                        // TODO (Option)
+                        break;
+                    case 'p': // Parse
+                        // TODO (Option)
+                        break;
+                    case 'v': // Verification
+                        // TODO (Option)
+                        break;
+                    case 'n': // No Check
+                        // TODO (Option)
+                        break;
+                    case 'r': // Registers
+                        String nOfRegsStr = args[i + 1];
+                        i++;
+                        try {
+                            int nOfRegs = Integer.parseInt(nOfRegsStr);
+                            if (nOfRegs < 4 || nOfRegs > 16) {
+                                throw new NumberFormatException();
+                            }
+                            RegUtils.setNRegs(nOfRegs);
+                        } catch (NumberFormatException e) {
+                            throw new CLIException("You must specify an integer between 4 and 16 after -r : -r <Number of Registers>");
+                        }
+                        break;
+                    case 'd': // Debug
+                        // TODO (Option)
+                        break;
+                    case 'P': // Parallel
+                        // TODO (Option)
+                        break;
+                    default:
+                        throw new CLIException("-" + arg.charAt(1) + " is not an option");
+                }
                 // TODO (Options)
             }
         }
-        // TODO ()
 
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.
@@ -75,7 +111,7 @@ public class CompilerOptions {
             logger.info("Java assertions disabled");
         }
 
-        // TODO
+        // TODO (Jsp)
     }
 
     protected void displayUsage() {

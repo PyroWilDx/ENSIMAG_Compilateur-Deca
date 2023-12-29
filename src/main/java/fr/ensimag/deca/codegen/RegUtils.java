@@ -7,11 +7,19 @@ import java.util.LinkedList;
 
 public class RegUtils {
 
-    public static final int nRegs = 16;
-    private static final LinkedList<GPRegister> freeRegs = initFreeRegs();
+    public static int nRegs = 16;
+    private static LinkedList<GPRegister> freeRegs = initFreeRegs();
 
     private RegUtils() {
 
+    }
+
+    public static void setNRegs(int nRegs) {
+        assert (nRegs >= 4 && nRegs <= 16 &&
+                freeRegs.size() == RegUtils.nRegs - 2);
+
+        RegUtils.nRegs = nRegs;
+        RegUtils.freeRegs = initFreeRegs();
     }
 
     private static LinkedList<GPRegister> initFreeRegs() {

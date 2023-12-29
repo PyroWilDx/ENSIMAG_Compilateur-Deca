@@ -111,6 +111,10 @@ doVerify("opArithNoInit.deca",
 doVerifyError("divisionBy0.deca",
               b"Error: Division by 0\n")
 
+doVerifyError("modulo.deca",
+              b"2\n"
+              b"Error: Division by 0\n")
+
 doVerify("ifThenElse.deca",
          b"1234567\n", )
 

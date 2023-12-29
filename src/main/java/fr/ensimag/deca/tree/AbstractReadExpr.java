@@ -28,7 +28,7 @@ public abstract class AbstractReadExpr extends AbstractExpr {
         GPRegister reg = RegUtils.getFreeReg();
         compiler.addInstruction(new LOAD(Register.R1, reg));
         RegUtils.freeReg(reg);
-        // TODO (Not Enough Registers)
+        // Done
     }
 
     protected abstract void codeGenOpRead(DecacCompiler compiler);
