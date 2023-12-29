@@ -20,10 +20,6 @@ Test des Opérations Arithmétiques.
     println("10.0 / 3.0 = ", 10.0 / 3.0);
     println("0.0 / 1.0 = ", 0.0 / 1.0);
     println("20.8 / 4.0 = ", 20.8 / 4.0);
-/* TODO (4. / 3.)
-    println("4. / 3. = ", 4. / 3.);
-    println("0. / 1. = ", 0. / 1.);
-*/
 
     println("4 * 6 / 2 / 2 * 10 = ", 4 * 6 / 2 / 2 * 10);
 }

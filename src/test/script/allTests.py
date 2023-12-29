@@ -2,15 +2,16 @@
 import os
 import subprocess
 
-
+input = ""
 def doVerify(decaFilePath, expectedResult, doAssert=True):
+    global input
     print(f"=========== {decaFilePath} ===========")
     cpCmd = f"./src/main/bin/decac ./src/test/deca/{decaFilePath}"
     if expectedResult != "FAIL":
         os.system(cpCmd)
         extIndex = decaFilePath.rfind(".")
         execCmd = f"./global/bin/ima ./src/test/deca/{decaFilePath[:extIndex]}.ass"
-        out = subprocess.check_output(execCmd, shell=True)
+        out = subprocess.check_output(execCmd, input=input, shell=True)
         if doAssert:
             assert (out == expectedResult)
         else:
@@ -19,21 +20,25 @@ def doVerify(decaFilePath, expectedResult, doAssert=True):
         cpCmd += " > /dev/null 2>&1"
         out = os.system(cpCmd)
         assert (os.WEXITSTATUS(out) != 0)
+    input = ""
+
 
 def doVerifyError(decaFilePath, expectedResult, doAssert=True):
+    global input
     print(f"=========== {decaFilePath} ===========")
     cpCmd = f"./src/main/bin/decac ./src/test/deca/{decaFilePath}"
     os.system(cpCmd)
     extIndex = decaFilePath.rfind(".")
     execCmd = f"./global/bin/ima ./src/test/deca/{decaFilePath[:extIndex]}.ass"
     try:
-        subprocess.check_output(execCmd, shell=True) # Sould Fail
+        subprocess.check_output(execCmd, input=input, shell=True)  # Sould Fail
         assert (False)
     except subprocess.CalledProcessError as e:
         if doAssert:
             assert (e.output == expectedResult)
         else:
             print(e.output)
+    input = ""
 
 
 os.chdir("../../../")
@@ -70,7 +75,8 @@ doVerify("variableDeclarationMany.deca",
          b"y = 42 | z = 3.14160e+00\n")
 
 doVerify("variableDeclarationNoInit.deca",
-         b"1 20 42\n")
+         b"1 20 42\n"
+         b"0 0.00000e+00\n")
 
 doVerify("opArith.deca",
          b"1 + 1 = 2\n"
@@ -91,9 +97,16 @@ doVerify("opArith.deca",
          b"20.8 / 4.0 = 5.20000e+00\n"
          b"4 * 6 / 2 / 2 * 10 = 60\n")
 
-# doVerify("opArithConv.deca",
-#          "TODO",
-#          False)
+doVerify("opArithConv.deca",
+         b"1.1 + 2 = 3.10000e+00\n"
+         b"1.1 - 2 = -9.00000e-01\n"
+         b"42 - 42.0 = 0.00000e+00\n"
+         b"10 * 4.2 = 4.20000e+01\n"
+         b"4.0 / 3 = 1.33333e+00\n"
+         b"4 / 3.0 = 1.33333e+00\n")
+
+doVerify("opArithNoInit.deca",
+         b"0.00000e+00\n")
 
 doVerifyError("divisionBy0.deca",
               b"Error: Division by 0\n")
@@ -107,8 +120,9 @@ doVerify("while.deca",
 doVerify("whileAndIfThenElse.deca",
          b"4321\n")
 
+input = b"1\n2.2"
 doVerify("readIntFloat.deca",
-         "TODO", False)
+         b"3.20000e+00\n")
 
 doVerify("registerOverflow.deca",
          b"42\n")

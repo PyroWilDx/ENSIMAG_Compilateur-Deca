@@ -42,7 +42,6 @@ public class Initialization extends AbstractInitialization {
     @Override
     protected void codeGenInit(DecacCompiler compiler) {
         expression.codeGenInst(compiler);
-        // TODO (Mettre dans un Reg ?)
         // Done
     }
 

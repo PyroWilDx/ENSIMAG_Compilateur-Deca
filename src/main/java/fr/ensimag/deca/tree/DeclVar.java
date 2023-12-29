@@ -25,9 +25,6 @@ public class DeclVar extends AbstractDeclVar {
     final private AbstractIdentifier varName;
     final private AbstractInitialization initialization;
 
-    public void type() {
-    }
-
     public DeclVar(AbstractIdentifier type, AbstractIdentifier varName, AbstractInitialization initialization) {
         Validate.notNull(type);
         Validate.notNull(varName);
@@ -64,11 +61,12 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
+        DeclVarUtils.currDeclVarType = type.getType();
         initialization.codeGenInit(compiler);
+        GPRegister reg = RegUtils.takeBackLastReg();
 //        DAddr dAddr = varName.getExpDefinition().getOperand();
         DAddr dAddr = new RegisterOffset(DeclVarUtils.getGbOffset(), Register.GB);
         varName.getExpDefinition().setOperand(dAddr); // TODO (Remove and Replace)
-        GPRegister reg = RegUtils.takeBackLastReg();
         compiler.addInstruction(new STORE(reg, dAddr));
         RegUtils.freeReg(reg);
         DeclVarUtils.incrGbVarCount();

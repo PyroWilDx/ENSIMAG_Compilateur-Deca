@@ -1,5 +1,7 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.DeclVarUtils;
+import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -7,6 +9,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 
@@ -26,6 +30,13 @@ public class NoInitialization extends AbstractInitialization {
     }
 
     protected void codeGenInit(DecacCompiler compiler) {
+        GPRegister reg = RegUtils.getFreeReg();
+        if (DeclVarUtils.currDeclVarType.isFloat()) {
+            compiler.addInstruction(new LOAD(0.f, reg));
+        } else {
+            compiler.addInstruction(new LOAD(0, reg));
+        }
+        RegUtils.freeReg(reg);
         // Done
     }
 

@@ -1,0 +1,12 @@
+/*
+Tests d'opérations avec des variables non initialisées.
+*/
+
+{
+    int x;
+    float y;
+    float z;
+
+    z = x + y;
+    println(z);
+}
