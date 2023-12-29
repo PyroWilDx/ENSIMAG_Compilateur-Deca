@@ -44,11 +44,11 @@ public class Main extends AbstractMain {
 
     @Override
     protected void codeGenMain(DecacCompiler compiler) {
-        compiler.addComment("Beginning of main declarations:");
+        compiler.addComment("Beginning of Main Declarations:");
         for (AbstractDeclVar var : declVariables.getList()) {
             var.codeGenDeclVar(compiler);
         }
-        compiler.addComment("Beginning of main instructions:");
+        compiler.addComment("Beginning of Main Instructions:");
         insts.codeGenListInst(compiler);
         // Done
     }

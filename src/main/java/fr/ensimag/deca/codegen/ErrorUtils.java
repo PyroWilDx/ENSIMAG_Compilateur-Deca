@@ -8,7 +8,8 @@ import fr.ensimag.ima.pseudocode.instructions.WSTR;
 
 public class ErrorUtils {
 
-    public static final Label divBy0Label = new Label("division_by_0_error");
+    public static final Label divBy0Label = new Label("divisionBy0Error");
+    public static final Label ioErrLabel = new Label("ioError");
 
     public static void codeGenError(DecacCompiler compiler, String errMsg,
                                     Label bLabel) {

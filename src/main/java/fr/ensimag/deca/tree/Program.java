@@ -57,9 +57,17 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new HALT());
         compiler.addComment("End of Main Program");
 
+        compiler.addComment("");
+
+        compiler.addComment("Start of Error Labels");
         ErrorUtils.codeGenError(compiler,
-                "Error: Division by 0.",
+                "Error: Division by 0",
                 ErrorUtils.divBy0Label);
+        ErrorUtils.codeGenError(compiler,
+                "Error: Input/Output Error",
+                ErrorUtils.ioErrLabel);
+        compiler.addComment("End of Error Labels");
+
         // TODO (Avec Object)
     }
 
