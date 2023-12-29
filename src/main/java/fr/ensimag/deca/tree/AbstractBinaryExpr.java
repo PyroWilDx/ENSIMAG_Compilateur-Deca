@@ -65,8 +65,10 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                     + type2.getName() + "'.", this.getLocation());
         }
         if (type.equals(compiler.environmentType.FLOAT)) {
-            if (type1.equals(compiler.environmentType.INT)) this.rightOperand = new ConvFloat(this.rightOperand);
             if (type2.equals(compiler.environmentType.INT)) {
+                this.rightOperand = new ConvFloat(this.rightOperand);
+            }
+            if (type1.equals(compiler.environmentType.INT)) {
                 this.leftOperand = new ConvFloat(this.leftOperand);
             }
         }
