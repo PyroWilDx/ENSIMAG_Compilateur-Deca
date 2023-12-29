@@ -6,7 +6,6 @@ import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 
 /**
- *
  * @author Ensimag
  * @date 01/01/2024
  */
@@ -23,7 +22,7 @@ public class BooleanType extends Type {
 
     @Override
     public boolean sameType(Type otherType) {
-        return (otherType instanceof BooleanType);
+        return otherType.isBoolean();
         // Done
     }
 
