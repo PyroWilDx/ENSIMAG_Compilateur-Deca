@@ -2,5 +2,5 @@
 Test de Include
 */
 
-#include "toInclude1.decah"
-#include "toInclude2.decah"
+#include "includeFile1.decah"
+#include "includeFile2.decah"

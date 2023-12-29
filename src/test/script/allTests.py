@@ -67,14 +67,14 @@ doVerify("printFloatHexa.deca",
 doVerify("include.deca",
          b"Hello World\n")
 
-doVerify("variableDeclarationEasy.deca",
+doVerify("declVarEasy.deca",
          b"x = 1 | y = 2\n")
 
-doVerify("variableDeclarationMany.deca",
+doVerify("declVarMany.deca",
          b"x = 1\n"
          b"y = 42 | z = 3.14160e+00\n")
 
-doVerify("variableDeclarationNoInit.deca",
+doVerify("declVarNoInit.deca",
          b"1 20 42\n"
          b"0 0.00000e+00\n")
 
@@ -117,7 +117,7 @@ doVerify("ifThenElse.deca",
 doVerify("while.deca",
          b"0123456789\n")
 
-doVerify("whileAndIfThenElse.deca",
+doVerify("whileIfThenElse.deca",
          b"4321\n")
 
 input = b"1\n2.2"
