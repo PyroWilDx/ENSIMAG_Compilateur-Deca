@@ -64,7 +64,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                     "' cannot have operands of types : '" + type1.getName() + "', '"
                     + type2.getName() + "'.", this.getLocation());
         }
-        this.leftOperand.setType(type);
+        if (type.equals(compiler.environmentType.FLOAT)) {
+            if (type1.equals(compiler.environmentType.INT)) this.rightOperand = new ConvFloat(this.rightOperand);
+            if (type2.equals(compiler.environmentType.INT)) {
+                this.leftOperand = new ConvFloat(this.leftOperand);
+            }
+        }
+        this.leftOperand.setType(type); // TODO pas forcement la meilleure idée
         this.rightOperand.setType(type);
         setType(type);
         return type;
