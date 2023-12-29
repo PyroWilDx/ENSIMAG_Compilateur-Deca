@@ -5,10 +5,10 @@ Test de Lecture d'un Int/Float.
 {
     int x;
     float y;
-    float z = 1 + 1.1;
+    float z;
 
-    //x = readInt();
-    //y = readFloat();
+    x = readInt();
+    y = readFloat();
 
     z = x + y;
     println(z);
