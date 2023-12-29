@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.ErrorUtils;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -50,9 +51,15 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        compiler.addComment("Main program");
+        compiler.addComment("Start of Main Program");
+        compiler.addComment("Main Program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+        compiler.addComment("End of Main Program");
+
+        ErrorUtils.codeGenError(compiler,
+                "Error: Division by 0.",
+                ErrorUtils.divBy0Label);
         // TODO (Avec Object)
     }
 

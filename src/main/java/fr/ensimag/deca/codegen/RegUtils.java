@@ -23,9 +23,10 @@ public class RegUtils {
     }
 
     public static GPRegister getFreeReg() {
-        if (freeRegs.isEmpty()) return null;
-
-        return freeRegs.removeFirst();
+        if (!freeRegs.isEmpty()) {
+            return freeRegs.removeFirst();
+        }
+        return null;
     }
 
     public static GPRegister takeBackLastReg() {
@@ -33,10 +34,9 @@ public class RegUtils {
     }
 
     public static void freeReg(GPRegister reg) {
-        if (reg == null) return;
-        if (reg.getNumber() < 2) return;
-
-        freeRegs.addFirst(reg);
+        if (reg != null && reg.getNumber() > 1) {
+            freeRegs.addFirst(reg);
+        }
     }
 
     public static boolean isUsingAllRegs() {

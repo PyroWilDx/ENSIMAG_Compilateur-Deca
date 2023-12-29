@@ -66,7 +66,7 @@ public class ClassType extends Type {
         if (potentialSuperClass == definition.getSuperClass().getType()) return true;
 
         return definition.getSuperClass().getType().isSubClassOf(potentialSuperClass);
-        // TODO Tester
+        // TODO (Tester)
     }
 
 

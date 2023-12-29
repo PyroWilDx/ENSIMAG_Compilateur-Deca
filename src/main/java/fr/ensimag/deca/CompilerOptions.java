@@ -47,10 +47,10 @@ public class CompilerOptions {
                 File decaFile = new File(arg);
                 sourceFiles.add(decaFile);
             } else {
-                // TODO Options
+                // TODO (Options)
             }
         }
-        // TODO
+        // TODO ()
 
         Logger logger = Logger.getRootLogger();
         // map command-line debug option to log4j's level.

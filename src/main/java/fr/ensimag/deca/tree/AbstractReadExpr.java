@@ -22,7 +22,7 @@ public abstract class AbstractReadExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         codeGenOpRead(compiler);
-        GPRegister reg = RegUtils.takeBackLastReg();
+        GPRegister reg = RegUtils.getFreeReg();
         compiler.addInstruction(new LOAD(Register.R1, reg));
         RegUtils.freeReg(reg);
         // TODO (Not Enough Registers)

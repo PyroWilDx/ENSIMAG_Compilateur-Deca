@@ -20,6 +20,21 @@ def doVerify(decaFilePath, expectedResult, doAssert=True):
         out = os.system(cpCmd)
         assert (os.WEXITSTATUS(out) != 0)
 
+def doVerifyError(decaFilePath, expectedResult, doAssert=True):
+    print(f"=========== {decaFilePath} ===========")
+    cpCmd = f"./src/main/bin/decac ./src/test/deca/{decaFilePath}"
+    os.system(cpCmd)
+    extIndex = decaFilePath.rfind(".")
+    execCmd = f"./global/bin/ima ./src/test/deca/{decaFilePath[:extIndex]}.ass"
+    try:
+        subprocess.check_output(execCmd, shell=True) # Sould Fail
+        assert (False)
+    except subprocess.CalledProcessError as e:
+        if doAssert:
+            assert (e.output == expectedResult)
+        else:
+            print(e.output)
+
 
 os.chdir("../../../")
 
@@ -61,6 +76,7 @@ doVerify("opArith.deca",
          b"1 + 1 = 2\n"
          b"1 - 1 = 0\n"
          b"1 - 42 = -41\n"
+         b"1 - -42 = 43\n"
          b"0 * 1 = 0\n"
          b"1 * 0 = 0\n"
          b"1 * 1 = 1\n"
@@ -72,15 +88,15 @@ doVerify("opArith.deca",
          b"3.14 * 3.14 = 9.85960e+00\n"
          b"10.0 / 3.0 = 3.33333e+00\n"
          b"0.0 / 1.0 = 0.00000e+00\n"
-         b"20.8 / 4.0 = 5.20000e+00\n")
+         b"20.8 / 4.0 = 5.20000e+00\n"
+         b"4 * 6 / 2 / 2 * 10 = 60\n")
 
 # doVerify("opArithConv.deca",
 #          "TODO",
 #          False)
 
-doVerify("divisionBy0.deca",
-         "TODO",
-         False)
+doVerifyError("divisionBy0.deca",
+         b"Error: Division by 0\n")
 
 doVerify("ifThenElse.deca",
          b"1234567\n", )
@@ -91,8 +107,11 @@ doVerify("while.deca",
 doVerify("whileAndIfThenElse.deca",
          b"4321\n")
 
+# doVerify("readIntFloat.deca",
+#          "TODO", False)
+
 doVerify("registerOverflow.deca",
-         b"20\n")
+         b"42\n")
 
 """
 ==============================================
