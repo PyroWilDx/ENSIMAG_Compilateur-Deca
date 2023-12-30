@@ -21,7 +21,8 @@ def doVerify(decaFilePath,
              input="",
              doAssert=True):
     if ("-n" not in decacOptions) and (not decacFail):
-        allTestedFiles.append(decaFilePath)  # To Test -P Later...
+        extIndex = decaFilePath.rfind(".")
+        allTestedFiles.append(decaFilePath[:extIndex])  # To Test -P Later...
 
     if doParallel and decacFail:
         return 0
@@ -185,7 +186,12 @@ def decacParallel():
     print("=========== Option -P ===========")
     decacCmd = f"./src/main/bin/decac -P"
     for filePath in allTestedFiles:
-        decacCmd += f" ./src/test/deca/{filePath}"
+        decacCmd += f" ./src/test/deca/{filePath}.deca"
+    print("Removing .ass files...")
+    for filePath in allTestedFiles: # To Ensure that -P Recompiles All
+        os.system(f"\\rm ./src/test/deca/{filePath}.ass")
+    print("Remove Successful")
+
     os.system(decacCmd)
 
     doTests()

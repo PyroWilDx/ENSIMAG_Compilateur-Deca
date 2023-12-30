@@ -1,6 +1,6 @@
 /*
 Test de Déclarations de Variables (Sans Initialisation)
-
+*/
 {
     int x = 1;
     int y = 20;
