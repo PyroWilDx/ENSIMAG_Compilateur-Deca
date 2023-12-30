@@ -26,7 +26,9 @@ public class Divide extends AbstractOpArith {
         } else {
             compiler.addInstruction(new DIV(valReg, saveReg));
         }
-        compiler.addInstruction(new BOV(ErrorUtils.divBy0Label));
+        if (!compiler.getCompilerOptions().getNoCheck()) {
+            compiler.addInstruction(new BOV(ErrorUtils.divBy0Label));
+        }
         // Done
     }
 

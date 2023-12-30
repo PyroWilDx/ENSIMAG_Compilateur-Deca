@@ -42,6 +42,10 @@ public class CompilerOptions {
         return verification;
     }
 
+    public boolean getNoCheck() {
+        return noCheck;
+    }
+
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
     }
@@ -51,6 +55,7 @@ public class CompilerOptions {
     private boolean printBanner = false;
     private boolean parse = false;
     private boolean verification = false;
+    private boolean noCheck = false;
     private List<File> sourceFiles = new ArrayList<File>();
 
     public void parseArgs(String[] args) throws CLIException {
@@ -77,7 +82,7 @@ public class CompilerOptions {
                         verification = true;
                         break;
                     case 'n': // No Check
-                        // TODO (Option)
+                        noCheck = true;
                         break;
                     case 'r': // Registers
                         String nOfRegsStr = args[i + 1];
@@ -93,15 +98,14 @@ public class CompilerOptions {
                         }
                         break;
                     case 'd': // Debug
-                        // TODO (Option)
+                        debug = Math.min(debug + 1, TRACE);
                         break;
                     case 'P': // Parallel
                         parallel = true;
                         break;
                     default:
-                        throw new CLIException("-" + arg.charAt(1) + " is not an option");
+                        throwError("-" + arg.charAt(1) + " is not a valid option.");
                 }
-                // TODO (Options)
             }
         }
 
