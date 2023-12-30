@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;

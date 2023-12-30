@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.DeclVarUtils;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -29,7 +28,7 @@ public class NoInitialization extends AbstractInitialization {
 
     protected void codeGenInit(DecacCompiler compiler) {
         GPRegister reg = compiler.getRegManager().getFreeReg();
-        if (DeclVarUtils.currDeclVarType.isFloat()) {
+        if (compiler.getDeclVarManager().getCurrDeclVarType().isFloat()) {
             compiler.addInstruction(new LOAD(0.f, reg));
         } else {
             compiler.addInstruction(new LOAD(0, reg));
