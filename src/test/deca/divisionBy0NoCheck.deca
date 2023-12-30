@@ -1,7 +1,0 @@
-/*
-Test de la Division par 0 (Avec Option -n)
-*/
-
-{
-    println(1 / 0);
-}

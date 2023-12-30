@@ -20,11 +20,14 @@ def doVerify(decaFilePath,
              execError=False, execFail=False,
              input="",
              doAssert=True):
-    if ("-n" not in decacOptions) and (not decacFail):
-        extIndex = decaFilePath.rfind(".")
-        allTestedFiles.append(decaFilePath[:extIndex])  # To Test -P Later...
+    extIndex = decaFilePath.rfind(".")
+    decaFilePathNoExt = decaFilePath[:extIndex]
+    if (("-b" not in decacOptions) and ("-n" not in decacOptions) and
+            ("-v" not in decacOptions) and ("-d" not in decacOptions)
+            and (not decacFail)):
+        allTestedFiles.append(decaFilePathNoExt)  # To Test -P Later...
 
-    if doParallel and decacFail:
+    if doParallel and (decaFilePathNoExt not in allTestedFiles):
         return 0
 
     print(f"=========== {decaFilePath} ===========")
@@ -39,8 +42,10 @@ def doVerify(decaFilePath,
 
         os.system(decacCmd)
 
-    extIndex = decaFilePath.rfind(".")
-    execCmd = f"./global/bin/ima ./src/test/deca/{decaFilePath[:extIndex]}.ass"
+    if "-v" in decacOptions:
+        return 0
+
+    execCmd = f"./global/bin/ima ./src/test/deca/{decaFilePathNoExt}.ass"
     if execError:
         try:
             subprocess.check_output(execCmd, input=input, shell=True)  # Sould Fail
@@ -70,7 +75,8 @@ def doTests():
     ==============================================
     """
 
-    print("!!!!!!!!!!! Tests Valides !!!!!!!!!!!")
+    if not doParallel:
+        print("!!!!!!!!!!! Tests Valides !!!!!!!!!!!")
 
     doVerify("printString.deca",
              expectedResult=b"Hello World ! Second Argument\n"
@@ -133,10 +139,6 @@ def doTests():
              expectedResult=b"Error: Division by 0\n",
              execError=True)
 
-    doVerify("divisionBy0NoCheck.deca",
-             expectedResult=b"1\n",
-             decacOptions="-n")
-
     doVerify("modulo.deca",
              expectedResult=b"2\n"
                             b"Error: Division by 0\n",
@@ -158,6 +160,26 @@ def doTests():
     doVerify("registerOverflow.deca",
              expectedResult=b"42\n",
              decacOptions="-r 4")
+
+    doVerify("optionBanner.deca",
+             expectedResult=b"Bonjour\n",
+             decacOptions="-b")
+
+    # doVerify("optionParse.deca",
+    #          decacOptions="-p",
+    #          doAssert=False)
+
+    doVerify("optionVerification.deca",
+             expectedResult=b"",
+             decacOptions="-v")
+
+    doVerify("optionNoCheck.deca",
+             expectedResult=b"1\n",
+             decacOptions="-n")
+
+    # doVerify("optionDebug.deca",
+    #          decacOptions="-d -d -d",
+    #          doAssert=False)
 
     """
     ==============================================
@@ -181,14 +203,12 @@ def decacParallel():
     global doParallel
     doParallel = True
     print()
-    print()
-    print()
-    print("=========== Option -P ===========")
+    print("====================== Option -P ======================")
     decacCmd = f"./src/main/bin/decac -P"
     for filePath in allTestedFiles:
         decacCmd += f" ./src/test/deca/{filePath}.deca"
     print("Removing .ass files...")
-    for filePath in allTestedFiles: # To Ensure that -P Recompiles All
+    for filePath in allTestedFiles:  # To Ensure that -P Recompiles All
         os.system(f"\\rm ./src/test/deca/{filePath}.ass")
     print("Remove Successful")
 

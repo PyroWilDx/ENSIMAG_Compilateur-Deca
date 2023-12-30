@@ -26,7 +26,7 @@ public class DecacMain {
             System.exit(1);
         }
         if (options.getPrintBanner()) {
-            System.out.println();
+            System.out.println("== Banner : Gr10 / Gl47 ==");
             // TODO (c'est à dire une bannière ?)
         }
         if (options.getSourceFiles().isEmpty()) {

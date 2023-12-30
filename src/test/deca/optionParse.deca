@@ -1,0 +1,15 @@
+/*
+Test de l'Option -p
+*/
+
+{
+    int x = 1;
+    float y = 2;
+    float z;
+
+    z = x * y + x + x + y;
+    println("z = ", z);
+
+    z = 3.14;
+    printlnx("z = ", z);
+}
