@@ -19,13 +19,15 @@ def doVerify(decaFilePath,
              execError=False, execFail=False,
              input="",
              doAssert=True):
-    allTestedFiles.append(decaFilePath)  # To Test -P Later...
+    if ("-n" not in decacOptions) and (not decacFail):
+        allTestedFiles.append(decaFilePath)  # To Test -P Later...
 
     if doParallel and decacFail:
         return 0
 
+    print(f"=========== {decaFilePath} ===========")
+
     if not doParallel:
-        print(f"=========== {decaFilePath} ===========")
         decacCmd = f"./src/main/bin/decac {decacOptions} ./src/test/deca/{decaFilePath}"
         if decacFail:
             decacCmd += " > /dev/null 2>&1"
@@ -161,6 +163,9 @@ def doTests():
     ==============================================
     """
 
+    if doParallel:
+        return 0
+
     print()
     print("!!!!!!!!!!! Tests Invalides !!!!!!!!!!!")
 
@@ -193,7 +198,8 @@ def main():
     doTests()
 
     # With -P
-    # decacParallel()
+    decacParallel()
+
 
 if __name__ == '__main__':
     main()
