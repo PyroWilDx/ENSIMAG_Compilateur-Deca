@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -48,10 +47,11 @@ public class While extends AbstractInst {
         whileCpt++;
 
         compiler.addLabel(startWhileLabel);
+        // noinspection Duplicates
         condition.codeGenInst(compiler);
-        GPRegister reg = RegUtils.takeBackLastReg();
+        GPRegister reg = compiler.getRegManager().takeBackLastReg();
         compiler.addInstruction(new CMP(0, reg));
-        RegUtils.freeReg(reg);
+        compiler.getRegManager().freeReg(reg);
         compiler.addInstruction(new BEQ(endWhileLabel));
         body.codeGenListInst(compiler);
         compiler.addInstruction(new BRA(startWhileLabel));

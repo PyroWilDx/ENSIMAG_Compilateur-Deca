@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -202,9 +201,9 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = RegUtils.getFreeReg();
+        GPRegister reg = compiler.getRegManager().getFreeReg();
         compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), reg));
-        RegUtils.freeReg(reg);
+        compiler.getRegManager().freeReg(reg);
         // Done
     }
 

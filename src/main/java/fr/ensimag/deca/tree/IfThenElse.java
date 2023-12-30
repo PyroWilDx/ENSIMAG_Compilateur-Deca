@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -56,10 +55,11 @@ public class IfThenElse extends AbstractInst {
         Label endIfThenElseLaBel = new Label("endIfThenElse" + ifThenElseCpt);
         ifThenElseCpt++;
 
+        // noinspection Duplicates
         condition.codeGenInst(compiler);
-        GPRegister reg = RegUtils.takeBackLastReg();
+        GPRegister reg = compiler.getRegManager().takeBackLastReg();
         compiler.addInstruction(new CMP(0, reg));
-        RegUtils.freeReg(reg);
+        compiler.getRegManager().freeReg(reg);
         compiler.addInstruction(new BEQ(startElseLabel));
         thenBranch.codeGenListInst(compiler);
         compiler.addInstruction(new BRA(endIfThenElseLaBel));

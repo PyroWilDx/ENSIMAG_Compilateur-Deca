@@ -1,7 +1,6 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
@@ -83,17 +82,17 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         getLeftOperand().codeGenInst(compiler);
-        GPRegister saveReg = RegUtils.takeBackLastReg();
+        GPRegister saveReg = compiler.getRegManager().takeBackLastReg();
 
         boolean pushed = false;
-        if (RegUtils.isUsingAllRegs()) {
+        if (compiler.getRegManager().isUsingAllRegs()) {
             compiler.addInstruction(new PUSH(saveReg));
-            RegUtils.freeReg(saveReg);
+            compiler.getRegManager().freeReg(saveReg);
             pushed = true;
         }
 
         getRightOperand().codeGenInst(compiler);
-        GPRegister valReg = RegUtils.takeBackLastReg();
+        GPRegister valReg = compiler.getRegManager().takeBackLastReg();
 
         if (pushed) {
             compiler.addInstruction(new LOAD(valReg, Register.R0));
@@ -103,8 +102,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         }
 
         codeGenOp(compiler, valReg, saveReg);
-        RegUtils.freeReg(valReg);
-        RegUtils.freeReg(saveReg);
+        compiler.getRegManager().freeReg(valReg);
+        compiler.getRegManager().freeReg(saveReg);
         // Done
     }
 

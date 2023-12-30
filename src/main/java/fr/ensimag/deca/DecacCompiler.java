@@ -1,5 +1,7 @@
 package fr.ensimag.deca;
 
+import fr.ensimag.deca.codegen.DeclVarManager;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -48,6 +50,9 @@ public class DecacCompiler {
         super();
         this.compilerOptions = compilerOptions;
         this.source = source;
+
+        this.regManager = new RegManager(compilerOptions.getNOfRegs());
+        this.declVarManager = new DeclVarManager();
     }
 
     /**
@@ -175,6 +180,9 @@ public class DecacCompiler {
         }
     }
 
+    private final RegManager regManager;
+    private final DeclVarManager declVarManager;
+
     /**
      * Internal function that does the job of compiling (i.e. calling lexer,
      * verification and code generation).
@@ -261,6 +269,14 @@ public class DecacCompiler {
         DecaParser parser = new DecaParser(tokens);
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
+    }
+
+    public RegManager getRegManager() {
+        return regManager;
+    }
+
+    public DeclVarManager getDeclVarManager() {
+        return declVarManager;
     }
 
 }
