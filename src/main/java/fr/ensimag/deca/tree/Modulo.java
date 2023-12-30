@@ -21,7 +21,7 @@ public class Modulo extends AbstractOpArith {
     protected void codeGenOpArith(DecacCompiler compiler,
                                   DVal valReg, GPRegister saveReg) {
         compiler.addInstruction(new REM(valReg, saveReg));
-        if (!compiler.getCompilerOptions().getNoCheck()) {
+        if (compiler.getCompilerOptions().doCheck()) {
             compiler.addInstruction(new BOV(ErrorUtils.divBy0Label));
         }
         // Done

@@ -1,6 +1,6 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegUtils;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -140,9 +140,9 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrint(DecacCompiler compiler) {
         codeGenInst(compiler);
-        GPRegister reg = RegUtils.takeBackLastReg();
+        GPRegister reg = compiler.getRegManager().takeBackLastReg();
         compiler.addInstruction(new LOAD(reg, Register.R1));
-        RegUtils.freeReg(reg);
+        compiler.getRegManager().freeReg(reg);
 
         if (getType().isInt()) {
             compiler.addInstruction(new WINT());

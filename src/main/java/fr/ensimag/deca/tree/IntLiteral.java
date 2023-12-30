@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -45,9 +44,9 @@ public class IntLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = RegUtils.getFreeReg(); // Shouldn't be NULL
+        GPRegister reg = compiler.getRegManager().getFreeReg(); // Shouldn't be NULL
         compiler.addInstruction(new LOAD(value, reg));
-        RegUtils.freeReg(reg);
+        compiler.getRegManager().freeReg(reg);
         // Done
     }
 

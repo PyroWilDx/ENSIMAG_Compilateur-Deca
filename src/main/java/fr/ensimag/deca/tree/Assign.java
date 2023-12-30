@@ -1,6 +1,6 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegUtils;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -48,9 +48,9 @@ public class Assign extends AbstractBinaryExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         AbstractIdentifier lIdent = (AbstractIdentifier) getLeftOperand();
         getRightOperand().codeGenInst(compiler);
-        GPRegister reg = RegUtils.takeBackLastReg();
+        GPRegister reg = compiler.getRegManager().takeBackLastReg();
         compiler.addInstruction(new STORE(reg, lIdent.getExpDefinition().getOperand()));
-        RegUtils.freeReg(reg);
+        compiler.getRegManager().freeReg(reg);
         // Done
     }
 

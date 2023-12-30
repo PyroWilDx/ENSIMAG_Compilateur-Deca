@@ -1,12 +1,10 @@
 package fr.ensimag.deca;
 
 import java.io.File;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import fr.ensimag.deca.codegen.RegUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -22,14 +20,6 @@ public class CompilerOptions {
     public static final int DEBUG = 2;
     public static final int TRACE = 3;
 
-    public int getDebug() {
-        return debug;
-    }
-
-    public boolean getParallel() {
-        return parallel;
-    }
-
     public boolean getPrintBanner() {
         return printBanner;
     }
@@ -42,21 +32,34 @@ public class CompilerOptions {
         return verification;
     }
 
-    public boolean getNoCheck() {
-        return noCheck;
+    public boolean doCheck() {
+        return !noCheck;
+    }
+
+    public int getNOfRegs() {
+        return nOfRegs;
+    }
+
+    public int getDebug() {
+        return debug;
+    }
+
+    public boolean getParallel() {
+        return parallel;
     }
 
     public List<File> getSourceFiles() {
         return Collections.unmodifiableList(sourceFiles);
     }
 
-    private int debug = 0;
-    private boolean parallel = false;
     private boolean printBanner = false;
     private boolean parse = false;
     private boolean verification = false;
     private boolean noCheck = false;
-    private List<File> sourceFiles = new ArrayList<File>();
+    private int nOfRegs = 16;
+    private int debug = QUIET;
+    private boolean parallel = false;
+    private final List<File> sourceFiles = new ArrayList<File>();
 
     public void parseArgs(String[] args) throws CLIException {
         for (int i = 0; i < args.length; i++) {
@@ -88,11 +91,10 @@ public class CompilerOptions {
                         String nOfRegsStr = args[i + 1];
                         i++;
                         try {
-                            int nOfRegs = Integer.parseInt(nOfRegsStr);
+                            nOfRegs = Integer.parseInt(nOfRegsStr);
                             if (nOfRegs < 4 || nOfRegs > 16) {
                                 throw new NumberFormatException();
                             }
-                            RegUtils.setNRegs(nOfRegs);
                         } catch (NumberFormatException e) {
                             throwError("You must specify an integer between 4 and 16 after -r : -r <Number of Registers>.");
                         }
