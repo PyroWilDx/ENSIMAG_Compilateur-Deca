@@ -1,7 +1,6 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
@@ -31,7 +30,7 @@ public class RegManager {
         return null;
     }
 
-    public GPRegister takeBackLastReg() {
+    public GPRegister getLastReg() {
         return freeRegs.removeFirst();
     }
 
@@ -49,17 +48,17 @@ public class RegManager {
         lastImmediate = dAddr;
     }
 
-    public DVal takeBackLastImmediate() {
+    public DVal getLastImmediate() {
         DVal dVal = lastImmediate;
         lastImmediate = null;
         return dVal;
     }
 
-    public GPRegister loadImmediateIntoFreeReg(DecacCompiler compiler) {
-        DVal lastImmediate = takeBackLastImmediate();
+    public GPRegister getLastRegOrImm(DecacCompiler compiler) {
+        DVal lastImmediate = getLastImmediate();
         GPRegister reg;
         if (lastImmediate == null) {
-            reg = compiler.getRegManager().takeBackLastReg();
+            reg = compiler.getRegManager().getLastReg();
         } else {
             reg = compiler.getRegManager().getFreeReg();
             compiler.addInstruction(new LOAD(lastImmediate, reg));

@@ -6,9 +6,12 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
@@ -36,7 +39,7 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+                           ClassDefinition currentClass) throws ContextualError {
         Type exprType = compiler.environmentType.FLOAT;
         setType(exprType);
         return exprType;
@@ -45,9 +48,10 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = compiler.getRegManager().getFreeReg(); // Shouldn't be NULL
-        compiler.addInstruction(new LOAD(value, reg));
-        compiler.getRegManager().freeReg(reg);
+//        GPRegister reg = compiler.getRegManager().getFreeReg(); // Shouldn't be NULL
+//        compiler.addInstruction(new LOAD(value, reg));
+//        compiler.getRegManager().freeReg(reg);
+        compiler.getRegManager().setLastImmediate(new ImmediateFloat(value));
         // Done
     }
 

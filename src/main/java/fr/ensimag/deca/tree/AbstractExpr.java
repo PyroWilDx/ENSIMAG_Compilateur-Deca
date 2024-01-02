@@ -140,9 +140,9 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrint(DecacCompiler compiler) {
         codeGenInst(compiler);
-        DVal lastImmediate = compiler.getRegManager().takeBackLastImmediate();
+        DVal lastImmediate = compiler.getRegManager().getLastImmediate();
         if (lastImmediate == null) {
-            GPRegister reg = compiler.getRegManager().takeBackLastReg();
+            GPRegister reg = compiler.getRegManager().getLastReg();
             compiler.addInstruction(new LOAD(reg, Register.R1));
             compiler.getRegManager().freeReg(reg);
         } else {

@@ -49,7 +49,7 @@ public class While extends AbstractInst {
         compiler.addLabel(startWhileLabel);
         // noinspection Duplicates
         condition.codeGenInst(compiler);
-        GPRegister reg = compiler.getRegManager().takeBackLastReg();
+        GPRegister reg = compiler.getRegManager().getLastRegOrImm(compiler);
         compiler.addInstruction(new CMP(0, reg));
         compiler.getRegManager().freeReg(reg);
         compiler.addInstruction(new BEQ(endWhileLabel));

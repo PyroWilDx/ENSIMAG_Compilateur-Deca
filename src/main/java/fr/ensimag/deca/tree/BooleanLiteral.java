@@ -7,16 +7,16 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 
 /**
- *
  * @author gl47
  * @date 01/01/2024
  */
-public class BooleanLiteral extends AbstractExpr {
+public class BooleanLiteral extends Literal {
 
     private boolean value;
 
@@ -30,7 +30,7 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+                           ClassDefinition currentClass) throws ContextualError {
         Type exprType = compiler.environmentType.BOOLEAN;
         setType(exprType);
         return exprType;
@@ -38,9 +38,10 @@ public class BooleanLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = compiler.getRegManager().getFreeReg(); // Shouldn't be NULL
-        compiler.addInstruction(new LOAD((value) ? 1 : 0, reg));
-        compiler.getRegManager().freeReg(reg);
+//        GPRegister reg = compiler.getRegManager().getFreeReg(); // Shouldn't be NULL
+//        compiler.addInstruction(new LOAD((value) ? 1 : 0, reg));
+//        compiler.getRegManager().freeReg(reg);
+        compiler.getRegManager().setLastImmediate(new ImmediateInteger((value) ? 1 : 0));
         // Done
     }
 

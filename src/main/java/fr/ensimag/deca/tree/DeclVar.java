@@ -1,6 +1,5 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.DeclVarManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -8,7 +7,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
@@ -60,7 +58,7 @@ public class DeclVar extends AbstractDeclVar {
     protected void codeGenDeclVar(DecacCompiler compiler) {
         compiler.getDeclVarManager().setCurrDeclVarType(type.getType());
         initialization.codeGenInit(compiler);
-        GPRegister reg = compiler.getRegManager().loadImmediateIntoFreeReg(compiler);
+        GPRegister reg = compiler.getRegManager().getLastRegOrImm(compiler);
         DAddr dAddr = new RegisterOffset(compiler.getDeclVarManager().getGbOffset(), Register.GB);
         varName.getExpDefinition().setOperand(dAddr);
         compiler.addInstruction(new STORE(reg, dAddr));

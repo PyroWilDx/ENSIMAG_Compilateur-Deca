@@ -6,7 +6,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
@@ -83,22 +82,23 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         getLeftOperand().codeGenInst(compiler);
-        GPRegister regLeft = compiler.getRegManager().loadImmediateIntoFreeReg(compiler);
+        GPRegister regLeft = compiler.getRegManager().getLastRegOrImm(compiler);
 
         boolean pushed = false;
         if (compiler.getRegManager().isUsingAllRegs()) {
-            compiler.addInstruction(new PUSH(regLeft));
-            compiler.getRegManager().freeReg(regLeft);
-            compiler.getStackManager().incrStackSize();
-            pushed = true;
+            if (!(getRightOperand() instanceof Literal)) {
+                compiler.addInstruction(new PUSH(regLeft));
+                compiler.getRegManager().freeReg(regLeft);
+                compiler.getStackManager().incrStackSize();
+                pushed = true;
+            } // Else, don't need to PUSH because Literal don't need Registers.
         }
-        // TODO (instanceof pour éviter de PUSH, à méditer)
 
         getRightOperand().codeGenInst(compiler);
-        DVal lastImmediateRight = compiler.getRegManager().takeBackLastImmediate();
+        DVal lastImmediateRight = compiler.getRegManager().getLastImmediate();
         GPRegister regRight = null;
         if (lastImmediateRight == null) {
-            regRight = compiler.getRegManager().takeBackLastReg();
+            regRight = compiler.getRegManager().getLastReg();
         }
 
         if (pushed) {
