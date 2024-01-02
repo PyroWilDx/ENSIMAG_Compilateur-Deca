@@ -4,6 +4,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 
 import java.io.PrintStream;
@@ -139,9 +140,14 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     protected void codeGenPrint(DecacCompiler compiler) {
         codeGenInst(compiler);
-        GPRegister reg = compiler.getRegManager().takeBackLastReg();
-        compiler.addInstruction(new LOAD(reg, Register.R1));
-        compiler.getRegManager().freeReg(reg);
+        DVal lastImmediate = compiler.getRegManager().takeBackLastImmediate();
+        if (lastImmediate == null) {
+            GPRegister reg = compiler.getRegManager().takeBackLastReg();
+            compiler.addInstruction(new LOAD(reg, Register.R1));
+            compiler.getRegManager().freeReg(reg);
+        } else {
+            compiler.addInstruction(new LOAD(lastImmediate, Register.R1));
+        }
 
         if (getType().isInt()) {
             compiler.addInstruction(new WINT());

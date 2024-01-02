@@ -138,7 +138,6 @@ public class DecacCompiler {
      */
     public final EnvironmentType environmentType = new EnvironmentType(this);
     public SymbolTable symbolTable = new SymbolTable();
-    // final à méditer
 
     public Symbol createSymbol(String name) {
         if (symbolTable == null) {

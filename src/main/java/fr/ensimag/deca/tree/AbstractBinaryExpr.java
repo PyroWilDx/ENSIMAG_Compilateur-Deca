@@ -6,6 +6,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
@@ -82,30 +83,41 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         getLeftOperand().codeGenInst(compiler);
-        GPRegister saveReg = compiler.getRegManager().takeBackLastReg();
+        GPRegister regLeft = compiler.getRegManager().loadImmediateIntoFreeReg(compiler);
 
         boolean pushed = false;
         if (compiler.getRegManager().isUsingAllRegs()) {
-            compiler.addInstruction(new PUSH(saveReg));
-            compiler.getRegManager().freeReg(saveReg);
+            compiler.addInstruction(new PUSH(regLeft));
+            compiler.getRegManager().freeReg(regLeft);
             compiler.getStackManager().incrStackSize();
             pushed = true;
         }
+        // TODO (instanceof pour éviter de PUSH, à méditer)
 
         getRightOperand().codeGenInst(compiler);
-        GPRegister valReg = compiler.getRegManager().takeBackLastReg();
+        DVal lastImmediateRight = compiler.getRegManager().takeBackLastImmediate();
+        GPRegister regRight = null;
+        if (lastImmediateRight == null) {
+            regRight = compiler.getRegManager().takeBackLastReg();
+        }
 
         if (pushed) {
-            compiler.addInstruction(new LOAD(valReg, Register.R0));
-            saveReg = valReg;
-            valReg = Register.R0;
-            compiler.addInstruction(new POP(saveReg));
+            if (lastImmediateRight == null) {
+                compiler.addInstruction(new LOAD(regRight, Register.R0));
+                regLeft = regRight;
+                regRight = Register.R0;
+            } else {
+                regLeft = compiler.getRegManager().getFreeReg();
+            }
+            compiler.addInstruction(new POP(regLeft));
             compiler.getStackManager().decrStackSize();
         }
 
-        codeGenOp(compiler, valReg, saveReg);
-        compiler.getRegManager().freeReg(valReg);
-        compiler.getRegManager().freeReg(saveReg);
+        DVal dVal = (lastImmediateRight == null) ? regRight : lastImmediateRight;
+        codeGenOp(compiler, dVal, regLeft);
+
+        compiler.getRegManager().freeReg(regRight);
+        compiler.getRegManager().freeReg(regLeft);
         // Done
     }
 

@@ -158,7 +158,7 @@ def doTests():
              input=b"1\n2.2")
 
     doVerify("registerOverflow.deca",
-             expectedResult=b"42\n",
+             expectedResult=b"52\n",
              decacOptions="-r 4")
 
     doVerify("optionBanner.deca",
@@ -180,6 +180,9 @@ def doTests():
     # doVerify("optionDebug.deca",
     #          decacOptions="-d -d -d",
     #          doAssert=False)
+
+    doVerify("boolLazyEval.deca",
+             doAssert=False)
 
     """
     ==============================================

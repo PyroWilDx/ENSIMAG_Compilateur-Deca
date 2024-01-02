@@ -60,7 +60,10 @@ public class Program extends AbstractProgram {
 
         compiler.addInstruction(iTSTO,
                 new TSTO(compiler.getStackManager().getMaxStackSize()));
-        compiler.addInstruction(iTSTO + 1, new BOV(ErrorUtils.stackOverflowLabel));
+        compiler.addInstruction(iTSTO + 1,
+                new BOV(ErrorUtils.stackOverflowLabel));
+        compiler.addInstruction(iTSTO + 2,
+                new ADDSP(compiler.getDeclVarManager().getGbOffset() - 1));
 
         compiler.addComment("");
 

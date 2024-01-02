@@ -10,7 +10,9 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -52,7 +54,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         getOperand().codeGenInst(compiler);
-        GPRegister reg = compiler.getRegManager().takeBackLastReg();
+        GPRegister reg = compiler.getRegManager().loadImmediateIntoFreeReg(compiler);
         codeGenOpUnary(compiler, reg);
         compiler.getRegManager().freeReg(reg);
         // Done
