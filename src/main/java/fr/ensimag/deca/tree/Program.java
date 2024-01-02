@@ -52,14 +52,22 @@ public class Program extends AbstractProgram {
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
         compiler.addComment("Start of Main Program");
+        int iTSTO = compiler.getProgramLineCount();
         compiler.addComment("Main Program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
         compiler.addComment("End of Main Program");
 
+        compiler.addInstruction(iTSTO,
+                new TSTO(compiler.getStackManager().getMaxStackSize()));
+        compiler.addInstruction(iTSTO + 1, new BOV(ErrorUtils.stackOverflowLabel));
+
         compiler.addComment("");
 
         compiler.addComment("Start of Error Labels");
+        ErrorUtils.codeGenError(compiler,
+                "Error: Stack Overflow",
+                ErrorUtils.stackOverflowLabel);
         ErrorUtils.codeGenError(compiler,
                 "Error: Division by 0",
                 ErrorUtils.divBy0Label);

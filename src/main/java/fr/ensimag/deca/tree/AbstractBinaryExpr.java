@@ -88,6 +88,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         if (compiler.getRegManager().isUsingAllRegs()) {
             compiler.addInstruction(new PUSH(saveReg));
             compiler.getRegManager().freeReg(saveReg);
+            compiler.getStackManager().incrStackSize();
             pushed = true;
         }
 
@@ -99,6 +100,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             saveReg = valReg;
             valReg = Register.R0;
             compiler.addInstruction(new POP(saveReg));
+            compiler.getStackManager().decrStackSize();
         }
 
         codeGenOp(compiler, valReg, saveReg);

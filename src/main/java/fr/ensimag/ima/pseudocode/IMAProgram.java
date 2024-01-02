@@ -29,6 +29,10 @@ public class IMAProgram {
         lines.add(new Line(i));
     }
 
+    public void addInstruction(int index, Instruction i) {
+        lines.add(index, new Line(i));
+    }
+
     public void addInstruction(Instruction i, String s) {
         lines.add(new Line(null, i, s));
     }
@@ -74,5 +78,9 @@ public class IMAProgram {
     
     public void addFirst(Instruction i, String comment) {
         addFirst(new Line(null, i, comment));
+    }
+
+    public int getLineCount() {
+        return lines.size();
     }
 }
