@@ -145,7 +145,7 @@ def doTests():
              execError=True)
 
     doVerify("boolLazyEval.deca",
-             doAssert=False)
+             expectedResult=b"x est dans l'intervalle [0, 5]\n")
 
     doVerify("ifThenElse.deca",
              expectedResult=b"1234567\n")

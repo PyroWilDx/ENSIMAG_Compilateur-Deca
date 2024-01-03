@@ -42,11 +42,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
             GPRegister reg = compiler.getRegManager().getFreeReg();
 
             compiler.addInstruction(new LOAD(getNotLazyValue(), reg));
-            if (this instanceof And) {
-                compiler.addInstruction(new BRA(cM.getLastCondTrueLabel()));
-            } else {
-                compiler.addInstruction(new BRA(cM.getLastCondFalseLabel()));
-            }
+            compiler.addInstruction(new BRA(getLastCondLabel(cM)));
 
             compiler.addLabel(lazyCondLabel);
             compiler.addInstruction(new LOAD(getLazyValue(), reg));
@@ -67,6 +63,8 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
     protected abstract int getNotLazyValue();
 
     protected abstract int getLazyValue();
+
+    protected abstract Label getLastCondLabel(CondManager cM);
 
     @Override
     protected void codeGenOp(DecacCompiler compiler,

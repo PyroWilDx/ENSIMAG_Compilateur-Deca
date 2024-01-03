@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.codegen.CondManager;
+import fr.ensimag.ima.pseudocode.Label;
 
 /**
  * @author gl47
@@ -31,6 +32,11 @@ public class Or extends AbstractOpBool {
     @Override
     protected int getLazyValue() {
         return (inNot) ? 0 : 1;
+    }
+
+    @Override
+    protected Label getLastCondLabel(CondManager cM) {
+        return cM.getLastCondFalseLabel();
     }
 
     @Override
