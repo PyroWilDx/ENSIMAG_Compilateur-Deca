@@ -8,6 +8,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 import java.io.PrintStream;
@@ -40,25 +42,20 @@ public class BooleanLiteral extends Literal {
     protected void codeGenInst(DecacCompiler compiler) {
         CondManager cM = compiler.getCondManager();
         if (cM.isInCond()) {
+            Instruction bInst = null;
+            Label tLabel = cM.getCurrCondTrueLabel();
+            Label fLabel = cM.getCurrCondFalseLabel();
             if (cM.isInAnd()) {
-                if (!value && !cM.isInNot()) {
-                    compiler.addInstruction(new BRA(cM.getCurrCondFalseLabel()));
-                } else if (value && cM.isInNot()) {
-                    compiler.addInstruction(new BRA(cM.getCurrCondTrueLabel()));
-                }
+                if (!value && !inNot) bInst = new BRA(fLabel);
+                else if (value && inNot) bInst = new BRA(fLabel);
             } else if (cM.isInOr()) {
-                if (value && !cM.isInNot()) {
-                    compiler.addInstruction(new BRA(cM.getCurrCondTrueLabel()));
-                } else if (!value && cM.isInNot()) {
-                    compiler.addInstruction(new BRA(cM.getCurrCondFalseLabel()));
-                }
+                if (value && !inNot) new BRA(tLabel);
+                else if (!value && inNot) new BRA(tLabel);
             } else {
-                if (!value && !cM.isInNot()) {
-                    compiler.addInstruction(new BRA(cM.getCurrCondFalseLabel()));
-                } else if (value && cM.isInNot()) {
-                    compiler.addInstruction(new BRA(cM.getCurrCondTrueLabel()));
-                }
+                if (!value && !inNot) bInst = new BRA(fLabel);
+                else if (value && inNot) bInst = new BRA(fLabel);
             }
+            if (bInst != null) compiler.addInstruction(bInst);
         } else {
             compiler.getRegManager().setLastImmediate(new ImmediateInteger((value) ? 1 : 0));
         }

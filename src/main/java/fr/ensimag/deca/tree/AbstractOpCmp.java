@@ -20,22 +20,40 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        compiler.getCondManager().doOpCmp();
+
+        super.codeGenInst(compiler);
+
+        compiler.getCondManager().resetOpCmp();
+    }
+
+    @Override
     protected void codeGenOp(DecacCompiler compiler,
                              DVal valReg, GPRegister saveReg) {
-        compiler.addInstruction(new CMP(valReg, saveReg));
         CondManager cM = compiler.getCondManager();
+        compiler.addInstruction(new CMP(valReg, saveReg));
+        Instruction opInst;
         if (cM.isInCond()) {
+            Label tLabel = cM.getCurrCondTrueLabel();
+            Label fLabel = cM.getCurrCondFalseLabel();
             if (cM.isInAnd()) {
-                compiler.addInstruction(getBranchInvOpCmpInst(cM.getCurrCondFalseLabel()));
+                if (inNot) opInst = getBranchOpCmpInst(fLabel);
+                else opInst = getBranchInvOpCmpInst(fLabel);
             } else if (cM.isInOr()) {
-                compiler.addInstruction(getBranchOpCmpInst(cM.getCurrCondTrueLabel()));
+                if (inNot) opInst = getBranchInvOpCmpInst(tLabel);
+                else opInst = getBranchOpCmpInst(tLabel);
             } else {
-                compiler.addInstruction(getBranchInvOpCmpInst(cM.getCurrCondFalseLabel()));
+                if (inNot) opInst = getBranchOpCmpInst(fLabel);
+                else opInst = getBranchInvOpCmpInst(fLabel);
             }
         } else {
             GPRegister reg = compiler.getRegManager().getFreeReg();
-            compiler.addInstruction(getOpCmpInst(reg));
+            if (inNot) opInst = getInvOpCmpInst(reg);
+            else opInst = getOpCmpInst(reg);
+            compiler.getRegManager().freeReg(reg);
         }
+        compiler.addInstruction(opInst);
     }
 
     protected abstract Instruction getBranchInvOpCmpInst(Label bLabel);
@@ -43,4 +61,6 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     protected abstract Instruction getBranchOpCmpInst(Label bLabel);
 
     protected abstract Instruction getOpCmpInst(GPRegister reg);
+
+    protected abstract Instruction getInvOpCmpInst(GPRegister reg);
 }

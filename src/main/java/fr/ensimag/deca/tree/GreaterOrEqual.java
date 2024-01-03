@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BGE;
 import fr.ensimag.ima.pseudocode.instructions.BLT;
 import fr.ensimag.ima.pseudocode.instructions.SGE;
+import fr.ensimag.ima.pseudocode.instructions.SLT;
 
 /**
  * Operator "x >= y"
@@ -34,6 +35,11 @@ public class GreaterOrEqual extends AbstractOpIneq {
     @Override
     protected Instruction getOpCmpInst(GPRegister reg) {
         return new SGE(reg);
+    }
+
+    @Override
+    protected Instruction getInvOpCmpInst(GPRegister reg) {
+        return new SLT(reg);
     }
 
     @Override

@@ -158,6 +158,8 @@ public abstract class AbstractExpr extends AbstractInst {
         // Done
     }
 
+    protected boolean inNot = false;
+
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         // See Children

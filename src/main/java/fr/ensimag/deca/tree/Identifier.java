@@ -1,14 +1,18 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -18,7 +22,7 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2024
  */
 public class Identifier extends AbstractIdentifier {
-    
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -34,12 +38,11 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * ClassDefinition.
-     * 
+     * <p>
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *             if the definition is not a class definition.
+     *
+     * @throws DecacInternalError if the definition is not a class definition.
      */
     @Override
     public ClassDefinition getClassDefinition() {
@@ -56,12 +59,11 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * MethodDefinition.
-     * 
+     * <p>
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *             if the definition is not a method definition.
+     *
+     * @throws DecacInternalError if the definition is not a method definition.
      */
     @Override
     public MethodDefinition getMethodDefinition() {
@@ -78,12 +80,11 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * FieldDefinition.
-     * 
+     * <p>
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *
+     * @throws DecacInternalError if the definition is not a field definition.
      */
     @Override
     public FieldDefinition getFieldDefinition() {
@@ -100,12 +101,11 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * VariableDefinition.
-     * 
+     * <p>
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *
+     * @throws DecacInternalError if the definition is not a field definition.
      */
     @Override
     public VariableDefinition getVariableDefinition() {
@@ -121,12 +121,11 @@ public class Identifier extends AbstractIdentifier {
 
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a ExpDefinition.
-     * 
+     * <p>
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *
+     * @throws DecacInternalError if the definition is not a field definition.
      */
     @Override
     public ExpDefinition getExpDefinition() {
@@ -160,7 +159,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+                           ClassDefinition currentClass) throws ContextualError {
         Definition def = localEnv.get(this.name);
         if (def == null) {
             throw new ContextualError("Undiclared identifier : "
@@ -173,6 +172,7 @@ public class Identifier extends AbstractIdentifier {
 
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
+     *
      * @param compiler contains "env_types" attribute
      */
     @Override
@@ -186,7 +186,7 @@ public class Identifier extends AbstractIdentifier {
         return typeDef.getType();
         // Done
     }
-    
+
     private Definition definition;
 
     @Override
@@ -203,6 +203,24 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGenInst(DecacCompiler compiler) {
         GPRegister reg = compiler.getRegManager().getFreeReg();
         compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), reg));
+        CondManager cM = compiler.getCondManager();
+        if (cM.isInCond() && !cM.isDoingOpCmp()) {
+            compiler.addInstruction(new CMP(0, reg));
+            Instruction bInst;
+            Label tLabel = cM.getCurrCondTrueLabel();
+            Label fLabel = cM.getCurrCondFalseLabel();
+            if (cM.isInAnd()) {
+                if (inNot) bInst = new BNE(fLabel);
+                else bInst = new BEQ(fLabel);
+            } else if (cM.isInOr()) {
+                if (inNot) bInst = new BEQ(tLabel);
+                else bInst = new BNE(tLabel);
+            } else {
+                if (inNot) bInst = new BNE(fLabel);
+                else bInst = new BEQ(fLabel);
+            }
+            compiler.addInstruction(bInst);
+        }
         compiler.getRegManager().freeReg(reg);
         // Done
     }

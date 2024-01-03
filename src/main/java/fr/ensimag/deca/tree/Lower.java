@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BGE;
 import fr.ensimag.ima.pseudocode.instructions.BLT;
+import fr.ensimag.ima.pseudocode.instructions.SGE;
 import fr.ensimag.ima.pseudocode.instructions.SLT;
 
 /**
@@ -33,6 +34,11 @@ public class Lower extends AbstractOpIneq {
     @Override
     protected Instruction getOpCmpInst(GPRegister reg) {
         return new SLT(reg);
+    }
+
+    @Override
+    protected Instruction getInvOpCmpInst(GPRegister reg) {
+        return new SGE(reg);
     }
 
 

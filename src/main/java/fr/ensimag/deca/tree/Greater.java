@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BGT;
 import fr.ensimag.ima.pseudocode.instructions.BLE;
 import fr.ensimag.ima.pseudocode.instructions.SGT;
+import fr.ensimag.ima.pseudocode.instructions.SLE;
 
 /**
  * @author gl47
@@ -32,6 +33,11 @@ public class Greater extends AbstractOpIneq {
     @Override
     protected Instruction getOpCmpInst(GPRegister reg) {
         return new SGT(reg);
+    }
+
+    @Override
+    protected Instruction getInvOpCmpInst(GPRegister reg) {
+        return new SLE(reg);
     }
 
     @Override

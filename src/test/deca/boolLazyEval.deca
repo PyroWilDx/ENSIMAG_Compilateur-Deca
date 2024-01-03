@@ -12,21 +12,82 @@ Test pour l'évaluation paresseuses d'expressions booléennes.
         println("x n'est pas dans l'intervalle [0, 5]");
     }
 
+    b0 = true;
+    if (!b0) {
+        println("KO_1");
+    }
+    b0 = false;
+    if (b0) {
+        println("KO_2");
+    }
+    b0 = false;
+    b0 = !b0 || (x == 1 / 0); // true
+    if (!b0) {
+        println("KO_3");
+    }
+    b0 = false;
+    b0 = b0 && (x == 1 / 0); // false
+    if (b0) {
+        println("KO_4");
+    }
+    b0 = b0 || !b0 || (x == 1 / 0); // true
+    if (!b0) {
+        println("KO_5");
+    }
+    b0 = b0 && !b0 && (x == 1 / 0); // false
+    if (b0) {
+        println("KO_6");
+    }
+    b0 = true;
+
+    if (!b0) {
+        println("KO_7");
+    }
+    b0 = true;
+    b0 = !!!!b0; // true
+    if (!b0) {
+        println("KO_8");
+    }
+    b0 = true;
+    b0 = !!!!!b0; // false
+    if (b0) {
+        println("KO_9");
+    }
     b0 = (x >= 0) || (x == 1 / 0); // true
-    println(1);
+    if (!b0) {
+        println("KO_10");
+    }
     b0 = (x < 0) && (x == 1 / 0); // false
-    println(2);
+    if (b0) {
+        println("KO_11");
+    }
     b0 = !((x >= 0) || (x == 1 / 0)); // false
-    println(3);
+    if (b0) {
+        println("KO_12");
+    }
     b0 = !((x < 0) && (x == 1 / 0)); // true
-    println(4);
+    if (!b0) {
+        println("KO_13");
+    }
     b0 = (x >= 0) && (x >= 1) || (x >= 0) || (x == 1 / 0); // true
-    println(5);
+    if (!b0) {
+        println("KO_14");
+    }
     b0 = (x >= 0) && (x >= 1) || (x < 0) || (x == 0); // true
-    println(6);
+    if (!b0) {
+        println("KO_15");
+    }
     b0 = !((x >= 0) || (x == 1 / 0)) || !((x < 0) && (x == 1 / 0)); // true
-    println(7);
+    if (!b0) {
+        println("KO_16");
+    }
     b0 = !((x >= 0) || (x == 1 / 0)) && !((x < 0) && (x == 1 / 0)); // false
-    println(8);
+    if (b0) {
+        println("KO_17");
+    }
+    b0 = (x >= 0) && (x >= 0) && (x >= 0) && (x < 0); // false
+    if (b0) {
+        println("KO_18");
+    }
 }
 

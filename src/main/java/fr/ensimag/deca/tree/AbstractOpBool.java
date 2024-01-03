@@ -28,7 +28,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         CondManager cM = compiler.getCondManager();
         addOperation(cM);
 
-        if (!cM.isInCond()) {
+        if (!cM.isInIfOrWhile() && cM.areLastOpDiff()) {
             int idCpt = compiler.getCondManager().getAndIncrIdCpt();
             lazyCondLabel = new Label("lazyCond" + idCpt);
             endLazyCondLabel = new Label("endLazyCond" + idCpt);
@@ -41,11 +41,11 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         if (lazyCondLabel != null && endLazyCondLabel != null) {
             GPRegister reg = compiler.getRegManager().getFreeReg();
 
-            compiler.addInstruction(new LOAD(getNotLazyValue(cM.isInNot()), reg));
+            compiler.addInstruction(new LOAD(getNotLazyValue(), reg));
             compiler.addInstruction(new BRA(endLazyCondLabel));
 
             compiler.addLabel(lazyCondLabel);
-            compiler.addInstruction(new LOAD(getLazyValue(cM.isInNot()), reg));
+            compiler.addInstruction(new LOAD(getLazyValue(), reg));
 
             compiler.getRegManager().freeReg(reg);
 
@@ -60,9 +60,9 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     protected abstract void addCondLabels(CondManager cM);
 
-    protected abstract int getNotLazyValue(boolean isInNot);
+    protected abstract int getNotLazyValue();
 
-    protected abstract int getLazyValue(boolean isInNot);
+    protected abstract int getLazyValue();
 
     @Override
     protected void codeGenOp(DecacCompiler compiler,

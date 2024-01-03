@@ -27,7 +27,6 @@ public class DecacMain {
         }
         if (options.getPrintBanner()) {
             System.out.println("== Banner : Gr10 / Gl47 ==");
-            // TODO (c'est à dire une bannière ?)
         }
         if (options.getSourceFiles().isEmpty()) {
             System.out.println("Usage : ./decac -Option1 -Option2 ... -OptionN <Source File 1> <Source File 2> ... <Source File N>");
@@ -49,7 +48,6 @@ public class DecacMain {
             } catch (InterruptedException e) {
                 error = true;
             }
-            // TODO (Test Parallèle)
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);

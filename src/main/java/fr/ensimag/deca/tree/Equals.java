@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BNE;
 import fr.ensimag.ima.pseudocode.instructions.SEQ;
+import fr.ensimag.ima.pseudocode.instructions.SNE;
 
 /**
  * @author gl47
@@ -32,6 +33,11 @@ public class Equals extends AbstractOpExactCmp {
     @Override
     protected Instruction getOpCmpInst(GPRegister reg) {
         return new SEQ(reg);
+    }
+
+    @Override
+    protected Instruction getInvOpCmpInst(GPRegister reg) {
+        return new SNE(reg);
     }
 
     @Override

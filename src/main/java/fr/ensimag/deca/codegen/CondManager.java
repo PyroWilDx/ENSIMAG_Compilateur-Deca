@@ -12,14 +12,13 @@ public class CondManager {
     }
 
     private int idCpt;
-    private int currNotCpt;
     private final LinkedList<Label> condTrueLabelStack;
     private final LinkedList<Label> condFalseLabelStack;
     private final LinkedList<Operation> operationStack;
+    private boolean doingOpCmp;
 
     public CondManager() {
         this.idCpt = 0;
-        this.currNotCpt = 0;
         this.condTrueLabelStack = new LinkedList<>();
         this.condFalseLabelStack = new LinkedList<>();
         this.operationStack = new LinkedList<>();
@@ -29,20 +28,13 @@ public class CondManager {
         return idCpt++;
     }
 
-    public void incrNotCpt() {
-        currNotCpt++;
-    }
-
-    public void decrNotCpt() {
-        currNotCpt--;
-    }
-
-    public boolean isInNot() {
-        return currNotCpt % 2 != 0;
-    }
-
     public boolean isInCond() {
         return !condTrueLabelStack.isEmpty() || !condFalseLabelStack.isEmpty();
+    }
+
+    public boolean isInIfOrWhile() {
+        return condTrueLabelStack.size() > operationStack.size() ||
+                condFalseLabelStack.size() > operationStack.size();
     }
 
     public void popCondLabels() {
@@ -56,12 +48,10 @@ public class CondManager {
     }
 
     public Label getCurrCondTrueLabel() {
-        if (isInNot()) return condFalseLabelStack.peekFirst();
         return condTrueLabelStack.peekFirst();
     }
 
     public Label getCurrCondFalseLabel() {
-        if (isInNot()) return condTrueLabelStack.peekFirst();
         return condFalseLabelStack.peekFirst();
     }
 
@@ -71,6 +61,11 @@ public class CondManager {
 
     public boolean isInOr() {
         return operationStack.peekFirst() == Operation.OR;
+    }
+
+    public boolean areLastOpDiff() {
+        if (operationStack.size() < 2) return true;
+        return operationStack.get(0) != operationStack.get(1);
     }
 
     public void popOperation() {
@@ -83,6 +78,18 @@ public class CondManager {
 
     public void addOrOperation() {
         operationStack.addFirst(Operation.OR);
+    }
+
+    public void doOpCmp() {
+        doingOpCmp = true;
+    }
+
+    public void resetOpCmp() {
+        doingOpCmp = false;
+    }
+
+    public boolean isDoingOpCmp() {
+        return doingOpCmp;
     }
 
 }

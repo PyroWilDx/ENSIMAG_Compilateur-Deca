@@ -138,8 +138,6 @@ public class CompilerOptions {
         } else {
             logger.info("Java assertions disabled");
         }
-
-        // TODO (Jsp)
     }
 
     protected void displayUsage() {

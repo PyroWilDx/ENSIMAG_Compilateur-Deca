@@ -24,13 +24,13 @@ public class And extends AbstractOpBool {
     }
 
     @Override
-    protected int getNotLazyValue(boolean isInNot) {
-        return (isInNot) ? 0 : 1;
+    protected int getNotLazyValue() {
+        return (inNot) ? 0 : 1;
     }
 
     @Override
-    protected int getLazyValue(boolean isInNot) {
-        return (isInNot) ? 1 : 0;
+    protected int getLazyValue() {
+        return (inNot) ? 1 : 0;
     }
 
     @Override
