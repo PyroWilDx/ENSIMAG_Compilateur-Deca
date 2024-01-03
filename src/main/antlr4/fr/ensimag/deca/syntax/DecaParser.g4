@@ -483,33 +483,43 @@ list_classes returns[ListDeclClass tree]
 
       (c1=class_decl {
         $tree.add($c1.tree);
+        setLocation($tree, $c1.start);
         }
       )*
     ;
 
 class_decl returns[DeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
-        $tree = new DeclClass();
+        $tree = new DeclClass($name.tree, $superclass.tree, $class_body.fields, $class_body.methods);
+        setLocation($tree, $name.start);
         // TODO: Add parameters to DeclClass constructor to accept superclass and class_body
         }
     ;
 
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
+        $tree = $ident.tree;
         }
     | /* epsilon */ {
+        $tree = new Identifier(this.getDecacCompiler().createSymbol("object"));
         }
     ;
 
-class_body
+class_body returns[ListDeclMethod methods, ListDeclField fields]
+@init {
+    ListDeclMethod methods = new ListDeclMethod();
+    ListDeclField fields = new ListDeclField();
+}
     : (m=decl_method {
+            methods.add($m.tree);
         }
-      | decl_field_set
+      | decl_field_set[fields] {
+      }
       )*
     ;
 
-decl_field_set
-    : v=visibility t=type list_decl_field
+decl_field_set[ListDeclField fields]
+    : v=visibility t=type list_decl_field[fields]
       SEMI
     ;
 
@@ -520,13 +530,17 @@ visibility
         }
     ;
 
-list_decl_field
-    : dv1=decl_field
-        (COMMA dv2=decl_field
+list_decl_field[ListDeclField fields]
+    : dv1=decl_field {
+        $fields.add($dv1.tree);
+    }
+        (COMMA dv2=decl_field {
+            $fields.add($dv2.tree);
+        }
       )*
     ;
 
-decl_field
+decl_field  returns[AbstractDeclField tree]
     : i=ident {
         }
       (EQUALS e=expr {
@@ -535,7 +549,7 @@ decl_field
         }
     ;
 
-decl_method
+decl_method returns[AbstractDeclMethod tree]
 @init {
 }
     : type ident OPARENT params=list_params CPARENT (block {
