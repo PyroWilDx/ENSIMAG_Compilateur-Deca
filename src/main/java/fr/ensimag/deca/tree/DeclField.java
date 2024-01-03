@@ -8,7 +8,7 @@ public class DeclField extends AbstractDeclField{
     private final Visibility visibility; // TODO jsppppp
     private final AbstractIdentifier type;
     private final AbstractIdentifier name;
-    private AbstractInitialization init;
+    private final AbstractInitialization init;
 
     public DeclField(Visibility visibility,AbstractIdentifier type,
                      AbstractIdentifier name) {

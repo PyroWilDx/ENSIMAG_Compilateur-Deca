@@ -563,6 +563,10 @@ decl_method returns[AbstractDeclMethod tree]
 @init {
 }
     : type ident OPARENT params=list_params CPARENT (block {
+        setLocation($ident.tree, $ident.start);
+        setLocation($params.tree, $params.start);
+        $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, $block.decls, $block.insts);
+        setLocation($tree, $type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
         }
@@ -570,9 +574,15 @@ decl_method returns[AbstractDeclMethod tree]
         }
     ;
 
-list_params
+list_params returns[ListParam tree]
+@init {
+        $tree = new ListParam();
+
+}
     : (p1=param {
+        $tree.add($p1.tree);
         } (COMMA p2=param {
+        $tree.add($p2.tree);
         }
       )*)?
     ;
@@ -588,7 +598,9 @@ multi_line_string returns[String text, Location location]
         }
     ;
 
-param
+param returns[AbstractParam tree]
     : type ident {
+        setLocation($ident.tree, $ident.start);
+        $tree = new Param($type.tree, $ident.tree);
         }
     ;
