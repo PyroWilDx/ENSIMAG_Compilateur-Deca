@@ -77,17 +77,33 @@ Test pour l'évaluation paresseuses d'expressions booléennes.
     if (!b0) {
         println("KO_15");
     }
+    b0 = (x <= 0) || (x <= 1) && (x == 4) && (x <= 10); // false
+    if (b0) {
+        println("KO_16");
+    }
+    b0 = (x >= 0) || (x <= 0) && (x != 4) && (x < 1); // true
+    if (!b0) {
+        println("KO_17");
+    }
     b0 = !((x >= 0) || (x == 1 / 0)) || !((x < 0) && (x == 1 / 0)); // true
     if (!b0) {
-        println("KO_16");
+        println("KO_18");
     }
     b0 = !((x >= 0) || (x == 1 / 0)) && !((x < 0) && (x == 1 / 0)); // false
     if (b0) {
-        println("KO_17");
+        println("KO_19");
     }
     b0 = (x >= 0) && (x >= 0) && (x >= 0) && (x < 0); // false
     if (b0) {
-        println("KO_18");
+        println("KO_20");
+    }
+    b0 = (x < 0) || (x < 0) || (x < 0) || (x < 0); // false
+    if (b0) {
+        println("KO_21");
+    }
+    b0 = (x < 0) || (x < 0) || (x < 0) || (x > 0); // true
+    if (!b0) {
+        println("KO_22");
     }
 }
 

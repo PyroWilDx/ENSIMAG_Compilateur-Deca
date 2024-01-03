@@ -55,6 +55,14 @@ public class CondManager {
         return condFalseLabelStack.peekFirst();
     }
 
+    public Label getLastCondTrueLabel() {
+        return condTrueLabelStack.peekLast();
+    }
+
+    public Label getLastCondFalseLabel() {
+        return condFalseLabelStack.peekLast();
+    }
+
     public boolean isInAnd() {
         return operationStack.peekFirst() == Operation.AND;
     }
