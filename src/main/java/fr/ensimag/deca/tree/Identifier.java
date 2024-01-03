@@ -220,6 +220,11 @@ public class Identifier extends AbstractIdentifier {
                 else bInst = new BEQ(fLabel);
             }
             compiler.addInstruction(bInst);
+        } else if (getExpDefinition().getType().isBoolean()) {
+            if (inNot) {
+                compiler.addInstruction(new CMP(0, reg));
+                compiler.addInstruction(new SEQ(reg));
+            }
         }
         compiler.getRegManager().freeReg(reg);
         // Done
