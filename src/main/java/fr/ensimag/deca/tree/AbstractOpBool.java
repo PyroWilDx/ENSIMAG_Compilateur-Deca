@@ -53,6 +53,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
             compiler.getCondManager().popCondLabels();
         }
+        compiler.getCondManager().popOperation();
     }
 
     protected abstract void addOperation(CondManager cM);

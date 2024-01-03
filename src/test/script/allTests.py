@@ -144,8 +144,8 @@ def doTests():
                             b"Error: Division by 0\n",
              execError=True)
 
-    # doVerify("boolLazyEval.deca",
-    #          doAssert=False)
+    doVerify("boolLazyEval.deca",
+             doAssert=False)
 
     doVerify("ifThenElse.deca",
              expectedResult=b"1234567\n")

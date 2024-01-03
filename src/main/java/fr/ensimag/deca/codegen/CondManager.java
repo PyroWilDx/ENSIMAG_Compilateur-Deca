@@ -7,16 +7,15 @@ import java.util.LinkedList;
 public class CondManager {
 
     public enum Operation {
-        NONE,
         AND,
         OR
     }
 
     private int idCpt;
     private int currNotCpt;
-    private LinkedList<Label> condTrueLabelStack;
-    private LinkedList<Label> condFalseLabelStack;
-    private LinkedList<Operation> operationStack;
+    private final LinkedList<Label> condTrueLabelStack;
+    private final LinkedList<Label> condFalseLabelStack;
+    private final LinkedList<Operation> operationStack;
 
     public CondManager() {
         this.idCpt = 0;
