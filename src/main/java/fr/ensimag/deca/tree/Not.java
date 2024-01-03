@@ -17,9 +17,17 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        compiler.getCondManager().incrNotCpt();
+
+        getOperand().codeGenInst(compiler);
+
+        compiler.getCondManager().decrNotCpt();
+    }
+
+    @Override
     protected void codeGenOpUnary(DecacCompiler compiler, GPRegister reg) {
-        compiler.addInstruction(new CMP(0, reg));
-        compiler.addInstruction(new SEQ(reg));
+        // Not Used
     }
 
     @Override

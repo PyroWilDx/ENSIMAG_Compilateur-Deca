@@ -48,9 +48,6 @@ public class FloatLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-//        GPRegister reg = compiler.getRegManager().getFreeReg(); // Shouldn't be NULL
-//        compiler.addInstruction(new LOAD(value, reg));
-//        compiler.getRegManager().freeReg(reg);
         compiler.getRegManager().setLastImmediate(new ImmediateFloat(value));
         // Done
     }

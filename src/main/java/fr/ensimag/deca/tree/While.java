@@ -6,24 +6,20 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
 import org.apache.commons.lang.Validate;
 
 /**
- *
  * @author gl47
  * @date 01/01/2024
  */
 public class While extends AbstractInst {
     private AbstractExpr condition;
     private ListInst body;
-    private static int whileCpt = 0;
 
     public AbstractExpr getCondition() {
         return condition;
@@ -42,17 +38,17 @@ public class While extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        Label startWhileLabel = new Label("startWhile" + whileCpt);
-        Label endWhileLabel = new Label("endWhile" + whileCpt);
-        whileCpt++;
+        int idCpt = compiler.getCondManager().getAndIncrIdCpt();
+        Label startWhileLabel = new Label("startWhile" + idCpt);
+        Label startBodyLabel = new Label("whileBody" + idCpt);
+        Label endWhileLabel = new Label("endWhile" + idCpt);
+
+        compiler.getCondManager().addCondLabels(startBodyLabel, endWhileLabel);
 
         compiler.addLabel(startWhileLabel);
-        // noinspection Duplicates
         condition.codeGenInst(compiler);
-        GPRegister reg = compiler.getRegManager().getLastRegOrImm(compiler);
-        compiler.addInstruction(new CMP(0, reg));
-        compiler.getRegManager().freeReg(reg);
-        compiler.addInstruction(new BEQ(endWhileLabel));
+        compiler.getCondManager().popCondLabels();
+        compiler.addLabel(startBodyLabel);
         body.codeGenListInst(compiler);
         compiler.addInstruction(new BRA(startWhileLabel));
         compiler.addLabel(endWhileLabel);
@@ -61,7 +57,7 @@ public class While extends AbstractInst {
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass, Type returnType)
+                              ClassDefinition currentClass, Type returnType)
             throws ContextualError {
         this.condition.verifyCondition(compiler, localEnv, currentClass);
         this.body.verifyListInst(compiler, localEnv, currentClass, returnType);

@@ -1,14 +1,14 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 import java.io.PrintStream;
 
@@ -38,10 +38,30 @@ public class BooleanLiteral extends Literal {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-//        GPRegister reg = compiler.getRegManager().getFreeReg(); // Shouldn't be NULL
-//        compiler.addInstruction(new LOAD((value) ? 1 : 0, reg));
-//        compiler.getRegManager().freeReg(reg);
-        compiler.getRegManager().setLastImmediate(new ImmediateInteger((value) ? 1 : 0));
+        CondManager cM = compiler.getCondManager();
+        if (cM.isInCond()) {
+            if (cM.isInAnd()) {
+                if (!value && !cM.isInNot()) {
+                    compiler.addInstruction(new BRA(cM.getCurrCondFalseLabel()));
+                } else if (value && cM.isInNot()) {
+                    compiler.addInstruction(new BRA(cM.getCurrCondTrueLabel()));
+                }
+            } else if (cM.isInOr()) {
+                if (value && !cM.isInNot()) {
+                    compiler.addInstruction(new BRA(cM.getCurrCondTrueLabel()));
+                } else if (!value && cM.isInNot()) {
+                    compiler.addInstruction(new BRA(cM.getCurrCondFalseLabel()));
+                }
+            } else {
+                if (!value && !cM.isInNot()) {
+                    compiler.addInstruction(new BRA(cM.getCurrCondFalseLabel()));
+                } else if (value && cM.isInNot()) {
+                    compiler.addInstruction(new BRA(cM.getCurrCondTrueLabel()));
+                }
+            }
+        } else {
+            compiler.getRegManager().setLastImmediate(new ImmediateInteger((value) ? 1 : 0));
+        }
         // Done
     }
 

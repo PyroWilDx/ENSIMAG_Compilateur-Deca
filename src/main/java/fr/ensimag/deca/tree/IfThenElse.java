@@ -9,11 +9,8 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -27,8 +24,6 @@ public class IfThenElse extends AbstractInst {
     private final AbstractExpr condition;
     private final ListInst thenBranch;
     private final ListInst elseBranch;
-
-    private static int ifThenElseCpt = 0;
 
     public IfThenElse(AbstractExpr condition, ListInst thenBranch, ListInst elseBranch) {
         Validate.notNull(condition);
@@ -51,16 +46,16 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        Label startElseLabel = new Label("startElse" + ifThenElseCpt);
-        Label endIfThenElseLaBel = new Label("endIfThenElse" + ifThenElseCpt);
-        ifThenElseCpt++;
+        int idCpt = compiler.getCondManager().getAndIncrIdCpt();
+        Label startThenLabel = new Label("startIf" + idCpt);
+        Label startElseLabel = new Label("startElse" + idCpt);
+        Label endIfThenElseLaBel = new Label("endIfThenElse" + idCpt);
 
-        // noinspection Duplicates
+        compiler.getCondManager().addCondLabels(startThenLabel, startElseLabel);
+
         condition.codeGenInst(compiler);
-        GPRegister reg = compiler.getRegManager().getLastRegOrImm(compiler);
-        compiler.addInstruction(new CMP(0, reg));
-        compiler.getRegManager().freeReg(reg);
-        compiler.addInstruction(new BEQ(startElseLabel));
+        compiler.getCondManager().popCondLabels();
+        compiler.addLabel(startThenLabel);
         thenBranch.codeGenListInst(compiler);
         compiler.addInstruction(new BRA(endIfThenElseLaBel));
         compiler.addLabel(startElseLabel);

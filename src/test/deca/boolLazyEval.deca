@@ -1,8 +1,32 @@
+/*
+Test pour l'évaluation paresseuses d'expressions booléennes.
+*/
+
 {
-    int x = 2;
+    int x = 4;
+    boolean b0;
+
     if (x >= 0 && x <= 5) {
-        print("x est dans l'intervalle [0, 5]");
+        println("x est dans l'intervalle [0, 5]");
     } else {
-        print("x n'est pas dans l'intervalle [0, 5]");
+        println("x n'est pas dans l'intervalle [0, 5]");
     }
+
+    b0 = (x >= 0) || (x == 1 / 0); // true
+    println(1);
+    b0 = (x < 0) && (x == 1 / 0); // false
+    println(2);
+    b0 = !((x >= 0) || (x == 1 / 0)); // false
+    println(3);
+    b0 = !((x < 0) && (x == 1 / 0)); // true
+    println(4);
+    b0 = (x >= 0) && (x >= 1) || (x >= 0) || (x == 1 / 0); // true
+    println(5);
+    b0 = (x >= 0) && (x >= 1) || (x < 0) || (x == 0); // true
+    println(6);
+    b0 = !((x >= 0) || (x == 1 / 0)) || !((x < 0) && (x == 1 / 0)); // true
+    println(7);
+    b0 = !((x >= 0) || (x == 1 / 0)) && !((x < 0) && (x == 1 / 0)); // false
+    println(8);
 }
+

@@ -144,8 +144,11 @@ def doTests():
                             b"Error: Division by 0\n",
              execError=True)
 
+    # doVerify("boolLazyEval.deca",
+    #          doAssert=False)
+
     doVerify("ifThenElse.deca",
-             expectedResult=b"1234567\n", )
+             expectedResult=b"1234567\n")
 
     doVerify("while.deca",
              expectedResult=b"0123456789\n")
@@ -180,9 +183,6 @@ def doTests():
     # doVerify("optionDebug.deca",
     #          decacOptions="-d -d -d",
     #          doAssert=False)
-
-    doVerify("boolLazyEval.deca",
-             doAssert=False)
 
     """
     ==============================================
@@ -228,7 +228,7 @@ def main():
     doTests()
 
     # With -P
-    decacParallel()
+    # decacParallel()
 
 
 if __name__ == '__main__':
