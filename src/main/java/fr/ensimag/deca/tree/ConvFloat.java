@@ -8,8 +8,6 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 
-import java.util.Optional;
-
 /**
  * Conversion of an int into a float. Used for implicit conversions.
  * 
