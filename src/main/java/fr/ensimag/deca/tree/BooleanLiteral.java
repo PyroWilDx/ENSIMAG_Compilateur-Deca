@@ -18,7 +18,7 @@ import java.io.PrintStream;
  * @author gl47
  * @date 01/01/2024
  */
-public class BooleanLiteral extends Literal {
+public class BooleanLiteral extends AbstractLiteral {
 
     private boolean value;
 

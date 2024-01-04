@@ -84,7 +84,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
         boolean pushed = false;
         if (compiler.getRegManager().isUsingAllRegs()) {
-            if (!(getRightOperand() instanceof Literal)) {
+            if (!(getRightOperand() instanceof AbstractLiteral)) {
                 compiler.addInstruction(new PUSH(regLeft));
                 compiler.getRegManager().freeReg(regLeft);
                 compiler.getStackManager().incrStackSize();

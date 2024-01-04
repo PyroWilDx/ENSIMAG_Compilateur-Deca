@@ -18,7 +18,7 @@ import org.apache.commons.lang.Validate;
  * @author gl47
  * @date 01/01/2024
  */
-public class FloatLiteral extends AbstractExpr {
+public class FloatLiteral extends AbstractLiteral {
 
     public float getValue() {
         return value;

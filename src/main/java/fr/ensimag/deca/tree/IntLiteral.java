@@ -16,7 +16,7 @@ import java.io.PrintStream;
  * @author gl47
  * @date 01/01/2024
  */
-public class IntLiteral extends Literal {
+public class IntLiteral extends AbstractLiteral {
     public int getValue() {
         return value;
     }
