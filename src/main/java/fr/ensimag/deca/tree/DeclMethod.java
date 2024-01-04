@@ -5,7 +5,6 @@ import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -41,9 +40,10 @@ public class DeclMethod extends AbstractDeclMethod {
 
         DAddr mAddr = sM.getGbOffsetAddr();
         compiler.addInstruction(new STORE(Register.R0, mAddr));
-        sM.incrStackSize();
+        sM.incrVTableCpt();
 
-        vTM.addMethodToClass(className.getName(), name.getName(), mAddr);
+        vTM.addMethodToClass(className.getName().getName(), name.getName().getName(), mAddr);
+        // TODO (Merde comment on sait si c'est une méthode surchargée ou pas??)
         // Done
     }
 

@@ -7,24 +7,24 @@ import java.util.HashMap;
 
 public class VTableManager {
 
-    private final HashMap<SymbolTable.Symbol, VTable> classes;
+    private final HashMap<String, VTable> classes;
 
     public VTableManager() {
         this.classes = new HashMap<>();
     }
 
-    public void addClass(SymbolTable.Symbol name, DAddr startAddr) {
+    public void addClass(String name, DAddr startAddr) {
         assert (!classes.containsKey(name));
         classes.put(name, new VTable(startAddr));
     }
 
-    public void addMethodToClass(SymbolTable.Symbol className,
-                                 SymbolTable.Symbol methodName, DAddr mAddr) {
+    public void addMethodToClass(String className, String methodName,
+                                 DAddr mAddr) {
         assert (classes.containsKey(className));
         classes.get(className).addMethod(methodName, mAddr);
     }
 
-    public DAddr getAddrOfClass(SymbolTable.Symbol className) {
+    public DAddr getAddrOfClass(String className) {
         return classes.get(className).getStartAddr();
     }
 

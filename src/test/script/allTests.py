@@ -228,7 +228,7 @@ def main():
     doTests()
 
     # With -P
-    # decacParallel()
+    decacParallel()
 
 
 if __name__ == '__main__':

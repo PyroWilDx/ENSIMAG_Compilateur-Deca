@@ -8,18 +8,18 @@ import java.util.HashMap;
 public class VTable {
 
     private final DAddr startAddr;
-    private final HashMap<SymbolTable.Symbol, DAddr> methods;
+    private final HashMap<String, DAddr> methods;
 
     public VTable(DAddr startAddr) {
         this.startAddr = startAddr;
         this.methods = new HashMap<>();
     }
 
-    public void addMethod(SymbolTable.Symbol name, DAddr mAddr) {
+    public void addMethod(String name, DAddr mAddr) {
         methods.put(name, mAddr);
     }
 
-    public DAddr getMethodAddr(SymbolTable.Symbol name) {
+    public DAddr getMethodAddr(String name) {
         return methods.get(name);
     }
 
