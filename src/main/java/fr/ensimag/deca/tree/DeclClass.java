@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.DAddr;
@@ -56,7 +57,20 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        TypeDefinition defSuperClass = compiler.environmentType.get(this.name.getName());
+        if (defSuperClass == null) {
+            throw new ContextualError("Undeclared identifier",
+                    getLocation());
+        }
+        if (!defSuperClass.isClass()) {
+            throw new ContextualError("A class identifier is required",
+                    getLocation());
+        }
+        if (!compiler.environmentType.declareClasse(this.name.getName(),
+                this.superClass.getClassDefinition(), this.getLocation())) {
+            throw new ContextualError("Class or type already exists.", this.getLocation());
+        }
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
