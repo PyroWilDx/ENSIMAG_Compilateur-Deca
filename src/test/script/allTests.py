@@ -78,34 +78,34 @@ def doTests():
     if not doParallel:
         print("!!!!!!!!!!! Tests Valides !!!!!!!!!!!")
 
-    doVerify("printString.deca",
+    doVerify("codegen/valid/iostream/printString.deca",
              expectedResult=b"Hello World ! Second Argument\n"
                             b"Second Println\n"
                             b"Print Normal 1, Print Normal 2\n")
 
-    doVerify("printIntFloat.deca",
+    doVerify("codegen/valid/iostream/printIntFloat.deca",
              expectedResult=b"Chaine de Int : 1 2 42 -1 0 -42\n"
                             b"Chaine de Float : 1.22000e+00 -4.24242e+01 0.00000e+003.1416 -2.78000e+00\n")
 
-    doVerify("printFloatHexa.deca",
+    doVerify("codegen/valid/iostream/printFloatHexa.deca",
              expectedResult=b"Chaine de Float Hexa : 0x1.3851ecp+0 -0x1.5364d8p+5 0x0p+03.1416 -0x1.63d70ap+1\n"
                             b"Meme Chaine de Float Hexa : 0x1.3851ecp+0 -0x1.5364d8p+5 0x0p+03.1416 -0x1.63d70ap+1\n")
 
-    doVerify("include.deca",
+    doVerify("syntax/valid/include/include.deca",
              expectedResult=b"Hello World\n")
 
-    doVerify("declVarEasy.deca",
+    doVerify("codegen/valid/declarations/declVarEasy.deca",
              expectedResult=b"x = 1 | y = 2\n")
 
-    doVerify("declVarMany.deca",
+    doVerify("codegen/valid/declarations/declVarMany.deca",
              expectedResult=b"x = 1\n"
                             b"y = 42 | z = 3.14160e+00\n")
 
-    doVerify("declVarNoInit.deca",
+    doVerify("codegen/valid/declarations/declVarNoInit.deca",
              expectedResult=b"1 20 42\n"
                             b"0 0.00000e+00\n")
 
-    doVerify("opArith.deca",
+    doVerify("codegen/valid/operations/opArith.deca",
              expectedResult=b"1 + 1 = 2\n"
                             b"1 - 1 = 0\n"
                             b"1 - 42 = -41\n"
@@ -124,7 +124,7 @@ def doTests():
                             b"20.8 / 4.0 = 5.20000e+00\n"
                             b"4 * 6 / 2 / 2 * 10 = 60\n")
 
-    doVerify("opArithConv.deca",
+    doVerify("codegen/valid/operations/opArithConv.deca",
              expectedResult=b"1.1 + 2 = 3.10000e+00\n"
                             b"1.1 - 2 = -9.00000e-01\n"
                             b"42 - 42.0 = 0.00000e+00\n"
@@ -132,55 +132,55 @@ def doTests():
                             b"4.0 / 3 = 1.33333e+00\n"
                             b"4 / 3.0 = 1.33333e+00\n")
 
-    doVerify("opArithNoInit.deca",
+    doVerify("codegen/valid/operations/opArithNoInit.deca",
              expectedResult=b"0.00000e+00\n")
 
-    doVerify("divisionBy0.deca",
+    doVerify("codegen/valid/errors/divisionBy0.deca",
              expectedResult=b"Error: Division by 0\n",
              execError=True)
 
-    doVerify("modulo.deca",
+    doVerify("codegen/valid/errors/moduloBy0.deca",
              expectedResult=b"2\n"
                             b"Error: Division by 0\n",
              execError=True)
 
-    doVerify("boolLazyEval.deca",
+    doVerify("codegen/valid/conditions/boolLazyEval.deca",
              expectedResult=b"x est dans l'intervalle [0, 5]\n")
 
-    doVerify("ifThenElse.deca",
+    doVerify("codegen/valid/conditions/ifThenElse.deca",
              expectedResult=b"1234567\n")
 
-    doVerify("while.deca",
+    doVerify("codegen/valid/conditions/while.deca",
              expectedResult=b"0123456789\n")
 
-    doVerify("whileIfThenElse.deca",
+    doVerify("codegen/valid/conditions/whileIfThenElse.deca",
              expectedResult=b"4321\n")
 
-    doVerify("readIntFloat.deca",
+    doVerify("codegen/valid/iostream/readIntFloat.deca",
              expectedResult=b"3.20000e+00\n",
              input=b"1\n2.2")
 
-    doVerify("registerOverflow.deca",
+    doVerify("codegen/valid/options/registerOverflow.deca",
              expectedResult=b"52\n",
              decacOptions="-r 4")
 
-    doVerify("optionBanner.deca",
+    doVerify("codegen/valid/options/optionBanner.deca",
              expectedResult=b"Bonjour\n",
              decacOptions="-b")
 
-    # doVerify("optionParse.deca",
+    # doVerify("codegen/valid/options/optionParse.deca",
     #          decacOptions="-p",
     #          doAssert=False)
 
-    doVerify("optionVerification.deca",
+    doVerify("codegen/valid/options/optionVerification.deca",
              expectedResult=b"",
              decacOptions="-v")
 
-    doVerify("optionNoCheck.deca",
+    doVerify("codegen/valid/options/optionNoCheck.deca",
              expectedResult=b"1\n",
              decacOptions="-n")
 
-    # doVerify("optionDebug.deca",
+    # doVerify("codegen/valid/options/optionDebug.deca",
     #          decacOptions="-d -d -d",
     #          doAssert=False)
 
