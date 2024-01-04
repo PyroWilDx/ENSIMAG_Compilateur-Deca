@@ -28,7 +28,7 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         CondManager cM = compiler.getCondManager();
         addOperation(cM);
 
-        if (!cM.isInIfOrWhile() && cM.areLastOpDiff()) {
+        if (!cM.isDoingIfOrWhile() && cM.areLastOpDiff()) {
             int idCpt = compiler.getCondManager().getAndIncrIdCpt();
             lazyCondLabel = new Label("lazyCond" + idCpt);
             endLazyCondLabel = new Label("endLazyCond" + idCpt);

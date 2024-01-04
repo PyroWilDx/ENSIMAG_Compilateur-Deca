@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -46,20 +47,27 @@ public class IfThenElse extends AbstractInst {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        int idCpt = compiler.getCondManager().getAndIncrIdCpt();
+        CondManager cM = compiler.getCondManager();
+        int idCpt = cM.getAndIncrIdCpt();
         Label startThenLabel = new Label("startThen" + idCpt);
         Label startElseLabel = new Label("startElse" + idCpt);
         Label endIfThenElseLaBel = new Label("endIfThenElse" + idCpt);
 
-        compiler.getCondManager().addCondLabels(startThenLabel, startElseLabel);
+        cM.addCondLabels(startThenLabel, startElseLabel);
+        cM.doIfOrWhile();
 
         condition.codeGenInst(compiler);
-        compiler.getCondManager().popCondLabels();
+
+        cM.popCondLabels();
+        cM.exitIfOrWhile();
+
         compiler.addLabel(startThenLabel);
         thenBranch.codeGenListInst(compiler);
         compiler.addInstruction(new BRA(endIfThenElseLaBel));
+
         compiler.addLabel(startElseLabel);
         elseBranch.codeGenListInst(compiler);
+
         compiler.addLabel(endIfThenElseLaBel);
         // Done
     }

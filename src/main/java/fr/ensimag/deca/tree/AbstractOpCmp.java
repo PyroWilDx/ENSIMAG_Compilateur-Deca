@@ -25,7 +25,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
         super.codeGenInst(compiler);
 
-        compiler.getCondManager().resetOpCmp();
+        compiler.getCondManager().exitOpCmp();
     }
 
     @Override

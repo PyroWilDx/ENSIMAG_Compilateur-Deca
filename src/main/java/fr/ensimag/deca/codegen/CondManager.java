@@ -12,13 +12,16 @@ public class CondManager {
     }
 
     private int idCpt;
+    private boolean doingIfOrWhile;
+    private boolean doingOpCmp;
     private final LinkedList<Label> condTrueLabelStack;
     private final LinkedList<Label> condFalseLabelStack;
     private final LinkedList<Operation> operationStack;
-    private boolean doingOpCmp;
 
     public CondManager() {
         this.idCpt = 0;
+        this.doingIfOrWhile = false;
+        this.doingOpCmp = false;
         this.condTrueLabelStack = new LinkedList<>();
         this.condFalseLabelStack = new LinkedList<>();
         this.operationStack = new LinkedList<>();
@@ -28,13 +31,32 @@ public class CondManager {
         return idCpt++;
     }
 
-    public boolean isInCond() {
-        return !condTrueLabelStack.isEmpty() || !condFalseLabelStack.isEmpty();
+    public void doIfOrWhile() {
+        doingIfOrWhile = true;
     }
 
-    public boolean isInIfOrWhile() {
-        return condTrueLabelStack.size() > operationStack.size() ||
-                condFalseLabelStack.size() > operationStack.size();
+    public void exitIfOrWhile() {
+        doingIfOrWhile = false;
+    }
+
+    public boolean isDoingIfOrWhile() {
+        return doingIfOrWhile;
+    }
+
+    public void doOpCmp() {
+        doingOpCmp = true;
+    }
+
+    public void exitOpCmp() {
+        doingOpCmp = false;
+    }
+
+    public boolean isDoingOpCmp() {
+        return doingOpCmp;
+    }
+
+    public boolean isInCond() {
+        return !condTrueLabelStack.isEmpty() || !condFalseLabelStack.isEmpty();
     }
 
     public void popCondLabels() {
@@ -86,18 +108,6 @@ public class CondManager {
 
     public void addOrOperation() {
         operationStack.addFirst(Operation.OR);
-    }
-
-    public void doOpCmp() {
-        doingOpCmp = true;
-    }
-
-    public void resetOpCmp() {
-        doingOpCmp = false;
-    }
-
-    public boolean isDoingOpCmp() {
-        return doingOpCmp;
     }
 
 }
