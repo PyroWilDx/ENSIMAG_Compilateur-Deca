@@ -21,6 +21,10 @@ public class LabelOperand extends DVal {
         this.label = label;
     }
 
+    public LabelOperand(String labelStr) {
+        this(new Label(labelStr));
+    }
+
     @Override
     public String toString() {
         return label.toString();

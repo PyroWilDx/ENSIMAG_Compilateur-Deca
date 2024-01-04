@@ -35,9 +35,9 @@ public class DeclMethod extends AbstractDeclMethod {
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        Label mLabel = new Label("code." + className.getName().getName() +
-                "." + name.getName().getName());
-        compiler.addInstruction(new LOAD(new LabelOperand(mLabel), Register.R0));
+        String mLabelStr = "code." + className.getName().getName() +
+                "." + name.getName().getName();
+        compiler.addInstruction(new LOAD(new LabelOperand(mLabelStr), Register.R0));
 
         DAddr dAddr = sM.getGbOffsetAddr();
         compiler.addInstruction(new STORE(Register.R0, dAddr));

@@ -5,6 +5,7 @@ import fr.ensimag.deca.codegen.ErrorUtils;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
@@ -53,6 +54,19 @@ public class Program extends AbstractProgram {
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
         StackManager sM = compiler.getStackManager();
+
+        compiler.addComment("VTable of Object");
+        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        DAddr dAddrNull = sM.getGbOffsetAddr();
+        compiler.addInstruction(new STORE(Register.R0, dAddrNull));
+        sM.incrStackSize();
+
+        // TODO (à décommenter quand le label equals de object sera défini)
+//        compiler.addInstruction(
+//                new LOAD(new LabelOperand("code.Object.equals"), Register.R0));
+//        DAddr dAddrEquals = sM.getGbOffsetAddr();
+//        compiler.addInstruction(new STORE(Register.R0, dAddrEquals));
+//        sM.incrStackSize();
 
         classes.codeGenListVTable(compiler);
 //        classes.codeGenListDeclClass(compiler);
