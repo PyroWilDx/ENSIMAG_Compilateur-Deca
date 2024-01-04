@@ -3,8 +3,12 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -50,6 +54,17 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     public void codeGenDeclMethod(DecacCompiler compiler) {
         // TODO (decl method code)
+    }
+
+    @Override
+    public SymbolTable.Symbol getName() {
+        return null;
+    }
+
+    @Override
+    public EnvironmentExp verifyDeclMethod(DecacCompiler compiler, ClassDefinition superClass) throws ContextualError {
+        // TODO
+        throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override

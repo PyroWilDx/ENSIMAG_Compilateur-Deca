@@ -1,6 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.context.ClassDefinition;
+import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
@@ -15,7 +18,18 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
         // Done
     }
-
+    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler,
+                                               ClassDefinition superClass) throws ContextualError {
+        EnvironmentExp envReturn = new EnvironmentExp(null);
+        for (AbstractDeclMethod decl : this.getList()) {
+            EnvironmentExp env = decl.verifyDeclMethod(compiler, superClass);
+            if (!envReturn.disjointUnion(env)) {
+                throw new ContextualError("Method '" + decl.getName()
+                        + "' already defined.", getLocation());
+            }
+        }
+        return envReturn;
+    }
     public void codeGenListDeclMethod(DecacCompiler compiler) {
         for (AbstractDeclMethod method : getList()) {
             method.codeGenDeclMethod(compiler);

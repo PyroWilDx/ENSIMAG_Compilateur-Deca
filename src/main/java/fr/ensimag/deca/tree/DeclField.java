@@ -2,8 +2,9 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -50,6 +51,39 @@ public class DeclField extends AbstractDeclField {
         rM.freeReg(regObjAddr);
         rM.freeReg(regValue);
         // Done
+    }
+
+    @Override
+    public EnvironmentExp verifyDeclField(DecacCompiler compiler,
+                                          SymbolTable.Symbol superClass,
+                                          SymbolTable.Symbol className) throws ContextualError {
+        // TODO
+        Type t = this.type.verifyType(compiler);
+        if (t.equals(compiler.environmentType.VOID)) {
+            throw new ContextualError("Field type cannot be void",
+                    getLocation());
+        }
+        TypeDefinition def = compiler.environmentType.get(superClass);
+        if (def.isClass()) {
+            ClassDefinition superClassDef = (ClassDefinition) def;
+            EnvironmentExp envExpSuper = superClassDef.getMembers();
+            ExpDefinition expDef = envExpSuper.get(this.name.getName());
+            if (expDef != null && expDef.isField()) {
+                throw new ContextualError("Method '" + this.name.getName() +
+                        "' already exists in super class", getLocation());
+            }
+        }
+        EnvironmentExp env = new EnvironmentExp(null);
+        ClassDefinition classDefinition = (ClassDefinition) compiler.environmentType.get(className);
+        ExpDefinition expDef = new FieldDefinition(t, getLocation(), visibility, classDefinition, 0); // TODO voir pour l'index
+        env.declare(this.name.getName(), expDef);
+        return env;
+        // Done
+    }
+
+    @Override
+    public SymbolTable.Symbol getName() {
+        return name.getName();
     }
 
     @Override

@@ -5,6 +5,7 @@ import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
@@ -77,7 +78,8 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler) throws ContextualError {
-
+        EnvironmentExp envExpF = this.fields.verifyListDeclField(compiler, this.superClass.getName(), name.getName());
+        EnvironmentExp envExpM = this.methods.verifyListDeclMethod(compiler, this.superClass.getClassDefinition());
         //throw new UnsupportedOperationException("not yet implemented");
     }
 

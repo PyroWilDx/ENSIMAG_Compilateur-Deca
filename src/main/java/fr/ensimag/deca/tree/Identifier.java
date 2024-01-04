@@ -179,11 +179,11 @@ public class Identifier extends AbstractIdentifier {
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         TypeDefinition typeDef = compiler.environmentType.defOfType(this.name);
-        setDefinition(typeDef);
         if (typeDef == null) {
             throw new ContextualError("Undeclared type identifier : "
                     + this.name.toString(), this.getLocation());
         }
+        setDefinition(typeDef);
         return typeDef.getType();
         // Done
     }
