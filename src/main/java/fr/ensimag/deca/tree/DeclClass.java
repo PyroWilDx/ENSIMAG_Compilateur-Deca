@@ -57,7 +57,7 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
-        TypeDefinition defSuperClass = compiler.environmentType.get(this.name.getName());
+        TypeDefinition defSuperClass = compiler.environmentType.get(this.superClass.getName());
         if (defSuperClass == null) {
             throw new ContextualError("Undeclared identifier",
                     getLocation());
@@ -70,12 +70,13 @@ public class DeclClass extends AbstractDeclClass {
                 this.superClass.getClassDefinition(), this.getLocation())) {
             throw new ContextualError("Class or type already exists.", this.getLocation());
         }
-        //throw new UnsupportedOperationException("not yet implemented");
+        // Done
     }
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+
+        //throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
