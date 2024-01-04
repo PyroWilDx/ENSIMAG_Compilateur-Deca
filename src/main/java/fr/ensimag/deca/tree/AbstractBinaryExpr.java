@@ -105,13 +105,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         }
 
         if (pushed) {
-            if (lastImmRight == null) {
-                compiler.addInstruction(new LOAD(regRight, Register.R0));
-                regLeft = regRight;
-                regRight = Register.R0;
-            } else {
-                regLeft = rM.getFreeReg();
-            }
+            compiler.addInstruction(new LOAD(regRight, Register.R0));
+            regLeft = regRight;
+            regRight = Register.R0;
             compiler.addInstruction(new POP(regLeft));
             sM.decrStackSize();
         }

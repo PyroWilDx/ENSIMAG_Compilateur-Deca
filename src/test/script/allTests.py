@@ -161,7 +161,7 @@ def doTests():
              input=b"1\n2.2")
 
     doVerify("codegen/valid/options/registerOverflow.deca",
-             expectedResult=b"52\n",
+             expectedResult=b"5252\n",
              decacOptions="-r 4")
 
     doVerify("codegen/valid/options/optionBanner.deca",

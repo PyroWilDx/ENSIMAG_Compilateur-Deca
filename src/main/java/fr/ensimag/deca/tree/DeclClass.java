@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ContextualError;
@@ -8,6 +9,7 @@ import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
@@ -104,9 +106,16 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void codeGenDeclClass(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+
         compiler.addComment("");
         compiler.addComment("Class " + name.getName().getName());
+
+        rM.addScratchRegs();
+        compiler.addLabel(new Label("init." + name.getName().getName()));
         fields.codeGenListDeclField(compiler);
+        rM.removeScratchRegs();
+
         methods.codeGenListDeclMethod(compiler);
     }
 

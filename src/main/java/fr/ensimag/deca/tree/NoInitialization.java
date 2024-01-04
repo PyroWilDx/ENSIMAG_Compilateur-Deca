@@ -23,7 +23,7 @@ public class NoInitialization extends AbstractInitialization {
 
     @Override
     protected void verifyInitialization(DecacCompiler compiler, Type t,
-            EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+                                        EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         // nothing
     }
 

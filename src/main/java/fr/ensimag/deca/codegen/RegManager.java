@@ -68,4 +68,14 @@ public class RegManager {
         return gpReg;
     }
 
+    public void addScratchRegs() {
+        freeRegs.addFirst(Register.R1);
+        freeRegs.addFirst(Register.R0);
+    }
+
+    public void removeScratchRegs() {
+        freeRegs.remove(Register.R0);
+        freeRegs.remove(Register.R1);
+    }
+
 }

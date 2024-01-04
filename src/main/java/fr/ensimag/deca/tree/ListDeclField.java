@@ -10,8 +10,10 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
     }
 
     public void codeGenListDeclField(DecacCompiler compiler) {
+        int varOffset = 1;
         for (AbstractDeclField declField : getList()) {
-            declField.codeGenDeclField(compiler);
+            declField.codeGenDeclField(compiler, varOffset);
+            varOffset++;
         }
     }
 

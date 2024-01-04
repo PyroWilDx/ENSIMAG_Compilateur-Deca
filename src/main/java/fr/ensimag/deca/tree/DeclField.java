@@ -1,17 +1,24 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.io.PrintStream;
 
-public class DeclField extends AbstractDeclField{
+public class DeclField extends AbstractDeclField {
     private final Visibility visibility; // TODO jsppppp
     private final AbstractIdentifier type;
     private final AbstractIdentifier name;
     private final AbstractInitialization init;
 
-    public DeclField(Visibility visibility,AbstractIdentifier type,
+    public DeclField(Visibility visibility, AbstractIdentifier type,
                      AbstractIdentifier name) {
         this.type = type;
         this.visibility = visibility;
@@ -28,8 +35,21 @@ public class DeclField extends AbstractDeclField{
     }
 
     @Override
-    public void codeGenDeclField(DecacCompiler compiler) {
-        // TODO (code gen decl field)
+    public void codeGenDeclField(DecacCompiler compiler, int varOffset) {
+        RegManager rM = compiler.getRegManager();
+
+        init.setVarType(type.getType());
+        init.codeGenInit(compiler);
+
+        GPRegister regValue = rM.getLastRegOrImm(compiler);
+        GPRegister regObjAddr = rM.getFreeReg();
+        compiler.addInstruction(
+                new LOAD(new RegisterOffset(-2, Register.LB), regObjAddr));
+        compiler.addInstruction(
+                new STORE(regValue, new RegisterOffset(varOffset, regObjAddr)));
+        rM.freeReg(regObjAddr);
+        rM.freeReg(regValue);
+        // Done
     }
 
     @Override
