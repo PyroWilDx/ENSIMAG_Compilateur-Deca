@@ -65,9 +65,9 @@ public class DeclVar extends AbstractDeclVar {
         initialization.codeGenInit(compiler);
 
         GPRegister gpReg = rM.getLastRegOrImm(compiler);
-        DAddr dAddr = sM.getGbOffsetAddr();
-        varName.getExpDefinition().setOperand(dAddr);
-        compiler.addInstruction(new STORE(gpReg, dAddr));
+        DAddr varAddr = sM.getGbOffsetAddr();
+        varName.getExpDefinition().setOperand(varAddr);
+        compiler.addInstruction(new STORE(gpReg, varAddr));
         rM.freeReg(gpReg);
         sM.incrStackSize();
         // Done

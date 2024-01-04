@@ -11,10 +11,10 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod>{
     }
 
     public void codeGenVTable(DecacCompiler compiler, AbstractIdentifier className) {
-        // TODO (Faut voir si les méthodes sont dans l'ordre ou pas ?)
         for (AbstractDeclMethod method : getList()) {
             method.codeGenVTable(compiler, className);
         }
+        // TODO (Faut voir si les méthodes sont dans l'ordre ou pas ?)
     }
 
 }

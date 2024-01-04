@@ -43,20 +43,16 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    /**
-     * Pass 1 of [Gencode]
-     */
     public void codeGenListVTable(DecacCompiler compiler) {
         for (AbstractDeclClass declClass : getList()) {
             declClass.codeGenVTable(compiler);
         }
     }
 
-    /**
-     * Pass 2 of [Gencode]
-     */
     public void codeGenListDeclClass(DecacCompiler compiler) {
-        // TODO (Pass 2 Gencode avec Objet)
+        for (AbstractDeclClass declClass: getList()) {
+            declClass.codeGenDeclClass(compiler);
+        }
     }
 
 }

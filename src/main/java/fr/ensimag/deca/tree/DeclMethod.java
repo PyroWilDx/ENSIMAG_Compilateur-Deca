@@ -39,11 +39,11 @@ public class DeclMethod extends AbstractDeclMethod {
                 "." + name.getName().getName();
         compiler.addInstruction(new LOAD(new LabelOperand(mLabelStr), Register.R0));
 
-        DAddr dAddr = sM.getGbOffsetAddr();
-        compiler.addInstruction(new STORE(Register.R0, dAddr));
+        DAddr mAddr = sM.getGbOffsetAddr();
+        compiler.addInstruction(new STORE(Register.R0, mAddr));
         sM.incrStackSize();
 
-        vTM.addMethodToClass(className.getName(), name.getName(), dAddr);
+        vTM.addMethodToClass(className.getName(), name.getName(), mAddr);
         // Done
     }
 

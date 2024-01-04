@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ErrorUtils;
 import fr.ensimag.deca.codegen.StackManager;
+import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
@@ -54,22 +55,23 @@ public class Program extends AbstractProgram {
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
         StackManager sM = compiler.getStackManager();
+        VTableManager vTM = compiler.getVTableManager();
 
         compiler.addComment("VTable of Object");
         compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
-        DAddr dAddrNull = sM.getGbOffsetAddr();
-        compiler.addInstruction(new STORE(Register.R0, dAddrNull));
+        DAddr nAddr = sM.getGbOffsetAddr();
+        compiler.addInstruction(new STORE(Register.R0, nAddr));
         sM.incrStackSize();
 
         // TODO (à décommenter quand le label equals de object sera défini)
 //        compiler.addInstruction(
 //                new LOAD(new LabelOperand("code.Object.equals"), Register.R0));
-//        DAddr dAddrEquals = sM.getGbOffsetAddr();
-//        compiler.addInstruction(new STORE(Register.R0, dAddrEquals));
+//        DAddr eAddr = sM.getGbOffsetAddr();
+//        compiler.addInstruction(new STORE(Register.R0, eAddr));
 //        sM.incrStackSize();
 
         classes.codeGenListVTable(compiler);
-//        classes.codeGenListDeclClass(compiler);
+        classes.codeGenListDeclClass(compiler);
 
         compiler.addComment("Start of Main Program");
         int iTSTO = compiler.getProgramLineCount();
