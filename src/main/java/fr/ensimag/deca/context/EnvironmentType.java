@@ -17,7 +17,7 @@ import fr.ensimag.deca.tree.Location;
  */
 public class EnvironmentType {
     public EnvironmentType(DecacCompiler compiler) {
-        
+        this.compiler = compiler;
         envTypes = new HashMap<Symbol, TypeDefinition>();
         
         Symbol intSymb = compiler.createSymbol("int");
@@ -72,7 +72,7 @@ public class EnvironmentType {
         }
         // TODO finir ces machins pour le langage avec objets
     }
-
+    private final DecacCompiler compiler;
     private final Map<Symbol, TypeDefinition> envTypes;
     private final Map<KeyTypeUnaryOp, Type> typeUnaryOp;
     public Type getTypeUnaryOp(String op, Type type) {
@@ -92,7 +92,16 @@ public class EnvironmentType {
         if (!typeBinaryOp.containsKey(key)) return null;
         return typeBinaryOp.get(key);
     }
-
+    public TypeDefinition get(Symbol name) {
+        return envTypes.get(name);
+    }
+    public boolean declareClasse(Symbol name, ClassDefinition superClass, Location location) {
+        if (envTypes.containsKey(name)) return false;
+        ClassType type = new ClassType(name);
+        TypeDefinition def = new ClassDefinition(type, location, superClass);
+        envTypes.put(name, def);
+        return true;
+    }
     public TypeDefinition defOfType(Symbol s) {
         return envTypes.get(s);
     }
