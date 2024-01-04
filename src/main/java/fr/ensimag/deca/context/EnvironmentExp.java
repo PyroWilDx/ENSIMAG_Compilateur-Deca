@@ -100,10 +100,10 @@ public class EnvironmentExp {
      *             if the symbol is already defined at the "current" dictionary
      *
      */
-    public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
-        if (env.containsKey(name)) {
-            throw new DoubleDefException();
-        }
+    public void declare(Symbol name, ExpDefinition def) {//throws DoubleDefException {
+        //if (env.containsKey(name)) {
+        //    throw new DoubleDefException();
+        //}
         env.put(name, def);
         // Done
     }
