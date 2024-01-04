@@ -21,7 +21,7 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeGenOpUnary(DecacCompiler compiler, GPRegister reg) {
+    protected void codeGenOpUnary(DecacCompiler compiler, GPRegister gpReg) {
         // Not Used
     }
 

@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.CondManager;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
@@ -21,17 +22,18 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.getCondManager().doOpCmp();
+        CondManager cM = compiler.getCondManager();
 
+        cM.doOpCmp();
         super.codeGenInst(compiler);
-
-        compiler.getCondManager().exitOpCmp();
+        cM.exitOpCmp();
     }
 
     @Override
     protected void codeGenOp(DecacCompiler compiler,
                              DVal valReg, GPRegister saveReg) {
         CondManager cM = compiler.getCondManager();
+
         compiler.addInstruction(new CMP(valReg, saveReg));
         Instruction opInst;
         if (cM.isInCond()) {
@@ -48,10 +50,12 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
                 else opInst = getBranchInvOpCmpInst(fLabel);
             }
         } else {
-            GPRegister reg = compiler.getRegManager().getFreeReg();
-            if (inNot) opInst = getInvOpCmpInst(reg);
-            else opInst = getOpCmpInst(reg);
-            compiler.getRegManager().freeReg(reg);
+            RegManager rM = compiler.getRegManager();
+
+            GPRegister gpReg = rM.getFreeReg();
+            if (inNot) opInst = getInvOpCmpInst(gpReg);
+            else opInst = getOpCmpInst(gpReg);
+            rM.freeReg(gpReg);
         }
         compiler.addInstruction(opInst);
     }
@@ -60,7 +64,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
     protected abstract Instruction getBranchOpCmpInst(Label bLabel);
 
-    protected abstract Instruction getOpCmpInst(GPRegister reg);
+    protected abstract Instruction getOpCmpInst(GPRegister gpReg);
 
-    protected abstract Instruction getInvOpCmpInst(GPRegister reg);
+    protected abstract Instruction getInvOpCmpInst(GPRegister gpReg);
 }

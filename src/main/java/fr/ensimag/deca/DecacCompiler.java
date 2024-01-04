@@ -1,9 +1,6 @@
 package fr.ensimag.deca;
 
-import fr.ensimag.deca.codegen.CondManager;
-import fr.ensimag.deca.codegen.DeclVarManager;
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.deca.codegen.StackManager;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.EnvironmentType;
 import fr.ensimag.deca.syntax.DecaLexer;
 import fr.ensimag.deca.syntax.DecaParser;
@@ -56,9 +53,9 @@ public class DecacCompiler {
         this.source = source;
 
         this.regManager = new RegManager(compilerOptions.getNOfRegs());
-        this.declVarManager = new DeclVarManager();
         this.stackManager = new StackManager();
         this.condManager = new CondManager();
+        this.vTableManager = new VTableManager();
     }
 
     /**
@@ -191,9 +188,9 @@ public class DecacCompiler {
     }
 
     private final RegManager regManager;
-    private final DeclVarManager declVarManager;
     private final StackManager stackManager;
     private final CondManager condManager;
+    private final VTableManager vTableManager;
 
     /**
      * Internal function that does the job of compiling (i.e. calling lexer,
@@ -286,16 +283,16 @@ public class DecacCompiler {
         return regManager;
     }
 
-    public DeclVarManager getDeclVarManager() {
-        return declVarManager;
-    }
-
     public StackManager getStackManager() {
         return stackManager;
     }
 
     public CondManager getCondManager() {
         return condManager;
+    }
+
+    public VTableManager getVTableManager() {
+        return vTableManager;
     }
 
 }

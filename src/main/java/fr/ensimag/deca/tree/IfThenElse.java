@@ -48,6 +48,7 @@ public class IfThenElse extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         CondManager cM = compiler.getCondManager();
+
         int idCpt = cM.getAndIncrIdCpt();
         Label startThenLabel = new Label("startThen" + idCpt);
         Label startElseLabel = new Label("startElse" + idCpt);

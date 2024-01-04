@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.CondManager;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -40,7 +41,9 @@ public class BooleanLiteral extends AbstractLiteral {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
+
         if (cM.isInCond()) {
             Instruction bInst = null;
             Label tLabel = cM.getCurrCondTrueLabel();
@@ -57,7 +60,7 @@ public class BooleanLiteral extends AbstractLiteral {
             }
             if (bInst != null) compiler.addInstruction(bInst);
         } else {
-            compiler.getRegManager().setLastImmediate(new ImmediateInteger((value) ? 1 : 0));
+            rM.setLastImm(new ImmediateInteger((value) ? 1 : 0));
         }
         // Done
     }

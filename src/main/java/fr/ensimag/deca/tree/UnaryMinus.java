@@ -15,8 +15,8 @@ public class UnaryMinus extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeGenOpUnary(DecacCompiler compiler, GPRegister reg) {
-        compiler.addInstruction(new OPP(reg, reg));
+    protected void codeGenOpUnary(DecacCompiler compiler, GPRegister gpReg) {
+        compiler.addInstruction(new OPP(gpReg, gpReg));
         // Done
     }
 

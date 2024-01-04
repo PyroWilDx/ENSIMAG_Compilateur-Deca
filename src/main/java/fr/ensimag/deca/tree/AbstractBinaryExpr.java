@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
@@ -79,43 +81,46 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+        StackManager sM = compiler.getStackManager();
+
         getLeftOperand().codeGenInst(compiler);
-        GPRegister regLeft = compiler.getRegManager().getLastRegOrImm(compiler);
+        GPRegister regLeft = rM.getLastRegOrImm(compiler);
 
         boolean pushed = false;
-        if (compiler.getRegManager().isUsingAllRegs()) {
+        if (rM.isUsingAllRegs()) {
             if (!(getRightOperand() instanceof AbstractLiteral)) {
                 compiler.addInstruction(new PUSH(regLeft));
-                compiler.getRegManager().freeReg(regLeft);
-                compiler.getStackManager().incrStackSize();
+                rM.freeReg(regLeft);
+                sM.incrStackSize();
                 pushed = true;
             } // Else, don't need to PUSH because Literal don't need Registers.
         }
 
         getRightOperand().codeGenInst(compiler);
-        DVal lastImmediateRight = compiler.getRegManager().getLastImmediate();
+        DVal lastImmRight = rM.getLastImm();
         GPRegister regRight = null;
-        if (lastImmediateRight == null) {
-            regRight = compiler.getRegManager().getLastReg();
+        if (lastImmRight == null) {
+            regRight = rM.getLastReg();
         }
 
         if (pushed) {
-            if (lastImmediateRight == null) {
+            if (lastImmRight == null) {
                 compiler.addInstruction(new LOAD(regRight, Register.R0));
                 regLeft = regRight;
                 regRight = Register.R0;
             } else {
-                regLeft = compiler.getRegManager().getFreeReg();
+                regLeft = rM.getFreeReg();
             }
             compiler.addInstruction(new POP(regLeft));
-            compiler.getStackManager().decrStackSize();
+            sM.decrStackSize();
         }
 
-        DVal dVal = (lastImmediateRight == null) ? regRight : lastImmediateRight;
+        DVal dVal = (lastImmRight == null) ? regRight : lastImmRight;
         codeGenOp(compiler, dVal, regLeft);
 
-        compiler.getRegManager().freeReg(regRight);
-        compiler.getRegManager().freeReg(regLeft);
+        rM.freeReg(regRight);
+        rM.freeReg(regLeft);
         // Done
     }
 

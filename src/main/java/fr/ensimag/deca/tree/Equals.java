@@ -30,13 +30,13 @@ public class Equals extends AbstractOpExactCmp {
     }
 
     @Override
-    protected Instruction getOpCmpInst(GPRegister reg) {
-        return new SEQ(reg);
+    protected Instruction getOpCmpInst(GPRegister gpReg) {
+        return new SEQ(gpReg);
     }
 
     @Override
-    protected Instruction getInvOpCmpInst(GPRegister reg) {
-        return new SNE(reg);
+    protected Instruction getInvOpCmpInst(GPRegister gpReg) {
+        return new SNE(gpReg);
     }
 
     @Override

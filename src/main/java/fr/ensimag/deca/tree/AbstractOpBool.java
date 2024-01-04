@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.CondManager;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
@@ -25,7 +26,9 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
+
         addOperation(cM);
 
         if (!cM.isDoingIfOrWhile() && cM.areLastOpDiff()) {
@@ -39,15 +42,15 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         getRightOperand().codeGenInst(compiler);
 
         if (lazyCondLabel != null && endLazyCondLabel != null) {
-            GPRegister reg = compiler.getRegManager().getFreeReg();
+            GPRegister gpReg = rM.getFreeReg();
 
-            compiler.addInstruction(new LOAD(getNotLazyValue(), reg));
+            compiler.addInstruction(new LOAD(getNotLazyValue(), gpReg));
             compiler.addInstruction(new BRA(getLastCondLabel(cM)));
 
             compiler.addLabel(lazyCondLabel);
-            compiler.addInstruction(new LOAD(getLazyValue(), reg));
+            compiler.addInstruction(new LOAD(getLazyValue(), gpReg));
 
-            compiler.getRegManager().freeReg(reg);
+            rM.freeReg(gpReg);
 
             compiler.addLabel(endLazyCondLabel);
 

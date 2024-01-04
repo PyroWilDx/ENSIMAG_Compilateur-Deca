@@ -28,8 +28,8 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeGenOpUnary(DecacCompiler compiler, GPRegister reg) {
-        compiler.addInstruction(new FLOAT(reg, reg));
+    protected void codeGenOpUnary(DecacCompiler compiler, GPRegister gpReg) {
+        compiler.addInstruction(new FLOAT(gpReg, gpReg));
         // Done
     }
 

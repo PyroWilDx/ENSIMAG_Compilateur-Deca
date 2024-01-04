@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -45,7 +46,9 @@ public class FloatLiteral extends AbstractLiteral {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        compiler.getRegManager().setLastImmediate(new ImmediateFloat(value));
+        RegManager rM = compiler.getRegManager();
+
+        rM.setLastImm(new ImmediateFloat(value));
         // Done
     }
 

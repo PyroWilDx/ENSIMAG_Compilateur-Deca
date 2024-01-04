@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -45,11 +46,14 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+
         AbstractIdentifier lIdent = (AbstractIdentifier) getLeftOperand();
         getRightOperand().codeGenInst(compiler);
-        GPRegister reg = compiler.getRegManager().getLastRegOrImm(compiler);
-        compiler.addInstruction(new STORE(reg, lIdent.getExpDefinition().getOperand()));
-        compiler.getRegManager().freeReg(reg);
+
+        GPRegister gpReg = rM.getLastRegOrImm(compiler);
+        compiler.addInstruction(new STORE(gpReg, lIdent.getExpDefinition().getOperand()));
+        rM.freeReg(gpReg);
         // Done
     }
 

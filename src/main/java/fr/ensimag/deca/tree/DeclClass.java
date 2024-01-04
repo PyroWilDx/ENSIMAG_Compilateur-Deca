@@ -1,8 +1,11 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
+
 import java.io.PrintStream;
 
 /**
@@ -62,7 +65,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void codeGenVTable(DecacCompiler compiler) {
-        methods.codeGenVTable(compiler);
+        VTableManager vTM = compiler.getVTableManager();
+
+        vTM.addClass(name.getName());
+        methods.codeGenVTable(compiler, name);
         // TODO (Voir page 223)
     }
 

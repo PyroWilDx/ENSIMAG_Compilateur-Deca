@@ -29,13 +29,13 @@ public class LowerOrEqual extends AbstractOpIneq {
     }
 
     @Override
-    protected Instruction getOpCmpInst(GPRegister reg) {
-        return new SLE(reg);
+    protected Instruction getOpCmpInst(GPRegister gpReg) {
+        return new SLE(gpReg);
     }
 
     @Override
-    protected Instruction getInvOpCmpInst(GPRegister reg) {
-        return new SGT(reg);
+    protected Instruction getInvOpCmpInst(GPRegister gpReg) {
+        return new SGT(gpReg);
     }
 
     @Override

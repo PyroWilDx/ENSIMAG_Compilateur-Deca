@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ErrorUtils;
+import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -51,6 +52,8 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+        StackManager sM = compiler.getStackManager();
+
         classes.codeGenListVTable(compiler);
 //        classes.codeGenListDeclClass(compiler);
 
@@ -62,11 +65,11 @@ public class Program extends AbstractProgram {
         compiler.addComment("End of Main Program");
 
         compiler.addInstruction(iTSTO,
-                new TSTO(compiler.getStackManager().getMaxStackSize()));
+                new TSTO(sM.getMaxStackSize()));
         compiler.addInstruction(iTSTO + 1,
                 new BOV(ErrorUtils.stackOverflowLabel));
         compiler.addInstruction(iTSTO + 2,
-                new ADDSP(compiler.getDeclVarManager().getGbOffset() - 1));
+                new ADDSP(sM.getMaxStackSize() + 1));
 
         compiler.addComment("");
 

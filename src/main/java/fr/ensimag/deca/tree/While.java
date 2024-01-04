@@ -40,6 +40,7 @@ public class While extends AbstractInst {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         CondManager cM = compiler.getCondManager();
+        
         int idCpt = cM.getAndIncrIdCpt();
         Label startWhileLabel = new Label("startWhile" + idCpt);
         Label startBodyLabel = new Label("whileBody" + idCpt);

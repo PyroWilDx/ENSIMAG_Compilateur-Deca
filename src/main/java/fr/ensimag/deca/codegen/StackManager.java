@@ -1,15 +1,16 @@
 package fr.ensimag.deca.codegen;
 
-public class StackManager {
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 
-    public static int GLOBAL_BASE_OFFSET = 2;
+public class StackManager {
 
     private int stackSize;
     private int maxStackSize;
 
     public StackManager() {
-        stackSize = GLOBAL_BASE_OFFSET;
-        maxStackSize = stackSize;
+        this.stackSize = 0;
+        this.maxStackSize = 0;
     }
 
     public void incrStackSize() {
@@ -21,6 +22,10 @@ public class StackManager {
 
     public void decrStackSize() {
         stackSize--;
+    }
+
+    public RegisterOffset getGbOffsetAddr() {
+        return new RegisterOffset(stackSize + 1, Register.GB);
     }
 
     public int getMaxStackSize() {

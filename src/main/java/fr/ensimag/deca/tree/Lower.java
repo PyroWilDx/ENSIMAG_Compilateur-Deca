@@ -30,13 +30,13 @@ public class Lower extends AbstractOpIneq {
     }
 
     @Override
-    protected Instruction getOpCmpInst(GPRegister reg) {
-        return new SLT(reg);
+    protected Instruction getOpCmpInst(GPRegister gpReg) {
+        return new SLT(gpReg);
     }
 
     @Override
-    protected Instruction getInvOpCmpInst(GPRegister reg) {
-        return new SGE(reg);
+    protected Instruction getInvOpCmpInst(GPRegister gpReg) {
+        return new SGE(gpReg);
     }
 
 

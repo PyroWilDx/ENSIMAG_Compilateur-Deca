@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.CondManager;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -201,11 +202,14 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = compiler.getRegManager().getFreeReg();
-        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), reg));
+        RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
+
+        GPRegister gpReg = rM.getFreeReg();
+        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), gpReg));
+
         if (cM.isInCond() && !cM.isDoingOpCmp()) {
-            compiler.addInstruction(new CMP(0, reg));
+            compiler.addInstruction(new CMP(0, gpReg));
             Instruction bInst;
             Label tLabel = cM.getCurrCondTrueLabel();
             Label fLabel = cM.getCurrCondFalseLabel();
@@ -222,11 +226,12 @@ public class Identifier extends AbstractIdentifier {
             compiler.addInstruction(bInst);
         } else if (getExpDefinition().getType().isBoolean()) {
             if (inNot) {
-                compiler.addInstruction(new CMP(0, reg));
-                compiler.addInstruction(new SEQ(reg));
+                compiler.addInstruction(new CMP(0, gpReg));
+                compiler.addInstruction(new SEQ(gpReg));
             }
         }
-        compiler.getRegManager().freeReg(reg);
+
+        rM.freeReg(gpReg);
         // Done
     }
 

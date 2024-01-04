@@ -12,7 +12,7 @@ public class RegManager {
 
     public final int nRegs;
     private final LinkedList<GPRegister> freeRegs;
-    private DVal lastImmediate;
+    private DVal lastImm;
 
     public RegManager(int nRegs) {
         this.nRegs = nRegs;
@@ -20,7 +20,7 @@ public class RegManager {
         for (int i = 2; i < nRegs; i++) {
             freeRegs.addLast(Register.getR(i));
         }
-        lastImmediate = null;
+        lastImm = null;
     }
 
     public GPRegister getFreeReg() {
@@ -34,9 +34,9 @@ public class RegManager {
         return freeRegs.removeFirst();
     }
 
-    public void freeReg(GPRegister reg) {
-        if (reg != null && reg.getNumber() > 1) {
-            freeRegs.addFirst(reg);
+    public void freeReg(GPRegister gpReg) {
+        if (gpReg != null && gpReg.getNumber() > 1) {
+            freeRegs.addFirst(gpReg);
         }
     }
 
@@ -44,26 +44,28 @@ public class RegManager {
         return freeRegs.isEmpty();
     }
 
-    public void setLastImmediate(DVal dAddr) {
-        lastImmediate = dAddr;
+    public void setLastImm(DVal dAddr) {
+        lastImm = dAddr;
     }
 
-    public DVal getLastImmediate() {
-        DVal dVal = lastImmediate;
-        lastImmediate = null;
+    public DVal getLastImm() {
+        DVal dVal = lastImm;
+        lastImm = null;
         return dVal;
     }
 
     public GPRegister getLastRegOrImm(DecacCompiler compiler) {
-        DVal lastImmediate = getLastImmediate();
-        GPRegister reg;
-        if (lastImmediate == null) {
-            reg = compiler.getRegManager().getLastReg();
+        RegManager rM = compiler.getRegManager();
+
+        DVal lastImm = getLastImm();
+        GPRegister gpReg;
+        if (lastImm == null) {
+            gpReg = rM.getLastReg();
         } else {
-            reg = compiler.getRegManager().getFreeReg();
-            compiler.addInstruction(new LOAD(lastImmediate, reg));
+            gpReg = rM.getFreeReg();
+            compiler.addInstruction(new LOAD(lastImm, gpReg));
         }
-        return reg;
+        return gpReg;
     }
 
 }
