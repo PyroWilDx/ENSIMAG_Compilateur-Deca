@@ -1,5 +1,10 @@
 package fr.ensimag.deca.tree;
 
-public abstract class AbstractDeclMethod extends Tree{
+import fr.ensimag.deca.DecacCompiler;
+
+public abstract class AbstractDeclMethod extends Tree {
     // TODO
+
+    public abstract void codeGenVTable(DecacCompiler compiler);
+
 }

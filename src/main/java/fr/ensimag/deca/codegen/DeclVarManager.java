@@ -5,7 +5,6 @@ import fr.ensimag.deca.context.Type;
 public class DeclVarManager {
 
     private int gbVarCount;
-
     private Type currDeclVarType;
 
     public DeclVarManager() {
@@ -18,7 +17,7 @@ public class DeclVarManager {
     }
 
     public int getGbOffset() {
-        return gbVarCount + 2;
+        return gbVarCount + StackManager.GLOBAL_BASE_OFFSET;
     }
 
     public void setCurrDeclVarType(Type value) {

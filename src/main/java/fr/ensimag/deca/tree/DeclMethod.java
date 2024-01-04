@@ -1,7 +1,13 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.LabelOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.io.PrintStream;
 
@@ -21,6 +27,13 @@ public class DeclMethod extends AbstractDeclMethod{
         this.params = params;
         this.declVariables = declVariables;
         this.insts = insts;
+    }
+
+    @Override
+    public void codeGenVTable(DecacCompiler compiler) {
+        compiler.addInstruction(new LOAD(new LabelOperand(new Label("TODO")), Register.R0));
+//        compiler.addInstruction(new STORE(Register.R0, TODO OFFSET));
+        // TODO (généraliser la classe declvarmanager)
     }
 
     @Override

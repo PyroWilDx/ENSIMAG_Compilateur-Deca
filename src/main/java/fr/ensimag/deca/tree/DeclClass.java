@@ -60,6 +60,11 @@ public class DeclClass extends AbstractDeclClass {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
+    @Override
+    public void codeGenVTable(DecacCompiler compiler) {
+        methods.codeGenVTable(compiler);
+        // TODO (Voir page 223)
+    }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {

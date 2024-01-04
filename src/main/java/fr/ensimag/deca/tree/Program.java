@@ -41,16 +41,19 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-//        getClasses().verifyListClass(compiler);
-//        getClasses().verifyListClassMembers(compiler);
-//        getClasses().verifyListClassBody(compiler);
-        getMain().verifyMain(compiler);
+//        classes.verifyListClass(compiler);
+//        classes.verifyListClassMembers(compiler);
+//        classes.verifyListClassBody(compiler);
+        main.verifyMain(compiler);
         LOG.debug("verify program: end");
         // TODO (Avec Objet -> Enlever Comm)
     }
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+        classes.codeGenListVTable(compiler);
+//        classes.codeGenListDeclClass(compiler);
+
         compiler.addComment("Start of Main Program");
         int iTSTO = compiler.getProgramLineCount();
         compiler.addComment("Main Program");

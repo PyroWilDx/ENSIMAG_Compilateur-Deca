@@ -2,11 +2,13 @@ package fr.ensimag.deca.codegen;
 
 public class StackManager {
 
+    public static int GLOBAL_BASE_OFFSET = 2;
+
     private int stackSize;
     private int maxStackSize;
 
     public StackManager() {
-        stackSize = 2;
+        stackSize = GLOBAL_BASE_OFFSET;
         maxStackSize = stackSize;
     }
 
