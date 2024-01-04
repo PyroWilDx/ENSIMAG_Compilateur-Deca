@@ -8,4 +8,5 @@ public abstract class AbstractDeclMethod extends Tree {
 
     public abstract void codeGenVTable(DecacCompiler compiler, AbstractIdentifier className);
 
+    public abstract void codeGenDeclMethod(DecacCompiler compiler);
 }

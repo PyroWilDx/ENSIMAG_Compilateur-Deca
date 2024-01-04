@@ -74,6 +74,8 @@ public class DeclClass extends AbstractDeclClass {
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
 
+        compiler.addComment("VTable of " + name.getName().getName());
+
         DAddr startAddr = sM.getGbOffsetAddr();
         vTM.addClass(name.getName().getName(), startAddr);
         compiler.addInstruction(
@@ -87,7 +89,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void codeGenDeclClass(DecacCompiler compiler) {
-
+        compiler.addComment("");
+        compiler.addComment("Class " + name.getName().getName());
+        fields.codeGenListDeclField(compiler);
+        methods.codeGenListDeclMethod(compiler);
     }
 
     @Override

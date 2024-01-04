@@ -6,7 +6,6 @@ import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -65,16 +64,14 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new STORE(Register.R0, nAddr));
         sM.incrVTableCpt();
 
-        // TODO (à décommenter quand le label equals de object sera défini)
-//        DAddr eAddr = sM.getGbOffsetAddr();
-//        vTM.addMethodToClass("Object", "equals", eAddr);
-//        compiler.addInstruction(
-//                new LOAD(new LabelOperand("code.Object.equals"), Register.R0));
-//        compiler.addInstruction(new STORE(Register.R0, eAddr));
-//        sM.incrVTableCpt();
+        DAddr eAddr = sM.getGbOffsetAddr();
+        vTM.addMethodToClass("Object", "equals", eAddr);
+        Label eLabel = new Label("code.Object.equals");
+        compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, eAddr));
+        sM.incrVTableCpt();
 
-        classes.codeGenListVTable(compiler);
-        classes.codeGenListDeclClass(compiler);
+        classes.codeGenVTable(compiler);
 
         compiler.addComment("Start of Main Program");
         compiler.addComment("Main Program");
@@ -85,6 +82,13 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
         compiler.addInstruction(1, new BOV(ErrorUtils.stackOverflowLabel));
         compiler.addInstruction(2, new ADDSP(sM.getAddSp()));
+
+        compiler.addComment("");
+        compiler.addComment("Class Object");
+        compiler.addLabel(eLabel);
+        // TODO (méthode equals de object)
+
+        classes.codeGenListDeclClass(compiler);
 
         compiler.addComment("");
 

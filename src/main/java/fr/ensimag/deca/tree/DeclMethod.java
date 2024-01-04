@@ -48,6 +48,11 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
+    public void codeGenDeclMethod(DecacCompiler compiler) {
+        // TODO (decl method code)
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         // TODO
         throw new DecacInternalError("not implemented yet");

@@ -43,7 +43,7 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         throw new UnsupportedOperationException("not yet implemented");
     }
 
-    public void codeGenListVTable(DecacCompiler compiler) {
+    public void codeGenVTable(DecacCompiler compiler) {
         for (AbstractDeclClass declClass : getList()) {
             declClass.codeGenVTable(compiler);
         }

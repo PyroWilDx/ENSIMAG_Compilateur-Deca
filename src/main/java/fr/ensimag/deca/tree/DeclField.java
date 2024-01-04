@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
@@ -24,6 +25,11 @@ public class DeclField extends AbstractDeclField{
         this.type = type;
         this.name = name;
         this.init = init;
+    }
+
+    @Override
+    public void codeGenDeclField(DecacCompiler compiler) {
+        // TODO (code gen decl field)
     }
 
     @Override
