@@ -5,13 +5,13 @@ import java.util.Map;
 
 /**
  * Manage unique symbols.
- * 
+ * <p>
  * A Symbol contains the same information as a String, but the SymbolTable
  * ensures the uniqueness of a Symbol for a given String value. Therefore,
  * Symbol comparison can be done by comparing references, and the hashCode()
  * method of Symbols can be used to define efficient HashMap (no string
  * comparison or hashing required).
- * 
+ *
  * @author gl47
  * @date 01/01/2024
  */
@@ -20,7 +20,7 @@ public class SymbolTable {
 
     /**
      * Create or reuse a symbol.
-     *
+     * <p>
      * If a symbol already exists with the same name in this table, then return
      * this Symbol. Otherwise, create a new Symbol and add it to the table.
      */

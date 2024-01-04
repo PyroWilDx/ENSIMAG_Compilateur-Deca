@@ -89,11 +89,11 @@ public class DeclClass extends AbstractDeclClass {
         VTableManager vTM = compiler.getVTableManager();
 
         DAddr startAddr = sM.getGbOffsetAddr();
-        vTM.addClass(name.getName(), startAddr);
+        vTM.addClass(name.getName().getName(), startAddr);
         compiler.addInstruction(
-                new LEA(vTM.getAddrOfClass(superClass.getName()), Register.R0));
+                new LEA(vTM.getAddrOfClass(superClass.getName().getName()), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, startAddr));
-        sM.incrStackSize();
+        sM.incrVTableCpt();
 
         methods.codeGenVTable(compiler, name);
         // Done

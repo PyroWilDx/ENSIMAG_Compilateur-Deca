@@ -69,7 +69,7 @@ public class DeclVar extends AbstractDeclVar {
         varName.getExpDefinition().setOperand(varAddr);
         compiler.addInstruction(new STORE(gpReg, varAddr));
         rM.freeReg(gpReg);
-        sM.incrStackSize();
+        sM.incrGbVarCpt();
         // Done
     }
 

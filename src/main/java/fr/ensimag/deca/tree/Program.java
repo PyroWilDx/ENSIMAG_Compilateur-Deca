@@ -6,6 +6,7 @@ import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -58,34 +59,32 @@ public class Program extends AbstractProgram {
         VTableManager vTM = compiler.getVTableManager();
 
         compiler.addComment("VTable of Object");
-        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         DAddr nAddr = sM.getGbOffsetAddr();
+        vTM.addClass("Object", nAddr);
+        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, nAddr));
-        sM.incrStackSize();
+        sM.incrVTableCpt();
 
         // TODO (à décommenter quand le label equals de object sera défini)
+//        DAddr eAddr = sM.getGbOffsetAddr();
+//        vTM.addMethodToClass("Object", "equals", eAddr);
 //        compiler.addInstruction(
 //                new LOAD(new LabelOperand("code.Object.equals"), Register.R0));
-//        DAddr eAddr = sM.getGbOffsetAddr();
 //        compiler.addInstruction(new STORE(Register.R0, eAddr));
-//        sM.incrStackSize();
+//        sM.incrVTableCpt();
 
         classes.codeGenListVTable(compiler);
         classes.codeGenListDeclClass(compiler);
 
         compiler.addComment("Start of Main Program");
-        int iTSTO = compiler.getProgramLineCount();
         compiler.addComment("Main Program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
         compiler.addComment("End of Main Program");
 
-        compiler.addInstruction(iTSTO,
-                new TSTO(sM.getMaxStackSize()));
-        compiler.addInstruction(iTSTO + 1,
-                new BOV(ErrorUtils.stackOverflowLabel));
-        compiler.addInstruction(iTSTO + 2,
-                new ADDSP(sM.getMaxStackSize() + 1));
+        compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
+        compiler.addInstruction(1, new BOV(ErrorUtils.stackOverflowLabel));
+        compiler.addInstruction(2, new ADDSP(sM.getAddSp()));
 
         compiler.addComment("");
 
