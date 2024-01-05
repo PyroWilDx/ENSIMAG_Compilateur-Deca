@@ -15,14 +15,17 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
     public EnvironmentExp verifyListDeclField(DecacCompiler compiler, SymbolTable.Symbol superClass,
                                               SymbolTable.Symbol name) throws ContextualError {
         EnvironmentExp envReturn = new EnvironmentExp(null);
+        int index = 1;
         for (AbstractDeclField decl : this.getList()) {
-            EnvironmentExp env = decl.verifyDeclField(compiler, superClass, name);
+            EnvironmentExp env = decl.verifyDeclField(compiler, superClass, name, index);
+            index++;
             if (!envReturn.disjointUnion(env)) {
                 throw new ContextualError("Field '" + decl.getName() +
                         "' already defined.", getLocation());
             }
         }
         return envReturn;
+        // Done
     }
     public void codeGenListDeclField(DecacCompiler compiler) {
         int varOffset = 1;

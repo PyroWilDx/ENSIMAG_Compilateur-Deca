@@ -11,6 +11,8 @@ public abstract class AbstractDeclField extends Tree {
     public abstract void codeGenDeclField(DecacCompiler compiler, int varOffset);
     public abstract EnvironmentExp verifyDeclField(DecacCompiler compiler,
                                                    SymbolTable.Symbol superClass,
-                                                   SymbolTable.Symbol classDef) throws ContextualError;
+                                                   SymbolTable.Symbol classDef,
+                                                   int index) throws ContextualError;
+    // Done
     public abstract SymbolTable.Symbol getName();
 }

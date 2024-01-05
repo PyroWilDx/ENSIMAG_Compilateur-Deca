@@ -106,6 +106,18 @@ public class EnvironmentType {
         return envTypes.get(s);
     }
 
+    public boolean subtype(Type type1, Type type2) {
+        if (type1.equals(type2)) return true;
+        if (type1.isClass()) {
+            ClassType classType = (ClassType) type1;
+            if (!type2.isClass()) return false;
+            ClassType classType2 = (ClassType) type2;
+            return classType.isSubClassOf(classType2);
+        }
+        if (type1 == null && type2.isClass()) return true;
+        return false;
+        // TODO pas sur sur mais ça a l'air bien.
+    }
     public boolean assignCompatible(Type type1, Type type2) {
         //TODO remplir tout ça pour la deuxieme condition possible (si subtype(env, T2, T1) peut être avec un dictionnaire de compatibilités...........
         return type1 == type2 || type1 == FLOAT && type2 == INT;

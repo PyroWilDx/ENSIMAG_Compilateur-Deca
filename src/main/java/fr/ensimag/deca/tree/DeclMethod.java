@@ -5,9 +5,7 @@ import fr.ensimag.deca.codegen.ErrorUtils;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
@@ -94,9 +92,39 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    public EnvironmentExp verifyDeclMethod(DecacCompiler compiler, ClassDefinition superClass) throws ContextualError {
+    public EnvironmentExp verifyDeclMethod(DecacCompiler compiler, SymbolTable.Symbol superClass, int index) throws ContextualError {
         // TODO
-        throw new UnsupportedOperationException("not yet implemented");
+        Type t = this.type.verifyType(compiler);
+        Signature sig = this.params.verifyListDeclParam(compiler);
+        TypeDefinition def = compiler.environmentType.get(superClass);
+        if (def.isClass()) {
+            ClassDefinition superClassDef = (ClassDefinition) def;
+            EnvironmentExp envExpSuper = superClassDef.getMembers();
+            ExpDefinition expDef = envExpSuper.get(this.name.getName());
+            if (expDef != null) {
+                if (!expDef.isMethod()) {
+                    throw new ContextualError("A field '" +
+                            this.name.getName() + "' already " +
+                            "exists in super class", getLocation());
+                }
+                MethodDefinition methodDefinition = (MethodDefinition) expDef;
+                Signature sig2 = methodDefinition.getSignature();
+                if (! sig.equals(sig2)) {
+                    throw new ContextualError("Method defined in super class with" +
+                            "another signature.", getLocation());
+                }
+                Type type2 = expDef.getType();
+                if (!compiler.environmentType.subtype(t, type2)) {
+                    throw new ContextualError("Return type of override must be" +
+                            " subtype of the return type of the method declared in super class", getLocation());
+                }
+            }
+        }
+        EnvironmentExp env = new EnvironmentExp(null);
+        ExpDefinition newDef = new MethodDefinition(t, getLocation(), sig, index);
+        env.declare(this.name.getName(), newDef);
+        return env;
+        // Done
     }
 
     @Override
