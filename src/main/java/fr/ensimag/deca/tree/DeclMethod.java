@@ -70,7 +70,7 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     public void decompile(IndentPrintStream s) {
         // TODO
-        throw new DecacInternalError("not implemented yet");
+        throw new UnsupportedOperationException("not implemented yet");
     }
 
     @Override
