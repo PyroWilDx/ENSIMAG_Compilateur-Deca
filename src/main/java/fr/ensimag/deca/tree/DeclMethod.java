@@ -1,6 +1,8 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.ErrorUtils;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -10,10 +12,10 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
+import java.util.LinkedList;
 
 public class DeclMethod extends AbstractDeclMethod {
     private AbstractIdentifier type;
@@ -23,6 +25,8 @@ public class DeclMethod extends AbstractDeclMethod {
     // TODO mais dans ce cas penser à changer le parser
     private ListDeclVar declVariables;
     private ListInst insts;
+    private Label mStartLabel;
+    private Label mEndLabel;
 
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name,
                       ListParam params, ListDeclVar declVariables, ListInst insts) {
@@ -31,6 +35,7 @@ public class DeclMethod extends AbstractDeclMethod {
         this.params = params;
         this.declVariables = declVariables;
         this.insts = insts;
+        this.mStartLabel = null;
     }
 
     @Override
@@ -38,9 +43,11 @@ public class DeclMethod extends AbstractDeclMethod {
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        String mLabelStr = "code." + className.getName().getName() +
-                "." + name.getName().getName();
-        compiler.addInstruction(new LOAD(new LabelOperand(mLabelStr), Register.R0));
+        mStartLabel = new Label("code." + className.getName().getName() +
+                "." + name.getName().getName());
+        mEndLabel = new Label("end." + className.getName().getName() +
+                "." + name.getName().getName());
+        compiler.addInstruction(new LOAD(new LabelOperand(mStartLabel), Register.R0));
 
         DAddr mAddr = sM.getGbOffsetAddr();
         compiler.addInstruction(new STORE(Register.R0, mAddr));
@@ -53,7 +60,32 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     public void codeGenDeclMethod(DecacCompiler compiler) {
-        // TODO (decl method code)
+        RegManager rM = compiler.getRegManager();
+        StackManager sM = new StackManager();
+        compiler.setStackManager(sM);
+
+        compiler.addLabel(mStartLabel);
+        int iTSTO = compiler.getProgramLineCount();
+
+        rM.saveUsedRegs();
+        insts.codeGenListInst(compiler); // TODO (A voir s'il faut créer un nouveau codegen)
+
+        LinkedList<AbstractLine> startLines = new LinkedList<>();
+        LinkedList<AbstractLine> endLines = new LinkedList<>();
+        startLines.addLast(new Line(new TSTO(sM.getMaxStackSize())));
+        startLines.addLast(new Line(new BOV(ErrorUtils.stackOverflowLabel)));
+        for (GPRegister usedReg : rM.usedRegsIterable()) {
+            startLines.addLast(new Line(new PUSH(usedReg)));
+            endLines.addFirst(new Line(new POP(usedReg)));
+        }
+        compiler.addAllLine(iTSTO, startLines);
+
+        compiler.addLabel(mEndLabel);
+        compiler.addAllLine(endLines);
+        compiler.addInstruction(new RTS());
+
+        rM.doNotSaveRegs();
+        // Done
     }
 
     @Override

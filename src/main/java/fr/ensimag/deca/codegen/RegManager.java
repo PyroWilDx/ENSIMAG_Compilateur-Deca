@@ -12,6 +12,7 @@ public class RegManager {
 
     public final int nRegs;
     private final LinkedList<GPRegister> freeRegs;
+    private OrderedHashSet<GPRegister> usedRegs;
     private DVal lastImm;
 
     public RegManager(int nRegs) {
@@ -20,12 +21,17 @@ public class RegManager {
         for (int i = 2; i < nRegs; i++) {
             freeRegs.addLast(Register.getR(i));
         }
+        this.usedRegs = null;
         lastImm = null;
     }
 
     public GPRegister getFreeReg() {
         if (!freeRegs.isEmpty()) {
-            return freeRegs.removeFirst();
+            GPRegister freeReg = freeRegs.removeFirst();
+            if (usedRegs != null) {
+                usedRegs.addLast(freeReg);
+            }
+            return freeReg;
         }
         return null;
     }
@@ -76,6 +82,18 @@ public class RegManager {
     public void removeScratchRegs() {
         freeRegs.remove(Register.R0);
         freeRegs.remove(Register.R1);
+    }
+
+    public void saveUsedRegs() {
+        usedRegs = new OrderedHashSet<>();
+    }
+
+    public void doNotSaveRegs() {
+        usedRegs = null;
+    }
+
+    public Iterable<GPRegister> usedRegsIterable() {
+        return usedRegs;
     }
 
 }
