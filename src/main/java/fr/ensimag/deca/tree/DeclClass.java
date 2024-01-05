@@ -13,6 +13,7 @@ import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LEA;
+import fr.ensimag.ima.pseudocode.instructions.RTS;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.io.PrintStream;
@@ -113,10 +114,11 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addComment("");
         compiler.addComment("Class " + name.getName().getName());
 
-        rM.addScratchRegs();
         compiler.addLabel(new Label("init." + name.getName().getName()));
+        rM.addScratchRegs();
         fields.codeGenListDeclField(compiler);
         rM.removeScratchRegs();
+        compiler.addInstruction(new RTS());
 
         methods.codeGenListDeclMethod(compiler);
     }

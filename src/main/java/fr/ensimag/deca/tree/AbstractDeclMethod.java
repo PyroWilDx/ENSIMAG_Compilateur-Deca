@@ -12,7 +12,9 @@ public abstract class AbstractDeclMethod extends Tree {
     public abstract void codeGenVTable(DecacCompiler compiler, AbstractIdentifier className);
 
     public abstract void codeGenDeclMethod(DecacCompiler compiler);
+
     public abstract SymbolTable.Symbol getName();
+
     public abstract EnvironmentExp verifyDeclMethod(DecacCompiler compiler,
                                                     ClassDefinition superClass) throws ContextualError;
 }

@@ -2,6 +2,7 @@ package fr.ensimag.ima.pseudocode;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Collection;
 import java.util.LinkedList;
 
 /**
@@ -31,6 +32,14 @@ public class IMAProgram {
 
     public void addInstruction(int index, Instruction i) {
         lines.add(index, new Line(i));
+    }
+
+    public void addAllLine(Collection<AbstractLine> c) {
+        lines.addAll(c);
+    }
+
+    public void addAllLine(int index, Collection<AbstractLine> c) {
+        lines.addAll(index, c);
     }
 
     public void addInstruction(Instruction i, String s) {

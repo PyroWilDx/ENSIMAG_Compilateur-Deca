@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Collection;
 
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -105,6 +106,14 @@ public class DecacCompiler {
         program.addInstruction(index, instruction);
     }
 
+    public void addAllLine(Collection<AbstractLine> c) {
+        program.addAllLine(c);
+    }
+
+    public void addAllLine(int index, Collection<AbstractLine> c) {
+        program.addAllLine(index, c);
+    }
+
     /**
      * @see fr.ensimag.ima.pseudocode.IMAProgram#addInstruction(fr.ensimag.ima.pseudocode.Instruction,
      * java.lang.String)
@@ -188,7 +197,7 @@ public class DecacCompiler {
     }
 
     private final RegManager regManager;
-    private final StackManager stackManager;
+    private StackManager stackManager;
     private final CondManager condManager;
     private final VTableManager vTableManager;
 
@@ -281,6 +290,10 @@ public class DecacCompiler {
 
     public RegManager getRegManager() {
         return regManager;
+    }
+
+    public void setStackManager(StackManager value) {
+        stackManager = value;
     }
 
     public StackManager getStackManager() {

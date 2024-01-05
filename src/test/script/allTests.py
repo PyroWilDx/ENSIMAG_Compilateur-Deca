@@ -184,6 +184,12 @@ def doTests():
     #          decacOptions="-d -d -d",
     #          doAssert=False)
 
+    # doVerify("codegen/valid/classes/fieldsSimpleClass.deca",
+    #          doAssert=False)
+
+    # doVerify("codegen/valid/classes/fieldsComplexClass.deca",
+    #          doAssert=False)
+
     """
     ==============================================
     TESTS QUI NE MARCHENT PAS
@@ -228,7 +234,7 @@ def main():
     doTests()
 
     # With -P
-    decacParallel()
+    # decacParallel()
 
 
 if __name__ == '__main__':
