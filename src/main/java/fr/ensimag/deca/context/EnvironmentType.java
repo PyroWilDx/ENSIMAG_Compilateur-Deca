@@ -8,7 +8,6 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.Location;
-import sun.jvm.hotspot.debugger.cdbg.Sym;
 
 // A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
 /**
