@@ -27,4 +27,8 @@ public class VTableManager {
         return classes.get(className).getStartAddr();
     }
 
+    public DAddr getAddrOfMethod(String className, String methodName) {
+        return classes.get(className).getMethodAddr(methodName);
+    }
+
 }

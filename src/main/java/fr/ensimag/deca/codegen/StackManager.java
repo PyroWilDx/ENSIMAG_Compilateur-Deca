@@ -47,7 +47,7 @@ public class StackManager {
     }
 
     public int getAddSp() {
-        return gbVarCpt + vTableCpt + 1;
+        return gbVarCpt + vTableCpt;
     }
 
 }

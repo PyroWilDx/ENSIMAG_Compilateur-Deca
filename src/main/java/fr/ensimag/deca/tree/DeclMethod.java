@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ErrorUtils;
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.deca.codegen.StackManager;
-import fr.ensimag.deca.codegen.VTableManager;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -52,6 +49,10 @@ public class DeclMethod extends AbstractDeclMethod {
         sM.incrVTableCpt();
 
         vTM.addMethodToClass(className.getName().getName(), name.getName().getName(), mAddr);
+
+        for (AbstractParam param : params.getList()) {
+            // TODO (param.setOperand ??)
+        }
         // TODO (Merde comment on sait si c'est une méthode surchargée ou pas??)
         // Done
     }
@@ -86,6 +87,108 @@ public class DeclMethod extends AbstractDeclMethod {
         // Done
     }
 
+//    // TODO (à déplacer)
+//    public void codeGenCallMethod(DecacCompiler compiler) {
+//        RegManager rM = compiler.getRegManager();
+//        VTableManager vTM = compiler.getVTableManager();
+//
+//        int nbParam = nbVar + 1;
+//        compiler.addInstruction(new ADDSP(nbParam));
+//
+//        GPRegister gpReg = rM.getFreeReg();
+//        compiler.addInstruction(
+//                new LOAD(identifier.getExpDefinition().getOperand(), gpReg));
+//
+//        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+//        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
+//
+//        compiler.addInstruction(
+//                new STORE(gpReg, new RegisterOffset(0, Register.SP)));
+//        rM.freeReg(gpReg);
+//
+//        int currParamIndex = -1;
+//        for (AbstractInst inst : insts.getList()) {
+//            inst.codeGenInst(compiler);
+//            gpReg = rM.getLastReg();
+//            compiler.addInstruction(
+//                    new STORE(gpReg, new RegisterOffset(currParamIndex, Register.SP)));
+//            rM.freeReg(gpReg);
+//            currParamIndex--;
+//        }
+//
+//        gpReg = rM.getFreeReg();
+////        compiler.addInstruction(
+////                new LOAD(new RegisterOffset(0, Register.SP), gpReg));
+////        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+////        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
+//
+////        compiler.addInstruction(
+////                new LOAD(new RegisterOffset(0, gpReg), gpReg));
+////        compiler.addInstruction(new BSR(new RegisterOffset(mOffset, gpReg)));
+//        compiler.addInstruction(vTM.getAddrOfMethod(className, methodName));
+//        rM.freeReg(gpReg);
+//
+//        compiler.addInstruction(new SUBSP(nbParam));
+//    }
+
+//    // TODO (à déplacer)
+//    public void codeGenNew(DecacCompiler compiler) {
+//        RegManager rM = compiler.getRegManager();
+//        VTableManager vTM = compiler.getVTableManager();
+//
+//        GPRegister gpReg = rM.getFreeReg();
+//        compiler.addInstruction(new NEW(nbAttributs + 1, gpReg));
+//        compiler.addInstruction(new BOV(ErrorUtils.heapOverflowLabel));
+//        compiler.addInstruction(new LEA(vTM.getAddrOfClass(className, Register.R0)));
+//        compiler.addInstruction(
+//                new STORE(Register.R0, new RegisterOffset(0, gpReg)));
+////        compiler.addInstruction(new PUSH(gpReg));
+//        compiler.addInstruction(new BSR(vTM.getLabelINITdeLACLASSE()));
+////        compiler.addInstruction(new POP(gpReg));
+//        rM.freeReg(gpReg);
+//    }
+
+//    // TODO (à déplacer)
+//    public void codeGenInstanceOf(DecacCompiler compiler) {
+//        RegManager rM = compiler.getRegManager();
+//        CondManager cM = compiler.getCondManager();
+//        VTableManager vTM = compiler.getVTableManager();
+//
+//        compiler.addInstruction(
+//                new LOAD(vTM.getAddrOfClass(targetClassName), Register.R0));
+//        GPRegister gpReg = rM.getFreeReg();
+//        compiler.addInstruction(
+//                new LOAD(identifier.getExpDefinition().getOperand(), gpReg));
+//        int idCpt = cM.getAndIncrIdCpt();
+//        Label startLabel = new Label("startInstanceOf" + idCpt);
+//        Label endTrueLabel = new Label("endTrueInstanceOf" + idCpt);
+//        Label endFalseLabel = new Label("endFalseInstanceOf" + idCpt);
+//        Label endLabel = new Label("endInstanceOf" + idCpt);
+//
+//        compiler.addLabel(startLabel);
+//
+//        compiler.addInstruction(
+//                new LOAD(new RegisterOffset(0, gpReg), gpReg));
+//
+//        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+//        compiler.addInstruction(new BEQ(endFalseLabel));
+//
+//        compiler.addInstruction(new CMP(Register.R0, gpReg));
+//        compiler.addInstruction(new BEQ(endTrueLabel));
+//
+//        compiler.addInstruction(new BRA(startLabel));
+//
+//        compiler.addLabel(endTrueLabel);
+//        compiler.addInstruction(new LOAD(1, gpReg));
+//        compiler.addInstruction(new BRA(endLabel));
+//
+//        compiler.addLabel(endFalseLabel);
+//        compiler.addInstruction(new LOAD(0, gpReg));
+//
+//        compiler.addLabel(endLabel);
+//        rM.freeReg(gpReg);
+//    }
+
     @Override
     public SymbolTable.Symbol getName() {
         return null;
@@ -109,7 +212,7 @@ public class DeclMethod extends AbstractDeclMethod {
                 }
                 MethodDefinition methodDefinition = (MethodDefinition) expDef;
                 Signature sig2 = methodDefinition.getSignature();
-                if (! sig.equals(sig2)) {
+                if (!sig.equals(sig2)) {
                     throw new ContextualError("Method defined in super class with" +
                             "another signature.", getLocation());
                 }

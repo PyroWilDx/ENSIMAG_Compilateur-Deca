@@ -97,11 +97,17 @@ public class Program extends AbstractProgram {
                 "Error: Stack Overflow",
                 ErrorUtils.stackOverflowLabel);
         ErrorUtils.codeGenError(compiler,
+                "Error: Head Overflow",
+                ErrorUtils.heapOverflowLabel);
+        ErrorUtils.codeGenError(compiler,
                 "Error: Division by 0",
                 ErrorUtils.divBy0Label);
         ErrorUtils.codeGenError(compiler,
                 "Error: Input/Output Error",
                 ErrorUtils.ioErrLabel);
+        ErrorUtils.codeGenError(compiler,
+                "Error: Dereferencing Null Pointer",
+                ErrorUtils.nullPointerLabel);
         compiler.addComment("End of Error Labels");
         // Done
     }
