@@ -80,7 +80,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void verifyClassMembers(DecacCompiler compiler) throws ContextualError {
         EnvironmentExp envExpF = this.fields.verifyListDeclField(compiler, this.superClass.getName(), name.getName());
-        EnvironmentExp envExpM = this.methods.verifyListDeclMethod(compiler, this.superClass.getClassDefinition());
+        EnvironmentExp envExpM = this.methods.verifyListDeclMethod(compiler, this.superClass.getName());
         //throw new UnsupportedOperationException("not yet implemented");
     }
 

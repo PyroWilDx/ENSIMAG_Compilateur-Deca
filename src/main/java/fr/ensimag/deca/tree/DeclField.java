@@ -56,8 +56,7 @@ public class DeclField extends AbstractDeclField {
     @Override
     public EnvironmentExp verifyDeclField(DecacCompiler compiler,
                                           SymbolTable.Symbol superClass,
-                                          SymbolTable.Symbol className) throws ContextualError {
-        // TODO
+                                          SymbolTable.Symbol className, int index) throws ContextualError {
         Type t = this.type.verifyType(compiler);
         if (t.equals(compiler.environmentType.VOID)) {
             throw new ContextualError("Field type cannot be void",
@@ -69,13 +68,13 @@ public class DeclField extends AbstractDeclField {
             EnvironmentExp envExpSuper = superClassDef.getMembers();
             ExpDefinition expDef = envExpSuper.get(this.name.getName());
             if (expDef != null && expDef.isField()) {
-                throw new ContextualError("Method '" + this.name.getName() +
+                throw new ContextualError("A method '" + this.name.getName() +
                         "' already exists in super class", getLocation());
             }
         }
         EnvironmentExp env = new EnvironmentExp(null);
         ClassDefinition classDefinition = (ClassDefinition) compiler.environmentType.get(className);
-        ExpDefinition expDef = new FieldDefinition(t, getLocation(), visibility, classDefinition, 0); // TODO voir pour l'index
+        ExpDefinition expDef = new FieldDefinition(t, getLocation(), visibility, classDefinition, index);
         env.declare(this.name.getName(), expDef);
         return env;
         // Done
