@@ -74,7 +74,7 @@ public class DeclMethod extends AbstractDeclMethod {
         LinkedList<AbstractLine> endLines = new LinkedList<>();
         startLines.addLast(new Line(new TSTO(sM.getMaxStackSize())));
         startLines.addLast(new Line(new BOV(ErrorUtils.stackOverflowLabel)));
-        for (GPRegister usedReg : rM.usedRegsIterable()) {
+        for (GPRegister usedReg : rM.getUsedRegs()) {
             startLines.addLast(new Line(new PUSH(usedReg)));
             endLines.addFirst(new Line(new POP(usedReg)));
         }

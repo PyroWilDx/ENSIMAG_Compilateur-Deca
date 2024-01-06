@@ -92,7 +92,7 @@ public class RegManager {
         usedRegs = null;
     }
 
-    public Iterable<GPRegister> usedRegsIterable() {
+    public OrderedHashSet<GPRegister> getUsedRegs() {
         return usedRegs;
     }
 
