@@ -88,7 +88,7 @@ public class RegManager {
         usedRegs = new OrderedHashSet<>();
     }
 
-    public void doNotSaveRegs() {
+    public void doNotSaveUsedRegs() {
         usedRegs = null;
     }
 

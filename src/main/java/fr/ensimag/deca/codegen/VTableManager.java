@@ -1,6 +1,5 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.DAddr;
 
 import java.util.HashMap;

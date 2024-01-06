@@ -8,7 +8,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-public class Param extends AbstractParam{
+public class Param extends AbstractParam {
     private AbstractIdentifier type;
     private AbstractIdentifier name;
 

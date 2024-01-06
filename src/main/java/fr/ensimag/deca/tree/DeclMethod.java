@@ -82,7 +82,7 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addAllLine(endLines);
         compiler.addInstruction(new RTS());
 
-        rM.doNotSaveRegs();
+        rM.doNotSaveUsedRegs();
         // Done
     }
 
