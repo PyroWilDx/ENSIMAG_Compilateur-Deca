@@ -12,20 +12,27 @@ public class ListDeclField extends TreeList<AbstractDeclField>{
     public void decompile(IndentPrintStream s) {
         // TODO ?
     }
-    public EnvironmentExp verifyListDeclField(DecacCompiler compiler, SymbolTable.Symbol superClass,
-                                              SymbolTable.Symbol name) throws ContextualError {
+    public EnvironmentExp verifyListDeclFieldMembers(DecacCompiler compiler, SymbolTable.Symbol superClass,
+                                                     SymbolTable.Symbol name) throws ContextualError {
         EnvironmentExp envReturn = new EnvironmentExp(null);
         int index = 1;
         for (AbstractDeclField decl : this.getList()) {
-            EnvironmentExp env = decl.verifyDeclField(compiler, superClass, name, index);
+            EnvironmentExp env = decl.verifyDeclFieldMembers(compiler, superClass, name, index);
             index++;
-            if (!envReturn.disjointUnion(env)) {
+            if (envReturn.disjointUnion(env) != null) {
                 throw new ContextualError("Field '" + decl.getName() +
                         "' already defined.", getLocation());
             }
         }
         return envReturn;
         // Done
+    }
+    public void verifyListDeclFieldBody(DecacCompiler compiler,
+                                        EnvironmentExp localEnv,
+                                        ClassDefinition classDef) throws ContextualError {
+        for (AbstractDeclField decl : getList()) {
+            decl.verifyDeclFieldBody(compiler, localEnv, classDef);
+        }
     }
     public void codeGenListDeclField(DecacCompiler compiler) {
         int varOffset = 1;

@@ -54,9 +54,9 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    public EnvironmentExp verifyDeclField(DecacCompiler compiler,
-                                          SymbolTable.Symbol superClass,
-                                          SymbolTable.Symbol className, int index) throws ContextualError {
+    public EnvironmentExp verifyDeclFieldMembers(DecacCompiler compiler,
+                                                 SymbolTable.Symbol superClass,
+                                                 SymbolTable.Symbol className, int index) throws ContextualError {
         Type t = this.type.verifyType(compiler);
         if (t.equals(compiler.environmentType.VOID)) {
             throw new ContextualError("Field type cannot be void",
@@ -77,6 +77,13 @@ public class DeclField extends AbstractDeclField {
         ExpDefinition expDef = new FieldDefinition(t, getLocation(), visibility, classDefinition, index);
         env.declare(this.name.getName(), expDef);
         return env;
+        // Done
+    }
+
+    @Override
+    public void verifyDeclFieldBody(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition classDef) throws ContextualError {
+        Type t = this.type.verifyType(compiler);
+        this.init.verifyInitialization(compiler, t, localEnv, classDef);
         // Done
     }
 

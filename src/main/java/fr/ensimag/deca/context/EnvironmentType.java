@@ -5,7 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.AbstractIdentifier;
+import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.Location;
+import sun.jvm.hotspot.debugger.cdbg.Sym;
 
 // A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
 /**
@@ -95,11 +98,13 @@ public class EnvironmentType {
     public TypeDefinition get(Symbol name) {
         return envTypes.get(name);
     }
-    public boolean declareClasse(Symbol name, ClassDefinition superClass, Location location) {
+    public boolean declareClasse(AbstractIdentifier name, ClassDefinition superClass, Location location) {
         if (envTypes.containsKey(name)) return false;
-        ClassType type = new ClassType(name);
+        Symbol symb = name.getName();
+        ClassType type = new ClassType(symb);
         TypeDefinition def = new ClassDefinition(type, location, superClass);
-        envTypes.put(name, def);
+        name.setDefinition(def);
+        envTypes.put(symb, def);
         return true;
     }
     public TypeDefinition defOfType(Symbol s) {

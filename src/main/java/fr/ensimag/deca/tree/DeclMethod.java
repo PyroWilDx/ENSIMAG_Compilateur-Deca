@@ -13,23 +13,23 @@ import java.io.PrintStream;
 import java.util.LinkedList;
 
 public class DeclMethod extends AbstractDeclMethod {
-    private AbstractIdentifier type;
-    private AbstractIdentifier name;
-    private ListParam params;
+    private final AbstractIdentifier type;
+    private final AbstractIdentifier name;
+    private final ListParam params;
     // TODO peutetre creer une classe bloc pour factoriser avec Main et se rapprocher du sujet
     // TODO mais dans ce cas penser à changer le parser
-    private ListDeclVar declVariables;
-    private ListInst insts;
+    private final ListDeclVar listDeclVar;
+    private final ListInst listInst;
     private Label mStartLabel;
     private Label mEndLabel;
 
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name,
-                      ListParam params, ListDeclVar declVariables, ListInst insts) {
+                      ListParam params, ListDeclVar listDeclVar, ListInst listInst) {
         this.type = type;
         this.name = name;
         this.params = params;
-        this.declVariables = declVariables;
-        this.insts = insts;
+        this.listDeclVar = listDeclVar;
+        this.listInst = listInst;
         this.mStartLabel = null;
     }
 
@@ -67,7 +67,7 @@ public class DeclMethod extends AbstractDeclMethod {
         int iTSTO = compiler.getProgramLineCount();
 
         rM.saveUsedRegs();
-        insts.codeGenListInst(compiler); // TODO (A voir s'il faut créer un nouveau codegen)
+        listInst.codeGenListInst(compiler); // TODO (A voir s'il faut créer un nouveau codegen)
 
         LinkedList<AbstractLine> startLines = new LinkedList<>();
         LinkedList<AbstractLine> endLines = new LinkedList<>();
@@ -195,10 +195,9 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    public EnvironmentExp verifyDeclMethod(DecacCompiler compiler, SymbolTable.Symbol superClass, int index) throws ContextualError {
-        // TODO
+    public EnvironmentExp verifyDeclMethodMembers(DecacCompiler compiler, SymbolTable.Symbol superClass, int index) throws ContextualError {
         Type t = this.type.verifyType(compiler);
-        Signature sig = this.params.verifyListDeclParam(compiler);
+        Signature sig = this.params.verifyListDeclParamMembers(compiler);
         TypeDefinition def = compiler.environmentType.get(superClass);
         if (def.isClass()) {
             ClassDefinition superClassDef = (ClassDefinition) def;
@@ -227,6 +226,16 @@ public class DeclMethod extends AbstractDeclMethod {
         ExpDefinition newDef = new MethodDefinition(t, getLocation(), sig, index);
         env.declare(this.name.getName(), newDef);
         return env;
+        // Done
+    }
+
+    @Override
+    public void verifyDeclMethodBody(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        Type returnType = this.type.verifyType(compiler);
+        EnvironmentExp envParams = this.params.verifyListDeclParamBody(compiler);
+        EnvironmentExp envReturn = this.listDeclVar.verifyListDeclVariable(compiler, localEnv, envParams, currentClass);
+        EnvironmentExp envEmpile = EnvironmentExp.empile(envReturn, localEnv);
+        this.listInst.verifyListInst(compiler, envEmpile, currentClass, returnType);
         // Done
     }
 
