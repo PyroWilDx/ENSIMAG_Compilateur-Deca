@@ -248,7 +248,6 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // TODO
-        //System.out.println(prefix + visibility);
         type.prettyPrint(s,prefix,false);
         name.prettyPrint(s,prefix,false);
         params.prettyPrint(s,prefix,false);
