@@ -248,7 +248,12 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // TODO
-        throw new DecacInternalError("not implemented yet");
+        //System.out.println(prefix + visibility);
+        type.prettyPrint(s,prefix,false);
+        name.prettyPrint(s,prefix,false);
+        params.prettyPrint(s,prefix,false);
+        listDeclVar.prettyPrint(s,prefix,false);
+        listInst.prettyPrint(s,prefix,true);
 
     }
 

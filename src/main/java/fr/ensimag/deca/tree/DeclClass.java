@@ -137,6 +137,7 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
+        name.prettyPrint(s,prefix,false);
         fields.prettyPrintChildren(s, prefix);
         methods.prettyPrintChildren(s, prefix);
     }

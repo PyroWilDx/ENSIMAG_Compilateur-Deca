@@ -26,8 +26,9 @@ public class Param extends AbstractParam {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO
-        throw new DecacInternalError("not implemented yet");
+        type.prettyPrint(s,prefix,false);
+        name.prettyPrint(s,prefix,true);
+        //throw new DecacInternalError("not implemented yet");
 
     }
 
