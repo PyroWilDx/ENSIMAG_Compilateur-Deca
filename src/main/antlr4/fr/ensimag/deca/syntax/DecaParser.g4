@@ -391,7 +391,6 @@ select_expr returns[AbstractExpr tree]
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert( $args.tree != null);
-            $tree =
         }
         | /* epsilon */ {
             // we matched "e.i"
@@ -570,6 +569,7 @@ decl_method returns[AbstractDeclMethod tree]
         setLocation($tree, $type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
+        //$tree=new DeclMethodAsm();
         }
       ) {
         }
