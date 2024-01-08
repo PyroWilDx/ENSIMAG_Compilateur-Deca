@@ -78,7 +78,7 @@ public abstract class Type {
     /**
      * Returns the same object, as type ClassType, if possible. Throws
      * ContextualError(errorMessage, l) otherwise.
-     *
+     * <p>
      * Can be seen as a cast, but throws an explicit contextual error when the
      * cast fails.
      */

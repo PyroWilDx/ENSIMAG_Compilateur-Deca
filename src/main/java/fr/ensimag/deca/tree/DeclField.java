@@ -5,16 +5,14 @@ import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.NullOperand;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.io.PrintStream;
 
 public class DeclField extends AbstractDeclField {
+
     private final Visibility visibility; // TODO jsppppp
     private final AbstractIdentifier type;
     private final AbstractIdentifier name;
@@ -40,9 +38,9 @@ public class DeclField extends AbstractDeclField {
     public void codeGenSetFieldTo0(DecacCompiler compiler, int varOffset,
                                    boolean doLoad) {
         if (doLoad) {
-            if (type.getType().isInt() || type.getType().isBoolean()) {
+            if (getInitTypeCode() == TypeCode.INT_OR_BOOL) {
                 compiler.addInstruction(new LOAD(0, Register.R0));
-            } else if (type.getType().isFloat()) {
+            } else if (getInitTypeCode() == TypeCode.FLOAT) {
                 compiler.addInstruction(new LOAD(0.f, Register.R0));
             } else {
                 compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
@@ -59,7 +57,15 @@ public class DeclField extends AbstractDeclField {
         init.setVarType(type.getType());
         init.codeGenInit(compiler);
 
-        GPRegister regValue = rM.getLastRegOrImm(compiler);
+        GPRegister regValue;
+        if (init.getExpr() instanceof AbstractLiteral) {
+            DVal dVal = rM.getLastImm();
+            regValue = Register.R0;
+            compiler.addInstruction(new LOAD(dVal, regValue));
+        } else {
+            regValue = rM.getLastReg();
+        }
+
         compiler.addInstruction(
                 new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         compiler.addInstruction(
@@ -69,8 +75,13 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    public Type getInitType() {
-        return type.getType();
+    public TypeCode getInitTypeCode() {
+        if (type.getType().isInt() || type.getType().isBoolean()) {
+            return TypeCode.INT_OR_BOOL;
+        } else if (type.getType().isFloat()) {
+            return TypeCode.FLOAT;
+        }
+        return TypeCode.OTHER;
     }
 
     @Override
