@@ -38,7 +38,9 @@ public class DeclClass extends AbstractDeclClass {
         this.fields = fields;
         this.methods = methods;
     }
-
+    public ListDeclField getFields(){
+        return fields;
+    }
     public AbstractIdentifier getName() {
         return name;
     }
@@ -49,10 +51,6 @@ public class DeclClass extends AbstractDeclClass {
 
     public ListDeclMethod getMethods() {
         return methods;
-    }
-
-    public ListDeclField getFields() {
-        return fields;
     }
 
     @Override

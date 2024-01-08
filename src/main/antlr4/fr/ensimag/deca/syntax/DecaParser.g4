@@ -375,6 +375,7 @@ unary_expr returns[AbstractExpr tree]
     | select_expr {
             assert($select_expr.tree != null);
             $tree = $select_expr.tree ;
+            setLocation($tree, $select_expr.start);//TODO not sure
         }
     ;
 
@@ -387,6 +388,7 @@ select_expr returns[AbstractExpr tree]
     | e1=select_expr DOT i=ident {
             assert( $e1.tree != null);
             assert( $i.tree != null);
+            //$tree = new Dot($e1.tree,$i.tree); //TODO
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
