@@ -28,9 +28,12 @@ public class DeclMethodAsm extends AbstractDeclMethod {
     }
 
     public void codeGenVTable(DecacCompiler compiler, AbstractIdentifier className) {
+        // nothing
     }
 
     public void codeGenDeclMethod(DecacCompiler compiler) {
+        compiler.addLabel(new Label(name.getName().getName()));
+        compiler.add(new LineAsm(code));
     }
 
     public SymbolTable.Symbol getName() {
@@ -41,8 +44,8 @@ public class DeclMethodAsm extends AbstractDeclMethod {
                                                   SymbolTable.Symbol superClass,
                                                   int index) {
         return null;
+        // Done
     }
-    // Done
 
     public void verifyDeclMethodBody(DecacCompiler compiler,
                                      EnvironmentExp localEnv,
