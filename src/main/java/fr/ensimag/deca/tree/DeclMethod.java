@@ -91,50 +91,6 @@ public class DeclMethod extends AbstractDeclMethod {
         // Done
     }
 
-//    // TODO (à déplacer)
-//    public void codeGenCallMethod(DecacCompiler compiler) {
-//        RegManager rM = compiler.getRegManager();
-//        VTableManager vTM = compiler.getVTableManager();
-//
-//        int nbParam = params.size() + 1;
-//        compiler.addInstruction(new ADDSP(nbParam));
-//
-//        GPRegister gpReg = rM.getFreeReg();
-//        compiler.addInstruction(
-//                new LOAD(identifier.getExpDefinition().getOperand(), gpReg));
-//
-//        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-//        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
-//
-//        compiler.addInstruction(
-//                new STORE(gpReg, new RegisterOffset(0, Register.SP)));
-//        rM.freeReg(gpReg);
-//
-//        int currParamIndex = -1;
-//        for (AbstractInst inst : insts.getList()) {
-//            inst.codeGenInst(compiler);
-//            gpReg = rM.getLastReg();
-//            compiler.addInstruction(
-//                    new STORE(gpReg, new RegisterOffset(currParamIndex, Register.SP)));
-//            rM.freeReg(gpReg);
-//            currParamIndex--;
-//        }
-//
-//        gpReg = rM.getFreeReg();
-////        compiler.addInstruction(
-////                new LOAD(new RegisterOffset(0, Register.SP), gpReg));
-////        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-////        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
-//
-////        compiler.addInstruction(
-////                new LOAD(new RegisterOffset(0, gpReg), gpReg));
-////        compiler.addInstruction(new BSR(new RegisterOffset(mOffset, gpReg)));
-//        compiler.addInstruction(vTM.getAddrOfMethod(className, methodName));
-//        rM.freeReg(gpReg);
-//
-//        compiler.addInstruction(new SUBSP(nbParam));
-//    }
-
     // TODO (à déplacer)
 //    public void codeGenReturn(DecacCompiler compiler) {
 //        RegManager rM = compiler.getRegManager();
