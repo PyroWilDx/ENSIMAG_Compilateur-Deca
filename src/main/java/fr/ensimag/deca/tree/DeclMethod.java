@@ -20,6 +20,7 @@ public class DeclMethod extends AbstractDeclMethod {
     // TODO mais dans ce cas penser à changer le parser
     private final ListDeclVar listDeclVar;
     private final ListInst listInst;
+    private String classNameStr;
     private Label mStartLabel;
     private Label mEndLabel;
 
@@ -31,6 +32,7 @@ public class DeclMethod extends AbstractDeclMethod {
         this.listDeclVar = listDeclVar;
         this.listInst = listInst;
         this.mStartLabel = null;
+        this.mEndLabel = null;
     }
 
     @Override
@@ -38,9 +40,11 @@ public class DeclMethod extends AbstractDeclMethod {
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        mStartLabel = new Label("code." + className.getName().getName() +
+        classNameStr = className.getName().getName();
+
+        mStartLabel = new Label("code." + classNameStr +
                 "." + name.getName().getName());
-        mEndLabel = new Label("end." + className.getName().getName() +
+        mEndLabel = new Label("end." + classNameStr +
                 "." + name.getName().getName());
         compiler.addInstruction(new LOAD(new LabelOperand(mStartLabel), Register.R0));
 
@@ -48,7 +52,7 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addInstruction(new STORE(Register.R0, mAddr));
         sM.incrVTableCpt();
 
-        vTM.addMethodToClass(className.getName().getName(), name.getName().getName(), mAddr);
+        vTM.addMethodToClass(classNameStr, name.getName().getName(), mAddr);
 
         for (AbstractParam param : params.getList()) {
             // TODO (param.setOperand ??)
@@ -79,11 +83,18 @@ public class DeclMethod extends AbstractDeclMethod {
         }
         compiler.addAllLine(iTSTO, startLines);
 
+        String className = "";
+        compiler.addInstruction(new WSTR("Error: Exiting function " + className +
+                "." + name.getName().getName() + " without return"));
+        compiler.addInstruction(new WNL());
+        compiler.addInstruction(new ERROR());
+
         compiler.addLabel(mEndLabel);
         compiler.addAllLine(endLines);
-        compiler.addInstruction(new RTS());
 
         rM.doNotSaveUsedRegs();
+
+        compiler.addInstruction(new RTS());
         // Done
     }
 
@@ -92,7 +103,7 @@ public class DeclMethod extends AbstractDeclMethod {
 //        RegManager rM = compiler.getRegManager();
 //        VTableManager vTM = compiler.getVTableManager();
 //
-//        int nbParam = nbVar + 1;
+//        int nbParam = params.size() + 1;
 //        compiler.addInstruction(new ADDSP(nbParam));
 //
 //        GPRegister gpReg = rM.getFreeReg();
@@ -146,6 +157,19 @@ public class DeclMethod extends AbstractDeclMethod {
 //        compiler.addInstruction(new BSR(vTM.getLabelINITdeLACLASSE()));
 ////        compiler.addInstruction(new POP(gpReg));
 //        rM.freeReg(gpReg);
+//    }
+
+    // TODO (à déplacer)
+//    public void codeGenSelectField(DecacCompiler compiler) {
+//        RegManager rM = compiler.getRegManager();
+//
+//        GPRegister gpReg = rM.getFreeReg();
+//        compiler.addInstruction(new LOAD(addrInstanceObj, gpReg));
+//        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+//        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
+//        rM.freeReg(gpReg);
+//        // TODO (a voir comment mettre l'addr du champ comme un identifier ?)
+//        // TODO (ou ca se trouve ya meme pas besoin)
 //    }
 
 //    // TODO (à déplacer)
@@ -248,11 +272,11 @@ public class DeclMethod extends AbstractDeclMethod {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // TODO
-        type.prettyPrint(s,prefix,false);
-        name.prettyPrint(s,prefix,false);
-        params.prettyPrint(s,prefix,false);
-        listDeclVar.prettyPrint(s,prefix,false);
-        listInst.prettyPrint(s,prefix,true);
+        type.prettyPrint(s, prefix, false);
+        name.prettyPrint(s, prefix, false);
+        params.prettyPrint(s, prefix, false);
+        listDeclVar.prettyPrint(s, prefix, false);
+        listInst.prettyPrint(s, prefix, true);
 
     }
 

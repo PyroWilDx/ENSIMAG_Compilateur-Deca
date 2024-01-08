@@ -28,7 +28,7 @@ public class RegManager {
     public GPRegister getFreeReg() {
         if (!freeRegs.isEmpty()) {
             GPRegister freeReg = freeRegs.removeFirst();
-            if (usedRegs != null) {
+            if (usedRegs != null && freeReg.getNumber() > 1) {
                 usedRegs.addLast(freeReg);
             }
             return freeReg;
@@ -41,7 +41,8 @@ public class RegManager {
     }
 
     public void freeReg(GPRegister gpReg) {
-        if (gpReg != null && gpReg.getNumber() > 1) {
+//        if (gpReg != null && gpReg.getNumber() > 1) {
+        if (gpReg != null) {
             freeRegs.addFirst(gpReg);
         }
     }
@@ -74,14 +75,12 @@ public class RegManager {
         return gpReg;
     }
 
-    public void addScratchRegs() {
-        freeRegs.addFirst(Register.R1);
+    public void addScratchRegR0() {
         freeRegs.addFirst(Register.R0);
     }
 
-    public void removeScratchRegs() {
+    public void removeScratchRegR0() {
         freeRegs.remove(Register.R0);
-        freeRegs.remove(Register.R1);
     }
 
     public void saveUsedRegs() {

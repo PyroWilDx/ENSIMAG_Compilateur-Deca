@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.ErrorUtils;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
@@ -10,14 +11,11 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.TypeDefinition;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LEA;
-import fr.ensimag.ima.pseudocode.instructions.RTS;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
+import java.util.LinkedList;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -120,14 +118,37 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     public void codeGenDeclClass(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        StackManager sM = compiler.getStackManager();
 
         compiler.addComment("");
         compiler.addComment("Class " + name.getName().getName());
 
         compiler.addLabel(new Label("init." + name.getName().getName()));
-        rM.addScratchRegs();
+        int iTSTO = compiler.getProgramLineCount();
+
+        if (superClass.getName().getName().equals("Object")) {
+            fields.codeGenSetFieldsTo0(compiler);
+        }
+
+        rM.addScratchRegR0();
+        rM.saveUsedRegs();
         fields.codeGenListDeclField(compiler);
-        rM.removeScratchRegs();
+        rM.removeScratchRegR0();
+
+        LinkedList<AbstractLine> startLines = new LinkedList<>();
+        LinkedList<AbstractLine> endLines = new LinkedList<>();
+        startLines.addLast(new Line(new TSTO(sM.getMaxStackSize())));
+        startLines.addLast(new Line(new BOV(ErrorUtils.stackOverflowLabel)));
+        for (GPRegister usedReg : rM.getUsedRegs()) {
+            startLines.addLast(new Line(new PUSH(usedReg)));
+            endLines.addFirst(new Line(new POP(usedReg)));
+        }
+        compiler.addAllLine(iTSTO, startLines);
+
+        compiler.addAllLine(endLines);
+
+        rM.doNotSaveUsedRegs();
+
         compiler.addInstruction(new RTS());
 
         methods.codeGenListDeclMethod(compiler);
