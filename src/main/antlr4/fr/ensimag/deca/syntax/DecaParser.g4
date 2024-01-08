@@ -385,12 +385,12 @@ select_expr returns[AbstractExpr tree]
             setLocation($tree, $e.start);
         }
     | e1=select_expr DOT i=ident {
-            assert($e1.tree != null);
-            assert($i.tree != null);
+            assert( $e1.tree != null);
+            assert( $i.tree != null);
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
-            assert($args.tree != null);
+            assert( $args.tree != null);
         }
         | /* epsilon */ {
             // we matched "e.i"
@@ -569,6 +569,10 @@ decl_method returns[AbstractDeclMethod tree]
         setLocation($tree, $type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
+        setLocation($ident.tree, $ident.start);
+        setLocation($params.tree, $params.start);
+        $tree=new DeclMethodAsm($code.text,$type.tree, $ident.tree, $params.tree);
+        setLocation($tree, $type.start);
         }
       ) {
         }

@@ -34,13 +34,15 @@ public class EnvironmentExp {
         this.parentEnvironment = parentEnvironment;
         this.env = new HashMap<>();
     }
-    public boolean disjointUnion(EnvironmentExp envExp) {
+    public Symbol disjointUnion(EnvironmentExp envExp) {
+        // if the union isn't disjoint, returns the symbol occuring twice
         for (Symbol s1 : envExp.getKeys()) {
-            if (this.get(s1) != null) return false;
+            if (this.get(s1) != null) return s1;
             ExpDefinition def = envExp.env.get(s1);
             this.env.put(s1, def);
         }
-        return true;
+
+        return null;
     }
 
     public void setEnv(HashMap<Symbol, ExpDefinition> env) {

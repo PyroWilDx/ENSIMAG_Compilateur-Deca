@@ -46,7 +46,7 @@ public class Program extends AbstractProgram {
         LOG.debug("verify program: start");
         classes.verifyListClass(compiler);
         classes.verifyListClassMembers(compiler);
-//        classes.verifyListClassBody(compiler);
+        classes.verifyListClassBody(compiler);
         main.verifyMain(compiler);
         LOG.debug("verify program: end");
         // TODO (Avec Objet -> Enlever Comm)

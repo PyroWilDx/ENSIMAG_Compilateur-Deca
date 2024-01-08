@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTableManager;
+import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.TypeDefinition;
@@ -70,7 +71,7 @@ public class DeclClass extends AbstractDeclClass {
             throw new ContextualError("A class identifier is required",
                     getLocation());
         }
-        if (!compiler.environmentType.declareClasse(this.name.getName(),
+        if (!compiler.environmentType.declareClasse(this.name,
                 this.superClass.getClassDefinition(), this.getLocation())) {
             throw new ContextualError("Class or type already exists.", this.getLocation());
         }
@@ -79,14 +80,25 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void verifyClassMembers(DecacCompiler compiler) throws ContextualError {
-        EnvironmentExp envExpF = this.fields.verifyListDeclField(compiler, this.superClass.getName(), name.getName());
-        EnvironmentExp envExpM = this.methods.verifyListDeclMethod(compiler, this.superClass.getName());
-        //throw new UnsupportedOperationException("not yet implemented");
+        EnvironmentExp envExpF = this.fields.verifyListDeclFieldMembers(compiler, this.superClass.getName(), name.getName());
+        EnvironmentExp envExpM = this.methods.verifyListDeclMethodMembers(compiler, this.superClass.getName());
+        SymbolTable.Symbol clone = envExpM.disjointUnion(envExpF);
+        if (clone != null) {
+            throw new ContextualError("'" + clone.getName() +
+                    "' is a field and a method at once.", getLocation());
+        }
+        EnvironmentExp voidClassEnv = ((ClassDefinition)compiler.environmentType.get(name.getName())).getMembers();
+        voidClassEnv.disjointUnion(envExpM); // c'est vide donc pas de pb pour l'union disjointe !!
+        // Done
     }
 
     @Override
     protected void verifyClassBody(DecacCompiler compiler) throws ContextualError {
-        throw new UnsupportedOperationException("not yet implemented");
+        ClassDefinition classDef = this.name.getClassDefinition();
+        EnvironmentExp env = classDef.getMembers();
+        this.fields.verifyListDeclFieldBody(compiler, env, classDef);
+        this.methods.verifyListDeclMethodBody(compiler, env, classDef);
+        // throw new UnsupportedOperationException("not yet implemented");
     }
 
     @Override
@@ -125,6 +137,7 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
+        name.prettyPrint(s,prefix,false);
         fields.prettyPrintChildren(s, prefix);
         methods.prettyPrintChildren(s, prefix);
     }

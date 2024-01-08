@@ -19,19 +19,26 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
         // Done
     }
-    public EnvironmentExp verifyListDeclMethod(DecacCompiler compiler,
-                                               SymbolTable.Symbol superClass) throws ContextualError {
+    public EnvironmentExp verifyListDeclMethodMembers(DecacCompiler compiler,
+                                                      SymbolTable.Symbol superClass) throws ContextualError {
         EnvironmentExp envReturn = new EnvironmentExp(null);
         int index = 1;
         for (AbstractDeclMethod decl : this.getList()) {
-            EnvironmentExp env = decl.verifyDeclMethod(compiler, superClass, index);
+            EnvironmentExp env = decl.verifyDeclMethodMembers(compiler, superClass, index);
             index++;
-            if (!envReturn.disjointUnion(env)) {
+            if (envReturn.disjointUnion(env) != null) {
                 throw new ContextualError("Method '" + decl.getName()
                         + "' already defined.", getLocation());
             }
         }
         return envReturn;
+    }
+    public void verifyListDeclMethodBody(DecacCompiler compiler,
+                                         EnvironmentExp localEnv,
+                                         ClassDefinition currentClass) throws ContextualError {
+        for (AbstractDeclMethod decl : getList()) {
+            decl.verifyDeclMethodBody(compiler, localEnv, currentClass);
+        }
     }
     public void codeGenListDeclMethod(DecacCompiler compiler) {
         for (AbstractDeclMethod method : getList()) {

@@ -8,6 +8,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
+import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
@@ -49,7 +50,7 @@ public class DeclVar extends AbstractDeclVar {
         ExpDefinition def = new VariableDefinition(varType, this.getLocation());
         this.varName.setDefinition(def);
         declEnv.declare(varName.getName(), def);
-        if (!localEnv.disjointUnion(declEnv)) {
+        if (localEnv.disjointUnion(declEnv) != null) {
             throw new ContextualError("Variable '" + varName.getName().toString() + "' already declared.", this.getLocation());
         }
         if (varType == compiler.environmentType.VOID) {

@@ -1,10 +1,10 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Type;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.deca.tools.SymbolTable;
 
 import java.io.PrintStream;
 
@@ -26,8 +26,9 @@ public class Param extends AbstractParam {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO
-        throw new DecacInternalError("not implemented yet");
+        type.prettyPrint(s,prefix,false);
+        name.prettyPrint(s,prefix,true);
+        //throw new DecacInternalError("not implemented yet");
 
     }
 
@@ -39,12 +40,27 @@ public class Param extends AbstractParam {
     }
 
     @Override
-    public Type verifyDeclParam(DecacCompiler compiler) throws ContextualError {
+    public SymbolTable.Symbol getName() {
+        return this.name.getName();
+    }
+
+    @Override
+    public Type verifyDeclParamMembers(DecacCompiler compiler) throws ContextualError {
         Type type = this.type.verifyType(compiler);
         if (type.equals(compiler.environmentType.VOID)) {
             throw new ContextualError("Parameter type cannot be void.", getLocation());
         }
         return type;
+        // Done
+    }
+
+    @Override
+    public EnvironmentExp verifyDeclParamBody(DecacCompiler compiler) throws ContextualError {
+        Type t = this.type.verifyType(compiler);
+        EnvironmentExp env = new EnvironmentExp(null);
+        ExpDefinition def = new ParamDefinition(t, getLocation());
+        env.declare(this.name.getName(), def);
+        return env;
         // Done
     }
 }

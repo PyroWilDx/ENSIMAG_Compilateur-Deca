@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
+import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -16,13 +17,26 @@ public class ListParam extends TreeList<AbstractParam> {
 
     }
 
-    public Signature verifyListDeclParam(DecacCompiler compiler) throws ContextualError {
+    public Signature verifyListDeclParamMembers(DecacCompiler compiler) throws ContextualError {
         Signature sig = new Signature();
         for (AbstractParam param : this.getList()) {
-            Type type = param.verifyDeclParam(compiler);
+            Type type = param.verifyDeclParamMembers(compiler);
             sig.add(type);
         }
         return sig;
+        // Done
+    }
+    public EnvironmentExp verifyListDeclParamBody(DecacCompiler compiler) throws ContextualError {
+        EnvironmentExp env = new EnvironmentExp(null);
+        for (AbstractParam param : getList()) {
+            EnvironmentExp envParam = param.verifyDeclParamBody(compiler);
+            if (env.disjointUnion(envParam) != null) {
+                throw new ContextualError("Parameter '" +
+                        param.getName() +
+                        "already exists.", getLocation());
+            }
+        }
+        return env;
         // Done
     }
 }
