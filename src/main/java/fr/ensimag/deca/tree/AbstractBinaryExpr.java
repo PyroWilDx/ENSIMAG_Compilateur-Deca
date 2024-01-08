@@ -115,7 +115,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         DVal dVal = (lastImmRight == null) ? regRight : lastImmRight;
         codeGenOp(compiler, dVal, regLeft);
 
-        rM.freeReg(regRight);
+        if (!pushed) rM.freeReg(regRight);
         rM.freeReg(regLeft);
         // Done
     }

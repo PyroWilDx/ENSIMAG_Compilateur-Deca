@@ -6,6 +6,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -36,6 +37,22 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
+    public void codeGenSetFieldTo0(DecacCompiler compiler, int varOffset,
+                                   boolean doLoad) {
+        if (doLoad) {
+            if (type.getType().isInt() || type.getType().isBoolean()) {
+                compiler.addInstruction(new LOAD(0, Register.R0));
+            } else if (type.getType().isFloat()) {
+                compiler.addInstruction(new LOAD(0.f, Register.R0));
+            } else {
+                compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+            }
+        }
+        compiler.addInstruction(
+                new STORE(Register.R0, new RegisterOffset(varOffset, Register.R1)));
+    }
+
+    @Override
     public void codeGenDeclField(DecacCompiler compiler, int varOffset) {
         RegManager rM = compiler.getRegManager();
 
@@ -43,14 +60,17 @@ public class DeclField extends AbstractDeclField {
         init.codeGenInit(compiler);
 
         GPRegister regValue = rM.getLastRegOrImm(compiler);
-        GPRegister regObjAddr = rM.getFreeReg();
         compiler.addInstruction(
-                new LOAD(new RegisterOffset(-2, Register.LB), regObjAddr));
+                new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         compiler.addInstruction(
-                new STORE(regValue, new RegisterOffset(varOffset, regObjAddr)));
-        rM.freeReg(regObjAddr);
+                new STORE(regValue, new RegisterOffset(varOffset, Register.R1)));
         rM.freeReg(regValue);
         // Done
+    }
+
+    @Override
+    public Type getInitType() {
+        return type.getType();
     }
 
     @Override
