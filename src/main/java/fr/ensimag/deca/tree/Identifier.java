@@ -147,6 +147,17 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    public MethodIdentNonTerminalReturn verifyMethodIdent(EnvironmentExp localEnv) throws ContextualError {
+        ExpDefinition def = this.verifyIdentifier(localEnv);
+        MethodDefinition methodDef = def.asMethodDefinition(this.getName() +
+                "is not a method identifier.", getLocation());
+        Signature sig = methodDef.getSignature();
+        Type type = methodDef.getType();
+        return new MethodIdentNonTerminalReturn(sig, type);
+        // Done
+    }
+
+    @Override
     public Symbol getName() {
         return name;
     }
@@ -185,6 +196,16 @@ public class Identifier extends AbstractIdentifier {
         }
         setDefinition(typeDef);
         return typeDef.getType();
+        // Done
+    }
+
+    @Override
+    public ExpDefinition verifyIdentifier(EnvironmentExp localEnv) throws ContextualError {
+        ExpDefinition def = localEnv.get(this.getName());
+        if (def == null) {
+            throw new ContextualError("Undeclared identifier", getLocation());
+        }
+        return def;
         // Done
     }
 

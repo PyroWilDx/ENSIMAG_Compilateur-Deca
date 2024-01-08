@@ -47,9 +47,6 @@ public class DeclClass extends AbstractDeclClass {
         return superClass;
     }
 
-    public ListDeclMethod getMethods() {
-        return methods;
-    }
 
     @Override
     public void decompile(IndentPrintStream s) {
@@ -94,7 +91,7 @@ public class DeclClass extends AbstractDeclClass {
         EnvironmentExp env = classDef.getMembers();
         this.fields.verifyListDeclFieldBody(compiler, env, classDef);
         this.methods.verifyListDeclMethodBody(compiler, env, classDef);
-        // throw new UnsupportedOperationException("not yet implemented");
+        // Done
     }
 
     @Override

@@ -53,6 +53,11 @@ public class ClassDefinition extends TypeDefinition {
         return (ClassType) super.getType();
     }
 
+    @Override
+    public ClassDefinition asClassDefinition(String message, Location location) throws ContextualError {
+        return this;
+    }
+
     public ClassDefinition getSuperClass() {
         return superClass;
     }
