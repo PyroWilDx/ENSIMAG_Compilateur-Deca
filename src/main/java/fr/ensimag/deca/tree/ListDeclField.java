@@ -45,12 +45,12 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         compiler.addInstruction(
                 new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         int varOffset = 1;
-        Type lastType = null;
+        AbstractDeclField.TypeCode lastType = null;
         for (AbstractDeclField declField : getList()) {
-            declField.codeGenSetFieldTo0(compiler, varOffset,
-                    declField.getInitType() != lastType);
+            AbstractDeclField.TypeCode typeCode = declField.getInitTypeCode();
+            declField.codeGenSetFieldTo0(compiler, varOffset, typeCode != lastType);
             varOffset++;
-            lastType = declField.getInitType();
+            lastType = typeCode;
         }
     }
 

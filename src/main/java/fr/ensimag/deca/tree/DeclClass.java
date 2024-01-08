@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ErrorUtils;
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.deca.codegen.StackManager;
-import fr.ensimag.deca.codegen.VTableManager;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -36,9 +33,11 @@ public class DeclClass extends AbstractDeclClass {
         this.fields = fields;
         this.methods = methods;
     }
-    public ListDeclField getFields(){
+
+    public ListDeclField getFields() {
         return fields;
     }
+
     public AbstractIdentifier getName() {
         return name;
     }
@@ -83,7 +82,7 @@ public class DeclClass extends AbstractDeclClass {
             throw new ContextualError("'" + clone.getName() +
                     "' is a field and a method at once.", getLocation());
         }
-        EnvironmentExp voidClassEnv = ((ClassDefinition)compiler.environmentType.get(name.getName())).getMembers();
+        EnvironmentExp voidClassEnv = ((ClassDefinition) compiler.environmentType.get(name.getName())).getMembers();
         voidClassEnv.disjointUnion(envExpM); // c'est vide donc pas de pb pour l'union disjointe !!
         // Done
     }
@@ -118,45 +117,40 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     public void codeGenDeclClass(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
-        StackManager sM = compiler.getStackManager();
-
-        compiler.addComment("");
-        compiler.addComment("Class " + name.getName().getName());
+        StackManager sM = new StackManager();
+        compiler.setStackManager(sM);
 
         compiler.addLabel(new Label("init." + name.getName().getName()));
         int iTSTO = compiler.getProgramLineCount();
 
-        if (superClass.getName().getName().equals("Object")) {
-            fields.codeGenSetFieldsTo0(compiler);
+        if (!superClass.getName().getName().equals("Object")) {
+            compiler.addInstruction(
+                    new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+            fields.codeGenSetFieldsTo0(compiler); // TODO (que les champs de D)
+            compiler.addInstruction(new PUSH(Register.R1));
+            compiler.addInstruction(
+                    new BSR(new Label("init." + superClass.getName().getName())));
+            compiler.addInstruction(new SUBSP(1));
         }
 
-        rM.addScratchRegR0();
         rM.saveUsedRegs();
-        fields.codeGenListDeclField(compiler);
-        rM.removeScratchRegR0();
+        rM.freeAllRegs();
 
-        LinkedList<AbstractLine> startLines = new LinkedList<>();
-        LinkedList<AbstractLine> endLines = new LinkedList<>();
-        startLines.addLast(new Line(new TSTO(sM.getMaxStackSize())));
-        startLines.addLast(new Line(new BOV(ErrorUtils.stackOverflowLabel)));
-        for (GPRegister usedReg : rM.getUsedRegs()) {
-            startLines.addLast(new Line(new PUSH(usedReg)));
-            endLines.addFirst(new Line(new POP(usedReg)));
-        }
-        compiler.addAllLine(iTSTO, startLines);
+        fields.codeGenListDeclField(compiler); // TODO (que les champs de D)
 
-        compiler.addAllLine(endLines);
-
-        rM.doNotSaveUsedRegs();
+        RegManager.RegStatus[] usedRegs = rM.popUsedRegs();
+        RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
+        RegManager.addRestoreRegsInsts(compiler, usedRegs);
 
         compiler.addInstruction(new RTS());
 
         methods.codeGenListDeclMethod(compiler);
+        // Done
     }
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        name.prettyPrint(s,prefix,false);
+        name.prettyPrint(s, prefix, false);
         fields.prettyPrintChildren(s, prefix);
         methods.prettyPrintChildren(s, prefix);
     }

@@ -4,18 +4,23 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.SymbolTable;
 
 public abstract class AbstractDeclField extends Tree {
     // TODO
+
+    public enum TypeCode {
+        INT_OR_BOOL,
+        FLOAT,
+        OTHER
+    }
 
     public abstract void codeGenSetFieldTo0(DecacCompiler compiler, int varOffset,
                                             boolean doLoad);
 
     public abstract void codeGenDeclField(DecacCompiler compiler, int varOffset);
 
-    public abstract Type getInitType();
+    public abstract TypeCode getInitTypeCode();
 
     public abstract EnvironmentExp verifyDeclFieldMembers(DecacCompiler compiler,
                                                           SymbolTable.Symbol superClass,

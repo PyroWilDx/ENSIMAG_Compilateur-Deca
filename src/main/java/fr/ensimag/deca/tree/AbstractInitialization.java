@@ -36,4 +36,6 @@ public abstract class AbstractInitialization extends Tree {
     public Type getVarType() {
         return varType;
     }
+
+    public abstract AbstractExpr getExpr();
 }

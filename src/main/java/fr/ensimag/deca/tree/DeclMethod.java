@@ -71,28 +71,21 @@ public class DeclMethod extends AbstractDeclMethod {
         int iTSTO = compiler.getProgramLineCount();
 
         rM.saveUsedRegs();
-        listInst.codeGenListInst(compiler); // TODO (A voir s'il faut créer un nouveau codegen)
+        rM.freeAllRegs();
+        // TODO (inverser la liste des regs, comme ca on a moins de réutilisation ???)
 
-        LinkedList<AbstractLine> startLines = new LinkedList<>();
-        LinkedList<AbstractLine> endLines = new LinkedList<>();
-        startLines.addLast(new Line(new TSTO(sM.getMaxStackSize())));
-        startLines.addLast(new Line(new BOV(ErrorUtils.stackOverflowLabel)));
-        for (GPRegister usedReg : rM.getUsedRegs()) {
-            startLines.addLast(new Line(new PUSH(usedReg)));
-            endLines.addFirst(new Line(new POP(usedReg)));
-        }
-        compiler.addAllLine(iTSTO, startLines);
+        listInst.codeGenListInst(compiler);
 
-        String className = "";
-        compiler.addInstruction(new WSTR("Error: Exiting function " + className +
+        RegManager.RegStatus[] usedRegs = rM.popUsedRegs();
+        RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
+
+        compiler.addInstruction(new WSTR("Error: Exiting function " + classNameStr +
                 "." + name.getName().getName() + " without return"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
 
         compiler.addLabel(mEndLabel);
-        compiler.addAllLine(endLines);
-
-        rM.doNotSaveUsedRegs();
+        RegManager.addRestoreRegsInsts(compiler, usedRegs);
 
         compiler.addInstruction(new RTS());
         // Done
@@ -142,6 +135,23 @@ public class DeclMethod extends AbstractDeclMethod {
 //        compiler.addInstruction(new SUBSP(nbParam));
 //    }
 
+    // TODO (à déplacer)
+//    public void codeGenReturn(DecacCompiler compiler) {
+//        RegManager rM = compiler.getRegManager();
+//
+//        inst.codeGenInst(compiler);
+//
+//        if (!inst.getType().isNull()) {
+//            DVal dVal = rM.getLastImm();
+//            if (dVal == null) {
+//                GPRegister gpReg = rM.getLastReg();
+//                compiler.addInstruction(new LOAD(gpReg, Register.R0));
+//            }
+//        }
+//
+//        compiler.addInstruction(new BRA("fin." + methodClassName + "." + methodName));
+//    }
+
 //    // TODO (à déplacer)
 //    public void codeGenNew(DecacCompiler compiler) {
 //        RegManager rM = compiler.getRegManager();
@@ -157,19 +167,6 @@ public class DeclMethod extends AbstractDeclMethod {
 //        compiler.addInstruction(new BSR(vTM.getLabelINITdeLACLASSE()));
 ////        compiler.addInstruction(new POP(gpReg));
 //        rM.freeReg(gpReg);
-//    }
-
-    // TODO (à déplacer)
-//    public void codeGenSelectField(DecacCompiler compiler) {
-//        RegManager rM = compiler.getRegManager();
-//
-//        GPRegister gpReg = rM.getFreeReg();
-//        compiler.addInstruction(new LOAD(addrInstanceObj, gpReg));
-//        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-//        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
-//        rM.freeReg(gpReg);
-//        // TODO (a voir comment mettre l'addr du champ comme un identifier ?)
-//        // TODO (ou ca se trouve ya meme pas besoin)
 //    }
 
 //    // TODO (à déplacer)
