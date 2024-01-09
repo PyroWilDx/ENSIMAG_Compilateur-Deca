@@ -159,9 +159,8 @@ inst returns[AbstractInst tree]
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
-            $tree = new Return($expr.tree);
+            $tree = $expr.tree ;
             setLocation($tree, $expr.start);
-
         }
     ;
 
@@ -386,7 +385,7 @@ select_expr returns[AbstractExpr tree]
             $tree = $e.tree;
             setLocation($tree, $e.start);
         }
-    | e1=select_expr DOT i=ident {
+   | e1=select_expr DOT i=ident {
             assert( $e1.tree != null);
             assert( $i.tree != null);
         }
@@ -397,10 +396,16 @@ select_expr returns[AbstractExpr tree]
             setLocation($tree, $e1.start);
             setLocation($tree, $i.start);
             setLocation($tree, $args.start);
-            setLocation($tree, $i.start);
         }
+        | /* epsilon */ {
+            // we matched "e.i"
+            $tree = new FieldSelection($e1.tree,$i.tree);
+            setLocation($tree, $e1.start);
+            setLocation($tree, $i.start);
+            }
         )
     ;
+
 
 primary_expr returns[AbstractExpr tree]
     : ident {
