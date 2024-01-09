@@ -11,17 +11,18 @@ import fr.ensimag.ima.pseudocode.DAddr;
  */
 public abstract class ExpDefinition extends Definition {
 
+    private DAddr operand;
+
+    public ExpDefinition(Type type, Location location) {
+        super(type, location);
+    }
+
     public void setOperand(DAddr operand) {
         this.operand = operand;
     }
 
     public DAddr getOperand() {
         return operand;
-    }
-    private DAddr operand;
-
-    public ExpDefinition(Type type, Location location) {
-        super(type, location);
     }
 
 }

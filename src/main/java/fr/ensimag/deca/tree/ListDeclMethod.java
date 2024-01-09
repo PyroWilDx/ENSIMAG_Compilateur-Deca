@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.VTable;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -13,9 +14,9 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         // TODO ?
     }
 
-    public void codeGenVTable(DecacCompiler compiler, AbstractIdentifier className) {
+    public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
         for (AbstractDeclMethod method : getList()) {
-            method.codeGenVTable(compiler, className);
+            method.codeGenVTable(compiler, vTable);
         }
         // Done
     }

@@ -12,7 +12,6 @@ import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
-import java.util.LinkedList;
 
 /**
  * Declaration of a class (<code>class name extends superClass {members}<code>).
@@ -101,13 +100,16 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addComment("VTable of " + name.getName().getName());
 
         DAddr startAddr = sM.getGbOffsetAddr();
-        vTM.addClass(name.getName().getName(), startAddr);
+        VTable vT = new VTable(name.getName().getName(), startAddr);
+        vTM.addVTable(name.getName().getName(), vT);
+
         compiler.addInstruction(
                 new LEA(vTM.getAddrOfClass(superClass.getName().getName()), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, startAddr));
         sM.incrVTableCpt();
 
-        methods.codeGenVTable(compiler, name);
+        methods.codeGenVTable(compiler, vT);
+        fields.codeGenVTable(compiler, vT);
         // Done
     }
 

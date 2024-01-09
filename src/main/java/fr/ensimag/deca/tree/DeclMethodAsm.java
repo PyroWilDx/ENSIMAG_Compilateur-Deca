@@ -27,7 +27,7 @@ public class DeclMethodAsm extends AbstractDeclMethod {
         this.params = params;
     }
 
-    public void codeGenVTable(DecacCompiler compiler, AbstractIdentifier className) {
+    public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
         // nothing
     }
 

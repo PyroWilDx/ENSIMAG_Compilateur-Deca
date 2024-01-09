@@ -28,11 +28,6 @@ public class MethodSelection  extends AbstractMethodCall {
     }
 
     @Override
-    public void codeGenMethodCall(DecacCompiler compiler) {
-        throw new UnsupportedOperationException("Not yet implemented");
-    }
-
-    @Override
     public void decompile(IndentPrintStream s) {
         // TODO
         throw new UnsupportedOperationException("Not yet implemented");

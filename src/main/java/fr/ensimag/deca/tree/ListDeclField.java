@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.VTable;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -38,6 +39,14 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
                                         ClassDefinition classDef) throws ContextualError {
         for (AbstractDeclField decl : getList()) {
             decl.verifyDeclFieldBody(compiler, localEnv, classDef);
+        }
+    }
+
+    public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
+        int offset = 1;
+        for (AbstractDeclField declField : getList()) {
+            declField.codeGenVTable(compiler, vTable, offset);
+            offset++;
         }
     }
 
