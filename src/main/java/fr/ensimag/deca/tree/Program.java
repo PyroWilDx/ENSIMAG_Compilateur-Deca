@@ -52,13 +52,13 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        RegManager rM = compiler.getRegManager();
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
 
         compiler.addComment("VTable of " + LabelUtils.OBJECT_CLASS_NAME);
         DAddr nAddr = sM.getGbOffsetAddr();
-        VTable vT = new VTable(LabelUtils.OBJECT_CLASS_NAME, nAddr);
+        LabelUtils.setObjectClassSymbol(compiler.createSymbol(LabelUtils.OBJECT_CLASS_NAME));
+        VTable vT = new VTable(null, LabelUtils.OBJECT_CLASS_SYMBOL, nAddr);
         vTM.addVTable(LabelUtils.OBJECT_CLASS_NAME, vT);
         compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, nAddr));

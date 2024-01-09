@@ -184,8 +184,8 @@ def doTests():
     #          decacOptions="-d -d -d",
     #          doAssert=False)
 
-    # doVerify("codegen/valid/classes/fieldsSimpleClass.deca",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/fieldsSimpleClass.deca",
+             doAssert=False)
 
     # doVerify("codegen/valid/classes/fieldsComplexClass.deca",
     #          doAssert=False)

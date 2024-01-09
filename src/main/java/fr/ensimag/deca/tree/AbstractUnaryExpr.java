@@ -69,7 +69,6 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         s.print(getOperatorName());
         getOperand().decompile(s);
         s.print(")");
-        // Done
     }
 
     @Override

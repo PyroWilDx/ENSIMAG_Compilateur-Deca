@@ -48,7 +48,20 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("class { ... A FAIRE ... }");
+        if (this.name.getName().getName().equals("Object")) {
+            return;
+        }
+        s.print("class ");
+        name.decompile(s);
+        if (!superClass.getName().getName().equals("Object")) {
+            s.print(" extends " + superClass.getName().getName());
+        }
+        s.println(" {");
+        s.indent();
+        fields.decompile(s);
+        methods.decompile(s);
+        s.unindent();
+        s.println("}");
     }
 
     @Override
@@ -97,13 +110,15 @@ public class DeclClass extends AbstractDeclClass {
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        String className = name.getName().getName();
-        String superClassName = superClass.getName().getName();
+        SymbolTable.Symbol classSymbol = name.getName();
+        String className = classSymbol.getName();
+        SymbolTable.Symbol superClassSymbol = superClass.getName();
+        String superClassName = superClassSymbol.getName();
 
         compiler.addComment("VTable of " + className);
 
         DAddr startAddr = sM.getGbOffsetAddr();
-        VTable vT = new VTable(className, startAddr);
+        VTable vT = new VTable(superClassSymbol, classSymbol, startAddr);
         vTM.addVTable(className, vT);
 
         compiler.addInstruction(
@@ -163,7 +178,10 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        throw new UnsupportedOperationException("Not yet supported");
+        name.iterChildren(f);
+        fields.iterChildren(f);
+        methods.iterChildren(f);
+        // Done
     }
 
 }

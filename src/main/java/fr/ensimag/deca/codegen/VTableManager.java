@@ -21,6 +21,10 @@ public class VTableManager {
         vTables.put(className, vTable);
     }
 
+    public VTable getVTable(String className) {
+        return vTables.get(className);
+    }
+
     public DAddr getAddrOfClass(String className) {
         return vTables.get(className).getClassAddr();
     }

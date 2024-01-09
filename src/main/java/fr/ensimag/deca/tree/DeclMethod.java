@@ -20,6 +20,7 @@ public class DeclMethod extends AbstractDeclMethod {
     private final ListDeclVar listDeclVar;
     private final ListInst listInst;
     private String className;
+    private boolean shouldRedeclare;
     private Label mStartLabel;
     private Label mEndLabel;
 
@@ -30,9 +31,125 @@ public class DeclMethod extends AbstractDeclMethod {
         this.params = params;
         this.listDeclVar = listDeclVar;
         this.listInst = listInst;
+        this.className = null;
+        this.shouldRedeclare = true;
         this.mStartLabel = null;
         this.mEndLabel = null;
     }
+
+    public EnvironmentExp getEnvOfClass(DecacCompiler compiler, SymbolTable.Symbol classSymbol) {
+        String errMsg = "Error in getEnvOfClass() of DeclMethod";
+
+        TypeDefinition classTypeDef = compiler.environmentType.get(classSymbol);
+        ClassDefinition classDef;
+        try {
+            classDef = classTypeDef.asClassDefinition(errMsg, getLocation());
+        } catch (ContextualError e) {
+            throw new UnsupportedOperationException(errMsg);
+        }
+
+        return classDef.getMembers();
+    }
+
+//    /**
+//     * get the signature of this method.
+//     *
+//     * @param compiler compiler.
+//     * @param vTable   vTable of the current class.
+//     * @return if the method is in the class env, returns the signature of the method,
+//     * else, return null.
+//     */
+//    private Signature getSignature(DecacCompiler compiler, VTable vTable) {
+//        SymbolTable.Symbol methodSymbol = name.getName();
+//
+//        String errMsg = "Error in getSignature() of DeclMethod";
+//
+//        EnvironmentExp classEnv = getEnvOfClass(compiler, vTable.getClassSymbol());
+//
+//        MethodDefinition methodDef;
+//        try {
+//            methodDef = classEnv.get(methodSymbol).asMethodDefinition(errMsg, getLocation());
+//        } catch (ContextualError e) {
+//            return null;
+//        }
+//
+//        return methodDef.getSignature();
+//    }
+//
+//    /**
+//     * search for the first definition of this method in superclasses, there is
+//     * necessarily one.
+//     *
+//     * @param compiler compiler.
+//     * @param vTable   vTable of the superclass.
+//     * @return returns the symbol of the superclass.
+//     */
+//    private SymbolTable.Symbol searchForMethodInSuperClass(DecacCompiler compiler,
+//                                                           VTable vTable, Signature methodSig) {
+//        String errMsg = "Error in searchForMethodInSuperClass() of DeclMethod";
+//        VTableManager vTM = compiler.getVTableManager();
+//
+//        VTable superClassVTable = vTM.getVTable(vTable.getSuperClassSymbol().getName());
+//
+//        SymbolTable.Symbol classSymbol = vTable.getClassSymbol();
+//        SymbolTable.Symbol methodSymbol = name.getName();
+//
+//        EnvironmentExp superClassEnv = getEnvOfClass(compiler, classSymbol);
+//
+//        MethodDefinition superClassMethodDef;
+//        try {
+//            superClassMethodDef = superClassEnv.get(methodSymbol).asMethodDefinition(errMsg, getLocation());
+//        } catch (ContextualError e) {
+//            return searchForMethodInSuperClass(compiler, superClassVTable, methodSig);
+//        }
+//
+//        if (methodSig.equals(superClassMethodDef.getSignature())) {
+//            return vTable.getClassSymbol();
+//        }
+//
+//        return searchForMethodInSuperClass(compiler, superClassVTable, methodSig);
+//    }
+
+//    /**
+//     * @param compiler  compiler.
+//     * @param vTable    vTable of the method's class.
+//     * @param methodSig signature of the method.
+//     * @return if the method is overloaded:
+//     * returns the class symbol
+//     * if the method is not overloaded, but defined in one of its superclasses:
+//     * returns the symbol of the superclass
+//     * if the method is not overloaded, and not defined in one of its superclasses:
+//     * returns the class symbol
+//     */
+//    private SymbolTable.Symbol isMethodOverloaded(DecacCompiler compiler, VTable vTable,
+//                                                  Signature methodSig, SymbolTable.Symbol classSymbol) {
+//        String errMsg = "Error in isMethodOverloaded() of DeclMethod";
+//        SymbolTable.Symbol superClassSymbol = vTable.getSuperClassSymbol();
+//
+//        if (superClassSymbol == null) {
+//            return classSymbol;
+//        }
+//
+//        VTableManager vTM = compiler.getVTableManager();
+//
+//        VTable superClassVTable = vTM.getVTable(superClassSymbol.getName());
+//        SymbolTable.Symbol methodSymbol = name.getName();
+//
+//        EnvironmentExp superClassEnv = getEnvOfClass(compiler, superClassSymbol);
+//
+//        MethodDefinition superClassMethodDef;
+//        try {
+//            superClassMethodDef = superClassEnv.get(methodSymbol).asMethodDefinition(errMsg, getLocation());
+//        } catch (ContextualError e) {
+//            return isMethodOverloaded(compiler, superClassVTable, methodSig);
+//        }
+//
+//        if (methodSig.equals(superClassMethodDef.getSignature())) {
+//            return classSymbol;
+//        }
+//
+//        return isMethodOverloaded(compiler, superClassVTable, methodSig);
+//    }
 
     @Override
     public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
@@ -58,12 +175,13 @@ public class DeclMethod extends AbstractDeclMethod {
             vTable.addParamToMethod(methodName, paramName, currParamOffset);
             currParamOffset++;
         }
-        // TODO (Merde comment on sait si c'est une méthode surchargée ou pas??)
         // Done
     }
 
     @Override
     public void codeGenDeclMethod(DecacCompiler compiler) {
+        if (!shouldRedeclare) return;
+
         RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager();
         compiler.setStackManager(sM);
@@ -191,8 +309,17 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO
-        throw new UnsupportedOperationException("not implemented yet");
+        type.decompile(s);
+        s.print(" ");
+        name.decompile(s);
+        s.print("(");
+        params.decompile(s);
+        s.println(") {");
+        s.indent();
+        listDeclVar.decompile(s);
+        listInst.decompile(s);
+        s.unindent();
+        s.println("}");
     }
 
     @Override

@@ -15,7 +15,9 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 public class ListDeclField extends TreeList<AbstractDeclField> {
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO?
+        for (AbstractDeclField decl : getList()) {
+            decl.decompile(s);
+        }
     }
 
     public EnvironmentExp verifyListDeclFieldMembers(DecacCompiler compiler, SymbolTable.Symbol superClass,

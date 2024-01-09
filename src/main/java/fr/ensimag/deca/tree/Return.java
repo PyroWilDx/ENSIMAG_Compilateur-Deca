@@ -55,7 +55,9 @@ public class Return extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO
+        s.print("return ");
+        expr.decompile(s);
+        s.println(";");
     }
 
     @Override
