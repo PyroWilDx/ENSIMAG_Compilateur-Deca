@@ -309,8 +309,17 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO
-        throw new UnsupportedOperationException("not implemented yet");
+        type.decompile(s);
+        s.print(" ");
+        name.decompile(s);
+        s.print("(");
+        params.decompile(s);
+        s.println(") {");
+        s.indent();
+        listDeclVar.decompile(s);
+        listInst.decompile(s);
+        s.unindent();
+        s.println("}");
     }
 
     @Override

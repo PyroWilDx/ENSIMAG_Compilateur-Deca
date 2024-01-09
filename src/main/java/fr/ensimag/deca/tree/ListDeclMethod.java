@@ -19,7 +19,9 @@ import java.util.List;
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO ?
+        for (AbstractDeclMethod decl : getList()) {
+            decl.decompile(s);
+        }
     }
 
     public EnvironmentExp verifyListDeclMethodMembers(DecacCompiler compiler,

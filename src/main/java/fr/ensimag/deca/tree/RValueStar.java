@@ -4,6 +4,8 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
+import java.util.Iterator;
+
 public class RValueStar extends TreeList<AbstractExpr> {
 
     public RValueStar() {
@@ -18,8 +20,13 @@ public class RValueStar extends TreeList<AbstractExpr> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO
-        throw new UnsupportedOperationException("Not yet implemented");
+        Iterator<AbstractExpr> iter = this.getList().iterator();
+        while (iter.hasNext()) {
+            iter.next().decompile(s);
+            if (iter.hasNext()) {
+                s.print(", ");
+            }
+        }
     }
 
     public void verifyRValueStar(DecacCompiler compiler,

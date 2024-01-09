@@ -85,11 +85,9 @@ public class FieldSelection extends AbstractLValue {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO
-        s.print(expr.decompile());
+        expr.decompile(s);
         s.print(".");
-        s.print(fieldIdent.decompile());
-        throw new UnsupportedOperationException("Not yet implemented");
+        fieldIdent.decompile(s);
     }
 
     @Override
