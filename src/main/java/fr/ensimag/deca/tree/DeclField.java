@@ -13,7 +13,7 @@ import java.io.PrintStream;
 
 public class DeclField extends AbstractDeclField {
 
-    private final Visibility visibility; // TODO jsppppp
+    private final Visibility visibility;
     private final AbstractIdentifier type;
     private final AbstractIdentifier name;
     private final AbstractInitialization init;

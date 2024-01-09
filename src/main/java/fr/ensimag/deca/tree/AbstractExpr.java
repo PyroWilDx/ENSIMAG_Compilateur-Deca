@@ -71,7 +71,7 @@ public abstract class AbstractExpr extends AbstractInst {
     public abstract Type verifyExpr(DecacCompiler compiler,
                                     EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
     // Done
-    
+
     /**
      * Verify the expression in right hand-side of (implicit) assignments
      * <p>

@@ -1,17 +1,9 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ErrorUtils;
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.NullOperand;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 
@@ -20,8 +12,8 @@ public class MethodCall extends AbstractMethodCall {
     private AbstractIdentifier methodIdent;
     private RValueStar rValueStar;
 
-    @Override
-    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+
+    public Type verifyMethodCall(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         Type type = this.expr.verifyExpr(compiler, localEnv, currentClass);
         TypeDefinition definition = compiler.environmentType.get(type.getName());
         ClassDefinition classDefinition = definition.asClassDefinition("Method call on native type.", getLocation());
@@ -36,6 +28,11 @@ public class MethodCall extends AbstractMethodCall {
         this.rValueStar.verifyRValueStar(compiler, localEnv, currentClass, sig);
         return t;
         // Done
+    }
+
+    @Override
+    public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        return this.verifyMethodCall(compiler, localEnv, currentClass);
     }
 
     @Override

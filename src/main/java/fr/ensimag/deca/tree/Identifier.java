@@ -205,6 +205,7 @@ public class Identifier extends AbstractIdentifier {
         if (def == null) {
             throw new ContextualError("Undeclared identifier", getLocation());
         }
+        this.setDefinition(def);
         return def;
         // Done
     }
