@@ -1,8 +1,8 @@
 package fr.ensimag.deca.context;
 
 public class MethodIdentNonTerminalReturn {
-    private Signature sig;
-    private Type type;
+    private final Signature sig;
+    private final Type type;
 
     public MethodIdentNonTerminalReturn(Signature sig, Type type) {
         this.sig = sig;

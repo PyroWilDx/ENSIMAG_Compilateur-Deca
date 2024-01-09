@@ -79,6 +79,9 @@ public abstract class AbstractIdentifier extends AbstractLValue {
     public abstract MethodIdentNonTerminalReturn verifyMethodIdent(EnvironmentExp localEnv) throws ContextualError;
     // Done
 
+    public abstract FieldIdentNonTerminalReturn verifyFieldIdent(EnvironmentExp localEnv) throws ContextualError;
+    // Done
+
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
      * @param compiler contains "env_types" attribute
@@ -90,4 +93,6 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     public abstract ExpDefinition verifyIdentifier(EnvironmentExp localEnv) throws ContextualError;
     // Done
+
+    public abstract Type verifyLValueIdent(EnvironmentExp localEnv) throws ContextualError;
 }

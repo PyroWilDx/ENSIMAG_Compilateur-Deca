@@ -158,6 +158,18 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    public FieldIdentNonTerminalReturn verifyFieldIdent(EnvironmentExp localEnv) throws ContextualError {
+        ExpDefinition def = this.verifyIdentifier(localEnv);
+        FieldDefinition fieldDefinition = def.asFieldDefinition("'" +
+                this.name + "' must be a field.", getLocation());
+        Visibility visib = fieldDefinition.getVisibility();
+        ClassDefinition classDefinition  = fieldDefinition.getContainingClass();
+        Type type = fieldDefinition.getType();
+        return new FieldIdentNonTerminalReturn(visib, classDefinition, type);
+        // Done
+    }
+
+    @Override
     public Symbol getName() {
         return name;
     }
@@ -208,6 +220,16 @@ public class Identifier extends AbstractIdentifier {
         this.setDefinition(def);
         return def;
         // Done
+    }
+
+    @Override
+    public Type verifyLValueIdent(EnvironmentExp localEnv) throws ContextualError {
+        ExpDefinition def = this.verifyIdentifier(localEnv);
+        if (!(def.isField() || def.isParam() || def.isVariable())) {
+            throw new ContextualError("'" + this.name +
+                    "' must be a field, a parameter or a variable, but it is a " + def.getNature() + ".", getLocation());
+        }
+        return def.getType();
     }
 
     private Definition definition;
@@ -282,6 +304,6 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyLValue(DecacCompiler compiler,
                              EnvironmentExp localEnv,
                              ClassDefinition currentClass) throws ContextualError {
-        return this.verifyExpr(compiler, localEnv, currentClass);
+        return this.verifyLValueIdent(localEnv);
     }
 }
