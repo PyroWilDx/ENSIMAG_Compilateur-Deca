@@ -55,7 +55,6 @@ public class Initialization extends AbstractInitialization {
     public void decompile(IndentPrintStream s) {
         s.print(" = ");
         expression.decompile(s);
-        s.println(";");
     }
 
     @Override

@@ -61,8 +61,7 @@ public class NoInitialization extends AbstractInitialization {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print(";");
-        // Done
+        // nothing
     }
 
     @Override
