@@ -223,6 +223,14 @@ public class DecacCompiler {
         assert (prog.checkAllLocations());
         LOG.info("Lexing and parsing of " + sourceName + " successful.");
 
+        if (compilerOptions.getParse()) {
+            LOG.info("Decompiling " + sourceName + "...");
+            System.out.println(prog.decompile());
+            LOG.info("Decompilation of " + sourceName + " successful.");
+            LOG.info("Stopping because of -p...");
+            return false;
+        }
+
         LOG.info("Verification of " + sourceName + "...");
         prog.verifyProgram(this);
         assert (prog.checkAllDecorations());
@@ -230,13 +238,6 @@ public class DecacCompiler {
 
         if (compilerOptions.getVerification()) {
             LOG.info("Stopping because of -v...");
-            return false;
-        }
-
-        if (compilerOptions.getParse()) {
-            LOG.info("Decompiling " + sourceName + "...");
-            System.out.println(prog.decompile());
-            LOG.info("Decompilation of " + sourceName + " successful.");
             return false;
         }
 
