@@ -7,7 +7,7 @@ Test pour l'évaluation paresseuses d'expressions booléennes
     boolean b0;
 
     if (x >= 0 && x <= 5) {
-        println("x est dans l'intervalle [0, 5]");
+
     } else {
         println("x n'est pas dans l'intervalle [0, 5]");
     }
@@ -104,6 +104,46 @@ Test pour l'évaluation paresseuses d'expressions booléennes
     b0 = (x < 0) || (x < 0) || (x < 0) || (x > 0); // true
     if (!b0) {
         println("KO_22");
+    }
+    b0 = (x == 0) && (x == -1) && (x == -2) || (x == -3) || (x == -4) &&
+         (x == -5) || (x == -6) && (x == -7) || (x == -8) && (x == 4); // false
+    if (b0) {
+        println("KO_23");
+    }
+    b0 = (x == 0) && (x == -1) && (x == -2) || (x == -3) || (x == -4) &&
+         (x == -5) || (x == -6) && (x == -7) || (x == -8) || (x == 4); // true
+    if (!b0) {
+        println("KO_23");
+    }
+    b0 = (x == 0) && (x == -1) && (x == -2) || (x == -3) || (x == -4) &&
+         (x == -5) || (x == -6) && (x == -7) || (x == -8) || (x == -9); // false
+    if (b0) {
+        println("KO_24");
+    }
+    b0 = (x == 0) && (x == -1) && (x == -2) || (x == -3) || (x == -4) &&
+        (x == -5) || (x == -6) && (x == -7) || (x == -8) && (x == -9); // false
+    if (b0) {
+        println("KO_24");
+    }
+    b0 = (x == 0) && (x == -1) && (x == -2) || (x == -3) || (x == -4) &&
+        (x == 4) || (x == -6) && (x == -7) || (x == -8) || (x == -9); // false
+    if (b0) {
+        println("KO_25");
+    }
+    b0 = (x == 0) && (x == -1) && (x == -2) || (x == -3) || (x == -4) &&
+        (x == -5) || (x == 4) && (x == -7) || (x == -8) || (x == -9); // false
+    if (b0) {
+        println("KO_26");
+    }
+    b0 = (x == 0) && (x == -1) && (x == -2) || (x == -3) || (x == -4) &&
+        (x == -5) || (x == 4) || (x == -7) || (x == -8) || (x == -9); // true
+    if (!b0) {
+        println("KO_27");
+    }
+    b0 = (x == 0) && (x == -1) && (x == -2) || (x == -3) || (x == -4) &&
+        (x == -5) && (x == 4) && (x == -7) || (x == -8) || (x == -9); // false
+    if (b0) {
+        println("KO_28");
     }
 }
 

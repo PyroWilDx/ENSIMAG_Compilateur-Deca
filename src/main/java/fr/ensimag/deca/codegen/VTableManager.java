@@ -8,10 +8,12 @@ public class VTableManager {
 
     private final HashMap<String, VTable> vTables;
     private String currClassName;
+    private String currMethodName;
 
     public VTableManager() {
         this.vTables = new HashMap<>();
         this.currClassName = null;
+        this.currMethodName = null;
     }
 
     public void addVTable(String className, VTable vTable) {
@@ -65,6 +67,14 @@ public class VTableManager {
 
     public int getCurrFieldCountOfClass() {
         return getFieldCountOfClass(currClassName);
+    }
+
+    public void setCurrMethodName(String value) {
+        currMethodName = value;
+    }
+
+    public String getCurrMethodName() {
+        return currMethodName;
     }
 
 }

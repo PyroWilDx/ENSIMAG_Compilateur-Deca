@@ -10,7 +10,6 @@ import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
-import java.util.LinkedList;
 
 public class DeclMethod extends AbstractDeclMethod {
     private final AbstractIdentifier type;
@@ -20,7 +19,7 @@ public class DeclMethod extends AbstractDeclMethod {
     // TODO mais dans ce cas penser à changer le parser
     private final ListDeclVar listDeclVar;
     private final ListInst listInst;
-    private String classNameStr;
+    private String className;
     private Label mStartLabel;
     private Label mEndLabel;
 
@@ -39,19 +38,18 @@ public class DeclMethod extends AbstractDeclMethod {
     public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
         StackManager sM = compiler.getStackManager();
 
-        classNameStr = vTable.getClassName();
+        className = vTable.getClassName();
+        String methodName = name.getName().getName();
 
-        mStartLabel = new Label("code." + classNameStr +
-                "." + name.getName().getName());
-        mEndLabel = new Label("end." + classNameStr +
-                "." + name.getName().getName());
+        mStartLabel = LabelUtils.getMethodLabel(className, methodName);
+        mEndLabel = LabelUtils.getMethodEndLabel(className, methodName);
         compiler.addInstruction(new LOAD(new LabelOperand(mStartLabel), Register.R0));
 
         DAddr mAddr = sM.getGbOffsetAddr();
         compiler.addInstruction(new STORE(Register.R0, mAddr));
         sM.incrVTableCpt();
 
-        vTable.addMethod(name.getName().getName(), mAddr);
+        vTable.addMethod(methodName, mAddr);
 
         for (AbstractParam param : params.getList()) {
             // TODO (param.setOperand ??)
@@ -66,6 +64,8 @@ public class DeclMethod extends AbstractDeclMethod {
         StackManager sM = new StackManager();
         compiler.setStackManager(sM);
 
+        String methodName = name.getName().getName();
+
         compiler.addLabel(mStartLabel);
         int iTSTO = compiler.getProgramLineCount();
 
@@ -78,8 +78,8 @@ public class DeclMethod extends AbstractDeclMethod {
         RegManager.RegStatus[] usedRegs = rM.popUsedRegs();
         RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
 
-        compiler.addInstruction(new WSTR("Error: Exiting function " + classNameStr +
-                "." + name.getName().getName() + " without return"));
+        compiler.addInstruction(new WSTR("Error: Exiting function " + className +
+                "." + methodName + " without return"));
         compiler.addInstruction(new WNL());
         compiler.addInstruction(new ERROR());
 
@@ -89,23 +89,6 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addInstruction(new RTS());
         // Done
     }
-
-    // TODO (à déplacer)
-//    public void codeGenReturn(DecacCompiler compiler) {
-//        RegManager rM = compiler.getRegManager();
-//
-//        inst.codeGenInst(compiler);
-//
-//        if (!inst.getType().isNull()) {
-//            DVal dVal = rM.getLastImm();
-//            if (dVal == null) {
-//                GPRegister gpReg = rM.getLastReg();
-//                compiler.addInstruction(new LOAD(gpReg, Register.R0));
-//            }
-//        }
-//
-//        compiler.addInstruction(new BRA("fin." + methodClassName + "." + methodName));
-//    }
 
 //    // TODO (à déplacer)
 //    public void codeGenInstanceOf(DecacCompiler compiler) {

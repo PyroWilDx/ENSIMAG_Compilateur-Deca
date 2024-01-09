@@ -4,7 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
-public class RValueStar extends TreeList<AbstractExpr>{
+public class RValueStar extends TreeList<AbstractExpr> {
     @Override
     public void decompile(IndentPrintStream s) {
         // TODO
@@ -33,6 +33,7 @@ public class RValueStar extends TreeList<AbstractExpr>{
         Signature sigWithoutFirst = sig.copyWithoutFirst();
         rValueStarWithoutFirst.verifyRValueStar(compiler, localEnv, currentClass, sigWithoutFirst);
     }
+
     public RValueStar copyWithoutFirst() {
         RValueStar newRValueStar = new RValueStar();
         for (AbstractExpr rValue : this.getList().subList(1, getList().size() - 1)) {

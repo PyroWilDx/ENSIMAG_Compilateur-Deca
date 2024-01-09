@@ -25,7 +25,8 @@ public class This extends AbstractExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         VTableManager vTM = compiler.getVTableManager();
 
-        vTM.setCurrClassName(getType().getName().getName());
+        String className = getType().getName().getName();
+        vTM.setCurrClassName(className);
         // Done
     }
 

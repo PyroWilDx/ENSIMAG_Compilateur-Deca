@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ErrorUtils;
-import fr.ensimag.deca.codegen.StackManager;
-import fr.ensimag.deca.codegen.VTable;
-import fr.ensimag.deca.codegen.VTableManager;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
@@ -39,8 +36,8 @@ public class Program extends AbstractProgram {
         return main;
     }
 
-    private ListDeclClass classes;
-    private AbstractMain main;
+    private final ListDeclClass classes;
+    private final AbstractMain main;
 
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
@@ -50,25 +47,27 @@ public class Program extends AbstractProgram {
         classes.verifyListClassBody(compiler);
         main.verifyMain(compiler);
         LOG.debug("verify program: end");
-        // TODO (Avec Objet -> Enlever Comm)
+        // Done
     }
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        compiler.addComment("VTable of Object");
+        compiler.addComment("VTable of " + LabelUtils.OBJECT_CLASS_NAME);
         DAddr nAddr = sM.getGbOffsetAddr();
-        VTable vT = new VTable("Object", nAddr);
-        vTM.addVTable("Object", vT);
+        VTable vT = new VTable(LabelUtils.OBJECT_CLASS_NAME, nAddr);
+        vTM.addVTable(LabelUtils.OBJECT_CLASS_NAME, vT);
         compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, nAddr));
         sM.incrVTableCpt();
 
         DAddr eAddr = sM.getGbOffsetAddr();
-        vT.addMethod("equals", eAddr);
-        Label eLabel = new Label("code.Object.equals");
+        vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, eAddr);
+        Label eLabel = LabelUtils.getMethodLabel(LabelUtils.OBJECT_CLASS_NAME,
+                LabelUtils.EQUALS_METHOD_NAME);
         compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, eAddr));
         sM.incrVTableCpt();
@@ -86,9 +85,14 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(2, new ADDSP(sM.getAddSp()));
 
         compiler.addComment("");
-        compiler.addComment("Class Object");
+        compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
         compiler.addLabel(eLabel);
-        // TODO (méthode equals de object)
+        compiler.addInstruction(
+                new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+        compiler.addInstruction(
+                new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
+        compiler.addInstruction(new SEQ(Register.R0));
+        compiler.addInstruction(new RTS());
 
         classes.codeGenListDeclClass(compiler);
 
