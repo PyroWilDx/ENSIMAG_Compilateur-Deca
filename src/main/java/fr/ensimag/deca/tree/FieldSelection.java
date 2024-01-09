@@ -67,15 +67,18 @@ public class FieldSelection extends AbstractLValue {
         RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
 
+        String fieldName = fieldIdent.getName().getName();
+
         expr.codeGenInst(compiler); // TODO (expr ne serait t-il pas un identifier ?)
 
         GPRegister gpReg = rM.getLastReg();
         compiler.addInstruction(new CMP(new NullOperand(), gpReg));
         compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
 
-        int fieldOffset = vTM.getCurrOffsetOfField(fieldIdent.getName().getName());
-        fieldIdent.getExpDefinition().setOperand(
-                new RegisterOffset(fieldOffset, gpReg));
+        int fieldOffset = vTM.getCurrOffsetOfField(fieldName);
+        fieldIdent.getExpDefinition().setOperand(new RegisterOffset(fieldOffset, gpReg));
+        rM.freeReg(gpReg);
+
         fieldIdent.codeGenInst(compiler);
         // Done
     }

@@ -32,7 +32,9 @@ public class DeclMethodAsm extends AbstractDeclMethod {
     }
 
     public void codeGenDeclMethod(DecacCompiler compiler) {
-        compiler.addLabel(new Label(name.getName().getName()));
+        String methodName = name.getName().getName();
+
+        compiler.addLabel(new Label(methodName));
         compiler.add(new LineAsm(code));
     }
 

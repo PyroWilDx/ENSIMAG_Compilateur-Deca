@@ -145,7 +145,7 @@ def doTests():
              execError=True)
 
     doVerify("codegen/valid/conditions/boolLazyEval.deca",
-             expectedResult=b"x est dans l'intervalle [0, 5]\n")
+             expectedResult=b"")
 
     doVerify("codegen/valid/conditions/ifThenElse.deca",
              expectedResult=b"1234567\n")

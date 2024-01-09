@@ -97,14 +97,17 @@ public class DeclClass extends AbstractDeclClass {
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        compiler.addComment("VTable of " + name.getName().getName());
+        String className = name.getName().getName();
+        String superClassName = superClass.getName().getName();
+
+        compiler.addComment("VTable of " + className);
 
         DAddr startAddr = sM.getGbOffsetAddr();
-        VTable vT = new VTable(name.getName().getName(), startAddr);
-        vTM.addVTable(name.getName().getName(), vT);
+        VTable vT = new VTable(className, startAddr);
+        vTM.addVTable(className, vT);
 
         compiler.addInstruction(
-                new LEA(vTM.getAddrOfClass(superClass.getName().getName()), Register.R0));
+                new LEA(vTM.getAddrOfClass(superClassName), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, startAddr));
         sM.incrVTableCpt();
 
@@ -119,23 +122,27 @@ public class DeclClass extends AbstractDeclClass {
         StackManager sM = new StackManager();
         compiler.setStackManager(sM);
 
-        compiler.addLabel(new Label("init." + name.getName().getName()));
+        String className = name.getName().getName();
+        String superClassName = superClass.getName().getName();
+
+        compiler.addComment("Class " + className);
+
+        compiler.addLabel(LabelUtils.getClassInitLabel(className));
         int iTSTO = compiler.getProgramLineCount();
 
-        if (!superClass.getName().getName().equals("Object")) {
+        if (!superClassName.equals(LabelUtils.OBJECT_CLASS_NAME)) {
             compiler.addInstruction(
                     new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
-            fields.codeGenSetFieldsTo0(compiler); // TODO (que les champs de D)
+            fields.codeGenSetFieldsTo0(compiler); // TODO (que les champs de cette classe)
             compiler.addInstruction(new PUSH(Register.R1));
-            compiler.addInstruction(
-                    new BSR(new Label("init." + superClass.getName().getName())));
+            compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(superClassName)));
             compiler.addInstruction(new SUBSP(1));
         }
 
         rM.saveUsedRegs();
         rM.freeAllRegs();
 
-        fields.codeGenListDeclField(compiler); // TODO (que les champs de D)
+        fields.codeGenListDeclField(compiler); // TODO (que les champs de cette classe)
 
         RegManager.RegStatus[] usedRegs = rM.popUsedRegs();
         RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);

@@ -47,7 +47,10 @@ public class MethodCall extends AbstractMethodCall {
         RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        int nbParam = vTM.getCurrParamCountOfMethod(methodIdent.getName().getName()) + 1;
+        String methodName = methodIdent.getName().getName();
+        vTM.setCurrMethodName(methodName);
+
+        int nbParam = vTM.getCurrParamCountOfMethod(methodName) + 1;
         compiler.addInstruction(new ADDSP(nbParam));
 
         GPRegister gpReg = rM.getFreeReg();
@@ -80,8 +83,7 @@ public class MethodCall extends AbstractMethodCall {
 //        compiler.addInstruction(
 //                new LOAD(new RegisterOffset(0, gpReg), gpReg));
 //        compiler.addInstruction(new BSR(new RegisterOffset(mOffset, gpReg)));
-        compiler.addInstruction(
-                new BSR(vTM.getCurrAddrOfMethod(methodIdent.getName().getName())));
+        compiler.addInstruction(new BSR(vTM.getCurrAddrOfMethod(methodName)));
         rM.freeReg(gpReg);
 
         compiler.addInstruction(new SUBSP(nbParam));

@@ -8,6 +8,7 @@ import fr.ensimag.deca.tools.SymbolTable;
 
 public abstract class AbstractParam extends Tree {
     public abstract SymbolTable.Symbol getName();
+
     public abstract Type verifyDeclParamMembers(DecacCompiler compiler) throws ContextualError;
     // Done
 
