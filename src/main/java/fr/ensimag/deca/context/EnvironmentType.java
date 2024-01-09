@@ -6,7 +6,6 @@ import java.util.Map;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractIdentifier;
-import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.Location;
 
 // A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
@@ -122,9 +121,8 @@ public class EnvironmentType {
         return false;
         // TODO pas sur sur mais ça a l'air bien.
     }
-    public boolean assignCompatible(Type type1, Type type2) {
-        //TODO remplir tout ça pour la deuxieme condition possible (si subtype(env, T2, T1) peut être avec un dictionnaire de compatibilités...........
-        return type1 == type2 || type1 == FLOAT && type2 == INT;
+    public boolean assignCompatible(DecacCompiler compiler, Type type1, Type type2) {
+        return type1 == type2 || type1 == FLOAT && type2 == INT || compiler.environmentType.subtype(type1, type2);
     }
 
     public final VoidType    VOID;
