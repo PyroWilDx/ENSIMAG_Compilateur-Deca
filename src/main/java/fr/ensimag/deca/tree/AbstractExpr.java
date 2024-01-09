@@ -87,7 +87,7 @@ public abstract class AbstractExpr extends AbstractInst {
                                      EnvironmentExp localEnv, ClassDefinition currentClass,
                                      Type expectedType) throws ContextualError { // regle 3.28
         Type type2 = this.verifyExpr(compiler, localEnv, currentClass);
-        if (!compiler.environmentType.assignCompatible(expectedType, type2)) {
+        if (!compiler.environmentType.assignCompatible(compiler, expectedType, type2)) {
             throw new ContextualError("type '" + type2.toString() +
                     "' must be compatible with type '" + expectedType.toString() + "'", this.getLocation()); // cf condition regle 3.28
         }
