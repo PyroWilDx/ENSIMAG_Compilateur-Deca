@@ -7,11 +7,11 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-public class Selection extends AbstractLValue{
+public class FieldSelection extends AbstractLValue{
     private AbstractExpr expr;
     private AbstractIdentifier fieldIdent;
 
-    public Selection(AbstractExpr expr, AbstractIdentifier fieldIdent) {
+    public FieldSelection(AbstractExpr expr, AbstractIdentifier fieldIdent) {
         this.expr = expr;
         this.fieldIdent = fieldIdent;
     }
@@ -59,13 +59,13 @@ public class Selection extends AbstractLValue{
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO
-        throw new UnsupportedOperationException("Not yet implemented");
+        expr.prettyPrint(s, prefix, false);
+        fieldIdent.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO
-        throw new UnsupportedOperationException("Not yet implemented");
+        expr.iter(f);
+        fieldIdent.iter(f);
     }
 }
