@@ -166,8 +166,7 @@ def doTests():
              decacOptions="-b")
 
     doVerify("codegen/valid/options/optionParse.deca",
-             decacOptions="-p",
-             doAssert=False)
+             decacOptions="-p")
 
     doVerify("codegen/valid/options/optionVerification.deca",
              expectedResult=b"",

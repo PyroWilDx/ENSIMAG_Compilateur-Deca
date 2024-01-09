@@ -1,6 +1,48 @@
-/*
-Test de l'Option -p
-*/
+// Description :
+//    Test de l'option -p
+//
+// Resultats :
+//    !! SI EXECUTION AVEC L'OPTION -p !!
+//    Le compilateur affiche le programme :
+// {
+//         int x = 1;
+//         float y = 2;
+//         float z;
+//         (z = readInt());
+//         (z = readFloat());
+//         (z = ((x + y) - x));
+//         print(x, y, z);
+//         println("z = ", z);
+//         println(y, z);
+//         (1 / 0);
+//         (0x1.0p0 / 0);
+//         if ((y == z)) {
+//                 (y = z);
+//         } else {
+//                 (y = (z - 1));
+//         }
+//         while (true) {
+//                 if ((y != z)) {
+//                         if ((y < z)) {
+//                                 if ((y > z)) {
+//                                         (x = 2);
+//                                 } else {
+//                                         (y = 4);
+//                                 }
+//                         } else {
+//                         }
+//                 } else {
+//                         while (false) {
+//                                 print(40);
+//                         }
+//                 }
+//                 (x = 10);
+//         }
+//         x;
+//         y;
+//         z;
+// }
+//    L'exécution ne doit rien afficher
 
 {
     int x = 1;

@@ -61,7 +61,7 @@ public class DeclClass extends AbstractDeclClass {
         fields.decompile(s);
         methods.decompile(s);
         s.unindent();
-        s.println("}");
+        s.print("}");
     }
 
     @Override

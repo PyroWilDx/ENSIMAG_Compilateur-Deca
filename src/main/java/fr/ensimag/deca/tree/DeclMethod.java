@@ -314,12 +314,12 @@ public class DeclMethod extends AbstractDeclMethod {
         name.decompile(s);
         s.print("(");
         params.decompile(s);
-        s.println(") {");
+        s.print(") {");
         s.indent();
         listDeclVar.decompile(s);
         listInst.decompile(s);
         s.unindent();
-        s.println("}");
+        s.print("}");
     }
 
     @Override
