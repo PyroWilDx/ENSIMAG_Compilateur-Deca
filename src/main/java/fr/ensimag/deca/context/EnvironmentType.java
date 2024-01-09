@@ -1,9 +1,13 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.DecacCompiler;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.deca.tree.Location;
@@ -20,6 +24,7 @@ public class EnvironmentType {
     public EnvironmentType(DecacCompiler compiler) {
         this.compiler = compiler;
         envTypes = new HashMap<Symbol, TypeDefinition>();
+        classesAndNull = new ArrayList<>();
         
         Symbol intSymb = compiler.createSymbol("int");
         INT = new IntType(intSymb);
@@ -42,10 +47,22 @@ public class EnvironmentType {
         // not added to envTypes, it's not visible for the user.
 
         Symbol objectSymb = compiler.createSymbol("object");
-        OBJECT = new ClassType(objectSymb);
+        OBJECT = new ClassType(objectSymb, Location.BUILTIN, null);
+        Symbol equalsMethodSymbol = compiler.createSymbol("equals");
+        Signature equalsSignature = new Signature();
+        equalsSignature.add(OBJECT);
+        MethodDefinition equalsDef = new MethodDefinition(BOOLEAN, Location.BUILTIN, equalsSignature, 0);
+        try {
+            OBJECT.getDefinition().getMembers().declare(equalsMethodSymbol, equalsDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new DecacInternalError("Equals symbol already declared ???");
+        }
+        envTypes.put(objectSymb, OBJECT.getDefinition());
+        classesAndNull.add(OBJECT);
 
         Symbol nullSymb = compiler.createSymbol("null");
         NULL = new NullType(nullSymb);
+        classesAndNull.add(NULL);
 
         typeUnaryOp = new HashMap<>();
         typeUnaryOp.put(new KeyTypeUnaryOp("-", INT), INT);
@@ -74,10 +91,17 @@ public class EnvironmentType {
         for (String op : new String[]{"&&", "||", "==", "!="}) {
             typeBinaryOp.put(new KeyTypeBinaryOp(op, BOOLEAN, BOOLEAN), BOOLEAN);
         }
+        for (Type type1 : classesAndNull) {
+            for (Type type2 : classesAndNull) {
+                typeBinaryOp.put(new KeyTypeBinaryOp("==", type1, type2), BOOLEAN);
+                typeBinaryOp.put(new KeyTypeBinaryOp("!=", type1, type2), BOOLEAN);
+            }
+        }
         // TODO finir ces machins pour le langage avec objets
     }
     private final DecacCompiler compiler;
     private final Map<Symbol, TypeDefinition> envTypes;
+    private final List<Type> classesAndNull;
     private final Map<KeyTypeUnaryOp, Type> typeUnaryOp;
     public Type getTypeUnaryOp(String op, Type type) {
         KeyTypeUnaryOp key = new KeyTypeUnaryOp(op, type);
@@ -100,12 +124,19 @@ public class EnvironmentType {
         return envTypes.get(name);
     }
     public boolean declareClasse(AbstractIdentifier name, ClassDefinition superClass, Location location) {
-        if (envTypes.containsKey(name)) return false;
+        if (envTypes.containsKey(name.getName())) return false;
         Symbol symb = name.getName();
-        ClassType type = new ClassType(symb);
-        TypeDefinition def = new ClassDefinition(type, location, superClass);
-        name.setDefinition(def);
-        envTypes.put(symb, def);
+        ClassType type = new ClassType(symb, location, superClass);
+        name.setDefinition(type.getDefinition());
+        envTypes.put(symb, type.getDefinition());
+        classesAndNull.add(type);
+
+        for (Type type2 : classesAndNull) {
+            typeBinaryOp.put(new KeyTypeBinaryOp("==", type, type2), BOOLEAN);
+            typeBinaryOp.put(new KeyTypeBinaryOp("!=", type, type2), BOOLEAN);
+            typeBinaryOp.put(new KeyTypeBinaryOp("==", type2, type), BOOLEAN);
+            typeBinaryOp.put(new KeyTypeBinaryOp("!=", type2, type), BOOLEAN);
+        }
         return true;
     }
     public TypeDefinition defOfType(Symbol s) {
@@ -120,11 +151,11 @@ public class EnvironmentType {
             ClassType classType2 = (ClassType) type2;
             return classType.isSubClassOf(classType2);
         }
-        if (type1.equals(NULL) && type2.isClass()) return true;
-        return false;
+        return (type1.equals(NULL) && type2.isClass());
+
     }
     public boolean assignCompatible(DecacCompiler compiler, Type type1, Type type2) {
-        return type1 == type2 || type1 == FLOAT && type2 == INT || compiler.environmentType.subtype(type1, type2);
+        return type1 == type2 || type1.equals(FLOAT) && type2 == INT || compiler.environmentType.subtype(type1, type2);
     }
 
     public final VoidType    VOID;
