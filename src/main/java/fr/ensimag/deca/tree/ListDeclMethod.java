@@ -51,8 +51,9 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
 
+        VTable superClassVTable = vTable.getVTableOfSuperClass(vTM);
         LinkedList<MethodInfo> superClassMethods =
-                vTable.getVTableOfSuperClass(vTM).getClassMethodsOrderered();
+                superClassVTable.getClassMethodsOrderered();
         for (MethodInfo methodInfo : superClassMethods) {
             boolean isPresentInCurrClass = false;
             for (AbstractDeclMethod declMethod : getList()) {
@@ -68,6 +69,10 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
                 DAddr mAddr = sM.getGbOffsetAddr();
                 compiler.addInstruction(new STORE(Register.R0, mAddr));
                 sM.incrVTableCpt();
+
+                vTable.addSuperMethod(methodInfo.getClassName(),
+                        methodInfo.getMethodName(), mAddr);
+                vTable.copyMethodParams(superClassVTable, methodInfo.getMethodName());
             }
         }
 

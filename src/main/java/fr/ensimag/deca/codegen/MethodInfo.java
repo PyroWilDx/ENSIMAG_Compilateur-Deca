@@ -22,6 +22,10 @@ public class MethodInfo {
         methodParams.put(paramName, paramOffset);
     }
 
+    public void copyParams(MethodInfo otherMethod) {
+        methodParams.putAll(otherMethod.methodParams);
+    }
+
     public String getClassName() {
         return className;
     }

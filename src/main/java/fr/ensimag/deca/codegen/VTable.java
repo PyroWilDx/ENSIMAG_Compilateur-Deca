@@ -53,6 +53,16 @@ public class VTable {
         classMethodsOrderered.addLast(methodInfo);
     }
 
+    public void addSuperMethod(String superClassName, String methodName, DAddr mAddr) {
+        MethodInfo methodInfo = new MethodInfo(superClassName, methodName, mAddr);
+        classMethods.put(methodName, methodInfo);
+        classMethodsOrderered.addLast(methodInfo);
+    }
+
+    public void copyMethodParams(VTable otherVTable, String methodName) {
+        classMethods.get(methodName).copyParams(otherVTable.classMethods.get(methodName));
+    }
+
     public LinkedList<MethodInfo> getClassMethodsOrderered() {
         return classMethodsOrderered;
     }
