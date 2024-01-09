@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.VTable;
 import fr.ensimag.deca.context.*;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
@@ -112,7 +113,11 @@ public class DeclField extends AbstractDeclField {
         EnvironmentExp env = new EnvironmentExp(null);
         ClassDefinition classDefinition = (ClassDefinition) compiler.environmentType.get(className);
         ExpDefinition expDef = new FieldDefinition(t, getLocation(), visibility, classDefinition, index);
-        env.declare(this.name.getName(), expDef);
+        try {
+            env.declare(this.name.getName(), expDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new DecacInternalError("Symbol cannot have been declared twice.");
+        }
         return env;
         // Done
     }

@@ -59,7 +59,11 @@ public class Param extends AbstractParam {
         Type t = this.type.verifyType(compiler);
         EnvironmentExp env = new EnvironmentExp(null);
         ExpDefinition def = new ParamDefinition(t, getLocation());
-        env.declare(this.name.getName(), def);
+        try {
+            env.declare(this.name.getName(), def);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new DecacInternalError("Symbol cannot have been declared twice.");
+        }
         return env;
         // Done
     }
