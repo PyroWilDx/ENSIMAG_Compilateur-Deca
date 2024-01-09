@@ -6,7 +6,6 @@ import java.util.Map;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractIdentifier;
-import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.Location;
 
 // A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
@@ -44,6 +43,9 @@ public class EnvironmentType {
 
         Symbol objectSymb = compiler.createSymbol("object");
         OBJECT = new ClassType(objectSymb);
+
+        Symbol nullSymb = compiler.createSymbol("null");
+        NULL = new NullType(nullSymb);
 
         typeUnaryOp = new HashMap<>();
         typeUnaryOp.put(new KeyTypeUnaryOp("-", INT), INT);
@@ -118,13 +120,11 @@ public class EnvironmentType {
             ClassType classType2 = (ClassType) type2;
             return classType.isSubClassOf(classType2);
         }
-        if (type1 == null && type2.isClass()) return true;
+        if (type1.equals(NULL) && type2.isClass()) return true;
         return false;
-        // TODO pas sur sur mais ça a l'air bien.
     }
-    public boolean assignCompatible(Type type1, Type type2) {
-        //TODO remplir tout ça pour la deuxieme condition possible (si subtype(env, T2, T1) peut être avec un dictionnaire de compatibilités...........
-        return type1 == type2 || type1 == FLOAT && type2 == INT;
+    public boolean assignCompatible(DecacCompiler compiler, Type type1, Type type2) {
+        return type1 == type2 || type1 == FLOAT && type2 == INT || compiler.environmentType.subtype(type1, type2);
     }
 
     public final VoidType    VOID;
@@ -133,4 +133,5 @@ public class EnvironmentType {
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
     public final ClassType OBJECT;
+    public final NullType NULL;
 }

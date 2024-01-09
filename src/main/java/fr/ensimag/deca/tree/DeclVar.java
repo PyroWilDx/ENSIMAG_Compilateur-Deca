@@ -4,6 +4,7 @@ import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
@@ -49,7 +50,11 @@ public class DeclVar extends AbstractDeclVar {
         // j't'ai mis ca en comm, psq sinon ca compile pas
         ExpDefinition def = new VariableDefinition(varType, this.getLocation());
         this.varName.setDefinition(def);
-        declEnv.declare(varName.getName(), def);
+        try {
+            declEnv.declare(varName.getName(), def);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new DecacInternalError("Symbol cannot have been declared twice.");
+        }
         if (localEnv.disjointUnion(declEnv) != null) {
             throw new ContextualError("Variable '" + varName.getName().toString() + "' already declared.", this.getLocation());
         }

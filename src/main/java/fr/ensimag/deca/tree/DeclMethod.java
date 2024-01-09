@@ -288,7 +288,11 @@ public class DeclMethod extends AbstractDeclMethod {
         }
         EnvironmentExp env = new EnvironmentExp(null);
         ExpDefinition newDef = new MethodDefinition(t, getLocation(), sig, index);
-        env.declare(this.name.getName(), newDef);
+        try {
+            env.declare(this.name.getName(), newDef);
+        } catch (EnvironmentExp.DoubleDefException e) {
+            throw new DecacInternalError("Symbol cannot have been declared twice.");
+        }
         return env;
         // Done
     }
