@@ -56,8 +56,13 @@ public class DeclMethodAsm extends AbstractDeclMethod {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO
-        throw new UnsupportedOperationException("not implemented yet");
+        this.type.decompile(s);
+        s.print(" ");
+        this.name.decompile(s);
+        s.print("(");
+        this.params.decompile(s);
+        s.println(")");
+        s.println("asm(\"" + code + "\");");
     }
 
     @Override

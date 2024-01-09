@@ -8,13 +8,19 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
+import java.util.Iterator;
+
 public class ListParam extends TreeList<AbstractParam> {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO
-        throw new DecacInternalError("not implemented yet");
-
+        Iterator<AbstractParam> iter = this.iterator();
+        while (iter.hasNext()) {
+            iter.next().decompile(s);
+            if (iter.hasNext()) {
+                s.print(", ");
+            }
+        }
     }
 
     public Signature verifyListDeclParamMembers(DecacCompiler compiler) throws ContextualError {

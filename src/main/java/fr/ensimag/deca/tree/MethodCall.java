@@ -96,8 +96,12 @@ public class MethodCall extends AbstractMethodCall {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO
-        throw new UnsupportedOperationException("Not yet implemented");
+        this.expr.decompile(s);
+        s.print(".");
+        this.methodIdent.decompile(s);
+        s.print("(");
+        this.rValueStar.decompile(s);
+        s.println(");");
     }
 
     @Override

@@ -11,7 +11,9 @@ import fr.ensimag.deca.tools.SymbolTable;
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO ?
+        for (AbstractDeclMethod decl : getList()) {
+            decl.decompile(s);
+        }
     }
 
     public void codeGenVTable(DecacCompiler compiler, VTable vTable) {

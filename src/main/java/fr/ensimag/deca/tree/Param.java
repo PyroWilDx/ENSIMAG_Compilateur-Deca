@@ -19,7 +19,9 @@ public class Param extends AbstractParam {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        // TODO
+        type.decompile(s);
+        s.print(" ");
+        name.decompile(s);
         throw new DecacInternalError("not implemented yet");
 
     }
