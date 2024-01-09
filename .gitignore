@@ -18,5 +18,6 @@ docker/ima_sources/
 *.tokens
 *.interp
 *.ass
+*.res
 
 src/test/script/allTestsOutput.txt

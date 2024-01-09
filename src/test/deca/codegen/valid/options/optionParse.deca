@@ -7,9 +7,41 @@ Test de l'Option -p
     float y = 2;
     float z;
 
-    z = x * y + x + x + y;
-    println("z = ", z);
+    z = readInt();
+    z = readFloat();
 
-    z = 3.14;
-    printlnx("z = ", z);
+    z = x + y - x;
+    print(x, y, z);
+    println("z = ", z);
+    printlnx(y, z);
+
+    1 / 0;
+    1.0 / 0;
+
+    if (y == z) {
+        y = z;
+    } else {
+        y = z - 1;
+    }
+
+    while (true) {
+        if (y != z) {
+            if (y < z) {
+                if (y > z) {
+                    x = 2;
+                } else {
+                    y = 4;
+                }
+            }
+        } else {
+            while (false) {
+                print(40);
+            }
+        }
+        x = 10;
+    }
+
+    x;
+    y;
+    z;
 }
