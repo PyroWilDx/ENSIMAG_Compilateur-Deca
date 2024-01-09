@@ -8,8 +8,6 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.FLOAT;
 
-import java.util.Optional;
-
 /**
  * Conversion of an int into a float. Used for implicit conversions.
  * 
@@ -30,8 +28,8 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeGenOpUnary(DecacCompiler compiler, GPRegister reg) {
-        compiler.addInstruction(new FLOAT(reg, reg));
+    protected void codeGenOpUnary(DecacCompiler compiler, GPRegister gpReg) {
+        compiler.addInstruction(new FLOAT(gpReg, gpReg));
         // Done
     }
 

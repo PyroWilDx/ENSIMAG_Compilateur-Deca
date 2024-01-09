@@ -1,7 +1,6 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tree.Location;
-import fr.ensimag.ima.pseudocode.Label;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -52,7 +51,12 @@ public class ClassDefinition extends TypeDefinition {
         // Cast succeeds by construction because the type has been correctly set
         // in the constructor.
         return (ClassType) super.getType();
-    };
+    }
+
+    @Override
+    public ClassDefinition asClassDefinition(String message, Location location) throws ContextualError {
+        return this;
+    }
 
     public ClassDefinition getSuperClass() {
         return superClass;

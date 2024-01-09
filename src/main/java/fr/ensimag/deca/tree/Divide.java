@@ -3,10 +3,8 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ErrorUtils;
-import fr.ensimag.deca.codegen.RegUtils;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
@@ -26,7 +24,9 @@ public class Divide extends AbstractOpArith {
         } else {
             compiler.addInstruction(new DIV(valReg, saveReg));
         }
-        compiler.addInstruction(new BOV(ErrorUtils.divBy0Label));
+        if (compiler.getCompilerOptions().doCheck()) {
+            compiler.addInstruction(new BOV(ErrorUtils.divBy0Label));
+        }
         // Done
     }
 

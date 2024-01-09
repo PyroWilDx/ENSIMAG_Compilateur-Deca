@@ -11,3 +11,4 @@ public enum Visibility {
     PUBLIC,
     PROTECTED
 }
+

@@ -1,17 +1,15 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.DeclVarUtils;
-import fr.ensimag.deca.codegen.RegUtils;
+import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
@@ -40,15 +38,19 @@ public class DeclVar extends AbstractDeclVar {
         EnvironmentExp declEnv = new EnvironmentExp(null);
         //TypeDefinition typeDef = compiler.environmentType.defOfType((this.type.getName()));
         Type varType = this.type.verifyType(compiler);
-        try {
-            ExpDefinition def = new VariableDefinition(varType, this.getLocation());
-            this.varName.setDefinition(def);
-            declEnv.declare(varName.getName(), def);
-            // CONDITION type != void
-        } catch (EnvironmentExp.DoubleDefException e) { // pas possible d'avoir cette erreur mais idea pas content
-            throw new UnknownError();
-        }
-        if (!localEnv.disjointUnion(declEnv)) {
+//        try {
+//            ExpDefinition def = new VariableDefinition(varType, this.getLocation());
+//            this.varName.setDefinition(def);
+//            declEnv.declare(varName.getName(), def);
+//            // CONDITION type != void
+//        } catch (EnvironmentExp.DoubleDefException e) { // pas possible d'avoir cette erreur mais idea pas content
+//            throw new UnknownError();
+//        }
+        // j't'ai mis ca en comm, psq sinon ca compile pas
+        ExpDefinition def = new VariableDefinition(varType, this.getLocation());
+        this.varName.setDefinition(def);
+        declEnv.declare(varName.getName(), def);
+        if (localEnv.disjointUnion(declEnv) != null) {
             throw new ContextualError("Variable '" + varName.getName().toString() + "' already declared.", this.getLocation());
         }
         if (varType == compiler.environmentType.VOID) {
@@ -61,15 +63,18 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDeclVar(DecacCompiler compiler) {
-        DeclVarUtils.currDeclVarType = type.getType();
+        RegManager rM = compiler.getRegManager();
+        StackManager sM = compiler.getStackManager();
+
+        initialization.setVarType(type.getType());
         initialization.codeGenInit(compiler);
-        GPRegister reg = RegUtils.takeBackLastReg();
-//        DAddr dAddr = varName.getExpDefinition().getOperand();
-        DAddr dAddr = new RegisterOffset(DeclVarUtils.getGbOffset(), Register.GB);
-        varName.getExpDefinition().setOperand(dAddr); // TODO (Remove and Replace)
-        compiler.addInstruction(new STORE(reg, dAddr));
-        RegUtils.freeReg(reg);
-        DeclVarUtils.incrGbVarCount();
+
+        GPRegister gpReg = rM.getLastRegOrImm(compiler);
+        DAddr varAddr = sM.getGbOffsetAddr();
+        varName.getExpDefinition().setOperand(varAddr);
+        compiler.addInstruction(new STORE(gpReg, varAddr));
+        rM.freeReg(gpReg);
+        sM.incrGbVarCpt();
         // Done
     }
 

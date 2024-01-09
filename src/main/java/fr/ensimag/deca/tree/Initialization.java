@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -43,6 +44,11 @@ public class Initialization extends AbstractInitialization {
     protected void codeGenInit(DecacCompiler compiler) {
         expression.codeGenInst(compiler);
         // Done
+    }
+
+    @Override
+    public AbstractExpr getExpr() {
+        return expression;
     }
 
     @Override

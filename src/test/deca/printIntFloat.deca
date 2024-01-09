@@ -1,8 +1,0 @@
-/*
-Test d'affichage de Int et Float.
-*/
-
-{
-    println("Chaine de Int : ", 1, " ", 2, " ", 42, " ", -1, " ", 0, " ", -42);
-    println("Chaine de Float : ", 1.22, " ", -42.424242, " ", 0.000, "3.1416", " ", -2.78);
-}

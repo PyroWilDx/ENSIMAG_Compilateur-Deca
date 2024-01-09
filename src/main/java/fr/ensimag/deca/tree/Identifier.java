@@ -1,15 +1,19 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegUtils;
+import fr.ensimag.deca.codegen.CondManager;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -19,7 +23,7 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2024
  */
 public class Identifier extends AbstractIdentifier {
-    
+
     @Override
     protected void checkDecoration() {
         if (getDefinition() == null) {
@@ -35,12 +39,11 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * ClassDefinition.
-     * 
+     * <p>
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *             if the definition is not a class definition.
+     *
+     * @throws DecacInternalError if the definition is not a class definition.
      */
     @Override
     public ClassDefinition getClassDefinition() {
@@ -57,12 +60,11 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * MethodDefinition.
-     * 
+     * <p>
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *             if the definition is not a method definition.
+     *
+     * @throws DecacInternalError if the definition is not a method definition.
      */
     @Override
     public MethodDefinition getMethodDefinition() {
@@ -79,12 +81,11 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * FieldDefinition.
-     * 
+     * <p>
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *
+     * @throws DecacInternalError if the definition is not a field definition.
      */
     @Override
     public FieldDefinition getFieldDefinition() {
@@ -101,12 +102,11 @@ public class Identifier extends AbstractIdentifier {
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * VariableDefinition.
-     * 
+     * <p>
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *
+     * @throws DecacInternalError if the definition is not a field definition.
      */
     @Override
     public VariableDefinition getVariableDefinition() {
@@ -122,12 +122,11 @@ public class Identifier extends AbstractIdentifier {
 
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a ExpDefinition.
-     * 
+     * <p>
      * This method essentially performs a cast, but throws an explicit exception
      * when the cast fails.
-     * 
-     * @throws DecacInternalError
-     *             if the definition is not a field definition.
+     *
+     * @throws DecacInternalError if the definition is not a field definition.
      */
     @Override
     public ExpDefinition getExpDefinition() {
@@ -148,6 +147,29 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    public MethodIdentNonTerminalReturn verifyMethodIdent(EnvironmentExp localEnv) throws ContextualError {
+        ExpDefinition def = this.verifyIdentifier(localEnv);
+        MethodDefinition methodDef = def.asMethodDefinition(this.getName() +
+                "is not a method identifier.", getLocation());
+        Signature sig = methodDef.getSignature();
+        Type type = methodDef.getType();
+        return new MethodIdentNonTerminalReturn(sig, type);
+        // Done
+    }
+
+    @Override
+    public FieldIdentNonTerminalReturn verifyFieldIdent(EnvironmentExp localEnv) throws ContextualError {
+        ExpDefinition def = this.verifyIdentifier(localEnv);
+        FieldDefinition fieldDefinition = def.asFieldDefinition("'" +
+                this.name + "' must be a field.", getLocation());
+        Visibility visib = fieldDefinition.getVisibility();
+        ClassDefinition classDefinition  = fieldDefinition.getContainingClass();
+        Type type = fieldDefinition.getType();
+        return new FieldIdentNonTerminalReturn(visib, classDefinition, type);
+        // Done
+    }
+
+    @Override
     public Symbol getName() {
         return name;
     }
@@ -161,7 +183,7 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+                           ClassDefinition currentClass) throws ContextualError {
         Definition def = localEnv.get(this.name);
         if (def == null) {
             throw new ContextualError("Undiclared identifier : "
@@ -174,20 +196,42 @@ public class Identifier extends AbstractIdentifier {
 
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
+     *
      * @param compiler contains "env_types" attribute
      */
     @Override
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         TypeDefinition typeDef = compiler.environmentType.defOfType(this.name);
-        setDefinition(typeDef);
         if (typeDef == null) {
             throw new ContextualError("Undeclared type identifier : "
                     + this.name.toString(), this.getLocation());
         }
+        setDefinition(typeDef);
         return typeDef.getType();
         // Done
     }
-    
+
+    @Override
+    public ExpDefinition verifyIdentifier(EnvironmentExp localEnv) throws ContextualError {
+        ExpDefinition def = localEnv.get(this.getName());
+        if (def == null) {
+            throw new ContextualError("Undeclared identifier", getLocation());
+        }
+        this.setDefinition(def);
+        return def;
+        // Done
+    }
+
+    @Override
+    public Type verifyLValueIdent(EnvironmentExp localEnv) throws ContextualError {
+        ExpDefinition def = this.verifyIdentifier(localEnv);
+        if (!(def.isField() || def.isParam() || def.isVariable())) {
+            throw new ContextualError("'" + this.name +
+                    "' must be a field, a parameter or a variable, but it is a " + def.getNature() + ".", getLocation());
+        }
+        return def.getType();
+    }
+
     private Definition definition;
 
     @Override
@@ -202,9 +246,36 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = RegUtils.getFreeReg();
-        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), reg));
-        RegUtils.freeReg(reg);
+        RegManager rM = compiler.getRegManager();
+        CondManager cM = compiler.getCondManager();
+
+        GPRegister gpReg = rM.getFreeReg();
+        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), gpReg));
+
+        if (cM.isInCond() && !cM.isDoingOpCmp()) {
+            compiler.addInstruction(new CMP(0, gpReg));
+            Instruction bInst;
+            Label tLabel = cM.getCurrCondTrueLabel();
+            Label fLabel = cM.getCurrCondFalseLabel();
+            if (cM.isInAnd()) {
+                if (inNot) bInst = new BNE(fLabel);
+                else bInst = new BEQ(fLabel);
+            } else if (cM.isInOr()) {
+                if (inNot) bInst = new BEQ(tLabel);
+                else bInst = new BNE(tLabel);
+            } else {
+                if (inNot) bInst = new BNE(fLabel);
+                else bInst = new BEQ(fLabel);
+            }
+            compiler.addInstruction(bInst);
+        } else if (getExpDefinition().getType().isBoolean()) {
+            if (inNot) {
+                compiler.addInstruction(new CMP(0, gpReg));
+                compiler.addInstruction(new SEQ(gpReg));
+            }
+        }
+
+        rM.freeReg(gpReg);
         // Done
     }
 
@@ -233,6 +304,6 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyLValue(DecacCompiler compiler,
                              EnvironmentExp localEnv,
                              ClassDefinition currentClass) throws ContextualError {
-        return this.verifyExpr(compiler, localEnv, currentClass);
+        return this.verifyLValueIdent(localEnv);
     }
 }

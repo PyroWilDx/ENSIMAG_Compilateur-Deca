@@ -1,7 +1,6 @@
 package fr.ensimag.deca.context;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
-import fr.ensimag.deca.tree.Location;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,13 +34,15 @@ public class EnvironmentExp {
         this.parentEnvironment = parentEnvironment;
         this.env = new HashMap<>();
     }
-    public boolean disjointUnion(EnvironmentExp envExp) {
+    public Symbol disjointUnion(EnvironmentExp envExp) {
+        // if the union isn't disjoint, returns the symbol occuring twice
         for (Symbol s1 : envExp.getKeys()) {
-            if (this.get(s1) != null) return false;
+            if (this.get(s1) != null) return s1;
             ExpDefinition def = envExp.env.get(s1);
             this.env.put(s1, def);
         }
-        return true;
+
+        return null;
     }
 
     public void setEnv(HashMap<Symbol, ExpDefinition> env) {
@@ -101,10 +102,10 @@ public class EnvironmentExp {
      *             if the symbol is already defined at the "current" dictionary
      *
      */
-    public void declare(Symbol name, ExpDefinition def) throws DoubleDefException {
-        if (env.containsKey(name)) {
-            throw new DoubleDefException();
-        }
+    public void declare(Symbol name, ExpDefinition def) {//throws DoubleDefException {
+        //if (env.containsKey(name)) {
+        //    throw new DoubleDefException();
+        //}
         env.put(name, def);
         // Done
     }

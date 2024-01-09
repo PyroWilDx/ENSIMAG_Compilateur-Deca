@@ -1,0 +1,7 @@
+/*
+Test de la Division par 0
+*/
+
+{
+    println(1 / 0);
+}

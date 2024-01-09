@@ -1,14 +1,13 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegUtils;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 
 import java.io.PrintStream;
 
@@ -18,7 +17,7 @@ import java.io.PrintStream;
  * @author gl47
  * @date 01/01/2024
  */
-public class IntLiteral extends AbstractExpr {
+public class IntLiteral extends AbstractLiteral {
     public int getValue() {
         return value;
     }
@@ -31,7 +30,7 @@ public class IntLiteral extends AbstractExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
-            ClassDefinition currentClass) throws ContextualError {
+                           ClassDefinition currentClass) throws ContextualError {
         Type exprType = compiler.environmentType.INT;
         setType(exprType);
         return exprType;
@@ -45,9 +44,9 @@ public class IntLiteral extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        GPRegister reg = RegUtils.getFreeReg(); // Shouldn't be NULL
-        compiler.addInstruction(new LOAD(value, reg));
-        RegUtils.freeReg(reg);
+        RegManager rM = compiler.getRegManager();
+
+        rM.setLastImm(new ImmediateInteger(value));
         // Done
     }
 

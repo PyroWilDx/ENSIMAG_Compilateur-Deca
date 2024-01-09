@@ -26,11 +26,11 @@ public class DecacMain {
             System.exit(1);
         }
         if (options.getPrintBanner()) {
-            throw new UnsupportedOperationException("decac -b not yet implemented");
+            System.out.println("== Banner : Gr10 / Gl47 ==");
         }
         if (options.getSourceFiles().isEmpty()) {
-            System.out.println("Usage : ./decac <Source File> -Options");
-            // TODO (Better Message)
+            System.out.println("Usage : ./decac -Option1 -Option2 ... -OptionN <Source File 1> <Source File 2> ... <Source File N>");
+            // Done
         }
         if (options.getParallel()) {
             ExecutorService executorService = Executors.newFixedThreadPool(options.getSourceFiles().size());
@@ -43,11 +43,11 @@ public class DecacMain {
             executorService.shutdown();
 
             try {
-                executorService.awaitTermination(10, TimeUnit.SECONDS);
+                boolean finished = executorService.awaitTermination(120, TimeUnit.SECONDS);
+                if (!finished) throw new InterruptedException();
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                error = true;
             }
-            // TODO (Test Parallèle)
         } else {
             for (File source : options.getSourceFiles()) {
                 DecacCompiler compiler = new DecacCompiler(options, source);

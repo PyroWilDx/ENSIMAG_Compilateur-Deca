@@ -1,0 +1,12 @@
+/*
+Test Modulo
+*/
+
+{
+    int x = 14;
+    int y = 3;
+    println(x % y);
+
+    y = 0;
+    println(x % y);
+}

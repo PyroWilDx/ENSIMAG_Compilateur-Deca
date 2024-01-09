@@ -1,12 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.SNE;
 
 /**
  *
@@ -20,8 +15,14 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
-    protected void codeGenOpUnary(DecacCompiler compiler, GPRegister reg) {
-        compiler.addInstruction(new SNE(reg));
+    protected void codeGenInst(DecacCompiler compiler) {
+        getOperand().inNot = !inNot;
+        getOperand().codeGenInst(compiler);
+    }
+
+    @Override
+    protected void codeGenOpUnary(DecacCompiler compiler, GPRegister gpReg) {
+        // Not Used
     }
 
     @Override

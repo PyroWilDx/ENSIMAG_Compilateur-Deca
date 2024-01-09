@@ -3,11 +3,10 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
-import fr.ensimag.deca.context.VoidType;
 import fr.ensimag.deca.tools.IndentPrintStream;
+
 import java.io.PrintStream;
 
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import org.apache.commons.lang.Validate;
 import org.apache.log4j.Logger;
 
@@ -17,11 +16,12 @@ import org.apache.log4j.Logger;
  */
 public class Main extends AbstractMain {
     private static final Logger LOG = Logger.getLogger(Main.class);
-    
-        private ListDeclVar declVariables;
-        private ListInst insts;
+
+    private ListDeclVar declVariables;
+    private ListInst insts;
+
     public Main(ListDeclVar declVariables,
-            ListInst insts) {
+                ListInst insts) {
         Validate.notNull(declVariables);
         Validate.notNull(insts);
         this.declVariables = declVariables;
@@ -52,7 +52,7 @@ public class Main extends AbstractMain {
         insts.codeGenListInst(compiler);
         // Done
     }
-    
+
     @Override
     public void decompile(IndentPrintStream s) {
         s.println("{");
@@ -68,7 +68,7 @@ public class Main extends AbstractMain {
         declVariables.iter(f);
         insts.iter(f);
     }
- 
+
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         declVariables.prettyPrint(s, prefix, false);

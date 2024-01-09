@@ -59,6 +59,9 @@ public abstract class Definition {
     public boolean isParam() {
         return false;
     }
+    public boolean isVariable() {
+        return false;
+    }
 
     /**
      * Return the same object, as type MethodDefinition, if possible. Throws

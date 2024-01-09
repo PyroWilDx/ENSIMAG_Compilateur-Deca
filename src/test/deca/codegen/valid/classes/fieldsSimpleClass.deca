@@ -1,0 +1,10 @@
+/*
+Test d'une classe avec seulement des attributs à initialisation simple
+*/
+
+class A {
+    int a;
+    int b = 1;
+    int c;
+    int d = 4;
+}

@@ -1,0 +1,10 @@
+/*
+Test de l'Option -v
+*/
+
+{
+    int x = 1;
+    println("-v"); // Ne devrait pas s'afficher
+    println(1 / 0); // Ne devrait pas s'exécuter, car c'est après l'étape de vérification
+    println(12.2 / 0.0); // Pareil
+}

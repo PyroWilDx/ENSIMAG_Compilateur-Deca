@@ -3,7 +3,6 @@ package fr.ensimag.deca.context;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.Location;
-import org.apache.commons.lang.Validate;
 
 /**
  * Type defined by a class.
@@ -66,7 +65,7 @@ public class ClassType extends Type {
         if (potentialSuperClass == definition.getSuperClass().getType()) return true;
 
         return definition.getSuperClass().getType().isSubClassOf(potentialSuperClass);
-        // TODO (Tester)
+        // Done
     }
 
 

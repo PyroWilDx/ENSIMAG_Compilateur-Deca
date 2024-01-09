@@ -1,0 +1,7 @@
+/*
+Test de l'Option -n
+*/
+
+{
+    println(1 / 0);
+}

@@ -3,9 +3,10 @@ package fr.ensimag.deca.context;
 import fr.ensimag.deca.DecacCompiler;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.AbstractIdentifier;
+import fr.ensimag.deca.tree.Identifier;
 import fr.ensimag.deca.tree.Location;
 
 // A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
@@ -18,7 +19,7 @@ import fr.ensimag.deca.tree.Location;
  */
 public class EnvironmentType {
     public EnvironmentType(DecacCompiler compiler) {
-        
+        this.compiler = compiler;
         envTypes = new HashMap<Symbol, TypeDefinition>();
         
         Symbol intSymb = compiler.createSymbol("int");
@@ -73,7 +74,7 @@ public class EnvironmentType {
         }
         // TODO finir ces machins pour le langage avec objets
     }
-
+    private final DecacCompiler compiler;
     private final Map<Symbol, TypeDefinition> envTypes;
     private final Map<KeyTypeUnaryOp, Type> typeUnaryOp;
     public Type getTypeUnaryOp(String op, Type type) {
@@ -93,11 +94,34 @@ public class EnvironmentType {
         if (!typeBinaryOp.containsKey(key)) return null;
         return typeBinaryOp.get(key);
     }
-
+    public TypeDefinition get(Symbol name) {
+        return envTypes.get(name);
+    }
+    public boolean declareClasse(AbstractIdentifier name, ClassDefinition superClass, Location location) {
+        if (envTypes.containsKey(name)) return false;
+        Symbol symb = name.getName();
+        ClassType type = new ClassType(symb);
+        TypeDefinition def = new ClassDefinition(type, location, superClass);
+        name.setDefinition(def);
+        envTypes.put(symb, def);
+        return true;
+    }
     public TypeDefinition defOfType(Symbol s) {
         return envTypes.get(s);
     }
 
+    public boolean subtype(Type type1, Type type2) {
+        if (type1.equals(type2)) return true;
+        if (type1.isClass()) {
+            ClassType classType = (ClassType) type1;
+            if (!type2.isClass()) return false;
+            ClassType classType2 = (ClassType) type2;
+            return classType.isSubClassOf(classType2);
+        }
+        if (type1 == null && type2.isClass()) return true;
+        return false;
+        // TODO pas sur sur mais ça a l'air bien.
+    }
     public boolean assignCompatible(Type type1, Type type2) {
         //TODO remplir tout ça pour la deuxieme condition possible (si subtype(env, T2, T1) peut être avec un dictionnaire de compatibilités...........
         return type1 == type2 || type1 == FLOAT && type2 == INT;

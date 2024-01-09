@@ -1,0 +1,8 @@
+/*
+Test Simple de Déclarations de Variables
+*/
+{
+    int x = 1;
+    int y = 2;
+    println("x = ", x, " | y = ", y);
+}

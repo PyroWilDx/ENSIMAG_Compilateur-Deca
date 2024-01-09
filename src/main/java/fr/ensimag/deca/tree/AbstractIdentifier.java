@@ -1,15 +1,7 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.context.ClassType;
+import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.context.ClassDefinition;
-import fr.ensimag.deca.context.ContextualError;
-import fr.ensimag.deca.context.Definition;
-import fr.ensimag.deca.context.FieldDefinition;
-import fr.ensimag.deca.context.MethodDefinition;
-import fr.ensimag.deca.context.ExpDefinition;
-import fr.ensimag.deca.context.VariableDefinition;
 import fr.ensimag.deca.tools.SymbolTable;
 
 /**
@@ -84,7 +76,11 @@ public abstract class AbstractIdentifier extends AbstractLValue {
 
     public abstract void setDefinition(Definition definition);
 
+    public abstract MethodIdentNonTerminalReturn verifyMethodIdent(EnvironmentExp localEnv) throws ContextualError;
+    // Done
 
+    public abstract FieldIdentNonTerminalReturn verifyFieldIdent(EnvironmentExp localEnv) throws ContextualError;
+    // Done
 
     /**
      * Implements non-terminal "type" of [SyntaxeContextuelle] in the 3 passes
@@ -94,4 +90,9 @@ public abstract class AbstractIdentifier extends AbstractLValue {
      */
     public abstract Type verifyType(DecacCompiler compiler) throws ContextualError;
     // Done
+
+    public abstract ExpDefinition verifyIdentifier(EnvironmentExp localEnv) throws ContextualError;
+    // Done
+
+    public abstract Type verifyLValueIdent(EnvironmentExp localEnv) throws ContextualError;
 }

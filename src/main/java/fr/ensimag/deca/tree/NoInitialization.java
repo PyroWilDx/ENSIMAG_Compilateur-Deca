@@ -1,14 +1,12 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.DeclVarUtils;
-import fr.ensimag.deca.codegen.RegUtils;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
@@ -25,19 +23,27 @@ public class NoInitialization extends AbstractInitialization {
 
     @Override
     protected void verifyInitialization(DecacCompiler compiler, Type t,
-            EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+                                        EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         // nothing
+        // Done
     }
 
     protected void codeGenInit(DecacCompiler compiler) {
-        GPRegister reg = RegUtils.getFreeReg();
-        if (DeclVarUtils.currDeclVarType.isFloat()) {
-            compiler.addInstruction(new LOAD(0.f, reg));
+        RegManager rM = compiler.getRegManager();
+
+        GPRegister gpReg = rM.getFreeReg();
+        if (getVarType().isFloat()) {
+            compiler.addInstruction(new LOAD(0.f, gpReg));
         } else {
-            compiler.addInstruction(new LOAD(0, reg));
+            compiler.addInstruction(new LOAD(0, gpReg));
         }
-        RegUtils.freeReg(reg);
+        rM.freeReg(gpReg);
         // Done
+    }
+
+    @Override
+    public AbstractExpr getExpr() {
+        return null;
     }
 
     /**

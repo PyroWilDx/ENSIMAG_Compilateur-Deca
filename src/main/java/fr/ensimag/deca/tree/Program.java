@@ -2,8 +2,11 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ErrorUtils;
+import fr.ensimag.deca.codegen.StackManager;
+import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
@@ -41,34 +44,72 @@ public class Program extends AbstractProgram {
     @Override
     public void verifyProgram(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify program: start");
-//        getClasses().verifyListClass(compiler);
-//        getClasses().verifyListClassMembers(compiler);
-//        getClasses().verifyListClassBody(compiler);
-        getMain().verifyMain(compiler);
+        classes.verifyListClass(compiler);
+        classes.verifyListClassMembers(compiler);
+        classes.verifyListClassBody(compiler);
+        main.verifyMain(compiler);
         LOG.debug("verify program: end");
         // TODO (Avec Objet -> Enlever Comm)
     }
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+        StackManager sM = compiler.getStackManager();
+        VTableManager vTM = compiler.getVTableManager();
+
+        compiler.addComment("VTable of Object");
+        DAddr nAddr = sM.getGbOffsetAddr();
+        vTM.addClass("Object", nAddr);
+        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, nAddr));
+        sM.incrVTableCpt();
+
+        DAddr eAddr = sM.getGbOffsetAddr();
+        vTM.addMethodToClass("Object", "equals", eAddr);
+        Label eLabel = new Label("code.Object.equals");
+        compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
+        compiler.addInstruction(new STORE(Register.R0, eAddr));
+        sM.incrVTableCpt();
+
+        classes.codeGenVTable(compiler);
+
         compiler.addComment("Start of Main Program");
         compiler.addComment("Main Program");
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
         compiler.addComment("End of Main Program");
 
+        compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
+        compiler.addInstruction(1, new BOV(ErrorUtils.stackOverflowLabel));
+        compiler.addInstruction(2, new ADDSP(sM.getAddSp()));
+
+        compiler.addComment("");
+        compiler.addComment("Class Object");
+        compiler.addLabel(eLabel);
+        // TODO (méthode equals de object)
+
+        classes.codeGenListDeclClass(compiler);
+
         compiler.addComment("");
 
         compiler.addComment("Start of Error Labels");
+        ErrorUtils.codeGenError(compiler,
+                "Error: Stack Overflow",
+                ErrorUtils.stackOverflowLabel);
+        ErrorUtils.codeGenError(compiler,
+                "Error: Head Overflow",
+                ErrorUtils.heapOverflowLabel);
         ErrorUtils.codeGenError(compiler,
                 "Error: Division by 0",
                 ErrorUtils.divBy0Label);
         ErrorUtils.codeGenError(compiler,
                 "Error: Input/Output Error",
                 ErrorUtils.ioErrLabel);
+        ErrorUtils.codeGenError(compiler,
+                "Error: Dereferencing Null Pointer",
+                ErrorUtils.nullPointerLabel);
         compiler.addComment("End of Error Labels");
-
-        // TODO (Avec Object)
+        // Done
     }
 
     @Override

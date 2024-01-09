@@ -1,10 +1,8 @@
 package fr.ensimag.deca.tree;
 
 
-import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.MUL;
+import fr.ensimag.deca.codegen.CondManager;
+import fr.ensimag.ima.pseudocode.Label;
 
 /**
  * @author gl47
@@ -17,10 +15,28 @@ public class And extends AbstractOpBool {
     }
 
     @Override
-    protected void codeGenOpBool(DecacCompiler compiler,
-                                 DVal valReg, GPRegister saveReg) {
-        compiler.addInstruction(new MUL(valReg, saveReg));
-        // Done
+    protected void addOperation(CondManager cM) {
+        cM.addAndOperation();
+    }
+
+    @Override
+    protected void addCondLabels(CondManager cM) {
+        cM.addCondLabels(getEndLazyCondLabel(), getLazyCondLabel());
+    }
+
+    @Override
+    protected int getNotLazyValue() {
+        return (inNot) ? 0 : 1;
+    }
+
+    @Override
+    protected int getLazyValue() {
+        return (inNot) ? 1 : 0;
+    }
+
+    @Override
+    protected Label getLastCondLabel(CondManager cM) {
+        return cM.getLastCondTrueLabel();
     }
 
     @Override

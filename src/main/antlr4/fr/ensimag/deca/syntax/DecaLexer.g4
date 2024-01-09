@@ -70,7 +70,7 @@ PRINTLNX : 'printlnx';
 CLASS : 'class';
 EXTENDS : 'extends';
 PROTECTED : 'protected';
-
+ASM : 'asm';
 
 COMMENT : ('//'.*? '\n'|'/*' .*? '*/') {skip();};
 
@@ -96,12 +96,8 @@ DIGITHEX : DIGIT | ('A'..'F') | ('a'..'f');
 NUMHEX : DIGITHEX+;
 FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') ('+' | '-')? NUM ('F' | 'f')?;
 
-ASM : 'asm';
 
 RTL : '\n' {skip();};
 TAB : '\t' {skip();};
 SPACE : ' ' {skip();};
 STRING_CAR : ~ ('"' | '\\' | '\n');
-
-
-DUMMY_TOKEN: .;

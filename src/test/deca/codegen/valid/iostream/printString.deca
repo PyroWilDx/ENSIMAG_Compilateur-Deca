@@ -1,0 +1,18 @@
+/*
+Test d'Affichage d'un String
+*/
+
+{
+// Commentaire
+/* Commentaire
+    Commentaire
+*/
+/*
+    print("Salut
+*/
+
+    println("Hello World !", " Second Argument");
+    println("Second Println");
+    print("Print Normal 1, ");
+    print("Print Normal 2");
+}

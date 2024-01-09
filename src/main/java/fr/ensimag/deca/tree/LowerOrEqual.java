@@ -1,12 +1,15 @@
 package fr.ensimag.deca.tree;
 
 
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Instruction;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BGT;
+import fr.ensimag.ima.pseudocode.instructions.BLE;
+import fr.ensimag.ima.pseudocode.instructions.SGT;
 import fr.ensimag.ima.pseudocode.instructions.SLE;
 
 /**
- *
  * @author gl47
  * @date 01/01/2024
  */
@@ -16,8 +19,23 @@ public class LowerOrEqual extends AbstractOpIneq {
     }
 
     @Override
-    protected void codeGenOpCmp(DecacCompiler compiler, GPRegister reg) {
-        compiler.addInstruction(new SLE(reg));
+    protected Instruction getBranchInvOpCmpInst(Label bLabel) {
+        return new BGT(bLabel);
+    }
+
+    @Override
+    protected Instruction getBranchOpCmpInst(Label bLabel) {
+        return new BLE(bLabel);
+    }
+
+    @Override
+    protected Instruction getOpCmpInst(GPRegister gpReg) {
+        return new SLE(gpReg);
+    }
+
+    @Override
+    protected Instruction getInvOpCmpInst(GPRegister gpReg) {
+        return new SGT(gpReg);
     }
 
     @Override

@@ -23,5 +23,29 @@ public class Signature {
     public int size() {
         return args.size();
     }
+    public Signature() {
+        super();
+    }
+    public Signature(List<Type> args) {
+        this();
+        this.args = args;
+    }
+    public Signature copyWithoutFirst() {
+        List<Type> newArgs = args.subList(1, args.size() - 1);
+        return new Signature(newArgs);
+    }
+    public Type getFirst() {
+        if (args.isEmpty()) return null;
+        return args.get(0);
+    }
+    public boolean isEmpty() {
+        return args.isEmpty();
+    }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (! (obj instanceof Signature)) return false;
+        Signature sig2 = (Signature) obj;
+        return this.args.equals(sig2.args);
+    }
 }

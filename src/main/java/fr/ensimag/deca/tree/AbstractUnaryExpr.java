@@ -2,7 +2,7 @@ package fr.ensimag.deca.tree;
 
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.RegUtils;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -12,7 +12,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.SUB;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -53,14 +52,16 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+
         getOperand().codeGenInst(compiler);
-        GPRegister reg = RegUtils.takeBackLastReg();
-        codeGenOpUnary(compiler, reg);
-        RegUtils.freeReg(reg);
-        // TODO (Not Enough Registers)
+        GPRegister gpReg = rM.getLastRegOrImm(compiler);
+        codeGenOpUnary(compiler, gpReg);
+        rM.freeReg(gpReg);
+        // Done
     }
 
-    protected abstract void codeGenOpUnary(DecacCompiler compiler, GPRegister reg);
+    protected abstract void codeGenOpUnary(DecacCompiler compiler, GPRegister gpReg);
 
     @Override
     public void decompile(IndentPrintStream s) {

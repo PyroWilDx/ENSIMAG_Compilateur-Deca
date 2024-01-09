@@ -1,10 +1,11 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegUtils;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 
 import java.io.PrintStream;
@@ -69,6 +70,7 @@ public abstract class AbstractExpr extends AbstractInst {
      */
     public abstract Type verifyExpr(DecacCompiler compiler,
                                     EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
+    // Done
 
     /**
      * Verify the expression in right hand-side of (implicit) assignments
@@ -139,19 +141,28 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param compiler
      */
     protected void codeGenPrint(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+
         codeGenInst(compiler);
-        GPRegister reg = RegUtils.takeBackLastReg();
-        compiler.addInstruction(new LOAD(reg, Register.R1));
-        RegUtils.freeReg(reg);
+        DVal lastImm = rM.getLastImm();
+        if (lastImm == null) {
+            GPRegister gpReg = rM.getLastReg();
+            compiler.addInstruction(new LOAD(gpReg, Register.R1));
+            rM.freeReg(gpReg);
+        } else {
+            compiler.addInstruction(new LOAD(lastImm, Register.R1));
+        }
 
         if (getType().isInt()) {
             compiler.addInstruction(new WINT());
         } else if (getType().isFloat()) {
-            if (!getPrintHex()) compiler.addInstruction(new WFLOAT());
+            if (!printHex) compiler.addInstruction(new WFLOAT());
             else compiler.addInstruction(new WFLOATX());
         }
         // Done
     }
+
+    protected boolean inNot = false;
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
@@ -179,7 +190,4 @@ public abstract class AbstractExpr extends AbstractInst {
         printHex = value;
     }
 
-    public boolean getPrintHex() {
-        return printHex;
-    }
 }
