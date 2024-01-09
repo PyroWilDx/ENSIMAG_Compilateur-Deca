@@ -4,7 +4,7 @@ import fr.ensimag.deca.tree.Location;
 
 /**
  * Definition of an identifier.
- * 
+ *
  * @author gl47
  * @date 01/01/2024
  */
@@ -44,10 +44,11 @@ public abstract class Definition {
 
     private Location location;
     private Type type;
+
     public boolean isField() {
         return false;
     }
-    
+
     public boolean isMethod() {
         return false;
     }
@@ -59,6 +60,7 @@ public abstract class Definition {
     public boolean isParam() {
         return false;
     }
+
     public boolean isVariable() {
         return false;
     }
@@ -71,7 +73,7 @@ public abstract class Definition {
             throws ContextualError {
         throw new ContextualError(errorMessage, l);
     }
-    
+
     /**
      * Return the same object, as type FieldDefinition, if possible. Throws
      * ContextualError(errorMessage, l) otherwise.
@@ -79,6 +81,14 @@ public abstract class Definition {
     public FieldDefinition asFieldDefinition(String errorMessage, Location l)
             throws ContextualError {
         throw new ContextualError(errorMessage, l);
+    }
+
+    /**
+     * Return the same object, as type ClassDefinition, if possible. Throws
+     * ContextualError(errorMessage, l) otherwise.
+     */
+    public ClassDefinition asClassDefinition(String message, Location location) throws ContextualError {
+        throw new ContextualError(message, location);
     }
 
     public abstract boolean isExpression();

@@ -26,13 +26,16 @@ public class FieldSelection extends AbstractLValue {
 
     @Override
     public Type verifyLValue(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        Type expressiontype = this.expr.verifyExpr(compiler, localEnv, currentClass);
 
+        Type expressiontype = this.expr.verifyExpr(compiler, localEnv, currentClass);
         TypeDefinition exprTypeDef = compiler.environmentType.get(expressiontype.getName());
         ClassDefinition exprClassDef = exprTypeDef.asClassDefinition("Expression type must be a class.", getLocation());
+
         if (!expressiontype.isClass()) {
-            throw new DecacInternalError("class and not class, problem");
+            throw new DecacInternalError("Expression has a non-class type but Environment contains a class " +
+                    "definition for that type.");
         }
+
         EnvironmentExp exprClassEnv = exprClassDef.getMembers();
 
         FieldIdentNonTerminalReturn fieldIdentResult = this.fieldIdent.verifyFieldIdent(exprClassEnv);
@@ -80,6 +83,9 @@ public class FieldSelection extends AbstractLValue {
     @Override
     public void decompile(IndentPrintStream s) {
         // TODO
+        s.print(expr.decompile());
+        s.print(".");
+        s.print(fieldIdent.decompile());
         throw new UnsupportedOperationException("Not yet implemented");
     }
 

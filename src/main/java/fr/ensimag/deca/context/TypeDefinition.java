@@ -13,9 +13,6 @@ public class TypeDefinition extends Definition {
     public TypeDefinition(Type type, Location location) {
         super(type, location);
     }
-    public ClassDefinition asClassDefinition(String message, Location location) throws ContextualError {
-        throw new ContextualError(message, location);
-    }
     @Override
     public String getNature() {
         return "type";
