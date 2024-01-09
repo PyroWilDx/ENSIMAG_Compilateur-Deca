@@ -1,6 +1,10 @@
-/*
-Test de l'Option -b
-*/
+// Description :
+//    Test de l'option -b
+//
+// Resultats :
+//    !! SI EXECUTION AVEC L'OPTION -b !!
+//    Le compilateur affiche la bannière de l'équipe : == Banner : Gr10 / Gl47 ==
+//    L'exécution affiche : Bonjour
 
 {
     println("Bonjour");

@@ -71,7 +71,7 @@ public class DeclVar extends AbstractDeclVar {
         RegManager rM = compiler.getRegManager();
         StackManager sM = compiler.getStackManager();
 
-        initialization.setVarType(type.getType());
+//        initialization.setVarType(type.getType()); // No Init
         initialization.codeGenInit(compiler);
 
         GPRegister gpReg = rM.getLastRegOrImm(compiler);

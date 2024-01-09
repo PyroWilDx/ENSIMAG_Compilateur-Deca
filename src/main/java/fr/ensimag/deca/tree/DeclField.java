@@ -77,7 +77,9 @@ public class DeclField extends AbstractDeclField {
                 new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         compiler.addInstruction(
                 new STORE(regValue, new RegisterOffset(varOffset, Register.R1)));
-        rM.freeReg(regValue);
+        if (regValue != Register.R0) {
+            rM.freeReg(regValue);
+        }
         // Done
     }
 

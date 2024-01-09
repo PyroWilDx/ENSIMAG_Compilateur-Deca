@@ -1,0 +1,18 @@
+/*
+Test de Déclarations de Variables (Sans Initialisation)
+*/
+
+// Description :
+//    Test de déclarations de variables sans les initialiser
+//
+// Resultats :
+//    ** IMA ** ERREUR ** Ligne 18 :
+//    WINT avec R1 indefini
+
+{
+    int z;
+    int a;
+    float b;
+
+    print(z, a, b);
+}

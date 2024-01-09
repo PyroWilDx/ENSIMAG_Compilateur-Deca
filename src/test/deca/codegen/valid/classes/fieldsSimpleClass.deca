@@ -1,6 +1,8 @@
-/*
-Test d'une classe avec seulement des attributs à initialisation simple
-*/
+// Description :
+//    Test d'une classe avec des attributs à initialisation simple
+//
+// Resultats :
+//    Ne doit rien afficher
 
 class A {
     int a;

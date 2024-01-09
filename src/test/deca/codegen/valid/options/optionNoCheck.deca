@@ -1,6 +1,9 @@
-/*
-Test de l'Option -n
-*/
+// Description :
+//    Test de l'option -n
+//
+// Resultats :
+//    !! SI EXECUTION AVEC L'OPTION -n !!
+//    Ne doit rien afficher
 
 {
     println(1 / 0);

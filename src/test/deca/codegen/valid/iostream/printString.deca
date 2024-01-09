@@ -1,6 +1,10 @@
-/*
-Test d'Affichage d'un String
-*/
+// Description :
+//    Test d'affichage d'un string
+//
+// Resultats :
+//    Hello World ! Second Argument
+//    Second Println
+//    Print Normal 1, Println Normal 2
 
 {
 // Commentaire
@@ -14,5 +18,5 @@ Test d'Affichage d'un String
     println("Hello World !", " Second Argument");
     println("Second Println");
     print("Print Normal 1, ");
-    print("Print Normal 2");
+    println("Println Normal 2");
 }

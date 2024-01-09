@@ -1,6 +1,8 @@
-/*
-Test While Simple
-*/
+// Description :
+//    Test de while simple
+//
+// Resultats :
+//    0123456789
 
 {
     int i;
@@ -14,5 +16,4 @@ Test While Simple
         print(i);
         i = i + 1;
     }
-    // Should Print 0123456789
 }

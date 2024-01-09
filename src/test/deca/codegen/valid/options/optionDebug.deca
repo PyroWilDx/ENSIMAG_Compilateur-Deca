@@ -1,6 +1,13 @@
 /*
 Test de l'Option -d
 */
+// Description :
+//    Test de l'option -d
+//
+// Resultats :
+//    !! SI EXECUTION AVEC L'OPTION -d !!
+//    Le compilateur affiche toutes les traces de debug
+//    L'exécution affiche : z = 6
 
 {
     int x = 1;
@@ -9,7 +16,4 @@ Test de l'Option -d
 
     z = x * y + x + x + y;
     println("z = ", z);
-
-    z = 3.14;
-    printlnx("z = ", z);
 }

@@ -1,3 +1,10 @@
+// Description :
+//    Test d'une classe avec des attributs où l'initialisation nécéssite
+//    d'autres registres que R0 et R1
+//
+// Resultats :
+//    Ne doit rien afficher
+
 /*
 Test d'une classe avec seulement des attributs où
 l'initialisation nécéssite d'autres registres que R0 et R1

@@ -1,6 +1,9 @@
-/*
-Test de Plusieurs Déclarations de Variables
-*/
+// Description :
+//    Test de plusieurs déclarations de variables
+//
+// Resultats :
+//    x = 1
+//    y = 42 | z = 3.14160e+00
 
 {
     int x = 1;

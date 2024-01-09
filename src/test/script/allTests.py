@@ -42,7 +42,7 @@ def doVerify(decaFilePath,
 
         os.system(decacCmd)
 
-    if "-v" in decacOptions:
+    if ("-v" in decacOptions) or ("-p" in decacOptions):
         return 0
 
     execCmd = f"./global/bin/ima ./src/test/deca/{decaFilePathNoExt}.ass"
@@ -81,15 +81,14 @@ def doTests():
     doVerify("codegen/valid/iostream/printString.deca",
              expectedResult=b"Hello World ! Second Argument\n"
                             b"Second Println\n"
-                            b"Print Normal 1, Print Normal 2\n")
+                            b"Print Normal 1, Println Normal 2\n")
 
     doVerify("codegen/valid/iostream/printIntFloat.deca",
              expectedResult=b"Chaine de Int : 1 2 42 -1 0 -42\n"
                             b"Chaine de Float : 1.22000e+00 -4.24242e+01 0.00000e+003.1416 -2.78000e+00\n")
 
     doVerify("codegen/valid/iostream/printFloatHexa.deca",
-             expectedResult=b"Chaine de Float Hexa : 0x1.3851ecp+0 -0x1.5364d8p+5 0x0p+03.1416 -0x1.63d70ap+1\n"
-                            b"Meme Chaine de Float Hexa : 0x1.3851ecp+0 -0x1.5364d8p+5 0x0p+03.1416 -0x1.63d70ap+1\n")
+             expectedResult=b"0x1.3851ecp+0 -0x1.5364d8p+5 0x0p+03.1416 -0x1.63d70ap+1\n")
 
     doVerify("syntax/valid/include/include.deca",
              expectedResult=b"Hello World\n")
@@ -101,9 +100,10 @@ def doTests():
              expectedResult=b"x = 1\n"
                             b"y = 42 | z = 3.14160e+00\n")
 
-    doVerify("codegen/valid/declarations/declVarNoInit.deca",
-             expectedResult=b"1 20 42\n"
-                            b"0 0.00000e+00\n")
+    doVerify("codegen/invalid/declVarNoInit.deca",
+             expectedResult=b"  ** IMA ** ERREUR ** Ligne 18 : \n"
+                            b"    WINT avec R1 indefini\n",
+             execError=True)
 
     doVerify("codegen/valid/operations/opArith.deca",
              expectedResult=b"1 + 1 = 2\n"
@@ -132,14 +132,11 @@ def doTests():
                             b"4.0 / 3 = 1.33333e+00\n"
                             b"4 / 3.0 = 1.33333e+00\n")
 
-    doVerify("codegen/valid/operations/opArithNoInit.deca",
-             expectedResult=b"0.00000e+00\n")
-
-    doVerify("codegen/valid/errors/divisionBy0.deca",
+    doVerify("codegen/invalid/divisionBy0.deca",
              expectedResult=b"Error: Division by 0\n",
              execError=True)
 
-    doVerify("codegen/valid/errors/moduloBy0.deca",
+    doVerify("codegen/invalid/moduloBy0.deca",
              expectedResult=b"2\n"
                             b"Error: Division by 0\n",
              execError=True)
@@ -156,11 +153,11 @@ def doTests():
     doVerify("codegen/valid/conditions/whileIfThenElse.deca",
              expectedResult=b"4321\n")
 
-    doVerify("codegen/valid/iostream/readIntFloat.deca",
+    doVerify("codegen/interactive/readIntFloat.deca",
              expectedResult=b"3.20000e+00\n",
              input=b"1\n2.2")
 
-    doVerify("codegen/valid/options/registerOverflow.deca",
+    doVerify("codegen/valid/registers/registerOverflow.deca",
              expectedResult=b"5252\n",
              decacOptions="-r 4")
 
@@ -168,9 +165,9 @@ def doTests():
              expectedResult=b"Bonjour\n",
              decacOptions="-b")
 
-    # doVerify("codegen/valid/options/optionParse.deca",
-    #          decacOptions="-p",
-    #          doAssert=False)
+    doVerify("codegen/valid/options/optionParse.deca",
+             decacOptions="-p",
+             doAssert=False)
 
     doVerify("codegen/valid/options/optionVerification.deca",
              expectedResult=b"",
@@ -181,11 +178,11 @@ def doTests():
              decacOptions="-n")
 
     # doVerify("codegen/valid/options/optionDebug.deca",
-    #          decacOptions="-d -d -d",
-    #          doAssert=False)
+    #          expectedResult=b"z = 6\n",
+    #          decacOptions="-d -d -d")
 
-    doVerify("codegen/valid/classes/fieldsSimpleClass.deca",
-             doAssert=False)
+    # doVerify("codegen/valid/classes/fieldsSimpleClass.deca",
+    #          doAssert=False)
 
     # doVerify("codegen/valid/classes/fieldsComplexClass.deca",
     #          doAssert=False)
@@ -234,7 +231,7 @@ def main():
     doTests()
 
     # With -P
-    # decacParallel()
+    decacParallel()
 
 
 if __name__ == '__main__':

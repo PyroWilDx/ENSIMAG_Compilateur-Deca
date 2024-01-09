@@ -8,6 +8,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.NullOperand;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
@@ -29,13 +30,17 @@ public class NoInitialization extends AbstractInitialization {
     }
 
     protected void codeGenInit(DecacCompiler compiler) {
+        if (getVarType() == null) return;
+
         RegManager rM = compiler.getRegManager();
 
         GPRegister gpReg = rM.getFreeReg();
-        if (getVarType().isFloat()) {
+        if (getVarType().isInt() || getVarType().isBoolean()) {
+            compiler.addInstruction(new LOAD(0, gpReg));
+        } else if (getVarType().isFloat()) {
             compiler.addInstruction(new LOAD(0.f, gpReg));
         } else {
-            compiler.addInstruction(new LOAD(0, gpReg));
+            compiler.addInstruction(new LOAD(new NullOperand(), gpReg));
         }
         rM.freeReg(gpReg);
         // Done

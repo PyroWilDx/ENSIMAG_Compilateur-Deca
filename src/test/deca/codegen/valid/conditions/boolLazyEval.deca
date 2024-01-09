@@ -1,6 +1,8 @@
-/*
-Test pour l'évaluation paresseuses d'expressions booléennes
-*/
+// Description :
+//    Test pour l'évaluation paresseuses d'expressions booléennes (très) complexes
+//
+// Resultats :
+//    Ne doit rien afficher
 
 {
     int x = 4;

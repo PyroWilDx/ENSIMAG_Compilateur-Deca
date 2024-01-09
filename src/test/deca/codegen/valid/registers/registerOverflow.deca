@@ -1,6 +1,8 @@
-/*
-Test de s'il n'y a pas assez de Registre
-*/
+// Description :
+//    Test de s'il n'y a pas assez de registres
+//
+// Resultats :
+//    5252
 
 {
     int x = 1;

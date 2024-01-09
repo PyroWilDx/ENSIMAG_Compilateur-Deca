@@ -1,6 +1,8 @@
-/*
-Test de While et IfThenElse
-*/
+// Description :
+//    Test de if/else et while en même temps
+//
+// Resultats :
+//    4321
 
 {
     int i = 4;
