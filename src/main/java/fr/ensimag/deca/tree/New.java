@@ -65,7 +65,7 @@ public class New extends AbstractExpr {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // TODO
-        throw new UnsupportedOperationException("Not yet implemented");
+        type.prettyPrint(s, prefix, true);
     }
 
     @Override

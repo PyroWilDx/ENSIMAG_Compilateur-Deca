@@ -20,6 +20,11 @@ public class MethodCall extends AbstractMethodCall {
     private AbstractIdentifier methodIdent;
     private RValueStar rValueStar;
 
+    public MethodCall(AbstractExpr expr,AbstractIdentifier methodIdent,RValueStar rValueStar){
+        this.expr = expr;
+        this.methodIdent = methodIdent;
+        this.rValueStar = rValueStar;
+    }
     public Type verifyMethodCall(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         Type type = this.expr.verifyExpr(compiler, localEnv, currentClass);
         TypeDefinition definition = compiler.environmentType.get(type.getName());
@@ -97,13 +102,15 @@ public class MethodCall extends AbstractMethodCall {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO
-        throw new UnsupportedOperationException("Not yet implemented");
+        expr.prettyPrint(s, prefix, false);
+        methodIdent.prettyPrint(s, prefix, false);
+        rValueStar.prettyPrint(s,prefix,true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO
-        throw new UnsupportedOperationException("Not yet implemented");
+        expr.iter(f);
+        methodIdent.iter(f);
+        rValueStar.iter(f);
     }
 }

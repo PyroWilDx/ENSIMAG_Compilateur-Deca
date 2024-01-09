@@ -91,7 +91,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         }
     : i=ident {
         assert($i.tree != null);
-        setLocation($i.tree, $i.start);
+        //setLocation($i.tree, $i.start);
         $tree = new DeclVar($t, $i.tree, new NoInitialization());
         setLocation($tree, $i.start);
         }
@@ -100,7 +100,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
       Initialization init = new Initialization($e.tree);
       setLocation(init, $e.start);
       $tree = new DeclVar($t, $i.tree, init);
-      setLocation($tree, $i.start);
+     // setLocation($tree, $i.start);
         }
       )? {
         }
@@ -159,8 +159,9 @@ inst returns[AbstractInst tree]
         }
     | RETURN expr SEMI {
             assert($expr.tree != null);
-            $tree = $expr.tree ;
-            setLocation($tree, $expr.start);
+            $tree = new Return($expr.tree);
+            setLocation($tree, $RETURN);
+           // setLocation($tree, $expr.start);
         }
     ;
 
@@ -392,7 +393,8 @@ select_expr returns[AbstractExpr tree]
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert( $args.tree != null);
-            $tree = new MethodSelection($e1.tree,$i.tree,$args.tree);
+            RValueStar params = new RValueStar($args.tree);
+            $tree = new MethodCall($e1.tree,$i.tree,params);
             setLocation($tree, $e1.start);
             setLocation($tree, $i.start);
             setLocation($tree, $args.start);
@@ -431,7 +433,7 @@ primary_expr returns[AbstractExpr tree]
         }
     | NEW ident OPARENT CPARENT {
             assert($ident.tree != null);
-            $tree = $ident.tree ;
+            $tree = new New($ident.tree);
             setLocation($tree, $ident.start);
         }
     | cast=OPARENT type CPARENT OPARENT expr CPARENT {
@@ -479,6 +481,7 @@ literal returns[AbstractExpr tree]
 ident returns[AbstractIdentifier tree]
     : IDENT {
            $tree = new Identifier(this.getDecacCompiler().createSymbol($IDENT.text));
+           setLocation($tree,$IDENT);
         }
     ;
 
