@@ -51,8 +51,12 @@ public class DeclMethod extends AbstractDeclMethod {
 
         vTable.addMethod(methodName, mAddr);
 
+        String paramName;
+        int currParamOffset = -3;
         for (AbstractParam param : params.getList()) {
-            // TODO (param.setOperand ??)
+            paramName = param.getName().getName();
+            vTable.addParamToMethod(methodName, paramName, currParamOffset);
+            currParamOffset++;
         }
         // TODO (Merde comment on sait si c'est une méthode surchargée ou pas??)
         // Done

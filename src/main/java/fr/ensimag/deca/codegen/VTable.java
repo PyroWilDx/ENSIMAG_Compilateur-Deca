@@ -30,6 +30,11 @@ public class VTable {
         classMethods.put(methodName, new MethodInfo(mAddr));
     }
 
+    public void addParamToMethod(String methodName, String paramName,
+                                 int paramOffset) {
+        classMethods.get(methodName).addParam(paramName, paramOffset);
+    }
+
     public DAddr getMethodAddr(String methodName) {
         return classMethods.get(methodName).getMethodAddr();
     }
