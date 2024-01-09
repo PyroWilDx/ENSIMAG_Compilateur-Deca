@@ -44,6 +44,9 @@ public class EnvironmentType {
         Symbol objectSymb = compiler.createSymbol("object");
         OBJECT = new ClassType(objectSymb);
 
+        Symbol nullSymb = compiler.createSymbol("null");
+        NULL = new NullType(nullSymb);
+
         typeUnaryOp = new HashMap<>();
         typeUnaryOp.put(new KeyTypeUnaryOp("-", INT), INT);
         typeUnaryOp.put(new KeyTypeUnaryOp("-", FLOAT), FLOAT);
@@ -117,9 +120,8 @@ public class EnvironmentType {
             ClassType classType2 = (ClassType) type2;
             return classType.isSubClassOf(classType2);
         }
-        if (type1 == null && type2.isClass()) return true;
+        if (type1.equals(NULL) && type2.isClass()) return true;
         return false;
-        // TODO pas sur sur mais ça a l'air bien.
     }
     public boolean assignCompatible(DecacCompiler compiler, Type type1, Type type2) {
         return type1 == type2 || type1 == FLOAT && type2 == INT || compiler.environmentType.subtype(type1, type2);
@@ -131,4 +133,5 @@ public class EnvironmentType {
     public final StringType  STRING;
     public final BooleanType BOOLEAN;
     public final ClassType OBJECT;
+    public final NullType NULL;
 }
