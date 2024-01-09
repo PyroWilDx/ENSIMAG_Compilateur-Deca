@@ -64,15 +64,15 @@ public class MethodCall extends AbstractMethodCall {
                 new STORE(gpReg, new RegisterOffset(0, Register.SP)));
         rM.freeReg(gpReg);
 
-//        int currParamIndex = -1;
-//        for (AbstractInst inst : insts.getList()) {
-//            inst.codeGenInst(compiler);
-//            gpReg = rM.getLastReg();
-//            compiler.addInstruction(
-//                    new STORE(gpReg, new RegisterOffset(currParamIndex, Register.SP)));
-//            rM.freeReg(gpReg);
-//            currParamIndex--;
-//        } // TODO (où sont les paramètres ?)
+        int currParamIndex = -1;
+        for (AbstractExpr expr : rValueStar.getList()) {
+            expr.codeGenInst(compiler);
+            gpReg = rM.getLastReg();
+            compiler.addInstruction(
+                    new STORE(gpReg, new RegisterOffset(currParamIndex, Register.SP)));
+            rM.freeReg(gpReg);
+            currParamIndex--;
+        }
 
         gpReg = rM.getFreeReg();
 //        compiler.addInstruction(

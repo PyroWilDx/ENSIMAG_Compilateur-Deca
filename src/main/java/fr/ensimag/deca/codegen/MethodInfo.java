@@ -6,16 +6,28 @@ import java.util.HashMap;
 
 public class MethodInfo {
 
+    private final String className;
+    private final String methodName;
     private final DAddr methodAddr;
     private final HashMap<String, Integer> methodParams;
 
-    public MethodInfo(DAddr methodAddr) {
+    public MethodInfo(String className, String methodName, DAddr methodAddr) {
+        this.className = className;
+        this.methodName = methodName;
         this.methodAddr = methodAddr;
         this.methodParams = new HashMap<>();
     }
 
     public void addParam(String paramName, int paramOffset) {
         methodParams.put(paramName, paramOffset);
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public String getMethodName() {
+        return methodName;
     }
 
     public DAddr getMethodAddr() {
