@@ -1,13 +1,21 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.ErrorUtils;
+import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.BEQ;
+import fr.ensimag.ima.pseudocode.instructions.CMP;
 
 import java.io.PrintStream;
 
-public class FieldSelection extends AbstractLValue{
+public class FieldSelection extends AbstractLValue {
     private AbstractExpr expr;
     private AbstractIdentifier fieldIdent;
 
@@ -48,6 +56,24 @@ public class FieldSelection extends AbstractLValue{
             }
         }
         return type;
+        // Done
+    }
+
+    @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+        VTableManager vTM = compiler.getVTableManager();
+
+        expr.codeGenInst(compiler); // TODO (expr ne serait t-il pas un identifier ?)
+
+        GPRegister gpReg = rM.getLastReg();
+        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
+
+        int fieldOffset = vTM.getCurrOffsetOfField(fieldIdent.getName().getName());
+        fieldIdent.getExpDefinition().setOperand(
+                new RegisterOffset(fieldOffset, gpReg));
+        fieldIdent.codeGenInst(compiler);
         // Done
     }
 

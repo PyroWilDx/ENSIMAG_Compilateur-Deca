@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ErrorUtils;
 import fr.ensimag.deca.codegen.StackManager;
+import fr.ensimag.deca.codegen.VTable;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -59,13 +60,14 @@ public class Program extends AbstractProgram {
 
         compiler.addComment("VTable of Object");
         DAddr nAddr = sM.getGbOffsetAddr();
-        vTM.addClass("Object", nAddr);
+        VTable vT = new VTable("Object", nAddr);
+        vTM.addVTable("Object", vT);
         compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, nAddr));
         sM.incrVTableCpt();
 
         DAddr eAddr = sM.getGbOffsetAddr();
-        vTM.addMethodToClass("Object", "equals", eAddr);
+        vT.addMethod("equals", eAddr);
         Label eLabel = new Label("code.Object.equals");
         compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, eAddr));

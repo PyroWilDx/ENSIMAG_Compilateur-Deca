@@ -388,14 +388,15 @@ select_expr returns[AbstractExpr tree]
     | e1=select_expr DOT i=ident {
             assert( $e1.tree != null);
             assert( $i.tree != null);
-            //$tree = new Dot($e1.tree,$i.tree); //TODO
         }
         (o=OPARENT args=list_expr CPARENT {
             // we matched "e1.i(args)"
             assert( $args.tree != null);
-        }
-        | /* epsilon */ {
-            // we matched "e.i"
+            $tree = new MethodSelection($e1.tree,$i.tree,$args.tree);
+            setLocation($tree, $e1.start);
+            setLocation($tree, $i.start);
+            setLocation($tree, $args.start);
+            setLocation($tree, $i.start);
         }
         )
     ;
@@ -414,6 +415,7 @@ primary_expr returns[AbstractExpr tree]
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
             $tree = $expr.tree ;
+            setLocation($tree,$expr.start);
         }
     | READINT OPARENT CPARENT {
             $tree= new ReadInt();
@@ -504,6 +506,7 @@ class_decl returns[DeclClass tree]
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
         $tree = $ident.tree;
+        setLocation($tree,$ident.start);
         }
     | /* epsilon */ {
         $tree = new Identifier(this.getDecacCompiler().createSymbol("object"));

@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.deca.codegen.VTable;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
@@ -32,6 +33,11 @@ public class DeclField extends AbstractDeclField {
         this.type = type;
         this.name = name;
         this.init = init;
+    }
+
+    @Override
+    public void codeGenVTable(DecacCompiler compiler, VTable vTable, int offset) {
+        vTable.addField(getName().getName(), offset);
     }
 
     @Override

@@ -36,11 +36,10 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    public void codeGenVTable(DecacCompiler compiler, AbstractIdentifier className) {
+    public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
         StackManager sM = compiler.getStackManager();
-        VTableManager vTM = compiler.getVTableManager();
 
-        classNameStr = className.getName().getName();
+        classNameStr = vTable.getClassName();
 
         mStartLabel = new Label("code." + classNameStr +
                 "." + name.getName().getName());
@@ -52,7 +51,7 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addInstruction(new STORE(Register.R0, mAddr));
         sM.incrVTableCpt();
 
-        vTM.addMethodToClass(classNameStr, name.getName().getName(), mAddr);
+        vTable.addMethod(name.getName().getName(), mAddr);
 
         for (AbstractParam param : params.getList()) {
             // TODO (param.setOperand ??)
@@ -106,23 +105,6 @@ public class DeclMethod extends AbstractDeclMethod {
 //        }
 //
 //        compiler.addInstruction(new BRA("fin." + methodClassName + "." + methodName));
-//    }
-
-//    // TODO (à déplacer)
-//    public void codeGenNew(DecacCompiler compiler) {
-//        RegManager rM = compiler.getRegManager();
-//        VTableManager vTM = compiler.getVTableManager();
-//
-//        GPRegister gpReg = rM.getFreeReg();
-//        compiler.addInstruction(new NEW(nbAttributs + 1, gpReg));
-//        compiler.addInstruction(new BOV(ErrorUtils.heapOverflowLabel));
-//        compiler.addInstruction(new LEA(vTM.getAddrOfClass(className, Register.R0)));
-//        compiler.addInstruction(
-//                new STORE(Register.R0, new RegisterOffset(0, gpReg)));
-////        compiler.addInstruction(new PUSH(gpReg));
-//        compiler.addInstruction(new BSR(vTM.getLabelINITdeLACLASSE()));
-////        compiler.addInstruction(new POP(gpReg));
-//        rM.freeReg(gpReg);
 //    }
 
 //    // TODO (à déplacer)

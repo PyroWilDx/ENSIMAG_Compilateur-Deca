@@ -1,9 +1,17 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.ErrorUtils;
+import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.NullOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 
@@ -11,7 +19,6 @@ public class MethodCall extends AbstractMethodCall {
     private AbstractExpr expr;
     private AbstractIdentifier methodIdent;
     private RValueStar rValueStar;
-
 
     public Type verifyMethodCall(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         Type type = this.expr.verifyExpr(compiler, localEnv, currentClass);
@@ -36,24 +43,24 @@ public class MethodCall extends AbstractMethodCall {
     }
 
     @Override
-    public void codeGenMethodCall(DecacCompiler compiler) {
-//        RegManager rM = compiler.getRegManager();
-//        VTableManager vTM = compiler.getVTableManager();
-//
-//        int nbParam = params.size() + 1;
-//        compiler.addInstruction(new ADDSP(nbParam));
-//
-//        GPRegister gpReg = rM.getFreeReg();
-//        compiler.addInstruction(
-//                new LOAD(methodIdent.getExpDefinition().getOperand(), gpReg));
-//
-//        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-//        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
-//
-//        compiler.addInstruction(
-//                new STORE(gpReg, new RegisterOffset(0, Register.SP)));
-//        rM.freeReg(gpReg);
-//
+    public void codeGenInst(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+        VTableManager vTM = compiler.getVTableManager();
+
+        int nbParam = vTM.getCurrParamCountOfMethod(methodIdent.getName().getName()) + 1;
+        compiler.addInstruction(new ADDSP(nbParam));
+
+        GPRegister gpReg = rM.getFreeReg();
+        compiler.addInstruction(
+                new LOAD(methodIdent.getExpDefinition().getOperand(), gpReg));
+
+        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
+
+        compiler.addInstruction(
+                new STORE(gpReg, new RegisterOffset(0, Register.SP)));
+        rM.freeReg(gpReg);
+
 //        int currParamIndex = -1;
 //        for (AbstractInst inst : insts.getList()) {
 //            inst.codeGenInst(compiler);
@@ -62,21 +69,22 @@ public class MethodCall extends AbstractMethodCall {
 //                    new STORE(gpReg, new RegisterOffset(currParamIndex, Register.SP)));
 //            rM.freeReg(gpReg);
 //            currParamIndex--;
-//        }
-//
-//        gpReg = rM.getFreeReg();
-////        compiler.addInstruction(
-////                new LOAD(new RegisterOffset(0, Register.SP), gpReg));
-////        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-////        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
-//
-////        compiler.addInstruction(
-////                new LOAD(new RegisterOffset(0, gpReg), gpReg));
-////        compiler.addInstruction(new BSR(new RegisterOffset(mOffset, gpReg)));
-//        compiler.addInstruction(vTM.getAddrOfMethod(className, methodName));
-//        rM.freeReg(gpReg);
-//
-//        compiler.addInstruction(new SUBSP(nbParam));
+//        } // TODO (où sont les paramètres ?)
+
+        gpReg = rM.getFreeReg();
+//        compiler.addInstruction(
+//                new LOAD(new RegisterOffset(0, Register.SP), gpReg));
+//        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+//        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
+
+//        compiler.addInstruction(
+//                new LOAD(new RegisterOffset(0, gpReg), gpReg));
+//        compiler.addInstruction(new BSR(new RegisterOffset(mOffset, gpReg)));
+        compiler.addInstruction(
+                new BSR(vTM.getCurrAddrOfMethod(methodIdent.getName().getName())));
+        rM.freeReg(gpReg);
+
+        compiler.addInstruction(new SUBSP(nbParam));
     }
 
     @Override
