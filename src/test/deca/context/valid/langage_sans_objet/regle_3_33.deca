@@ -18,7 +18,7 @@
     boolean n = 1.1 > 1.1;
 
     boolean o = true && true;
-    boolean p = true or true;
+    boolean p = true || true;
     boolean q = true == true;
     boolean r = true != true;
 }
