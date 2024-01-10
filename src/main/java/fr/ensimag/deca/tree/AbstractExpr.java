@@ -83,14 +83,17 @@ public abstract class AbstractExpr extends AbstractInst {
      * @param expectedType corresponds to the "type1" attribute
      * @return this with an additional ConvFloat if needed...
      */
-    public void verifyRValue(DecacCompiler compiler,
+    public AbstractExpr verifyRValue(DecacCompiler compiler,
                                      EnvironmentExp localEnv, ClassDefinition currentClass,
                                      Type expectedType) throws ContextualError { // regle 3.28
         Type type2 = this.verifyExpr(compiler, localEnv, currentClass);
-        if (!compiler.environmentType.assignCompatible(compiler, expectedType, type2)) {
+        AbstractExpr expr = compiler.environmentType.assignCompatible(compiler, expectedType, this);
+        if (expr == null) {
             throw new ContextualError("type '" + type2.toString() +
-                    "' must be compatible with type '" + expectedType.toString() + "'.", this.getLocation()); // cf condition regle 3.28
+                    "' must be compatible with type '" + expectedType + "'.", this.getLocation()); // cf condition regle 3.28
         }
+        if (expr != this) expr.verifyExpr(compiler, localEnv, currentClass);
+        return expr;
     }
 
     public void verifyExprPrint(DecacCompiler compiler, EnvironmentExp localEnv,

@@ -176,9 +176,9 @@ def doTests():
              expectedResult=b"1\n",
              decacOptions="-n")
 
-    # doVerify("codegen/valid/options/optionDebug.deca",
-    #          expectedResult=b"z = 6\n",
-    #          decacOptions="-d -d -d")
+    doVerify("codegen/valid/options/optionDebug.deca",
+             expectedResult=b"z = 6.00000e+00\n",
+             decacOptions="-d -d -d")
 
     doVerify("codegen/valid/classes/fieldsSimpleClass.deca")
 

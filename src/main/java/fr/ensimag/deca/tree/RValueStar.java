@@ -45,7 +45,7 @@ public class RValueStar extends TreeList<AbstractExpr> {
         if (expectedType == null) {
             throw new ContextualError("Too many arguments.", getLocation());
         }
-        rValue.verifyRValue(compiler, localEnv, currentClass, expectedType);
+        getList().set(0, rValue.verifyRValue(compiler, localEnv, currentClass, expectedType));
 
         RValueStar rValueStarWithoutFirst = this.copyWithoutFirst();
         Signature sigWithoutFirst = sig.copyWithoutFirst();

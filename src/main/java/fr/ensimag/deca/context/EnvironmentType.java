@@ -9,7 +9,9 @@ import java.util.Map;
 
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
+import fr.ensimag.deca.tree.AbstractExpr;
 import fr.ensimag.deca.tree.AbstractIdentifier;
+import fr.ensimag.deca.tree.ConvFloat;
 import fr.ensimag.deca.tree.Location;
 
 // A FAIRE: étendre cette classe pour traiter la partie "avec objet" de Déca
@@ -154,8 +156,14 @@ public class EnvironmentType {
         return (type1.equals(NULL) && type2.isClass());
 
     }
-    public boolean assignCompatible(DecacCompiler compiler, Type type1, Type type2) {
-        return type1 == type2 || type1.equals(FLOAT) && type2 == INT || compiler.environmentType.subtype(type1, type2);
+    public AbstractExpr assignCompatible(DecacCompiler compiler, Type type1,
+                                    AbstractExpr expr2) {
+        Type type2 = expr2.getType();
+        if (type1.equals(FLOAT) && type2 == INT) {
+            return new ConvFloat(expr2);
+        }
+        if (type1 == type2 || compiler.environmentType.subtype(type1, type2)) return expr2;
+        return null;
     }
 
     public final VoidType    VOID;
