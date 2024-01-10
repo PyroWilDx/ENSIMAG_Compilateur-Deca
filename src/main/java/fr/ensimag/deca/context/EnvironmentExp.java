@@ -113,7 +113,7 @@ public class EnvironmentExp {
         EnvironmentExp copy;
         if (this.parentEnvironment == null) copy = new EnvironmentExp(null);
         else copy = new EnvironmentExp(this.parentEnvironment.copy());
-        this.setEnv((HashMap<Symbol, ExpDefinition>) this.env.clone()); //TODO pas de problème
+        copy.setEnv((HashMap<Symbol, ExpDefinition>) this.env.clone());//TODO pas de problème
         return copy;
     }
 

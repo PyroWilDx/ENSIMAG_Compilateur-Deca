@@ -186,7 +186,7 @@ public class Identifier extends AbstractIdentifier {
                            ClassDefinition currentClass) throws ContextualError {
         Definition def = localEnv.get(this.name);
         if (def == null) {
-            throw new ContextualError("Undiclared identifier : "
+            throw new ContextualError("Undeclared identifier : "
                     + this.name.toString(), this.getLocation());
         }
         setDefinition(def);

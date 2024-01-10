@@ -529,7 +529,7 @@ class_extension returns[AbstractIdentifier tree]
         setLocation($tree,$ident.start);
         }
     | /* epsilon */ {
-        $tree = new Identifier(this.getDecacCompiler().createSymbol("object"));
+        $tree = new Identifier(this.getDecacCompiler().createSymbol("Object"));
         }
     ;
 
