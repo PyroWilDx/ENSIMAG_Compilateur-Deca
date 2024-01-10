@@ -44,7 +44,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         if (type == null) {
             throw new ContextualError("Unary  operation : '" + op
                     + "' cannot have operand of type : '"
-                    + operandType.getName() + "'", this.getLocation());
+                    + operandType.getName() + "'.", this.getLocation());
         }
         setType(type);
         return type;

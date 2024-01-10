@@ -271,7 +271,7 @@ public class DeclMethod extends AbstractDeclMethod {
                 if (!expDef.isMethod()) {
                     throw new ContextualError("A field '" +
                             this.name.getName() + "' already " +
-                            "exists in super class", getLocation());
+                            "exists in super class.", getLocation());
                 }
                 MethodDefinition methodDefinition = (MethodDefinition) expDef;
                 Signature sig2 = methodDefinition.getSignature();
@@ -282,7 +282,7 @@ public class DeclMethod extends AbstractDeclMethod {
                 Type type2 = expDef.getType();
                 if (!compiler.environmentType.subtype(t, type2)) {
                     throw new ContextualError("Return type of override must be" +
-                            " subtype of the return type of the method declared in super class", getLocation());
+                            " subtype of the return type of the method declared in super class.", getLocation());
                 }
             }
         }

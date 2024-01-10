@@ -50,7 +50,7 @@ public class DeclVar extends AbstractDeclVar {
         }
         // CONDITION type != void
         if (varType == compiler.environmentType.VOID) {
-            throw new ContextualError("Variable type cannot be void", this.getLocation());
+            throw new ContextualError("Variable type cannot be void.", this.getLocation());
         }
         EnvironmentExp localEnvInit = EnvironmentExp.empile(localEnv, envExpSup);
         this.initialization.verifyInitialization(compiler, varType, localEnvInit, currentClass);

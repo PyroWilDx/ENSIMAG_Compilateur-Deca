@@ -186,8 +186,8 @@ public class Identifier extends AbstractIdentifier {
                            ClassDefinition currentClass) throws ContextualError {
         Definition def = localEnv.get(this.name);
         if (def == null) {
-            throw new ContextualError("Undeclared identifier : "
-                    + this.name.toString(), this.getLocation());
+            throw new ContextualError("Undeclared identifier : '"
+                    + this.name.toString() + "'.", this.getLocation());
         }
         setDefinition(def);
         return def.getType();
@@ -203,8 +203,8 @@ public class Identifier extends AbstractIdentifier {
     public Type verifyType(DecacCompiler compiler) throws ContextualError {
         TypeDefinition typeDef = compiler.environmentType.defOfType(this.name);
         if (typeDef == null) {
-            throw new ContextualError("Undeclared type identifier : "
-                    + this.name.toString(), this.getLocation());
+            throw new ContextualError("Undeclared type identifier : '"
+                    + this.name.toString() + "'.", this.getLocation());
         }
         setDefinition(typeDef);
         return typeDef.getType();
@@ -215,7 +215,7 @@ public class Identifier extends AbstractIdentifier {
     public ExpDefinition verifyIdentifier(EnvironmentExp localEnv) throws ContextualError {
         ExpDefinition def = localEnv.get(this.getName());
         if (def == null) {
-            throw new ContextualError("Undeclared identifier", getLocation());
+            throw new ContextualError("Undeclared identifier.", getLocation());
         }
         this.setDefinition(def);
         return def;

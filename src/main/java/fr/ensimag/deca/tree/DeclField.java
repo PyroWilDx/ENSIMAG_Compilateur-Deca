@@ -99,7 +99,7 @@ public class DeclField extends AbstractDeclField {
                                                  SymbolTable.Symbol className, int index) throws ContextualError {
         Type t = this.type.verifyType(compiler);
         if (t.equals(compiler.environmentType.VOID)) {
-            throw new ContextualError("Field type cannot be void",
+            throw new ContextualError("Field type cannot be void.",
                     getLocation());
         }
         TypeDefinition def = compiler.environmentType.get(superClass);
@@ -109,7 +109,7 @@ public class DeclField extends AbstractDeclField {
             ExpDefinition expDef = envExpSuper.get(this.name.getName());
             if (expDef != null && expDef.isField()) {
                 throw new ContextualError("A method '" + this.name.getName() +
-                        "' already exists in super class", getLocation());
+                        "' already exists in super class.", getLocation());
             }
         }
         EnvironmentExp env = new EnvironmentExp(null);

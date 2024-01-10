@@ -89,7 +89,7 @@ public abstract class AbstractExpr extends AbstractInst {
         Type type2 = this.verifyExpr(compiler, localEnv, currentClass);
         if (!compiler.environmentType.assignCompatible(compiler, expectedType, type2)) {
             throw new ContextualError("type '" + type2.toString() +
-                    "' must be compatible with type '" + expectedType.toString() + "'", this.getLocation()); // cf condition regle 3.28
+                    "' must be compatible with type '" + expectedType.toString() + "'.", this.getLocation()); // cf condition regle 3.28
         }
     }
 
@@ -101,7 +101,7 @@ public abstract class AbstractExpr extends AbstractInst {
                 !exprType.equals(compiler.environmentType.STRING)) {
             throw new ContextualError("Invalid argument type for print : '"
                     + exprType.getName() +
-                    "'\nArgument type must be 'int', 'float' or 'string'", this.getLocation());
+                    "'\nArgument type must be 'int', 'float' or 'string'.", this.getLocation());
         }
     }
 
@@ -125,7 +125,7 @@ public abstract class AbstractExpr extends AbstractInst {
         Type exprType = verifyExpr(compiler, localEnv, currentClass);
         if (!exprType.isBoolean()) {
             throw new ContextualError("Condition is of type '"
-                    + exprType.getName() + "', it must be boolean", getLocation());
+                    + exprType.getName() + "', it must be boolean.", getLocation());
         }
         setType(exprType);
         // Done

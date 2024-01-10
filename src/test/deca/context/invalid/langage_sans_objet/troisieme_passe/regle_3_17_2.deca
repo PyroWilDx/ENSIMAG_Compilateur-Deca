@@ -1,3 +1,8 @@
+// Description:
+//    regle 3.17 type = void
+//
+// Resultats:
+//    Ligne 7: Variable type cannot be void.
 {
     void a;
 }

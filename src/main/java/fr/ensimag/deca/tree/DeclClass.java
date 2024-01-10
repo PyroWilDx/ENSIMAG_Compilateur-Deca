@@ -68,16 +68,16 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClass(DecacCompiler compiler) throws ContextualError {
         TypeDefinition defSuperClass = compiler.environmentType.get(this.superClass.getName());
         if (defSuperClass == null) {
-            throw new ContextualError("Undeclared super class identifier",
-                    getLocation());
+            throw new ContextualError("Undeclared super class identifier.",
+                    superClass.getLocation());
         }
         if (!defSuperClass.isClass()) {
-            throw new ContextualError("A class identifier is required",
-                    getLocation());
+            throw new ContextualError("A class identifier is required.",
+                    superClass.getLocation());
         }
         if (!compiler.environmentType.declareClasse(this.name,
                 this.superClass.getClassDefinition(), this.getLocation())) {
-            throw new ContextualError("Class or type already exists.", this.getLocation());
+            throw new ContextualError("Class or type already exists.", this.name.getLocation());
         }
         // Done
     }

@@ -49,13 +49,13 @@ public class FieldSelection extends AbstractLValue {
             if (!compiler.environmentType.subtype(expressiontype, currentClass.getType())) {
                 throw new ContextualError("'" + this.fieldIdent.getName() +
                         "' is protected, hence '" + exprClassDef.getType().getName() +
-                        "' must be a subtype of '" + currentClass.getType().getName(), getLocation());
+                        "' must be a subtype of '" + currentClass.getType().getName() + "'.", getLocation());
             }
             // la classe courante doit être sous classe de la classe contenant la méthode.
             if (!compiler.environmentType.subtype(currentClass.getType(), fieldContainingClass.getType())) {
                 throw new ContextualError("'" + this.fieldIdent.getName() +
                         "' is protected, hence '" + currentClass.getType().getName() +
-                        "' must be a subtype of '" + fieldContainingClass.getType().getName(), getLocation());
+                        "' must be a subtype of '" + fieldContainingClass.getType().getName() + "'.", getLocation());
             }
         }
         return type;

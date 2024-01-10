@@ -36,14 +36,14 @@ public class RValueStar extends TreeList<AbstractExpr> {
         if (this.getList().isEmpty()) {
             if (!sig.isEmpty()) {
                 throw new ContextualError("To few arguments, expected type : '"
-                        + sig.getFirst().getName() + "'", getLocation());
+                        + sig.getFirst().getName() + "'.", getLocation());
             }
             return;
         }
         AbstractExpr rValue = getList().get(0);
         Type expectedType = sig.getFirst();
         if (expectedType == null) {
-            throw new ContextualError("Too many arguments", getLocation());
+            throw new ContextualError("Too many arguments.", getLocation());
         }
         rValue.verifyRValue(compiler, localEnv, currentClass, expectedType);
 
