@@ -72,7 +72,7 @@ EXTENDS : 'extends';
 PROTECTED : 'protected';
 ASM : 'asm';
 
-COMMENT : ('//'.*? '\n'|'/*' .*? '*/') {skip();};
+COMMENT : ('//'.*? ('\n'|EOF)|'/*' .*? '*/') {skip();};
 
 STRING : '"'(STRING_CAR | '\\' | '\\\\')*'"';
 INT : '0' | (POSITIVE_DIGIT DIGIT*);
