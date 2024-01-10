@@ -1,0 +1,15 @@
+class A {
+    int a;
+    int summ(int b,int c){
+        print(b+1);
+        return a;
+    }
+}
+class B extends A{
+    int b;
+}
+{
+    A anass = new A();
+    anass.a = 1;
+    anass.summ(a, b);
+}
