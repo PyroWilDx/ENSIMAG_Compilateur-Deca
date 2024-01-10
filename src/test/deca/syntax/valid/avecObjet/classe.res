@@ -2,8 +2,6 @@
    +> [8, 0] ListDeclClass [List with 2 elements]
    |  []> [1, 6] DeclClass
    |  ||  +> [1, 6] Identifier (A)
-   |  ||  EXTENDS
-   |  ||  +> [1, 8] Identifier (Object)
    |  ||  []> [2, 8] DeclField
    |  ||      PUBLIC
    |  ||      +> [2, 4] Identifier (int)
@@ -30,8 +28,6 @@
    |  ||             `> [5, 15] Identifier (a)
    |  []> [8, 6] DeclClass
    |      +> [8, 6] Identifier (B)
-   |      EXTENDS
-   |      +> [8, 8] Identifier (A)
    |      []> [9, 8] DeclField
    |          PUBLIC
    |          +> [9, 4] Identifier (int)
