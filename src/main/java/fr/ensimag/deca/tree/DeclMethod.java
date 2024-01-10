@@ -197,7 +197,7 @@ public class DeclMethod extends AbstractDeclMethod {
 
         listInst.codeGenListInst(compiler);
 
-        RegManager.RegStatus[] usedRegs = rM.popUsedRegs();
+        boolean[] usedRegs = rM.popUsedRegs();
         RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
 
         compiler.addInstruction(new WSTR("Error: Exiting function " + className +
