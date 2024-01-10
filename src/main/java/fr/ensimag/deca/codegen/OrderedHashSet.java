@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public class OrderedHashSet<E> extends HashSet<E> {
-
+//    private static final long serialVersionUID = 6141682385710520966L;
     private final LinkedList<E> linkedList;
 
     public OrderedHashSet() {
