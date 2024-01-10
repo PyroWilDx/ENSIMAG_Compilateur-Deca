@@ -195,7 +195,6 @@ def doTests():
 
     print()
     print("!!!!!!!!!!! Tests Invalides !!!!!!!!!!!")
-
     doVerify("context/invalid/langage_sans_objet/troisieme_passe/regle_3_17_1.deca",
              decacFail=True)
 
@@ -223,7 +222,7 @@ def decacParallel():
 
 
 def main():
-    os.chdir("../../../")
+    os.chdir(os.getcwd().split("src")[0])
 
     doTests()
 
