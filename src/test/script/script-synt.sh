@@ -70,3 +70,5 @@ done
 
 test_synt_valide "src/test/deca/syntax/valid/sansObjet/sansObjet.deca"
 
+echo "Langage Avec Objets"
+test_synt_valide "src/test/deca/syntax/valid/avecObjet/classe.deca"
