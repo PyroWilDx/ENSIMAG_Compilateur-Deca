@@ -57,6 +57,10 @@ done
 
 test_synt_valide "src/test/deca/syntax/valid/helloWorld/hello.deca"
 
+echo "Langage Hello World avec include"
+
+test_synt_valide "src/test/deca/syntax/valid/include/include.deca"
+
 
 echo "Langage Sans Objets"
 for cas_de_test in src/test/deca/syntax/invalid/sansObjet/*.deca

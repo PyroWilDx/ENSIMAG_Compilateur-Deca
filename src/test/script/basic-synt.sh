@@ -37,7 +37,7 @@ do
 done
 
 
-if test_synt src/test/deca/syntax/valid/hello.deca 2>&1 | \
+if test_synt src/test/deca/syntax/valid/helloWorld/hello.deca 2>&1 | \
     grep -q -e ':[0-9][0-9]*:'
 then
     echo "Echec inattendu pour test_synt"
