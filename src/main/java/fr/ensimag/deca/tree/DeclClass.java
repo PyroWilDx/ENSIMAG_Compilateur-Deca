@@ -159,7 +159,7 @@ public class DeclClass extends AbstractDeclClass {
 
         fields.codeGenListDeclField(compiler); // TODO (que les champs de cette classe)
 
-        RegManager.RegStatus[] usedRegs = rM.popUsedRegs();
+        boolean[] usedRegs = rM.popUsedRegs();
         RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
         RegManager.addRestoreRegsInsts(compiler, usedRegs);
 

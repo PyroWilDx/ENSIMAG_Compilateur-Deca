@@ -57,7 +57,7 @@ public class Program extends AbstractProgram {
 
         compiler.addComment("VTable of " + LabelUtils.OBJECT_CLASS_NAME);
         DAddr nAddr = sM.getGbOffsetAddr();
-        LabelUtils.setObjectClassSymbol(compiler.createSymbol(LabelUtils.OBJECT_CLASS_NAME));
+        LabelUtils.setObjectClassSymbol(compiler.environmentType.OBJECT.getName());
         VTable vT = new VTable(null, LabelUtils.OBJECT_CLASS_SYMBOL, nAddr);
         vTM.addVTable(LabelUtils.OBJECT_CLASS_NAME, vT);
         compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));

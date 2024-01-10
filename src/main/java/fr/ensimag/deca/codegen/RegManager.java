@@ -9,15 +9,9 @@ import java.util.LinkedList;
 
 public class RegManager {
 
-    public enum RegStatus {
-        NOT_USED,
-        WAS_USED_BUT_NOT_REUSED,
-        WAS_USED_AND_IS_REUSED
-    }
-
     public final int nRegs;
     private final LinkedList<GPRegister> freeRegs;
-    private final LinkedList<RegStatus[]> usedRegsStack;
+    private final LinkedList<boolean[]> usedRegsStack;
     private DVal lastImm;
 
     public RegManager(int nRegs) {
@@ -34,10 +28,8 @@ public class RegManager {
         if (!freeRegs.isEmpty()) {
             GPRegister freeReg = freeRegs.removeFirst();
             if (!usedRegsStack.isEmpty() && freeReg.getNumber() > 1) {
-                RegStatus[] usedRegs = usedRegsStack.getFirst();
-                if (usedRegs[freeReg.getNumber()] == RegStatus.WAS_USED_BUT_NOT_REUSED) {
-                    usedRegs[freeReg.getNumber()] = RegStatus.WAS_USED_AND_IS_REUSED;
-                }
+                boolean[] usedRegs = usedRegsStack.getFirst();
+                usedRegs[freeReg.getNumber()] = true;
             }
             return freeReg;
         }
@@ -99,40 +91,33 @@ public class RegManager {
     }
 
     public void saveUsedRegs() {
-        RegStatus[] usedRegs = new RegStatus[nRegs];
-        Arrays.fill(usedRegs, RegStatus.WAS_USED_BUT_NOT_REUSED);
-
-        usedRegs[0] = RegStatus.NOT_USED;
-        usedRegs[1] = RegStatus.NOT_USED;
-        for (GPRegister gpReg : freeRegs) {
-            usedRegs[gpReg.getNumber()] = RegStatus.NOT_USED;
-        }
-
+        boolean[] usedRegs = new boolean[nRegs];
+        Arrays.fill(usedRegs, false);
         usedRegsStack.addFirst(usedRegs);
     }
 
-    public RegStatus[] popUsedRegs() {
+    public boolean[] popUsedRegs() {
         return usedRegsStack.removeFirst();
     }
 
     public static void addSaveRegsInsts(DecacCompiler compiler, int index,
-                                        RegStatus[] usedRegs) {
+                                        boolean[] usedRegs) {
         StackManager sM = compiler.getStackManager();
 
         LinkedList<AbstractLine> startLines = new LinkedList<>();
         startLines.addLast(new Line(new TSTO(sM.getMaxStackSize())));
         startLines.addLast(new Line(new BOV(ErrorUtils.stackOverflowLabel)));
         for (int i = 2; i < usedRegs.length; i++) {
-            if (usedRegs[i] == RegStatus.WAS_USED_AND_IS_REUSED) {
-                startLines.addFirst(new Line(new PUSH(Register.getR(i))));
+            if (usedRegs[i]) {
+                startLines.addLast(new Line(new PUSH(Register.getR(i))));
             }
         }
         compiler.addAllLine(index, startLines);
     }
 
-    public static void addRestoreRegsInsts(DecacCompiler compiler, RegStatus[] usedRegs) {
-        for (int i = 2; i < usedRegs.length; i++) {
-            if (usedRegs[i] == RegStatus.WAS_USED_AND_IS_REUSED) {
+    public static void addRestoreRegsInsts(DecacCompiler compiler, boolean[] usedRegs) {
+        for (int i = usedRegs.length - 1; i > 1; i--) {
+            if (usedRegs[i]) {
                 compiler.addInstruction(new POP(Register.getR(i)));
             }
         }

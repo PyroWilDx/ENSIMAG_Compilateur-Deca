@@ -180,11 +180,9 @@ def doTests():
     #          expectedResult=b"z = 6\n",
     #          decacOptions="-d -d -d")
 
-    # doVerify("codegen/valid/classes/fieldsSimpleClass.deca",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/fieldsSimpleClass.deca")
 
-    # doVerify("codegen/valid/classes/fieldsComplexClass.deca",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/fieldsComplexClass.deca")
 
     """
     ==============================================
@@ -230,7 +228,7 @@ def main():
     doTests()
 
     # With -P
-    decacParallel()
+    # decacParallel()
 
 
 if __name__ == '__main__':
