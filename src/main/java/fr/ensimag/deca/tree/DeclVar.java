@@ -37,17 +37,7 @@ public class DeclVar extends AbstractDeclVar {
     protected void verifyDeclVar(DecacCompiler compiler, EnvironmentExp envExpSup,
                                  EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError { //regle 3.17
         EnvironmentExp declEnv = new EnvironmentExp(null);
-        //TypeDefinition typeDef = compiler.environmentType.defOfType((this.type.getName()));
         Type varType = this.type.verifyType(compiler);
-//        try {
-//            ExpDefinition def = new VariableDefinition(varType, this.getLocation());
-//            this.varName.setDefinition(def);
-//            declEnv.declare(varName.getName(), def);
-//            // CONDITION type != void
-//        } catch (EnvironmentExp.DoubleDefException e) { // pas possible d'avoir cette erreur mais idea pas content
-//            throw new UnknownError();
-//        }
-        // j't'ai mis ca en comm, psq sinon ca compile pas
         ExpDefinition def = new VariableDefinition(varType, this.getLocation());
         this.varName.setDefinition(def);
         try {
@@ -58,6 +48,7 @@ public class DeclVar extends AbstractDeclVar {
         if (localEnv.disjointUnion(declEnv) != null) {
             throw new ContextualError("Variable '" + varName.getName().toString() + "' already declared.", this.getLocation());
         }
+        // CONDITION type != void
         if (varType == compiler.environmentType.VOID) {
             throw new ContextualError("Variable type cannot be void", this.getLocation());
         }
