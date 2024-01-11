@@ -38,12 +38,10 @@ public class This extends AbstractExpr {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         // TODO
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
         // TODO
-        throw new UnsupportedOperationException("Not yet implemented");
     }
 }

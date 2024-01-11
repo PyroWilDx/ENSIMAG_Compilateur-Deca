@@ -482,9 +482,12 @@ literal returns[AbstractExpr tree]
         setLocation($tree,$FALSE);
         }
     | THIS {
-    //TODO
+    $tree = new This();
+    setLocation($tree,$THIS);
         }
     | NULL {
+//    $tree = new NullOperand();
+//    setLocation($tree, $NULL);
     //TODO
         }
     ;
@@ -507,7 +510,7 @@ list_classes returns[ListDeclClass tree]
 
       (c1=class_decl {
         $tree.add($c1.tree);
-        setLocation($tree, $c1.start);
+        //setLocation($tree, $c1.start);
         }
       )*
     ;
@@ -519,7 +522,7 @@ class_decl returns[DeclClass tree]
         setLocation($class_body.fields, $class_body.start);
         setLocation($class_body.methods, $class_body.start);
         $tree = new DeclClass($name.tree, $superclass.tree, $class_body.fields, $class_body.methods);
-        setLocation($tree, $name.start);
+        setLocation($tree, $CLASS);
         }
     ;
 
@@ -547,7 +550,9 @@ class_body returns[ListDeclMethod methods, ListDeclField fields]
     ;
 
 decl_field_set[ListDeclField fields]
-    : v=visibility t=type list_decl_field[fields, $v.visi, $t.tree]
+    : v=visibility t=type list_decl_field[fields, $v.visi, $t.tree]{
+      setLocation($fields,$type.start);
+    }
       SEMI
     ;
 
@@ -563,6 +568,7 @@ visibility returns[Visibility visi]
 
 list_decl_field[ListDeclField fields, Visibility v, AbstractIdentifier t]
     : dv1=decl_field[v, t] {
+        setLocation($fields,$dv1.start);
         $fields.add($dv1.tree);
     }
         (COMMA dv2=decl_field[v, t] {
