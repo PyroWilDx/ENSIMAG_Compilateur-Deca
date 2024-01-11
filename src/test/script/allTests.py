@@ -141,6 +141,10 @@ def doTests():
                             b"Error: Division by 0\n",
              execError=True)
 
+    doVerify("codegen/invalid/floatOverflow.deca",
+             expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
     doVerify("codegen/valid/conditions/boolLazyEval.deca",
              expectedResult=b"")
 
