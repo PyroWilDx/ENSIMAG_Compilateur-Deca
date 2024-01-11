@@ -1,3 +1,8 @@
+// Description:
+//    regle 0.1 opération partielle
+//
+// Resultats:
+//    Ligne 7: Identificateur non déclaré.
 {
     a = 1;
 }
