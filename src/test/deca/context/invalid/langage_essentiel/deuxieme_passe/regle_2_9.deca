@@ -1,13 +1,9 @@
 // Description:
-//    regle 2.7 condition, subtype
+//    regle 2.9 type = void
 //
 // Resultats:
-//    Ligne 11: Return type of override must be subtype of the return type of the method declared in super class.
+//    Ligne 8 : Parameter type cannot be void.
 class A {
-    float f(int x) {
-    }
-}
-class B extends A {
-    int f(int x){
+    void f(void x) {
     }
 }

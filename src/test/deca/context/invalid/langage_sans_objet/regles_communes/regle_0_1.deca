@@ -2,7 +2,7 @@
 //    regle 0.1 opération partielle
 //
 // Resultats:
-//    Ligne 7: Identificateur non déclaré.
+//    Ligne 7: Undeclared identifier : 'a'.
 {
     a = 1;
 }

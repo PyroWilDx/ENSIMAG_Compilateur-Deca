@@ -2,7 +2,7 @@
 //    regle 1.3 opération partielle ⊕
 //
 // Resultats:
-//    Ligne 8: class or type already exists
+//    Ligne 8: Class or type already exists.
 class A {
 }
 class A {

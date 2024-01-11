@@ -1,11 +1,12 @@
 // Description:
-//    regle 2.6 opération partielle
+//    regle 2.7 condition, pas une méthode
 //
 // Resultats:
-//    Ligne 9: Method 'f' already defined.
+//    Ligne 10: A field 'a' already exists in super class.
 class A {
-    void f(){
-    }
-    int f(){
+    int a;
+}
+class B extends A {
+    void a(){
     }
 }

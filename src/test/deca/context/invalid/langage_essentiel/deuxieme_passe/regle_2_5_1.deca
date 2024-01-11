@@ -1,5 +1,5 @@
 // Description:
-//    regle 2.5 condition
+//    regle 2.5 type = void
 //
 // Resultats:
 //    Ligne 7: Field type cannot be void.
