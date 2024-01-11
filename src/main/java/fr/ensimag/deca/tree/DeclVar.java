@@ -9,7 +9,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.io.PrintStream;
 
-import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
@@ -66,7 +65,7 @@ public class DeclVar extends AbstractDeclVar {
         initialization.codeGenInit(compiler);
 
         GPRegister gpReg = rM.getLastRegOrImm(compiler);
-        DAddr varAddr = sM.getGbOffsetAddr();
+        DAddr varAddr = sM.getOffsetAddr();
         varName.getExpDefinition().setOperand(varAddr);
         compiler.addInstruction(new STORE(gpReg, varAddr));
         rM.freeReg(gpReg);

@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.ErrorUtils;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.context.*;
@@ -114,6 +115,10 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
         DVal dVal = (lastImmRight == null) ? regRight : lastImmRight;
         codeGenOp(compiler, dVal, regLeft);
+
+        if (getType().isFloat()) {
+            compiler.addInstruction(new BOV(ErrorUtils.floatOverflowLabel));
+        }
 
         if (!pushed) rM.freeReg(regRight);
         rM.freeReg(regLeft);

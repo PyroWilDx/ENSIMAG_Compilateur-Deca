@@ -1,0 +1,9 @@
+// Description :
+//    Test du débordement sur une opération arithmétique sur des flottants
+//
+// Resultats :
+//    Error: Float Operation Overflow
+
+{
+    
+}

@@ -5,15 +5,17 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 
 public class StackManager {
 
+    private final boolean methodStack;
     private int stackSize;
     private int maxStackSize;
-    private int gbVarCpt;
+    private int varCpt;
     private int vTableCpt;
 
-    public StackManager() {
+    public StackManager(boolean methodStack) {
+        this.methodStack = methodStack;
         this.stackSize = 0;
         this.maxStackSize = 0;
-        this.gbVarCpt = 0;
+        this.varCpt = 0;
         this.vTableCpt = 0;
     }
 
@@ -30,7 +32,7 @@ public class StackManager {
 
     public void incrGbVarCpt() {
         incrStackSize();
-        gbVarCpt++;
+        varCpt++;
     }
 
     public void incrVTableCpt() {
@@ -38,8 +40,9 @@ public class StackManager {
         vTableCpt++;
     }
 
-    public RegisterOffset getGbOffsetAddr() {
-        return new RegisterOffset(stackSize + 1, Register.GB);
+    public RegisterOffset getOffsetAddr() {
+        Register register = (methodStack) ? Register.LB : Register.GB;
+        return new RegisterOffset(stackSize + 1, register);
     }
 
     public int getMaxStackSize() {
@@ -47,7 +50,7 @@ public class StackManager {
     }
 
     public int getAddSp() {
-        return gbVarCpt + vTableCpt;
+        return varCpt + vTableCpt;
     }
 
 }
