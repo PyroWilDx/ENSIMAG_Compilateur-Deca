@@ -1,7 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ErrorUtils;
+import fr.ensimag.deca.codegen.ErrorManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
@@ -74,7 +74,7 @@ public class FieldSelection extends AbstractLValue {
 
         GPRegister gpReg = rM.getLastReg();
         compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
+        compiler.addInstruction(new BEQ(ErrorManager.nullPointerLabel));
 
         int fieldOffset = vTM.getCurrOffsetOfField(fieldName);
         fieldIdent.getExpDefinition().setOperand(new RegisterOffset(fieldOffset, gpReg));

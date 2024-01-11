@@ -1,7 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ErrorUtils;
+import fr.ensimag.deca.codegen.ErrorManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
@@ -65,7 +65,7 @@ public class MethodCall extends AbstractMethodCall {
                 new LOAD(methodIdent.getExpDefinition().getOperand(), gpReg));
 
         compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
+        compiler.addInstruction(new BEQ(ErrorManager.nullPointerLabel));
 
         compiler.addInstruction(
                 new STORE(gpReg, new RegisterOffset(0, Register.SP)));

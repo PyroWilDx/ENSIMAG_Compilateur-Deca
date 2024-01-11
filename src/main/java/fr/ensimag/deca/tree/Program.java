@@ -82,7 +82,7 @@ public class Program extends AbstractProgram {
         compiler.addComment("End of Main Program");
 
         compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
-        compiler.addInstruction(1, new BOV(ErrorUtils.stackOverflowLabel));
+        compiler.addInstruction(1, new BOV(ErrorManager.stackOverflowLabel));
         compiler.addInstruction(2, new ADDSP(sM.getAddSp()));
 
         compiler.addComment("");
@@ -100,24 +100,24 @@ public class Program extends AbstractProgram {
         compiler.addComment("");
 
         compiler.addComment("Start of Error Labels");
-        ErrorUtils.codeGenError(compiler,
+        ErrorManager.codeGenError(compiler,
                 "Error: Stack Overflow",
-                ErrorUtils.stackOverflowLabel);
-        ErrorUtils.codeGenError(compiler,
+                ErrorManager.stackOverflowLabel);
+        ErrorManager.codeGenError(compiler,
                 "Error: Head Overflow",
-                ErrorUtils.heapOverflowLabel);
-        ErrorUtils.codeGenError(compiler,
+                ErrorManager.heapOverflowLabel);
+        ErrorManager.codeGenError(compiler,
                 "Error: Float Operation Overflow",
-                ErrorUtils.floatOverflowLabel);
-        ErrorUtils.codeGenError(compiler,
+                ErrorManager.floatOverflowLabel);
+        ErrorManager.codeGenError(compiler,
                 "Error: Division by 0",
-                ErrorUtils.divBy0Label);
-        ErrorUtils.codeGenError(compiler,
+                ErrorManager.divBy0Label);
+        ErrorManager.codeGenError(compiler,
                 "Error: Input/Output Error",
-                ErrorUtils.ioErrLabel);
-        ErrorUtils.codeGenError(compiler,
+                ErrorManager.ioErrLabel);
+        ErrorManager.codeGenError(compiler,
                 "Error: Dereferencing Null Pointer",
-                ErrorUtils.nullPointerLabel);
+                ErrorManager.nullPointerLabel);
         compiler.addComment("End of Error Labels");
         // Done
     }
