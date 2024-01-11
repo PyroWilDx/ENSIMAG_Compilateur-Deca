@@ -56,20 +56,23 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         compiler.addInstruction(
                 new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         int varOffset = 1;
-        AbstractDeclField.TypeCode lastType = null;
+        AbstractDeclField.TypeCode lastTypeCode = null;
         for (AbstractDeclField declField : getList()) {
-            AbstractDeclField.TypeCode typeCode = declField.getInitTypeCode();
-            declField.codeGenSetFieldTo0(compiler, varOffset, typeCode != lastType);
+            AbstractDeclField.TypeCode currTypeCode = declField.getInitTypeCode();
+            declField.codeGenSetFieldTo0(compiler, varOffset, currTypeCode != lastTypeCode);
             varOffset++;
-            lastType = typeCode;
+            lastTypeCode = currTypeCode;
         }
     }
 
     public void codeGenListDeclField(DecacCompiler compiler) {
         int varOffset = 1;
+        AbstractDeclField.TypeCode lastTypeCode = null;
         for (AbstractDeclField declField : getList()) {
-            declField.codeGenDeclField(compiler, varOffset);
+            AbstractDeclField.TypeCode currTypeCode =
+                    declField.codeGenDeclField(compiler, varOffset, lastTypeCode);
             varOffset++;
+            lastTypeCode = currTypeCode;
         }
     }
 

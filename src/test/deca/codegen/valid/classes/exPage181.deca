@@ -1,0 +1,24 @@
+// Description :
+//    Test de l'exemple page 181 du polycopié
+//
+// Resultats :
+//    a.getX() = 1
+
+class A {
+    protected int x;
+
+    int getX() {
+        return x;
+    }
+
+    void setX(int x) {
+        this.x = x;
+    }
+}
+
+{
+    A a = new A() ;
+
+    a.setX(1) ;
+    println("a.getX() = ", a.getX()) ;
+}

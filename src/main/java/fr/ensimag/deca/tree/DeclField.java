@@ -58,19 +58,29 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    public void codeGenDeclField(DecacCompiler compiler, int varOffset) {
+    public TypeCode codeGenDeclField(DecacCompiler compiler, int varOffset,
+                                     TypeCode lastTypeCode) {
+        TypeCode returnValue = null;
+
         RegManager rM = compiler.getRegManager();
 
-        init.setVarType(type.getType());
+        init.setVarTypeCode(getInitTypeCode());
         init.codeGenInit(compiler);
 
         GPRegister regValue;
-        if (init.getExpr() instanceof AbstractLiteral) {
-            DVal dVal = rM.getLastImm();
-            regValue = Register.R0;
-            compiler.addInstruction(new LOAD(dVal, regValue));
-        } else {
+        DVal lastImm = rM.getLastImm();
+        if (lastImm == null) {
             regValue = rM.getLastReg();
+        } else {
+            regValue = Register.R0;
+            if (init instanceof NoInitialization) {
+                returnValue = getInitTypeCode();
+                if (lastTypeCode == null || lastTypeCode != getInitTypeCode()) {
+                    compiler.addInstruction(new LOAD(lastImm, regValue));
+                }
+            } else {
+                compiler.addInstruction(new LOAD(lastImm, regValue));
+            }
         }
 
         compiler.addInstruction(
@@ -80,6 +90,8 @@ public class DeclField extends AbstractDeclField {
         if (regValue != Register.R0) {
             rM.freeReg(regValue);
         }
+
+        return returnValue;
         // Done
     }
 
@@ -90,7 +102,7 @@ public class DeclField extends AbstractDeclField {
         } else if (type.getType().isFloat()) {
             return TypeCode.FLOAT;
         }
-        return TypeCode.OTHER;
+        return TypeCode.OBJECT;
     }
 
     @Override

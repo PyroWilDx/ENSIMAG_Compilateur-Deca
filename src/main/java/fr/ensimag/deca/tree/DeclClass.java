@@ -134,8 +134,8 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     public void codeGenDeclClass(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
-//        StackManager sM = new StackManager();
-//        compiler.setStackManager(sM); // TODO (pas sur mais ca devrait servir a rien)
+        StackManager sM = new StackManager(true);
+        compiler.setStackManager(sM);
 
         String className = name.getName().getName();
         String superClassName = superClass.getName().getName();

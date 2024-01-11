@@ -56,7 +56,6 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         for (MethodInfo methodInfo : superClassMethods) {
             boolean isPresentInCurrClass = false;
             for (AbstractDeclMethod declMethod : getList()) {
-                System.out.println(declMethod.getName());
                 if (methodInfo.getMethodName().equals(declMethod.getName().getName())) {
                     isPresentInCurrClass = true;
                     break;

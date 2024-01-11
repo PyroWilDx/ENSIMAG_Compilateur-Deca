@@ -52,7 +52,8 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        StackManager sM = compiler.getStackManager();
+        StackManager sM = new StackManager(false);
+        compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
 
         compiler.addComment("VTable of " + LabelUtils.OBJECT_CLASS_NAME);

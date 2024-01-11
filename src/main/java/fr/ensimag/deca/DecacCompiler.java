@@ -54,7 +54,7 @@ public class DecacCompiler {
         this.source = source;
 
         this.regManager = new RegManager(compilerOptions.getNOfRegs());
-        this.stackManager = new StackManager(false);
+        this.stackManager = null;
         this.condManager = new CondManager();
         this.vTableManager = new VTableManager();
     }

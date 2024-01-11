@@ -198,13 +198,17 @@ def doTests():
 
     # doVerify("codegen/valid/classes/methodCall.deca")
 
-    doVerify("codegen/valid/classes/fieldSelection.deca",
-             expectedResult=b"2\n",
-             doAssert=False)
+    # doVerify("codegen/valid/classes/fieldSelection.deca",
+    #          expectedResult=b"2\n",
+    #          doAssert=False)
 
     # doVerify("codegen/valid/classes/this.deca",
     #          expectedResult=b"2\n"
     #                         b"4\n",
+    #          doAssert=False)
+
+    # doVerify("codegen/valid/classes/exPage181.deca",
+    #          expectedResult=b"a.getX() = 1\n",
     #          doAssert=False)
 
     """

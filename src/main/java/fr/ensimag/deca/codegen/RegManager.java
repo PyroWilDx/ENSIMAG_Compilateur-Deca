@@ -105,8 +105,10 @@ public class RegManager {
         StackManager sM = compiler.getStackManager();
 
         LinkedList<AbstractLine> startLines = new LinkedList<>();
-        startLines.addLast(new Line(new TSTO(sM.getMaxStackSize())));
-        startLines.addLast(new Line(new BOV(ErrorUtils.stackOverflowLabel)));
+        if (sM.getMaxStackSize() > 0) {
+            startLines.addLast(new Line(new TSTO(sM.getMaxStackSize())));
+            startLines.addLast(new Line(new BOV(ErrorUtils.stackOverflowLabel)));
+        }
         for (int i = 2; i < usedRegs.length; i++) {
             if (usedRegs[i]) {
                 startLines.addLast(new Line(new PUSH(Register.getR(i))));
