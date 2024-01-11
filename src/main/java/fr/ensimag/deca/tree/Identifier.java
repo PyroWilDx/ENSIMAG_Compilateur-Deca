@@ -215,7 +215,8 @@ public class Identifier extends AbstractIdentifier {
     public ExpDefinition verifyIdentifier(EnvironmentExp localEnv) throws ContextualError {
         ExpDefinition def = localEnv.get(this.getName());
         if (def == null) {
-            throw new ContextualError("Undeclared identifier.", getLocation());
+            throw new ContextualError("Undeclared identifier : '" + this.getName()
+                    + "'.", getLocation());
         }
         this.setDefinition(def);
         return def;
