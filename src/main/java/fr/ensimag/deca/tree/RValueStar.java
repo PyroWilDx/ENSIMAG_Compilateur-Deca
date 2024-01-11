@@ -5,6 +5,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class RValueStar extends TreeList<AbstractExpr> {
 
@@ -45,7 +46,7 @@ public class RValueStar extends TreeList<AbstractExpr> {
         if (expectedType == null) {
             throw new ContextualError("Too many arguments.", getLocation());
         }
-        getList().set(0, rValue.verifyRValue(compiler, localEnv, currentClass, expectedType));
+        this.set(0, rValue.verifyRValue(compiler, localEnv, currentClass, expectedType));
 
         RValueStar rValueStarWithoutFirst = this.copyWithoutFirst();
         Signature sigWithoutFirst = sig.copyWithoutFirst();
@@ -54,8 +55,10 @@ public class RValueStar extends TreeList<AbstractExpr> {
 
     public RValueStar copyWithoutFirst() {
         RValueStar newRValueStar = new RValueStar();
-        for (AbstractExpr rValue : this.getList().subList(1, getList().size() - 1)) {
-            newRValueStar.add(rValue);
+        List<AbstractExpr> rValues = this.getList();
+        int size = rValues.size();
+        for (int i = 1; i < size; i++) {
+            newRValueStar.add(rValues.get(i));
         }
         return newRValueStar;
     }
