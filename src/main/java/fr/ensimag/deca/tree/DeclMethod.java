@@ -14,7 +14,7 @@ import java.io.PrintStream;
 public class DeclMethod extends AbstractDeclMethod {
     private final AbstractIdentifier type;
     private final AbstractIdentifier name;
-    private final ListParam params;
+    private final ListDeclParam params;
     // TODO peutetre creer une classe bloc pour factoriser avec Main et se rapprocher du sujet
     // TODO mais dans ce cas penser à changer le parser
     private final ListDeclVar listDeclVar;
@@ -25,7 +25,7 @@ public class DeclMethod extends AbstractDeclMethod {
     private Label mEndLabel;
 
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name,
-                      ListParam params, ListDeclVar listDeclVar, ListInst listInst) {
+                      ListDeclParam params, ListDeclVar listDeclVar, ListInst listInst) {
         this.type = type;
         this.name = name;
         this.params = params;
@@ -162,7 +162,7 @@ public class DeclMethod extends AbstractDeclMethod {
         mEndLabel = LabelUtils.getMethodEndLabel(className, methodName);
         compiler.addInstruction(new LOAD(new LabelOperand(mStartLabel), Register.R0));
 
-        DAddr mAddr = sM.getGbOffsetAddr();
+        DAddr mAddr = sM.getOffsetAddr();
         compiler.addInstruction(new STORE(Register.R0, mAddr));
         sM.incrVTableCpt();
 
@@ -183,7 +183,7 @@ public class DeclMethod extends AbstractDeclMethod {
         if (!shouldRedeclare) return;
 
         RegManager rM = compiler.getRegManager();
-        StackManager sM = new StackManager();
+        StackManager sM = new StackManager(true);
         compiler.setStackManager(sM);
 
         String methodName = name.getName().getName();
@@ -193,17 +193,18 @@ public class DeclMethod extends AbstractDeclMethod {
 
         rM.saveUsedRegs();
         rM.freeAllRegs();
-        // TODO (inverser la liste des regs, comme ca on a moins de réutilisation ???)
 
         listInst.codeGenListInst(compiler);
 
         boolean[] usedRegs = rM.popUsedRegs();
         RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
 
-        compiler.addInstruction(new WSTR("Error: Exiting function " + className +
-                "." + methodName + " without return"));
-        compiler.addInstruction(new WNL());
-        compiler.addInstruction(new ERROR());
+        if (!type.getType().isVoid()) {
+            compiler.addInstruction(new WSTR("Error: Exiting function " + className +
+                    "." + methodName + " without return"));
+            compiler.addInstruction(new WNL());
+            compiler.addInstruction(new ERROR());
+        }
 
         compiler.addLabel(mEndLabel);
         RegManager.addRestoreRegsInsts(compiler, usedRegs);
@@ -335,7 +336,11 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO
-        throw new DecacInternalError("not implemented yet");
+        // TODO (iterchildren)
+        type.iterChildren(f);
+        name.iterChildren(f);
+        params.iterChildren(f);
+        listDeclVar.iterChildren(f);
+        listInst.iterChildren(f);
     }
 }

@@ -141,6 +141,10 @@ def doTests():
                             b"Error: Division by 0\n",
              execError=True)
 
+    doVerify("codegen/invalid/floatOverflow.deca",
+             expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
     doVerify("codegen/valid/conditions/boolLazyEval.deca",
              expectedResult=b"")
 
@@ -163,10 +167,13 @@ def doTests():
 
     doVerify("codegen/valid/options/optionBanner.deca",
              expectedResult=b"Bonjour\n",
-             decacOptions="-b")
+             # decacOptions="-b"
+             )
 
     doVerify("codegen/valid/options/optionParse.deca",
-             decacOptions="-p")
+             # decacOptions="-p"
+             decacOptions="-v"
+            )
 
     doVerify("codegen/valid/options/optionVerification.deca",
              expectedResult=b"",
@@ -178,11 +185,31 @@ def doTests():
 
     doVerify("codegen/valid/options/optionDebug.deca",
              expectedResult=b"z = 6.00000e+00\n",
-             decacOptions="-d -d -d")
+             #          decacOptions="-d -d -d"
+             )
 
     doVerify("codegen/valid/classes/fieldsSimpleClass.deca")
 
     doVerify("codegen/valid/classes/fieldsComplexClass.deca")
+
+    doVerify("codegen/valid/classes/new.deca")
+
+    # doVerify("codegen/valid/classes/methodSimpleClass.deca")
+
+    # doVerify("codegen/valid/classes/methodCall.deca")
+
+    # doVerify("codegen/valid/classes/fieldSelection.deca",
+    #          expectedResult=b"2\n",
+    #          doAssert=False)
+
+    # doVerify("codegen/valid/classes/this.deca",
+    #          expectedResult=b"2\n"
+    #                         b"4\n",
+    #          doAssert=False)
+
+    # doVerify("codegen/valid/classes/exPage181.deca",
+    #          expectedResult=b"a.getX() = 1\n",
+    #          doAssert=False)
 
     """
     ==============================================

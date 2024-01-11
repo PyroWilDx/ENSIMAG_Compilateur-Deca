@@ -27,6 +27,15 @@ public class Return extends AbstractInst {
     }
 
     @Override
+    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
+                              ClassDefinition currentClass, Type returnType) throws ContextualError {
+        if (returnType.isVoid()) {
+            throw new ContextualError("", getLocation());
+        }
+        this.expr = this.expr.verifyRValue(compiler, localEnv, currentClass, returnType);
+    }
+
+    @Override
     public void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
@@ -39,22 +48,14 @@ public class Return extends AbstractInst {
                 GPRegister gpReg = rM.getLastReg();
                 compiler.addInstruction(new LOAD(gpReg, Register.R0));
                 rM.freeReg(gpReg);
+            } else {
+                compiler.addInstruction(new LOAD(dVal, Register.R0));
             }
         }
 
         compiler.addInstruction(new BRA(LabelUtils.getMethodEndLabel(
                 vTM.getCurrClassName(), vTM.getCurrMethodName())));
     }
-
-    @Override
-    protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-                              ClassDefinition currentClass, Type returnType) throws ContextualError {
-        if (returnType.isVoid()) {
-            throw new ContextualError("", getLocation());
-        }
-        this.expr = this.expr.verifyRValue(compiler, localEnv, currentClass, returnType);
-    }
-
 
     @Override
     public void decompile(IndentPrintStream s) {

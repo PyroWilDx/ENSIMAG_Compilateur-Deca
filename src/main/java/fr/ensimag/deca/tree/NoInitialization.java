@@ -7,10 +7,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.NullOperand;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.*;
 
 import java.io.PrintStream;
 
@@ -31,21 +28,18 @@ public class NoInitialization extends AbstractInitialization {
     }
 
     protected void codeGenInit(DecacCompiler compiler) {
-        if (getVarType() == null) return;
+        if (getVarTypeCode() == null) return;
 
-        if (getVarType().isInt() || getVarType().isBoolean()) {
-            compiler.addInstruction(new LOAD(0, Register.R0));
-        } else if (getVarType().isFloat()) {
-            compiler.addInstruction(new LOAD(0.f, Register.R0));
+        RegManager rM = compiler.getRegManager();
+
+        if (getVarTypeCode() == AbstractDeclField.TypeCode.INT_OR_BOOL) {
+            rM.setLastImm(new ImmediateInteger(0));
+        } else if (getVarTypeCode() == AbstractDeclField.TypeCode.FLOAT) {
+            rM.setLastImm(new ImmediateFloat(0.f));
         } else {
-            compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+            rM.setLastImm(new NullOperand());
         }
         // Done
-    }
-
-    @Override
-    public AbstractExpr getExpr() {
-        return null;
     }
 
     /**

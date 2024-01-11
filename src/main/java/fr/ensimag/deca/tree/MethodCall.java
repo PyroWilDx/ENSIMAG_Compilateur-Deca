@@ -52,6 +52,8 @@ public class MethodCall extends AbstractMethodCall {
         RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
 
+        expr.codeGenInst(compiler);
+
         String methodName = methodIdent.getName().getName();
         vTM.setCurrMethodName(methodName);
 
@@ -70,8 +72,8 @@ public class MethodCall extends AbstractMethodCall {
         rM.freeReg(gpReg);
 
         int currParamIndex = -1;
-        for (AbstractExpr expr : rValueStar.getList()) {
-            expr.codeGenInst(compiler);
+        for (AbstractExpr param : rValueStar.getList()) {
+            param.codeGenInst(compiler);
             gpReg = rM.getLastReg();
             compiler.addInstruction(
                     new STORE(gpReg, new RegisterOffset(currParamIndex, Register.SP)));

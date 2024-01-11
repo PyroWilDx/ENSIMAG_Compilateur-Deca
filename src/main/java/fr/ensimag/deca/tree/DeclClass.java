@@ -117,7 +117,7 @@ public class DeclClass extends AbstractDeclClass {
 
         compiler.addComment("VTable of " + className);
 
-        DAddr startAddr = sM.getGbOffsetAddr();
+        DAddr startAddr = sM.getOffsetAddr();
         VTable vT = new VTable(superClassSymbol, classSymbol, startAddr);
         vTM.addVTable(className, vT);
 
@@ -134,7 +134,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     public void codeGenDeclClass(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
-        StackManager sM = new StackManager();
+        StackManager sM = new StackManager(true);
         compiler.setStackManager(sM);
 
         String className = name.getName().getName();
@@ -173,8 +173,8 @@ public class DeclClass extends AbstractDeclClass {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         name.prettyPrint(s, prefix, false);
         superClass.prettyPrint(s,prefix,false);
-        fields.prettyPrintChildren(s, prefix);
-        methods.prettyPrintChildren(s, prefix);
+        fields.prettyPrint(s, prefix, false);
+        methods.prettyPrint(s, prefix, true);
     }
 
     @Override

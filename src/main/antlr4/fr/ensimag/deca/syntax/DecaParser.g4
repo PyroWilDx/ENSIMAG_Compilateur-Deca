@@ -62,7 +62,6 @@ block returns[ListDeclVar decls, ListInst insts]
             assert($list_inst.tree != null);
             $decls = $list_decl.tree;
             $insts = $list_inst.tree;
-            //TODO no setlocation?
         }
     ;
 
@@ -74,14 +73,11 @@ list_decl returns[ListDeclVar tree]
     ;
 
 decl_var_set[ListDeclVar l]
-    : type list_decl_var[$l,$type.tree] SEMI{
-      setLocation($l, $type.start);
-    }
+    : type list_decl_var[$l,$type.tree] SEMI
     ;
 
 list_decl_var[ListDeclVar l, AbstractIdentifier t]
     : dv1=decl_var[$t] {
-        setLocation($l, $dv1.start);
         $l.add($dv1.tree);
         } (COMMA dv2=decl_var[$t] {
             l.add($dv2.tree);
@@ -100,7 +96,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
       (EQUALS e=expr {
       assert($e.tree != null) ; //ana
       Initialization init = new Initialization($e.tree);
-      setLocation(init, $e.start);
+      setLocation(init, $EQUALS);
       $tree = new DeclVar($t, $i.tree, init);
       setLocation($tree, $i.start);
         }
@@ -114,7 +110,6 @@ list_inst returns[ListInst tree]
 }
     : (inst {
         $tree.add($inst.tree);
-        setLocation($tree, $inst.start);
         }
       )*
     ;
@@ -203,7 +198,6 @@ list_expr returns[ListExpr tree]
         }
     : (e1=expr {
         $tree.add($e1.tree);
-        setLocation($tree, $e1.start);
         }
        (COMMA e2=expr {
         $tree.add($e2.tree);
@@ -381,7 +375,7 @@ unary_expr returns[AbstractExpr tree]
     | select_expr {
             assert($select_expr.tree != null);
             $tree = $select_expr.tree ;
-            setLocation($tree, $select_expr.start);//TODO not sure
+            //setLocation($tree, $select_expr.start);//TODO not sure
         }
     ;
 
@@ -400,12 +394,12 @@ select_expr returns[AbstractExpr tree]
             assert( $args.tree != null);
             RValueStar params = new RValueStar($args.tree);
             $tree = new MethodCall($e1.tree,$i.tree,params);
-            setLocation($tree, $i.start);
+            setLocation($tree, $DOT);
         }
         | /* epsilon */ {
             // we matched "e.i"
             $tree = new FieldSelection($e1.tree,$i.tree);
-            setLocation($tree, $i.start);
+            setLocation($tree, $DOT);
             }
         )
     ;
@@ -519,8 +513,6 @@ class_decl returns[DeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
         setLocation($name.tree, $name.start);
         setLocation($superclass.tree, $superclass.start);
-        setLocation($class_body.fields, $class_body.start);
-        setLocation($class_body.methods, $class_body.start);
         $tree = new DeclClass($name.tree, $superclass.tree, $class_body.fields, $class_body.methods);
         setLocation($tree, $CLASS);
         }
@@ -550,9 +542,7 @@ class_body returns[ListDeclMethod methods, ListDeclField fields]
     ;
 
 decl_field_set[ListDeclField fields]
-    : v=visibility t=type list_decl_field[fields, $v.visi, $t.tree]{
-      setLocation($fields,$type.start);
-    }
+    : v=visibility t=type list_decl_field[fields, $v.visi, $t.tree]
       SEMI
     ;
 
@@ -568,7 +558,7 @@ visibility returns[Visibility visi]
 
 list_decl_field[ListDeclField fields, Visibility v, AbstractIdentifier t]
     : dv1=decl_field[v, t] {
-        setLocation($fields,$dv1.start);
+        //setLocation($fields,$dv1.start);
         $fields.add($dv1.tree);
     }
         (COMMA dv2=decl_field[v, t] {
@@ -595,14 +585,10 @@ decl_method returns[AbstractDeclMethod tree]
 @init {
 }
     : type ident OPARENT params=list_params CPARENT (block {
-        setLocation($ident.tree, $ident.start);
-        setLocation($params.tree, $params.start);
         $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, $block.decls, $block.insts);
         setLocation($tree, $type.start);
         }
       | ASM OPARENT code=multi_line_string CPARENT SEMI {
-        setLocation($ident.tree, $ident.start);
-        setLocation($params.tree, $params.start);
         $tree=new DeclMethodAsm($code.text,$type.tree, $ident.tree, $params.tree);
         setLocation($tree, $type.start);
         }
@@ -610,9 +596,9 @@ decl_method returns[AbstractDeclMethod tree]
         }
     ;
 
-list_params returns[ListParam tree]
+list_params returns[ListDeclParam tree]
 @init {
-        $tree = new ListParam();
+        $tree = new ListDeclParam();
 
 }
     : (p1=param {
@@ -636,7 +622,7 @@ multi_line_string returns[String text, Location location]
 
 param returns[AbstractParam tree]
     : type ident {
-        setLocation($ident.tree, $ident.start);
-        $tree = new Param($type.tree, $ident.tree);
+        $tree = new DeclParam($type.tree, $ident.tree);
+        setLocation($tree, $type.start);
         }
     ;

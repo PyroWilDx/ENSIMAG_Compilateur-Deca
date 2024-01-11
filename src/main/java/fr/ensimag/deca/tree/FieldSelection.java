@@ -69,7 +69,7 @@ public class FieldSelection extends AbstractLValue {
 
         String fieldName = fieldIdent.getName().getName();
 
-        expr.codeGenInst(compiler); // TODO (expr ne serait t-il pas un identifier ?)
+        expr.codeGenInst(compiler);
 
         GPRegister gpReg = rM.getLastReg();
         compiler.addInstruction(new CMP(new NullOperand(), gpReg));

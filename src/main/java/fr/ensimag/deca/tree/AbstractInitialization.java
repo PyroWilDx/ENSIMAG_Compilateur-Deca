@@ -25,17 +25,16 @@ public abstract class AbstractInitialization extends Tree {
     protected abstract void verifyInitialization(DecacCompiler compiler,
             Type t, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError;
     // Done
-    private Type varType = null;
+    private AbstractDeclField.TypeCode varTypeCode = null;
 
     protected abstract void codeGenInit(DecacCompiler compiler);
 
-    public void setVarType(Type value) {
-        varType = value;
+    public void setVarTypeCode(AbstractDeclField.TypeCode value) {
+        varTypeCode = value;
     }
 
-    public Type getVarType() {
-        return varType;
+    public AbstractDeclField.TypeCode getVarTypeCode() {
+        return varTypeCode;
     }
 
-    public abstract AbstractExpr getExpr();
 }

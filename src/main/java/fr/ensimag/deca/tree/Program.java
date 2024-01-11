@@ -52,11 +52,12 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
-        StackManager sM = compiler.getStackManager();
+        StackManager sM = new StackManager(false);
+        compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
 
         compiler.addComment("VTable of " + LabelUtils.OBJECT_CLASS_NAME);
-        DAddr nAddr = sM.getGbOffsetAddr();
+        DAddr nAddr = sM.getOffsetAddr();
         LabelUtils.setObjectClassSymbol(compiler.environmentType.OBJECT.getName());
         VTable vT = new VTable(null, LabelUtils.OBJECT_CLASS_SYMBOL, nAddr);
         vTM.addVTable(LabelUtils.OBJECT_CLASS_NAME, vT);
@@ -64,7 +65,7 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new STORE(Register.R0, nAddr));
         sM.incrVTableCpt();
 
-        DAddr eAddr = sM.getGbOffsetAddr();
+        DAddr eAddr = sM.getOffsetAddr();
         vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, eAddr);
         Label eLabel = LabelUtils.getMethodLabel(LabelUtils.OBJECT_CLASS_NAME,
                 LabelUtils.EQUALS_METHOD_NAME);
@@ -105,6 +106,9 @@ public class Program extends AbstractProgram {
         ErrorUtils.codeGenError(compiler,
                 "Error: Head Overflow",
                 ErrorUtils.heapOverflowLabel);
+        ErrorUtils.codeGenError(compiler,
+                "Error: Float Operation Overflow",
+                ErrorUtils.floatOverflowLabel);
         ErrorUtils.codeGenError(compiler,
                 "Error: Division by 0",
                 ErrorUtils.divBy0Label);

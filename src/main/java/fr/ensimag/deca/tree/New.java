@@ -41,6 +41,9 @@ public class New extends AbstractExpr {
         RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
 
+        String className = getType().getName().getName();
+        vTM.setCurrClassName(className);
+
         int fieldsCount = vTM.getCurrFieldCountOfClass();
 
         GPRegister gpReg = rM.getFreeReg();
@@ -71,7 +74,7 @@ public class New extends AbstractExpr {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO
-        throw new UnsupportedOperationException("Not yet implemented");
+        // TODO (iterchildren)
+        type.iterChildren(f);
     }
 }

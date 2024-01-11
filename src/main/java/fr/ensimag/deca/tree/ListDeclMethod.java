@@ -14,7 +14,6 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.util.LinkedList;
-import java.util.List;
 
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     @Override
@@ -59,6 +58,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
             for (AbstractDeclMethod declMethod : getList()) {
                 if (methodInfo.getMethodName().equals(declMethod.getName().getName())) {
                     isPresentInCurrClass = true;
+                    break;
                 }
             }
             if (!isPresentInCurrClass) {
@@ -66,7 +66,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
                         LabelUtils.getMethodLabel(methodInfo.getClassName(),
                                 methodInfo.getMethodName())),
                         Register.R0));
-                DAddr mAddr = sM.getGbOffsetAddr();
+                DAddr mAddr = sM.getOffsetAddr();
                 compiler.addInstruction(new STORE(Register.R0, mAddr));
                 sM.incrVTableCpt();
 

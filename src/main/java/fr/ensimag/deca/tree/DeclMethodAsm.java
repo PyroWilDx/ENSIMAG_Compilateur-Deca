@@ -3,24 +3,20 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.*;
-import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.*;
-import org.apache.commons.lang.Validate;
 
 import java.io.PrintStream;
-import java.util.LinkedList;
 
 public class DeclMethodAsm extends AbstractDeclMethod {
     private final String code;
     private final AbstractIdentifier type;
     private final AbstractIdentifier name;
-    private final ListParam params;
+    private final ListDeclParam params;
 
     public DeclMethodAsm(String code, AbstractIdentifier type, AbstractIdentifier name,
-                         ListParam params) {
+                         ListDeclParam params) {
         this.code = code;
         this.type = type;
         this.name = name;
