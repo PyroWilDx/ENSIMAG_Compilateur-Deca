@@ -48,8 +48,11 @@ public class Return extends AbstractInst {
 
     @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
-                              ClassDefinition currentClass, Type returnType) {
-        // TODO
+                              ClassDefinition currentClass, Type returnType) throws ContextualError {
+        if (returnType.isVoid()) {
+            throw new ContextualError("", getLocation());
+        }
+        this.expr = this.expr.verifyRValue(compiler, localEnv, currentClass, returnType);
     }
 
 
