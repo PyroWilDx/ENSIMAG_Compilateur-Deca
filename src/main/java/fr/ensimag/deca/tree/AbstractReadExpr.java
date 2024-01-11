@@ -24,9 +24,10 @@ public abstract class AbstractReadExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        ErrorManager eM = compiler.getErrorManager();
 
         codeGenOpRead(compiler);
-        compiler.addInstruction(new BOV(ErrorManager.ioErrLabel));
+        compiler.addInstruction(new BOV(eM.getIoErrLabel()));
 
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD(Register.R1, gpReg));

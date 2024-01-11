@@ -83,6 +83,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        ErrorManager eM = compiler.getErrorManager();
         StackManager sM = compiler.getStackManager();
 
         getLeftOperand().codeGenInst(compiler);
@@ -117,7 +118,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         codeGenOp(compiler, dVal, regLeft);
 
         if (getType().isFloat()) {
-            compiler.addInstruction(new BOV(ErrorManager.floatOverflowLabel));
+            compiler.addInstruction(new BOV(eM.getFloatOverflowLabel()));
         }
 
         if (!pushed) rM.freeReg(regRight);

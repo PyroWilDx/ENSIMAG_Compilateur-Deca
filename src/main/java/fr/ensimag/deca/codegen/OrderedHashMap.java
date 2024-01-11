@@ -10,6 +10,8 @@ public class OrderedHashMap<K, V> extends HashMap<K, V> {
     private final LinkedList<K> linkedList;
 
     public OrderedHashMap() {
+        super();
+
         linkedList = new LinkedList<>();
     }
 
@@ -24,6 +26,12 @@ public class OrderedHashMap<K, V> extends HashMap<K, V> {
         if (!containsKey(key)) {
             put(key, value);
             linkedList.addLast(key);
+        }
+    }
+
+    public void updateValue(K key, V value) {
+        if (containsKey(key)) {
+            put(key, value);
         }
     }
 

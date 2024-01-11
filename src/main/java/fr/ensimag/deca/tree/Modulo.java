@@ -20,9 +20,11 @@ public class Modulo extends AbstractOpArith {
     @Override
     protected void codeGenOpArith(DecacCompiler compiler,
                                   DVal valReg, GPRegister saveReg) {
+        ErrorManager eM = compiler.getErrorManager();
+
         compiler.addInstruction(new REM(valReg, saveReg));
         if (compiler.getCompilerOptions().doCheck()) {
-            compiler.addInstruction(new BOV(ErrorManager.divBy0Label));
+            compiler.addInstruction(new BOV(eM.getDivBy0Label()));
         }
         // Done
     }

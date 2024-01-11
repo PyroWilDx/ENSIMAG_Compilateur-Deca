@@ -102,12 +102,13 @@ public class RegManager {
 
     public static void addSaveRegsInsts(DecacCompiler compiler, int index,
                                         boolean[] usedRegs) {
+        ErrorManager eM = compiler.getErrorManager();
         StackManager sM = compiler.getStackManager();
 
         LinkedList<AbstractLine> startLines = new LinkedList<>();
         if (sM.getMaxStackSize() > 0) {
             startLines.addLast(new Line(new TSTO(sM.getMaxStackSize())));
-            startLines.addLast(new Line(new BOV(ErrorManager.stackOverflowLabel)));
+            startLines.addLast(new Line(new BOV(eM.getStackOverflowLabel())));
         }
         for (int i = 2; i < usedRegs.length; i++) {
             if (usedRegs[i]) {

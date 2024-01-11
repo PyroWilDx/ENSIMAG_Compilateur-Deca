@@ -54,6 +54,7 @@ public class DecacCompiler {
         this.source = source;
 
         this.regManager = new RegManager(compilerOptions.getNOfRegs());
+        this.errorManager = new ErrorManager();
         this.stackManager = null;
         this.condManager = new CondManager();
         this.vTableManager = new VTableManager();
@@ -197,6 +198,7 @@ public class DecacCompiler {
     }
 
     private final RegManager regManager;
+    private final ErrorManager errorManager;
     private StackManager stackManager;
     private final CondManager condManager;
     private final VTableManager vTableManager;
@@ -291,6 +293,10 @@ public class DecacCompiler {
 
     public RegManager getRegManager() {
         return regManager;
+    }
+
+    public ErrorManager getErrorManager() {
+        return errorManager;
     }
 
     public void setStackManager(StackManager value) {

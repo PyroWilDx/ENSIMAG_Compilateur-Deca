@@ -52,6 +52,7 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+        ErrorManager eM = compiler.getErrorManager();
         StackManager sM = new StackManager(false);
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
@@ -82,7 +83,7 @@ public class Program extends AbstractProgram {
         compiler.addComment("End of Main Program");
 
         compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
-        compiler.addInstruction(1, new BOV(ErrorManager.stackOverflowLabel));
+        compiler.addInstruction(1, new BOV(eM.getStackOverflowLabel()));
         compiler.addInstruction(2, new ADDSP(sM.getAddSp()));
 
         compiler.addComment("");
@@ -100,24 +101,7 @@ public class Program extends AbstractProgram {
         compiler.addComment("");
 
         compiler.addComment("Start of Error Labels");
-        ErrorManager.codeGenError(compiler,
-                "Error: Stack Overflow",
-                ErrorManager.stackOverflowLabel);
-        ErrorManager.codeGenError(compiler,
-                "Error: Head Overflow",
-                ErrorManager.heapOverflowLabel);
-        ErrorManager.codeGenError(compiler,
-                "Error: Float Operation Overflow",
-                ErrorManager.floatOverflowLabel);
-        ErrorManager.codeGenError(compiler,
-                "Error: Division by 0",
-                ErrorManager.divBy0Label);
-        ErrorManager.codeGenError(compiler,
-                "Error: Input/Output Error",
-                ErrorManager.ioErrLabel);
-        ErrorManager.codeGenError(compiler,
-                "Error: Dereferencing Null Pointer",
-                ErrorManager.nullPointerLabel);
+        eM.codeGenAllErrors(compiler);
         compiler.addComment("End of Error Labels");
         // Done
     }

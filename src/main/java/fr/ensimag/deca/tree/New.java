@@ -39,6 +39,7 @@ public class New extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        ErrorManager eM = compiler.getErrorManager();
         VTableManager vTM = compiler.getVTableManager();
 
         String className = getType().getName().getName();
@@ -48,7 +49,7 @@ public class New extends AbstractExpr {
 
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new NEW(fieldsCount + 1, gpReg));
-        compiler.addInstruction(new BOV(ErrorManager.heapOverflowLabel));
+        compiler.addInstruction(new BOV(eM.getHeapOverflowLabel()));
         compiler.addInstruction(new LEA(vTM.getCurrAddrOfClass(), Register.R0));
         compiler.addInstruction(
                 new STORE(Register.R0, new RegisterOffset(0, gpReg)));
