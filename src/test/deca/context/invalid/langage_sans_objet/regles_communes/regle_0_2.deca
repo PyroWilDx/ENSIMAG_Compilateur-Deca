@@ -2,7 +2,7 @@
 //    regle 0.1 opération partielle
 //
 // Resultats:
-//    Ligne 7: Identificateur de type non déclaré.
+//    Ligne 7: Undeclared type identifier : 'A'.
 {
     A a;
 }
