@@ -1,10 +1,12 @@
 // Description:
-//    regle 3.71, type de expr != type_classe
+//    regle 3.72, pas une méthode
 //
 // Resultats:
-//    Ligne 9 : Method call on native type
-
+//    Ligne 11: 'x' is not a method identifier.
+class A {
+    int x;
+}
 {
-    int a = 1;
-    boolean b = a.equals(1);
+    A a = new A();
+    a.x();
 }

@@ -1,8 +1,8 @@
 // Description:
-//    regle 3.73, signature non vide
+//    regle 3.74, signature vide
 //
 // Resultats:
-//    Ligne 13 : Too few arguments, expected type : 'float'.
+//    Ligne 13: Too many arguments.
 class A {
     void f(int x, float y){
     }
@@ -10,5 +10,7 @@ class A {
 {
     A a = new A();
     int x = 1;
-    a(x);
+    float y = 1;
+    float z = 1;
+    a(x, y, z);
 }

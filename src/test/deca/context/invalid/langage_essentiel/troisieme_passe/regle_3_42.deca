@@ -1,10 +1,8 @@
 // Description:
-//    regle 3.24, return type void
+//    regle 3.42, condition
 //
 // Resultats:
-//    Ligne 8 : Cannot use 'return' in void method.
-class A {
-    void f(int x) {
-        return x;
-    }
+//    Ligne 7: 'int' is not a class.
+{
+    int a = new int();
 }

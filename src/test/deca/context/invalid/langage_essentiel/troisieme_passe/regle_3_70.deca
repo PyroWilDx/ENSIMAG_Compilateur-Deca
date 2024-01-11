@@ -1,13 +1,14 @@
 // Description:
-//    regle 3.67 à 3.69, pas une classe
+//    regle 3.70, pas un champs
 //
 // Resultats:
-//    Ligne 11 : ‘f’ must be a field, a parameter or a variable, but it is a method.
+//    Ligne 13: 'f' must be a field.
 class A {
     int f() {
     return 1;
     }
-    void g(){
-        f = 1;
-    }
+}
+{
+    A a = new A();
+    a.f = 2;
 }

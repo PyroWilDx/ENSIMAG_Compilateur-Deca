@@ -1,8 +1,8 @@
 // Description:
-//    regle 3.42, condition
+//    regle 3.43, condition
 //
 // Resultats:
-//    Ligne 7 : 'int' is not a class.
+//    Ligne 7: 'this' cannot refer to Object class.
 {
-    int a = new int();
+    boolean b = this.equals(0);
 }

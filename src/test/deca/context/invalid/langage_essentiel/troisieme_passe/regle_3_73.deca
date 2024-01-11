@@ -1,12 +1,14 @@
 // Description:
-//    regle 3.72, pas une méthode
+//    regle 3.73, signature non vide
 //
 // Resultats:
-//    Ligne 9 : 'x' is not a method identifier.
+//    Ligne 13: Too few arguments, expected type : 'float'.
 class A {
-    int x;
+    void f(int x, float y){
+    }
 }
 {
     A a = new A();
-    a.x();
+    int x = 1;
+    a(x);
 }

@@ -2,7 +2,7 @@
 //    regle 3.71, type de expr != type_classe
 //
 // Resultats:
-//    Ligne 9 : Method call on native type
+//    Ligne 9: Method call on native type.
 
 {
     int a = 1;
