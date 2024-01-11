@@ -52,26 +52,32 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
+        ErrorManager eM = compiler.getErrorManager();
         StackManager sM = new StackManager(false);
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
 
-        compiler.addComment("VTable of " + LabelUtils.OBJECT_CLASS_NAME);
-        DAddr nAddr = sM.getOffsetAddr();
-        LabelUtils.setObjectClassSymbol(compiler.environmentType.OBJECT.getName());
-        VTable vT = new VTable(null, LabelUtils.OBJECT_CLASS_SYMBOL, nAddr);
-        vTM.addVTable(LabelUtils.OBJECT_CLASS_NAME, vT);
-        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
-        compiler.addInstruction(new STORE(Register.R0, nAddr));
-        sM.incrVTableCpt();
+        boolean generateObjectClass = !classes.getList().isEmpty();
 
-        DAddr eAddr = sM.getOffsetAddr();
-        vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, eAddr);
-        Label eLabel = LabelUtils.getMethodLabel(LabelUtils.OBJECT_CLASS_NAME,
-                LabelUtils.EQUALS_METHOD_NAME);
-        compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
-        compiler.addInstruction(new STORE(Register.R0, eAddr));
-        sM.incrVTableCpt();
+        Label eLabel = null;
+        if (generateObjectClass) {
+            compiler.addComment("VTable of " + LabelUtils.OBJECT_CLASS_NAME);
+            DAddr nAddr = sM.getOffsetAddr();
+            LabelUtils.setObjectClassSymbol(compiler.environmentType.OBJECT.getName());
+            VTable vT = new VTable(null, LabelUtils.OBJECT_CLASS_SYMBOL, nAddr);
+            vTM.addVTable(LabelUtils.OBJECT_CLASS_NAME, vT);
+            compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, nAddr));
+            sM.incrVTableCpt();
+
+            DAddr eAddr = sM.getOffsetAddr();
+            vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, eAddr);
+            eLabel = LabelUtils.getMethodLabel(
+                    LabelUtils.OBJECT_CLASS_NAME, LabelUtils.EQUALS_METHOD_NAME);
+            compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, eAddr));
+            sM.incrVTableCpt();
+        }
 
         classes.codeGenVTable(compiler);
 
@@ -82,42 +88,27 @@ public class Program extends AbstractProgram {
         compiler.addComment("End of Main Program");
 
         compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
-        compiler.addInstruction(1, new BOV(ErrorUtils.stackOverflowLabel));
+        compiler.addInstruction(1, new BOV(eM.getStackOverflowLabel()));
         compiler.addInstruction(2, new ADDSP(sM.getAddSp()));
 
-        compiler.addComment("");
-        compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
-        compiler.addLabel(eLabel);
-        compiler.addInstruction(
-                new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
-        compiler.addInstruction(
-                new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
-        compiler.addInstruction(new SEQ(Register.R0));
-        compiler.addInstruction(new RTS());
+        if (generateObjectClass) {
+            compiler.addComment("");
+            compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
+            compiler.addLabel(eLabel);
+            compiler.addInstruction(
+                    new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+            compiler.addInstruction(
+                    new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
+            compiler.addInstruction(new SEQ(Register.R0));
+            compiler.addInstruction(new RTS());
+        }
 
         classes.codeGenListDeclClass(compiler);
 
         compiler.addComment("");
 
         compiler.addComment("Start of Error Labels");
-        ErrorUtils.codeGenError(compiler,
-                "Error: Stack Overflow",
-                ErrorUtils.stackOverflowLabel);
-        ErrorUtils.codeGenError(compiler,
-                "Error: Head Overflow",
-                ErrorUtils.heapOverflowLabel);
-        ErrorUtils.codeGenError(compiler,
-                "Error: Float Operation Overflow",
-                ErrorUtils.floatOverflowLabel);
-        ErrorUtils.codeGenError(compiler,
-                "Error: Division by 0",
-                ErrorUtils.divBy0Label);
-        ErrorUtils.codeGenError(compiler,
-                "Error: Input/Output Error",
-                ErrorUtils.ioErrLabel);
-        ErrorUtils.codeGenError(compiler,
-                "Error: Dereferencing Null Pointer",
-                ErrorUtils.nullPointerLabel);
+        eM.codeGenAllErrors(compiler);
         compiler.addComment("End of Error Labels");
         // Done
     }

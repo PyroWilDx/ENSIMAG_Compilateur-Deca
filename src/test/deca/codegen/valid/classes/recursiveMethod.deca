@@ -1,0 +1,35 @@
+// Description :
+//    Test d'une méthode récursive qui utilise plein de registres
+//
+// Resultats :
+//    40 80 120 160 200 240 280 320 360 400
+
+class A {
+    int x;
+    int y = 1;
+    int z = 2;
+
+    void recMethod() {
+        x = x + (2 * y + (z + (2 * y + (z + (2 +
+             (2 * 1 + (4 / 2 + (12 / 6 + (z + (2 * z / 2 +
+             (8 * y / 4 + (y * z + (z * z / 2 + (2 + (z * z * z * z / 8 +
+             (z / 2 * 2 + ((2 * 4 * y * y) / (y * z * z) + (2 + (2 + (2
+             )))))
+             )))))
+             )))))
+             )))));
+
+        if (x < 400) {
+            print(x, " ");
+
+            recMethod();
+        } else {
+            println(x);
+        }
+    }
+}
+
+{
+    A a = new A();
+    a.recMethod();
+}

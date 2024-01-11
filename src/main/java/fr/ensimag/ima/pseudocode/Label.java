@@ -23,4 +23,19 @@ public class Label extends Operand {
         this.name = name;
     }
     private String name;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Label)) {
+            return false;
+        }
+        Label label = (Label) obj;
+        return name.equals(label.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return name.hashCode();
+    }
+
 }

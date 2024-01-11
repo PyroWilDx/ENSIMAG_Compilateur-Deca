@@ -1,7 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ErrorUtils;
+import fr.ensimag.deca.codegen.ErrorManager;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.BOV;
@@ -20,9 +20,11 @@ public class Modulo extends AbstractOpArith {
     @Override
     protected void codeGenOpArith(DecacCompiler compiler,
                                   DVal valReg, GPRegister saveReg) {
+        ErrorManager eM = compiler.getErrorManager();
+
         compiler.addInstruction(new REM(valReg, saveReg));
         if (compiler.getCompilerOptions().doCheck()) {
-            compiler.addInstruction(new BOV(ErrorUtils.divBy0Label));
+            compiler.addInstruction(new BOV(eM.getDivBy0Label()));
         }
         // Done
     }

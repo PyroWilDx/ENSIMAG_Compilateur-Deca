@@ -1,7 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ErrorUtils;
+import fr.ensimag.deca.codegen.ErrorManager;
 import fr.ensimag.deca.codegen.LabelUtils;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.VTableManager;
@@ -39,6 +39,7 @@ public class New extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        ErrorManager eM = compiler.getErrorManager();
         VTableManager vTM = compiler.getVTableManager();
 
         String className = getType().getName().getName();
@@ -48,7 +49,7 @@ public class New extends AbstractExpr {
 
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new NEW(fieldsCount + 1, gpReg));
-        compiler.addInstruction(new BOV(ErrorUtils.heapOverflowLabel));
+        compiler.addInstruction(new BOV(eM.getHeapOverflowLabel()));
         compiler.addInstruction(new LEA(vTM.getCurrAddrOfClass(), Register.R0));
         compiler.addInstruction(
                 new STORE(Register.R0, new RegisterOffset(0, gpReg)));
