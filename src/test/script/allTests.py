@@ -198,9 +198,9 @@ def doTests():
 
     # doVerify("codegen/valid/classes/methodCall.deca")
 
-    # doVerify("codegen/valid/classes/fieldSelection.deca",
-    #          expectedResult=b"2\n",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/fieldSelection.deca",
+             expectedResult=b"1.00000e+00 2 4 0 1.00000e+00\n"
+                            b"8.00000e+00 3.20000e+01 16 0.00000e+00 1\n")
 
     # doVerify("codegen/valid/classes/this.deca",
     #          expectedResult=b"2\n"
@@ -209,6 +209,14 @@ def doTests():
 
     # doVerify("codegen/valid/classes/exPage181.deca",
     #          expectedResult=b"a.getX() = 1\n",
+    #          doAssert=False)
+
+    # doVerify("codegen/valid/recursiveMethod.deca",
+    #          expectedResult=b"12420",
+    #          doAssert=False)
+
+    # doVerify("codegen/valid/classes/extends.deca",
+    #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
     #          doAssert=False)
 
     """

@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -248,6 +249,11 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
+        VTableManager vTM = compiler.getVTableManager();
+
+        if (getType().isClass()) {
+            vTM.setCurrClassName(getType().getName().getName());
+        }
 
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), gpReg));

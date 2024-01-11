@@ -1,0 +1,45 @@
+// Description :
+//    Test de l'héritage
+//
+// Resultats :
+//    12420
+
+class A {
+    int x = 1;
+    int y = 2;
+
+    void displayX() {
+        print(x);
+    }
+
+    void displayY() {
+        print(y);
+    }
+}
+
+class B {
+    int x = 4;
+    int z;
+
+    void displayX() {
+        print(x);
+    }
+
+    void displayZ() {
+        print(z);
+    }
+}
+
+{
+    A a = new A();
+    B b = new B();
+
+    a.displayX();
+    a.displayY();
+
+    b.displayX();
+    b.displayY();
+    b.displayZ();
+
+    println();
+}
