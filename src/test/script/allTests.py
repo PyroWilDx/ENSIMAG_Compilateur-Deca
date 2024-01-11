@@ -6,6 +6,12 @@ import subprocess
 allTestedFiles = []
 doParallel = False
 
+def prettyPrint(msg):
+    print()
+    print("==============================================")
+    print(msg)
+    print("==============================================")
+    print()
 
 def printOrAssert(out, expectedResult, doAssert):
     if doAssert:
@@ -30,7 +36,7 @@ def doVerify(decaFilePath,
     if doParallel and (decaFilePathNoExt not in allTestedFiles):
         return 0
 
-    print(f"=========== {decaFilePath} ===========")
+    print(f"=========== {'/'.join(decaFilePath.split('/')[2:])} ===========")
 
     if not doParallel:
         decacCmd = f"./src/main/bin/decac {decacOptions} ./src/test/deca/{decaFilePath}"
@@ -69,14 +75,8 @@ def doVerify(decaFilePath,
 def doTests():
     """Tests"""
 
-    """
-    ==============================================
-    TESTS QUI MARCHENT
-    ==============================================
-    """
-
     if not doParallel:
-        print("!!!!!!!!!!! Tests Valides !!!!!!!!!!!")
+        prettyPrint("TEST DE L'ÉTAPE C (VALIDE)")
 
     doVerify("codegen/valid/iostream/printString.deca",
              expectedResult=b"Hello World ! Second Argument\n"
@@ -90,7 +90,7 @@ def doTests():
     doVerify("codegen/valid/iostream/printFloatHexa.deca",
              expectedResult=b"0x1.3851ecp+0 -0x1.5364d8p+5 0x0p+03.1416 -0x1.63d70ap+1\n")
 
-    doVerify("syntax/valid/include/include.deca",
+    doVerify("codegen/valid/iostream/include.deca",
              expectedResult=b"Hello World\n")
 
     doVerify("codegen/valid/declarations/declVarEasy.deca",
@@ -99,11 +99,6 @@ def doTests():
     doVerify("codegen/valid/declarations/declVarMany.deca",
              expectedResult=b"x = 1\n"
                             b"y = 42 | z = 3.14160e+00\n")
-
-    doVerify("codegen/invalid/declVarNoInit.deca",
-             expectedResult=b"  ** IMA ** ERREUR ** Ligne 18 : \n"
-                            b"    WINT avec R1 indefini\n",
-             execError=True)
 
     doVerify("codegen/valid/operations/opArith.deca",
              expectedResult=b"1 + 1 = 2\n"
@@ -132,19 +127,6 @@ def doTests():
                             b"4.0 / 3 = 1.33333e+00\n"
                             b"4 / 3.0 = 1.33333e+00\n")
 
-    doVerify("codegen/invalid/divisionBy0.deca",
-             expectedResult=b"Error: Division by 0\n",
-             execError=True)
-
-    doVerify("codegen/invalid/moduloBy0.deca",
-             expectedResult=b"2\n"
-                            b"Error: Division by 0\n",
-             execError=True)
-
-    doVerify("codegen/invalid/floatOverflow.deca",
-             expectedResult=b"Error: Float Operation Overflow\n",
-             execError=True)
-
     doVerify("codegen/valid/conditions/boolLazyEval.deca",
              expectedResult=b"")
 
@@ -156,10 +138,6 @@ def doTests():
 
     doVerify("codegen/valid/conditions/whileIfThenElse.deca",
              expectedResult=b"4321\n")
-
-    doVerify("codegen/interactive/readIntFloat.deca",
-             expectedResult=b"3.20000e+00\n",
-             input=b"1\n2.2")
 
     doVerify("codegen/valid/registers/registerOverflow.deca",
              expectedResult=b"5252\n",
@@ -219,20 +197,33 @@ def doTests():
     #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
     #          doAssert=False)
 
-    """
-    ==============================================
-    TESTS QUI NE MARCHENT PAS
-    ==============================================
-    """
+    if not doParallel:
+        prettyPrint("TEST DE L'ÉTAPE C (INVALIDE)")
 
-    if doParallel:
-        return 0
+    doVerify("codegen/invalid/declVarNoInit.deca",
+             expectedResult=b"  ** IMA ** ERREUR ** Ligne 18 : \n"
+                            b"    WINT avec R1 indefini\n",
+             execError=True)
 
-    # print()
-    # print("!!!!!!!!!!! Tests Invalides !!!!!!!!!!!")
-    #
-    # doVerify("context/invalid/langage_sans_objet/troisieme_passe/regle_3_17_1.deca",
-    #          decacFail=True)
+    doVerify("codegen/invalid/divisionBy0.deca",
+             expectedResult=b"Error: Division by 0\n",
+             execError=True)
+
+    doVerify("codegen/invalid/moduloBy0.deca",
+             expectedResult=b"2\n"
+                            b"Error: Division by 0\n",
+             execError=True)
+
+    doVerify("codegen/invalid/floatOverflow.deca",
+             expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
+    if not doParallel:
+        prettyPrint("TEST DE L'ÉTAPE C (INTERACTIVE)")
+
+    doVerify("codegen/interactive/readIntFloat.deca",
+             expectedResult=b"3.20000e+00\n",
+             input=b"1\n2.2")
 
     return 0
 
@@ -240,8 +231,9 @@ def doTests():
 def decacParallel():
     global doParallel
     doParallel = True
-    print()
-    print("====================== Option -P ======================")
+
+    prettyPrint("TEST DE L'ÉTAPE C AVEC OPTION -P")
+
     decacCmd = f"./src/main/bin/decac -P"
     for filePath in allTestedFiles:
         decacCmd += f" ./src/test/deca/{filePath}.deca"
@@ -249,6 +241,7 @@ def decacParallel():
     for filePath in allTestedFiles:  # To Ensure that -P Recompiles All
         os.system(f"\\rm ./src/test/deca/{filePath}.ass")
     print("Remove Successful")
+    print()
 
     os.system(decacCmd)
 
@@ -263,7 +256,7 @@ def main():
     doTests()
 
     # With -P
-    # decacParallel()
+    decacParallel()
 
 
 if __name__ == '__main__':
