@@ -8,11 +8,11 @@ import fr.ensimag.deca.tools.SymbolTable;
 
 import java.io.PrintStream;
 
-public class Param extends AbstractParam {
+public class DeclParam extends AbstractParam {
     private AbstractIdentifier type;
     private AbstractIdentifier name;
 
-    public Param(AbstractIdentifier type, AbstractIdentifier name) {
+    public DeclParam(AbstractIdentifier type, AbstractIdentifier name) {
         this.type = type;
         this.name = name;
     }

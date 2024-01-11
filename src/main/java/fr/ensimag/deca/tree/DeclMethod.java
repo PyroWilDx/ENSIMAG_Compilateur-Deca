@@ -14,7 +14,7 @@ import java.io.PrintStream;
 public class DeclMethod extends AbstractDeclMethod {
     private final AbstractIdentifier type;
     private final AbstractIdentifier name;
-    private final ListParam params;
+    private final ListDeclParam params;
     // TODO peutetre creer une classe bloc pour factoriser avec Main et se rapprocher du sujet
     // TODO mais dans ce cas penser à changer le parser
     private final ListDeclVar listDeclVar;
@@ -25,7 +25,7 @@ public class DeclMethod extends AbstractDeclMethod {
     private Label mEndLabel;
 
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name,
-                      ListParam params, ListDeclVar listDeclVar, ListInst listInst) {
+                      ListDeclParam params, ListDeclVar listDeclVar, ListInst listInst) {
         this.type = type;
         this.name = name;
         this.params = params;
