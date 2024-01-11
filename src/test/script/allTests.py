@@ -201,7 +201,7 @@ def doTests():
         prettyPrint("TEST DE L'ÉTAPE C (INVALIDE)")
 
     doVerify("codegen/invalid/declVarNoInit.deca",
-             expectedResult=b"  ** IMA ** ERREUR ** Ligne 18 : \n"
+             expectedResult=b"  ** IMA ** ERREUR ** Ligne 13 : \n"
                             b"    WINT avec R1 indefini\n",
              execError=True)
 
@@ -261,3 +261,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    print()

@@ -2,7 +2,7 @@
 //    Test de déclarations de variables sans les initialiser
 //
 // Resultats :
-//    ** IMA ** ERREUR ** Ligne 18 :
+//    ** IMA ** ERREUR ** Ligne 13 :
 //    WINT avec R1 indefini
 
 {

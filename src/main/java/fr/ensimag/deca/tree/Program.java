@@ -57,22 +57,27 @@ public class Program extends AbstractProgram {
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
 
-        compiler.addComment("VTable of " + LabelUtils.OBJECT_CLASS_NAME);
-        DAddr nAddr = sM.getOffsetAddr();
-        LabelUtils.setObjectClassSymbol(compiler.environmentType.OBJECT.getName());
-        VTable vT = new VTable(null, LabelUtils.OBJECT_CLASS_SYMBOL, nAddr);
-        vTM.addVTable(LabelUtils.OBJECT_CLASS_NAME, vT);
-        compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
-        compiler.addInstruction(new STORE(Register.R0, nAddr));
-        sM.incrVTableCpt();
+        boolean generateObjectClass = !classes.getList().isEmpty();
 
-        DAddr eAddr = sM.getOffsetAddr();
-        vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, eAddr);
-        Label eLabel = LabelUtils.getMethodLabel(LabelUtils.OBJECT_CLASS_NAME,
-                LabelUtils.EQUALS_METHOD_NAME);
-        compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
-        compiler.addInstruction(new STORE(Register.R0, eAddr));
-        sM.incrVTableCpt();
+        Label eLabel = null;
+        if (generateObjectClass) {
+            compiler.addComment("VTable of " + LabelUtils.OBJECT_CLASS_NAME);
+            DAddr nAddr = sM.getOffsetAddr();
+            LabelUtils.setObjectClassSymbol(compiler.environmentType.OBJECT.getName());
+            VTable vT = new VTable(null, LabelUtils.OBJECT_CLASS_SYMBOL, nAddr);
+            vTM.addVTable(LabelUtils.OBJECT_CLASS_NAME, vT);
+            compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, nAddr));
+            sM.incrVTableCpt();
+
+            DAddr eAddr = sM.getOffsetAddr();
+            vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, eAddr);
+            eLabel = LabelUtils.getMethodLabel(
+                    LabelUtils.OBJECT_CLASS_NAME, LabelUtils.EQUALS_METHOD_NAME);
+            compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, eAddr));
+            sM.incrVTableCpt();
+        }
 
         classes.codeGenVTable(compiler);
 
@@ -86,15 +91,17 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(1, new BOV(eM.getStackOverflowLabel()));
         compiler.addInstruction(2, new ADDSP(sM.getAddSp()));
 
-        compiler.addComment("");
-        compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
-        compiler.addLabel(eLabel);
-        compiler.addInstruction(
-                new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
-        compiler.addInstruction(
-                new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
-        compiler.addInstruction(new SEQ(Register.R0));
-        compiler.addInstruction(new RTS());
+        if (generateObjectClass) {
+            compiler.addComment("");
+            compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
+            compiler.addLabel(eLabel);
+            compiler.addInstruction(
+                    new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+            compiler.addInstruction(
+                    new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
+            compiler.addInstruction(new SEQ(Register.R0));
+            compiler.addInstruction(new RTS());
+        }
 
         classes.codeGenListDeclClass(compiler);
 
