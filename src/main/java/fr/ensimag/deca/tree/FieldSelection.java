@@ -58,6 +58,7 @@ public class FieldSelection extends AbstractLValue {
                         "' must be a subtype of '" + fieldContainingClass.getType().getName() + "'.", getLocation());
             }
         }
+        this.setType(type);
         return type;
         // Done
     }
