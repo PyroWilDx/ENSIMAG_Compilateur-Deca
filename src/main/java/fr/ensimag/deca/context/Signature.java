@@ -31,6 +31,7 @@ public class Signature {
         this.args = args;
     }
     public Signature copyWithoutFirst() {
+        if (args.size() == 1) return new Signature();
         List<Type> newArgs = args.subList(1, args.size() - 1);
         return new Signature(newArgs);
     }

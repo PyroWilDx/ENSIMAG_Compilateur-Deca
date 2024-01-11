@@ -5,12 +5,11 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Signature;
 import fr.ensimag.deca.context.Type;
-import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
 import java.util.Iterator;
 
-public class ListParam extends TreeList<AbstractParam> {
+public class ListDeclParam extends TreeList<AbstractParam> {
 
     @Override
     public void decompile(IndentPrintStream s) {
