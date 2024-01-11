@@ -1,0 +1,8 @@
+// Description:
+//    regle 2.5 condition
+//
+// Resultats:
+//    Ligne 7: Field type cannot be void.
+class A {
+    void a;
+}

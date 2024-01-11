@@ -42,7 +42,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         Type operandType = this.operand.verifyExpr(compiler, localEnv, currentClass);
         Type type = compiler.environmentType.getTypeUnaryOp(op, operandType);
         if (type == null) {
-            throw new ContextualError("Unary  operation : '" + op
+            throw new ContextualError("Unary operation '" + op
                     + "' cannot have operand of type : '"
                     + operandType.getName() + "'.", this.getLocation());
         }
