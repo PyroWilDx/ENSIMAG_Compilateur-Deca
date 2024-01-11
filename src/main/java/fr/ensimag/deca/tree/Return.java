@@ -30,7 +30,7 @@ public class Return extends AbstractInst {
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
                               ClassDefinition currentClass, Type returnType) throws ContextualError {
         if (returnType.isVoid()) {
-            throw new ContextualError("", getLocation());
+            throw new ContextualError("Cannot use 'return' in void method.", getLocation());
         }
         this.expr = this.expr.verifyRValue(compiler, localEnv, currentClass, returnType);
     }
