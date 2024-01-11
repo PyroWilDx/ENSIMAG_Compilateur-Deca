@@ -159,10 +159,10 @@ public class EnvironmentType {
     public AbstractExpr assignCompatible(DecacCompiler compiler, Type type1,
                                     AbstractExpr expr2) {
         Type type2 = expr2.getType();
-        if (type1.equals(FLOAT) && type2 == INT) {
+        if (type1.isFloat() && type2.isInt()) {
             return new ConvFloat(expr2);
         }
-        if (type1 == type2 || compiler.environmentType.subtype(type1, type2)) return expr2;
+        if (type1.equals(type2) || compiler.environmentType.subtype(type1, type2)) return expr2;
         return null;
     }
 
