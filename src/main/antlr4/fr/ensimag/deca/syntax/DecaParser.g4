@@ -519,8 +519,6 @@ class_decl returns[DeclClass tree]
     : CLASS name=ident superclass=class_extension OBRACE class_body CBRACE {
         setLocation($name.tree, $name.start);
         setLocation($superclass.tree, $superclass.start);
-        setLocation($class_body.fields, $class_body.start);
-        setLocation($class_body.methods, $class_body.start);
         $tree = new DeclClass($name.tree, $superclass.tree, $class_body.fields, $class_body.methods);
         setLocation($tree, $CLASS);
         }
@@ -550,9 +548,7 @@ class_body returns[ListDeclMethod methods, ListDeclField fields]
     ;
 
 decl_field_set[ListDeclField fields]
-    : v=visibility t=type list_decl_field[fields, $v.visi, $t.tree]{
-      setLocation($fields,$type.start);
-    }
+    : v=visibility t=type list_decl_field[fields, $v.visi, $t.tree]
       SEMI
     ;
 
@@ -568,7 +564,7 @@ visibility returns[Visibility visi]
 
 list_decl_field[ListDeclField fields, Visibility v, AbstractIdentifier t]
     : dv1=decl_field[v, t] {
-        setLocation($fields,$dv1.start);
+        //setLocation($fields,$dv1.start);
         $fields.add($dv1.tree);
     }
         (COMMA dv2=decl_field[v, t] {
@@ -585,7 +581,6 @@ decl_field[Visibility v, AbstractIdentifier t]  returns[AbstractDeclField tree]
         }
       (EQUALS e=expr {
         $tree = new DeclField(v, t, $i.tree, new Initialization($e.tree));
-        setLocation($tree, $i.start);
         }
       )? {
         }
