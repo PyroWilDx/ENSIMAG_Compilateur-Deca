@@ -119,7 +119,7 @@ public class DeclField extends AbstractDeclField {
             ClassDefinition superClassDef = (ClassDefinition) def;
             EnvironmentExp envExpSuper = superClassDef.getMembers();
             ExpDefinition expDef = envExpSuper.get(this.name.getName());
-            if (expDef != null && expDef.isField()) {
+            if (expDef != null && !expDef.isField()) {
                 throw new ContextualError("A method '" + this.name.getName() +
                         "' already exists in super class.", getLocation());
             }

@@ -32,7 +32,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
             index++;
             if (envReturn.disjointUnion(env) != null) {
                 throw new ContextualError("Method '" + decl.getName()
-                        + "' already defined.", getLocation());
+                        + "' already defined.", decl.getLocation());
             }
         }
         return envReturn;

@@ -29,7 +29,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
             index++;
             if (envReturn.disjointUnion(env) != null) {
                 throw new ContextualError("Field '" + decl.getName() +
-                        "' already defined.", getLocation());
+                        "' already defined.", decl.getLocation());
             }
         }
         return envReturn;

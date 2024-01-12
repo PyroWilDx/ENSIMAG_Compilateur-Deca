@@ -256,7 +256,7 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     public SymbolTable.Symbol getName() {
-        return null;
+        return this.name.getName();
     }
 
     @Override
