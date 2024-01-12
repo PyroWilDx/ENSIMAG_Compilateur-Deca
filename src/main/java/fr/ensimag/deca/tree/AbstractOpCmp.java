@@ -36,28 +36,21 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
 
         compiler.addInstruction(new CMP(valReg, saveReg));
         Instruction opInst;
-        if (cM.isInCond()) {
-            Label tLabel = cM.getCurrCondTrueLabel();
-            Label fLabel = cM.getCurrCondFalseLabel();
-            if (cM.isInAnd()) {
-                if (inNot) opInst = getBranchOpCmpInst(fLabel);
-                else opInst = getBranchInvOpCmpInst(fLabel);
-            } else if (cM.isInOr()) {
-                if (inNot) opInst = getBranchInvOpCmpInst(tLabel);
-                else opInst = getBranchOpCmpInst(tLabel);
-            } else {
-                if (inNot) opInst = getBranchOpCmpInst(fLabel);
-                else opInst = getBranchInvOpCmpInst(fLabel);
+        if (cM.isDoingCond()) {
+            if (branchLabel != null) {
+                if (isNotInFalse) opInst = getBranchOpCmpInst(branchLabel);
+                else opInst = getBranchInvOpCmpInst(branchLabel);
+                compiler.addInstruction(opInst);
             }
         } else {
             RegManager rM = compiler.getRegManager();
 
             GPRegister gpReg = rM.getFreeReg();
-            if (inNot) opInst = getInvOpCmpInst(gpReg);
-            else opInst = getOpCmpInst(gpReg);
+            if (isNotInFalse) opInst = getOpCmpInst(gpReg);
+            else opInst = getInvOpCmpInst(gpReg);
+            compiler.addInstruction(opInst);
             rM.freeReg(gpReg);
         }
-        compiler.addInstruction(opInst);
     }
 
     protected abstract Instruction getBranchInvOpCmpInst(Label bLabel);

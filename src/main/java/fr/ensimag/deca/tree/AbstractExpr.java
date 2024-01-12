@@ -10,6 +10,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.WFLOAT;
@@ -163,7 +164,8 @@ public abstract class AbstractExpr extends AbstractInst {
         // Done
     }
 
-    protected boolean inNot = false;
+    protected boolean isNotInFalse = true;
+    protected Label branchLabel = null;
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {

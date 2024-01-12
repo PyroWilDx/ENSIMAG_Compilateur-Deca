@@ -1,8 +1,13 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.CondManager;
+import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  * @author gl47
@@ -15,28 +20,58 @@ public class And extends AbstractOpBool {
     }
 
     @Override
-    protected void addOperation(CondManager cM) {
-        cM.addAndOperation();
-    }
+    protected void codeGenInst(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+        CondManager cM = compiler.getCondManager();
 
-    @Override
-    protected void addCondLabels(CondManager cM) {
-        cM.addCondLabels(getEndLazyCondLabel(), getLazyCondLabel());
-    }
+        cM.doCond();
 
-    @Override
-    protected int getNotLazyValue() {
-        return (inNot) ? 0 : 1;
-    }
+        boolean firstCond = false;
+        if (branchLabel == null) {
+            int idCpt = cM.getAndIncrIdCpt();
+            branchLabel = new Label("fastEndLabel" + idCpt);
+            firstCond = true;
+        }
 
-    @Override
-    protected int getLazyValue() {
-        return (inNot) ? 1 : 0;
-    }
+        Label fastEndLabel = null;
 
-    @Override
-    protected Label getLastCondLabel(CondManager cM) {
-        return cM.getLastCondTrueLabel();
+        if (isNotInFalse) {
+            getLeftOperand().isNotInFalse = false;
+            int idCpt = cM.getAndIncrIdCpt();
+            fastEndLabel = new Label("fastEndLabel" + idCpt);
+            getLeftOperand().branchLabel = fastEndLabel;
+            getRightOperand().isNotInFalse = true;
+            getRightOperand().branchLabel = branchLabel;
+        } else {
+            getLeftOperand().isNotInFalse = false;
+            getLeftOperand().branchLabel = branchLabel;
+            getRightOperand().isNotInFalse = false;
+            getRightOperand().branchLabel = branchLabel;
+        }
+
+        getLeftOperand().codeGenInst(compiler);
+        getRightOperand().codeGenInst(compiler);
+
+        if (fastEndLabel != null) compiler.addLabel(fastEndLabel);
+
+        if (firstCond){
+            int idCpt = cM.getAndIncrIdCpt();
+            Label endLabel = new Label("endLabel" + idCpt);
+
+            GPRegister gpReg = rM.getFreeReg();
+
+            compiler.addInstruction(new LOAD(0, gpReg));
+            compiler.addInstruction(new BRA(endLabel));
+
+            compiler.addLabel(branchLabel);
+            compiler.addInstruction(new LOAD(1, gpReg));
+
+            rM.freeReg(gpReg);
+
+            compiler.addLabel(endLabel);
+        }
+
+        cM.exitCond();
     }
 
     @Override

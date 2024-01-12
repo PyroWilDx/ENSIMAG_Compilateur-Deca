@@ -9,8 +9,6 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 
 import java.io.PrintStream;
@@ -44,21 +42,10 @@ public class BooleanLiteral extends AbstractLiteral {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 
-        if (cM.isInCond()) {
-            Instruction bInst = null;
-            Label tLabel = cM.getCurrCondTrueLabel();
-            Label fLabel = cM.getCurrCondFalseLabel();
-            if (cM.isInAnd()) {
-                if (!value && !inNot) bInst = new BRA(fLabel);
-                else if (value && inNot) bInst = new BRA(fLabel);
-            } else if (cM.isInOr()) {
-                if (value && !inNot) new BRA(tLabel);
-                else if (!value && inNot) new BRA(tLabel);
-            } else {
-                if (!value && !inNot) bInst = new BRA(fLabel);
-                else if (value && inNot) bInst = new BRA(fLabel);
+        if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+            if ((value && isNotInFalse) || (!value && !isNotInFalse)) {
+                if (branchLabel != null) compiler.addInstruction(new BRA(branchLabel));
             }
-            if (bInst != null) compiler.addInstruction(bInst);
         } else {
             rM.setLastImm(new ImmediateInteger((value) ? 1 : 0));
         }

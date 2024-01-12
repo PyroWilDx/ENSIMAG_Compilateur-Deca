@@ -16,7 +16,8 @@ public class Not extends AbstractUnaryExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        getOperand().inNot = !inNot;
+        getOperand().isNotInFalse = !isNotInFalse;
+        getOperand().branchLabel = branchLabel;
         getOperand().codeGenInst(compiler);
     }
 
