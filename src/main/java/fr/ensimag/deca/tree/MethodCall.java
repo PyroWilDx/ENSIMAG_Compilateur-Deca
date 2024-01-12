@@ -37,6 +37,7 @@ public class MethodCall extends AbstractMethodCall {
         MethodIdentNonTerminalReturn sigAndType = this.methodIdent.verifyMethodIdent(classEnv);
         Signature sig = sigAndType.getSignature();
         Type t = sigAndType.getType();
+        this.setType(t);
         this.rValueStar.verifyRValueStar(compiler, localEnv, currentClass, sig);
         return t;
         // Done
