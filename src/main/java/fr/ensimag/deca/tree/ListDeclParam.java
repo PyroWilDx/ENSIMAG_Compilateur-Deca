@@ -38,7 +38,7 @@ public class ListDeclParam extends TreeList<AbstractParam> {
             if (env.disjointUnion(envParam) != null) {
                 throw new ContextualError("Parameter '" +
                         param.getName() +
-                        "already exists.", getLocation());
+                        "' already exists.", getLocation());
             }
         }
         return env;

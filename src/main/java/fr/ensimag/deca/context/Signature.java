@@ -32,7 +32,7 @@ public class Signature {
     }
     public Signature copyWithoutFirst() {
         if (args.size() == 1) return new Signature();
-        List<Type> newArgs = args.subList(1, args.size() - 1);
+        List<Type> newArgs = args.subList(1, args.size());
         return new Signature(newArgs);
     }
     public Type getFirst() {
@@ -48,5 +48,10 @@ public class Signature {
         if (! (obj instanceof Signature)) return false;
         Signature sig2 = (Signature) obj;
         return this.args.equals(sig2.args);
+    }
+
+    @Override
+    public String toString() {
+        return args.toString();
     }
 }

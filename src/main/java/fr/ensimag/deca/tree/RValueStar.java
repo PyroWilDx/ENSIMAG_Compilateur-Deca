@@ -36,7 +36,7 @@ public class RValueStar extends TreeList<AbstractExpr> {
                                  Signature sig) throws ContextualError {
         if (this.getList().isEmpty()) {
             if (!sig.isEmpty()) {
-                throw new ContextualError("To few arguments, expected type : '"
+                throw new ContextualError("Too few arguments, expected type : '"
                         + sig.getFirst().getName() + "'.", getLocation());
             }
             return;

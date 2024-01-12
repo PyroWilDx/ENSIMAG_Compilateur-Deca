@@ -277,8 +277,8 @@ public class DeclMethod extends AbstractDeclMethod {
                 MethodDefinition methodDefinition = (MethodDefinition) expDef;
                 Signature sig2 = methodDefinition.getSignature();
                 if (!sig.equals(sig2)) {
-                    throw new ContextualError("Method "+ this.getName() +
-                            "defined in super class with" +
+                    throw new ContextualError("Method '"+ this.getName() +
+                            "' defined in super class with " +
                             "another signature.", getLocation());
                 }
                 Type type2 = expDef.getType();
