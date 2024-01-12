@@ -5,11 +5,6 @@
 // Resultats :
 //    Ne doit rien afficher
 
-/*
-Test d'une classe avec seulement des attributs où
-l'initialisation nécéssite d'autres registres que R0 et R1
-*/
-
 class A {
     int a = 1;
     int b = 1 + (1 + (1 + (1 + (1 +

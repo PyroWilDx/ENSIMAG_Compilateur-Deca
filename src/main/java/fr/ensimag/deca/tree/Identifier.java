@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.deca.codegen.Utils;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
@@ -257,11 +258,7 @@ public class Identifier extends AbstractIdentifier {
             vTM.setCurrClassName(getType().getName().getName());
         }
 
-        DAddr iAddr = getExpDefinition().getOperand();
-        if (iAddr == null) { // It's a Method's Param
-            int paramOffset = vTM.getCurrParamOffsetOfMethod(getName().getName());
-            iAddr = new RegisterOffset(paramOffset, Register.LB);
-        }
+        DAddr iAddr = Utils.extractAddrFromIdent(compiler, this);
 
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD(iAddr, gpReg));

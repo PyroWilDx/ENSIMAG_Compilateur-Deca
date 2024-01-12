@@ -7,8 +7,8 @@ import java.util.HashMap;
 public class VTableManager {
 
     private final HashMap<String, VTable> vTables;
-    private String currClassName;
-    private String currMethodName;
+    private String currClassName; // TODO (faudra surement une stack pour les méthodes d'une autre classe dans la méthode de cette classe)
+    private String currMethodName; // TODO (faudra surement une stack pour les méthode dans les méthode)...
 
     public VTableManager() {
         this.vTables = new HashMap<>();
@@ -66,7 +66,7 @@ public class VTableManager {
         return getAddrOfMethod(currClassName, currMethodName);
     }
 
-    public int getCurrParamOffsetOfMethod(String paramName) {
+    public Integer getCurrParamOffsetOfMethod(String paramName) {
         return vTables.get(currClassName).getParamOffsetOfMethod(currMethodName, paramName);
     }
 

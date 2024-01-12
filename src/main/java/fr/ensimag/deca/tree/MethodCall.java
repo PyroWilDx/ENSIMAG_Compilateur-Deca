@@ -81,18 +81,14 @@ public class MethodCall extends AbstractMethodCall {
         }
 
         gpReg = rM.getFreeReg();
-//        compiler.addInstruction(
-//                new LOAD(new RegisterOffset(0, Register.SP), gpReg));
-//        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-//        compiler.addInstruction(new BEQ(ErrorUtils.nullPointerLabel));
-
-//        compiler.addInstruction(
-//                new LOAD(new RegisterOffset(0, gpReg), gpReg));
-//        compiler.addInstruction(new BSR(new RegisterOffset(mOffset, gpReg)));
         compiler.addInstruction(new BSR(vTM.getCurrAddrOfMethod()));
         rM.freeReg(gpReg);
 
         compiler.addInstruction(new SUBSP(nbParam));
+
+        if (!getType().isVoid()) {
+            rM.freeRegForce(Register.R0);
+        }
     }
 
     @Override

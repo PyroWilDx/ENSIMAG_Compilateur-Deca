@@ -152,12 +152,12 @@ def doTests():
 
     doVerify("codegen/valid/options/optionBanner.deca",
              expectedResult=b"Bonjour\n",
-             # decacOptions="-b"
+             # decacOptions="-b" # à Remettre
              )
 
     doVerify("codegen/valid/options/optionParse.deca",
-             # decacOptions="-p"
-             decacOptions="-v"
+             # decacOptions="-p" # à Remettre
+             decacOptions="-v" # à Enlever
             )
 
     doVerify("codegen/valid/options/optionVerification.deca",
@@ -188,18 +188,35 @@ def doTests():
              expectedResult=b"x + y + z = 10 + 20 + 30 = 60\n"
                             b"x * y * z = 2 * 6 * 10 = 120\n")
 
+    doVerify("codegen/valid/classes/methodCallReturn.deca",
+             b"0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20\n")
+
     doVerify("codegen/valid/classes/fieldSelection.deca",
              expectedResult=b"1.00000e+00 2 4 0 1.00000e+00\n"
                             b"8.00000e+00 3.20000e+01 16 0.00000e+00 1\n")
 
-    # doVerify("codegen/valid/classes/this.deca",
-    #          expectedResult=b"2\n"
-    #                         b"4\n",
+    doVerify("codegen/valid/classes/thisSimple.deca",
+             expectedResult=b"2 2\n"
+                            b"6 6\n")
+
+    doVerify("codegen/valid/classes/noThisAccess.deca",
+             expectedResult=b"2 6\n"
+                            b"60 120\n")
+
+    # doVerify("codegen/valid/classes/varInMethod.deca",
+    #          expectedResult=b"8\n",
     #          doAssert=False)
 
-    # doVerify("codegen/valid/classes/exPage181.deca",
-    #          expectedResult=b"a.getX() = 1\n",
+    # doVerify("codegen/valid/classes/fieldInitFieldSimple.deca",
+    #          expectedResult=b"10\n",
     #          doAssert=False)
+
+    # doVerify("codegen/valid/classes/fieldInitFieldComplex.deca",
+    #          expectedResult=b"20\n",
+    #          doAssert=False)
+
+    doVerify("codegen/valid/classes/exPage181.deca",
+             expectedResult=b"a.getX() = 1\n")
 
     # doVerify("codegen/valid/recursiveMethod.deca",
     #          expectedResult=b"12420",

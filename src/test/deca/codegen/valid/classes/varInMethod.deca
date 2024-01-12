@@ -1,0 +1,20 @@
+// Description :
+//    Test de variables dans une méthode
+//
+// Resultats :
+//    8
+
+class A {
+    protected int x = 2;
+
+    void calcValue() {
+        int y = x;
+        int z = this.x;
+        println(x + y + 2 * z);
+    }
+}
+
+{
+    A a = new A();
+    a.calcValue();
+}

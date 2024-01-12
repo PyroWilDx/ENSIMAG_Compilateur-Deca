@@ -7,9 +7,7 @@ import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.NullOperand;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 
@@ -65,6 +63,16 @@ public class FieldSelection extends AbstractLValue {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        DAddr fAddr = getAddrOfField(compiler);
+        fieldIdent.getExpDefinition().setOperand(fAddr);
+
+        fieldIdent.codeGenInst(compiler);
+
+        fieldIdent.getExpDefinition().setOperand(null);
+        // Done
+    }
+
+    public DAddr getAddrOfField(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         ErrorManager eM = compiler.getErrorManager();
         VTableManager vTM = compiler.getVTableManager();
@@ -78,11 +86,9 @@ public class FieldSelection extends AbstractLValue {
         compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
 
         int fieldOffset = vTM.getCurrOffsetOfField(fieldName);
-        fieldIdent.getExpDefinition().setOperand(new RegisterOffset(fieldOffset, gpReg));
+        DAddr fAddr = new RegisterOffset(fieldOffset, gpReg);
         rM.freeReg(gpReg);
-
-        fieldIdent.codeGenInst(compiler);
-        // Done
+        return fAddr;
     }
 
     @Override

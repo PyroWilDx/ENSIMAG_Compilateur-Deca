@@ -34,7 +34,7 @@ public class MethodInfo {
         methodParams.put(paramName, paramOffset);
     }
 
-    public int getParamOffset(String paramName) {
+    public Integer getParamOffset(String paramName) {
         return methodParams.get(paramName);
     }
 
