@@ -28,8 +28,8 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
         boolean firstCond = false;
         if (branchLabel == null) {
-            branchLabel = cM.getUniqueLabel();
             firstCond = true;
+            branchLabel = cM.getUniqueLabel();
         }
 
         Label fastEndLabel = setOperandCondVals(cM);
