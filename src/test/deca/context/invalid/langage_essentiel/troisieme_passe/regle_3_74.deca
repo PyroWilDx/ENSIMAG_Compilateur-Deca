@@ -12,5 +12,5 @@ class A {
     int x = 1;
     float y = 1;
     float z = 1;
-    a(x, y, z);
+    a.f(x, y, z);
 }
