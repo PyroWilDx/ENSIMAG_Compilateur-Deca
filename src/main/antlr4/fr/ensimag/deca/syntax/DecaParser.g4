@@ -39,6 +39,7 @@ prog returns[AbstractProgram tree]
     : list_classes main EOF {
             assert($list_classes.tree != null);
             assert($main.tree != null);
+
             $tree = new Program($list_classes.tree, $main.tree);
             setLocation($tree, $list_classes.start);
         }
@@ -393,6 +394,7 @@ select_expr returns[AbstractExpr tree]
             // we matched "e1.i(args)"
             assert( $args.tree != null);
             RValueStar params = new RValueStar($args.tree);
+            setLocation(params, $args.start);
             $tree = new MethodCall($e1.tree,$i.tree,params);
             setLocation($tree, $DOT);
         }
@@ -585,6 +587,7 @@ decl_method returns[AbstractDeclMethod tree]
 @init {
 }
     : type ident OPARENT params=list_params CPARENT (block {
+        setLocation($params.tree, $params.start);
         $tree = new DeclMethod($type.tree, $ident.tree, $params.tree, $block.decls, $block.insts);
         setLocation($tree, $type.start);
         }
