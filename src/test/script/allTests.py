@@ -130,11 +130,18 @@ def doTests():
     doVerify("codegen/valid/conditions/boolLazyEval.deca",
              expectedResult=b"")
 
-    doVerify("codegen/valid/conditions/ifThenElse.deca",
+    doVerify("codegen/valid/conditions/ifThenElseSimple.deca",
              expectedResult=b"1234567\n")
 
-    doVerify("codegen/valid/conditions/while.deca",
+    doVerify("codegen/valid/conditions/ifThenElseComplex.deca",
+             expectedResult=b"OK\n")
+
+    doVerify("codegen/valid/conditions/whileSimple.deca",
              expectedResult=b"0123456789\n")
+
+    doVerify("codegen/valid/conditions/whileComplex.deca",
+             expectedResult=b"168 * 42 * 10 = 70560\n"
+                            b"x = 70560\n")
 
     doVerify("codegen/valid/conditions/whileIfThenElse.deca",
              expectedResult=b"4321\n")
@@ -172,7 +179,7 @@ def doTests():
 
     doVerify("codegen/valid/classes/new.deca")
 
-    # doVerify("codegen/valid/classes/methodSimpleClass.deca")
+    doVerify("codegen/valid/classes/methodSimpleClass.deca")
 
     # doVerify("codegen/valid/classes/methodCall.deca")
 
@@ -180,10 +187,10 @@ def doTests():
              expectedResult=b"1.00000e+00 2 4 0 1.00000e+00\n"
                             b"8.00000e+00 3.20000e+01 16 0.00000e+00 1\n")
 
-    # doVerify("codegen/valid/classes/this.deca",
-    #          expectedResult=b"2\n"
-    #                         b"4\n",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/this.deca",
+             expectedResult=b"2\n"
+                            b"4\n",
+             doAssert=False)
 
     # doVerify("codegen/valid/classes/exPage181.deca",
     #          expectedResult=b"a.getX() = 1\n",
