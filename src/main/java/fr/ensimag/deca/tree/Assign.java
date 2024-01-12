@@ -2,8 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
-import fr.ensimag.deca.codegen.Utils;
-import fr.ensimag.deca.codegen.VTableManager;
+import fr.ensimag.deca.codegen.CodeGenUtils;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -61,7 +60,7 @@ public class Assign extends AbstractBinaryExpr {
             if (lIdent.getExpDefinition().getOperand() == null) {
                 saveReg = true;
             }
-            iAddr = Utils.extractAddrFromIdent(compiler, lIdent);
+            iAddr = CodeGenUtils.extractAddrFromIdent(compiler, lIdent);
         } else { // Should be a FieldSelection
             FieldSelection lFieldSelect = (FieldSelection) getLeftOperand();
             saveReg = true;
