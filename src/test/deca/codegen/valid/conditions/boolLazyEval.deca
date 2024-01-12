@@ -1,5 +1,5 @@
 // Description :
-//    Test pour l'évaluation paresseuses d'expressions booléennes (très) complexes
+//    Test pour l'évaluation paresseuse d'expressions booléennes (très) complexes
 //
 // Resultats :
 //    Ne doit rien afficher
