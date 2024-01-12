@@ -2,7 +2,7 @@
 //    regle 3.74, signature vide
 //
 // Resultats:
-//    Ligne 13: Too many arguments.
+//    Ligne 15: Too many arguments.
 class A {
     void f(int x, float y){
     }
