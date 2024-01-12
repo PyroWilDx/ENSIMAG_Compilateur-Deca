@@ -9,8 +9,6 @@ import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
 import java.io.IOException;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
 /**
  * Driver to test the contextual analysis (together with lexer/parser)

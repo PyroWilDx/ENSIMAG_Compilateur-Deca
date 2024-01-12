@@ -1,8 +1,6 @@
 package fr.ensimag.deca.codegen;
 
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class OrderedHashMap<K, V> extends HashMap<K, V> {
