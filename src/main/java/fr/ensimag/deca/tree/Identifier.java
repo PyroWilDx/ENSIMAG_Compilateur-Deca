@@ -12,8 +12,6 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
@@ -259,24 +257,12 @@ public class Identifier extends AbstractIdentifier {
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), gpReg));
 
-        if (cM.isInCond() && !cM.isDoingOpCmp()) {
+        if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             compiler.addInstruction(new CMP(0, gpReg));
-            Instruction bInst;
-            Label tLabel = cM.getCurrCondTrueLabel();
-            Label fLabel = cM.getCurrCondFalseLabel();
-            if (cM.isInAnd()) {
-                if (inNot) bInst = new BNE(fLabel);
-                else bInst = new BEQ(fLabel);
-            } else if (cM.isInOr()) {
-                if (inNot) bInst = new BEQ(tLabel);
-                else bInst = new BNE(tLabel);
-            } else {
-                if (inNot) bInst = new BNE(fLabel);
-                else bInst = new BEQ(fLabel);
-            }
-            compiler.addInstruction(bInst);
-        } else if (getExpDefinition().getType().isBoolean()) {
-            if (inNot) {
+            if (isNotInFalse) compiler.addInstruction(new BNE(branchLabel));
+            else compiler.addInstruction(new BEQ(branchLabel));
+        } else {
+            if (!isNotInFalse) {
                 compiler.addInstruction(new CMP(0, gpReg));
                 compiler.addInstruction(new SEQ(gpReg));
             }

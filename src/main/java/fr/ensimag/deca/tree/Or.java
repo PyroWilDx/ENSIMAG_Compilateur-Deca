@@ -1,8 +1,13 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.CondManager;
+import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.instructions.BRA;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  * @author gl47
@@ -15,28 +20,23 @@ public class Or extends AbstractOpBool {
     }
 
     @Override
-    protected void addOperation(CondManager cM) {
-        cM.addOrOperation();
-    }
+    public Label setOperandCondVals(CondManager cM) {
+        Label fastEndLabel = null;
 
-    @Override
-    protected void addCondLabels(CondManager cM) {
-        cM.addCondLabels(getLazyCondLabel(), getEndLazyCondLabel());
-    }
+        if (isNotInFalse) {
+            getLeftOperand().isNotInFalse = true;
+            getLeftOperand().branchLabel = branchLabel;
+            getRightOperand().isNotInFalse = true;
+            getRightOperand().branchLabel = branchLabel;
+        } else {
+            getLeftOperand().isNotInFalse = true;
+            fastEndLabel = cM.getUniqueLabel();
+            getLeftOperand().branchLabel = fastEndLabel;
+            getRightOperand().isNotInFalse = false;
+            getRightOperand().branchLabel = branchLabel;
+        }
 
-    @Override
-    protected int getNotLazyValue() {
-        return (inNot) ? 1 : 0;
-    }
-
-    @Override
-    protected int getLazyValue() {
-        return (inNot) ? 0 : 1;
-    }
-
-    @Override
-    protected Label getLastCondLabel(CondManager cM) {
-        return cM.getLastCondFalseLabel();
+        return fastEndLabel;
     }
 
     @Override

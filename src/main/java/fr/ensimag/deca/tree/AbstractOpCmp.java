@@ -32,32 +32,19 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     protected void codeGenOp(DecacCompiler compiler,
                              DVal valReg, GPRegister saveReg) {
+        RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 
         compiler.addInstruction(new CMP(valReg, saveReg));
-        Instruction opInst;
-        if (cM.isInCond()) {
-            Label tLabel = cM.getCurrCondTrueLabel();
-            Label fLabel = cM.getCurrCondFalseLabel();
-            if (cM.isInAnd()) {
-                if (inNot) opInst = getBranchOpCmpInst(fLabel);
-                else opInst = getBranchInvOpCmpInst(fLabel);
-            } else if (cM.isInOr()) {
-                if (inNot) opInst = getBranchInvOpCmpInst(tLabel);
-                else opInst = getBranchOpCmpInst(tLabel);
-            } else {
-                if (inNot) opInst = getBranchOpCmpInst(fLabel);
-                else opInst = getBranchInvOpCmpInst(fLabel);
-            }
+        if (cM.isDoingCond()) {
+            if (isNotInFalse) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
+            else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));
         } else {
-            RegManager rM = compiler.getRegManager();
-
             GPRegister gpReg = rM.getFreeReg();
-            if (inNot) opInst = getInvOpCmpInst(gpReg);
-            else opInst = getOpCmpInst(gpReg);
+            if (isNotInFalse) compiler.addInstruction(getOpCmpInst(gpReg));
+            else compiler.addInstruction(getInvOpCmpInst(gpReg));
             rM.freeReg(gpReg);
         }
-        compiler.addInstruction(opInst);
     }
 
     protected abstract Instruction getBranchInvOpCmpInst(Label bLabel);

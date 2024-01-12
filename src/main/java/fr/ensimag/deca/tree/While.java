@@ -41,25 +41,19 @@ public class While extends AbstractInst {
     protected void codeGenInst(DecacCompiler compiler) {
         CondManager cM = compiler.getCondManager();
         
-        int idCpt = cM.getAndIncrIdCpt();
-        Label startWhileLabel = new Label("startWhile" + idCpt);
-        Label startBodyLabel = new Label("whileBody" + idCpt);
-        Label endWhileLabel = new Label("endWhile" + idCpt);
+        Label startBodyLabel = cM.getUniqueLabel();
+        Label condLabel = cM.getUniqueLabel();
 
-        cM.addCondLabels(startBodyLabel, endWhileLabel);
-        cM.doIfOrWhile();
-
-        compiler.addLabel(startWhileLabel);
-        condition.codeGenInst(compiler);
-        
-        cM.popCondLabels();
-        cM.exitIfOrWhile();
+        compiler.addInstruction(new BRA(condLabel));
 
         compiler.addLabel(startBodyLabel);
         body.codeGenListInst(compiler);
-        compiler.addInstruction(new BRA(startWhileLabel));
 
-        compiler.addLabel(endWhileLabel);
+        compiler.addLabel(condLabel);
+        condition.branchLabel = startBodyLabel;
+        cM.doCond();
+        condition.codeGenInst(compiler);
+        cM.exitCond();
         // Done
     }
 

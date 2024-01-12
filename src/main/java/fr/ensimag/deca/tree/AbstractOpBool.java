@@ -15,13 +15,8 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
  */
 public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
-    private Label lazyCondLabel;
-    private Label endLazyCondLabel;
-
     public AbstractOpBool(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
-        this.lazyCondLabel = null;
-        this.endLazyCondLabel = null;
     }
 
     @Override
@@ -29,45 +24,39 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 
-        addOperation(cM);
+        cM.doCond();
 
-        if (!cM.isDoingIfOrWhile() && cM.areLastOpDiff()) {
-            int idCpt = cM.getAndIncrIdCpt();
-            lazyCondLabel = new Label("lazyCond" + idCpt);
-            endLazyCondLabel = new Label("endLazyCond" + idCpt);
-            addCondLabels(cM);
+        boolean firstCond = false;
+        if (branchLabel == null) {
+            firstCond = true;
+            branchLabel = cM.getUniqueLabel();
         }
+
+        Label fastEndLabel = setOperandCondVals(cM);
 
         getLeftOperand().codeGenInst(compiler);
         getRightOperand().codeGenInst(compiler);
 
-        if (lazyCondLabel != null && endLazyCondLabel != null) {
+        if (fastEndLabel != null) compiler.addLabel(fastEndLabel);
+
+        if (firstCond){
+            Label endLabel = cM.getUniqueLabel();
+
             GPRegister gpReg = rM.getFreeReg();
 
-            compiler.addInstruction(new LOAD(getNotLazyValue(), gpReg));
-            compiler.addInstruction(new BRA(getLastCondLabel(cM)));
+            compiler.addInstruction(new LOAD(0, gpReg));
+            compiler.addInstruction(new BRA(endLabel));
 
-            compiler.addLabel(lazyCondLabel);
-            compiler.addInstruction(new LOAD(getLazyValue(), gpReg));
+            compiler.addLabel(branchLabel);
+            compiler.addInstruction(new LOAD(1, gpReg));
 
             rM.freeReg(gpReg);
 
-            compiler.addLabel(endLazyCondLabel);
-
-            cM.popCondLabels();
+            compiler.addLabel(endLabel);
         }
-        cM.popOperation();
+
+        cM.exitCond();
     }
-
-    protected abstract void addOperation(CondManager cM);
-
-    protected abstract void addCondLabels(CondManager cM);
-
-    protected abstract int getNotLazyValue();
-
-    protected abstract int getLazyValue();
-
-    protected abstract Label getLastCondLabel(CondManager cM);
 
     @Override
     protected void codeGenOp(DecacCompiler compiler,
@@ -75,11 +64,6 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         // Not Used
     }
 
-    public Label getLazyCondLabel() {
-        return lazyCondLabel;
-    }
+    public abstract Label setOperandCondVals(CondManager cM);
 
-    public Label getEndLazyCondLabel() {
-        return endLazyCondLabel;
-    }
 }
