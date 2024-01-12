@@ -1,5 +1,7 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.ima.pseudocode.Label;
+
 public class CondManager {
 
     private int idCpt;
@@ -12,8 +14,10 @@ public class CondManager {
         this.doingOpCmp = false;
     }
 
-    public int getAndIncrIdCpt() {
-        return idCpt++;
+    public Label getUniqueLabel() {
+        Label uniqueLabel = new Label("L" + idCpt);
+        idCpt++;
+        return uniqueLabel;
     }
 
     public void doCond() {

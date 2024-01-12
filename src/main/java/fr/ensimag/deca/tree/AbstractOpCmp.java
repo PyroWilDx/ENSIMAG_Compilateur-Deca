@@ -32,23 +32,17 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     @Override
     protected void codeGenOp(DecacCompiler compiler,
                              DVal valReg, GPRegister saveReg) {
+        RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 
         compiler.addInstruction(new CMP(valReg, saveReg));
-        Instruction opInst;
         if (cM.isDoingCond()) {
-            if (branchLabel != null) {
-                if (isNotInFalse) opInst = getBranchOpCmpInst(branchLabel);
-                else opInst = getBranchInvOpCmpInst(branchLabel);
-                compiler.addInstruction(opInst);
-            }
+            if (isNotInFalse) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
+            else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));
         } else {
-            RegManager rM = compiler.getRegManager();
-
             GPRegister gpReg = rM.getFreeReg();
-            if (isNotInFalse) opInst = getOpCmpInst(gpReg);
-            else opInst = getInvOpCmpInst(gpReg);
-            compiler.addInstruction(opInst);
+            if (isNotInFalse) compiler.addInstruction(getOpCmpInst(gpReg));
+            else compiler.addInstruction(getInvOpCmpInst(gpReg));
             rM.freeReg(gpReg);
         }
     }

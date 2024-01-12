@@ -44,7 +44,7 @@ public class BooleanLiteral extends AbstractLiteral {
 
         if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             if ((value && isNotInFalse) || (!value && !isNotInFalse)) {
-                if (branchLabel != null) compiler.addInstruction(new BRA(branchLabel));
+                compiler.addInstruction(new BRA(branchLabel));
             }
         } else {
             rM.setLastImm(new ImmediateInteger((value) ? 1 : 0));

@@ -20,25 +20,12 @@ public class And extends AbstractOpBool {
     }
 
     @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        RegManager rM = compiler.getRegManager();
-        CondManager cM = compiler.getCondManager();
-
-        cM.doCond();
-
-        boolean firstCond = false;
-        if (branchLabel == null) {
-            int idCpt = cM.getAndIncrIdCpt();
-            branchLabel = new Label("fastEndLabel" + idCpt);
-            firstCond = true;
-        }
-
+    public Label setOperandCondVals(CondManager cM) {
         Label fastEndLabel = null;
 
         if (isNotInFalse) {
             getLeftOperand().isNotInFalse = false;
-            int idCpt = cM.getAndIncrIdCpt();
-            fastEndLabel = new Label("fastEndLabel" + idCpt);
+            fastEndLabel = cM.getUniqueLabel();
             getLeftOperand().branchLabel = fastEndLabel;
             getRightOperand().isNotInFalse = true;
             getRightOperand().branchLabel = branchLabel;
@@ -49,29 +36,7 @@ public class And extends AbstractOpBool {
             getRightOperand().branchLabel = branchLabel;
         }
 
-        getLeftOperand().codeGenInst(compiler);
-        getRightOperand().codeGenInst(compiler);
-
-        if (fastEndLabel != null) compiler.addLabel(fastEndLabel);
-
-        if (firstCond){
-            int idCpt = cM.getAndIncrIdCpt();
-            Label endLabel = new Label("endLabel" + idCpt);
-
-            GPRegister gpReg = rM.getFreeReg();
-
-            compiler.addInstruction(new LOAD(0, gpReg));
-            compiler.addInstruction(new BRA(endLabel));
-
-            compiler.addLabel(branchLabel);
-            compiler.addInstruction(new LOAD(1, gpReg));
-
-            rM.freeReg(gpReg);
-
-            compiler.addLabel(endLabel);
-        }
-
-        cM.exitCond();
+        return fastEndLabel;
     }
 
     @Override

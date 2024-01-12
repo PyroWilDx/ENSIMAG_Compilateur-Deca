@@ -259,11 +259,8 @@ public class Identifier extends AbstractIdentifier {
 
         if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             compiler.addInstruction(new CMP(0, gpReg));
-            if (isNotInFalse) {
-                if (branchLabel != null) compiler.addInstruction(new BNE(branchLabel));
-            } else {
-                if (branchLabel != null) compiler.addInstruction(new BEQ(branchLabel));
-            }
+            if (isNotInFalse) compiler.addInstruction(new BNE(branchLabel));
+            else compiler.addInstruction(new BEQ(branchLabel));
         } else {
             if (!isNotInFalse) {
                 compiler.addInstruction(new CMP(0, gpReg));

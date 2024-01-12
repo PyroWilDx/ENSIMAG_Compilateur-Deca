@@ -15,18 +15,47 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
  */
 public abstract class AbstractOpBool extends AbstractBinaryExpr {
 
-    private Label caseTrueLabel;
-    private Label caseFalseLabel;
-
     public AbstractOpBool(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
-        this.caseTrueLabel = null;
-        this.caseFalseLabel = null;
     }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+        CondManager cM = compiler.getCondManager();
 
+        cM.doCond();
+
+        boolean firstCond = false;
+        if (branchLabel == null) {
+            branchLabel = cM.getUniqueLabel();
+            firstCond = true;
+        }
+
+        Label fastEndLabel = setOperandCondVals(cM);
+
+        getLeftOperand().codeGenInst(compiler);
+        getRightOperand().codeGenInst(compiler);
+
+        if (fastEndLabel != null) compiler.addLabel(fastEndLabel);
+
+        if (firstCond){
+            Label endLabel = cM.getUniqueLabel();
+
+            GPRegister gpReg = rM.getFreeReg();
+
+            compiler.addInstruction(new LOAD(0, gpReg));
+            compiler.addInstruction(new BRA(endLabel));
+
+            compiler.addLabel(branchLabel);
+            compiler.addInstruction(new LOAD(1, gpReg));
+
+            rM.freeReg(gpReg);
+
+            compiler.addLabel(endLabel);
+        }
+
+        cM.exitCond();
     }
 
     @Override
@@ -35,11 +64,6 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         // Not Used
     }
 
-    public Label getCaseTrueLabel() {
-        return caseTrueLabel;
-    }
+    public abstract Label setOperandCondVals(CondManager cM);
 
-    public Label getCaseFalseLabel() {
-        return caseFalseLabel;
-    }
 }
