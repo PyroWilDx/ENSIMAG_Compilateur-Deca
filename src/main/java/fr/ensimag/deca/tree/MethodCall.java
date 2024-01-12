@@ -54,18 +54,15 @@ public class MethodCall extends AbstractMethodCall {
         ErrorManager eM = compiler.getErrorManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        expr.codeGenInst(compiler);
-
         String methodName = methodIdent.getName().getName();
         vTM.setCurrMethodName(methodName);
 
-        int nbParam = vTM.getCurrParamCountOfMethod(methodName) + 1;
+        int nbParam = vTM.getCurrParamCountOfMethod() + 1;
         compiler.addInstruction(new ADDSP(nbParam));
 
-        GPRegister gpReg = rM.getFreeReg();
-        compiler.addInstruction(
-                new LOAD(methodIdent.getExpDefinition().getOperand(), gpReg));
+        expr.codeGenInst(compiler);
 
+        GPRegister gpReg = rM.getLastReg();
         compiler.addInstruction(new CMP(new NullOperand(), gpReg));
         compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
 
@@ -74,9 +71,9 @@ public class MethodCall extends AbstractMethodCall {
         rM.freeReg(gpReg);
 
         int currParamIndex = -1;
-        for (AbstractExpr param : rValueStar.getList()) {
-            param.codeGenInst(compiler);
-            gpReg = rM.getLastReg();
+        for (AbstractExpr arg : rValueStar.getList()) {
+            arg.codeGenInst(compiler);
+            gpReg = rM.getLastRegOrImm(compiler);
             compiler.addInstruction(
                     new STORE(gpReg, new RegisterOffset(currParamIndex, Register.SP)));
             rM.freeReg(gpReg);
@@ -92,7 +89,7 @@ public class MethodCall extends AbstractMethodCall {
 //        compiler.addInstruction(
 //                new LOAD(new RegisterOffset(0, gpReg), gpReg));
 //        compiler.addInstruction(new BSR(new RegisterOffset(mOffset, gpReg)));
-        compiler.addInstruction(new BSR(vTM.getCurrAddrOfMethod(methodName)));
+        compiler.addInstruction(new BSR(vTM.getCurrAddrOfMethod()));
         rM.freeReg(gpReg);
 
         compiler.addInstruction(new SUBSP(nbParam));

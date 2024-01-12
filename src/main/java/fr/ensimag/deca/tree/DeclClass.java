@@ -137,8 +137,10 @@ public class DeclClass extends AbstractDeclClass {
         RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(true);
         compiler.setStackManager(sM);
+        VTableManager vTM = compiler.getVTableManager();
 
         String className = name.getName().getName();
+        vTM.setCurrClassName(className);
         String superClassName = superClass.getName().getName();
 
         compiler.addComment("Class " + className);

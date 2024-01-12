@@ -11,7 +11,10 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
@@ -254,8 +257,14 @@ public class Identifier extends AbstractIdentifier {
             vTM.setCurrClassName(getType().getName().getName());
         }
 
+        DAddr iAddr = getExpDefinition().getOperand();
+        if (iAddr == null) { // It's a Method's Param
+            int paramOffset = vTM.getCurrParamOffsetOfMethod(getName().getName());
+            iAddr = new RegisterOffset(paramOffset, Register.LB);
+        }
+
         GPRegister gpReg = rM.getFreeReg();
-        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), gpReg));
+        compiler.addInstruction(new LOAD(iAddr, gpReg));
 
         if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             compiler.addInstruction(new CMP(0, gpReg));

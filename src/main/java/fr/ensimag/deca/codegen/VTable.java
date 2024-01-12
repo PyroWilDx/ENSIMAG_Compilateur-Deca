@@ -67,13 +67,17 @@ public class VTable {
         return classMethodsOrderered;
     }
 
+    public DAddr getMethodAddr(String methodName) {
+        return classMethods.get(methodName).getMethodAddr();
+    }
+
     public void addParamToMethod(String methodName, String paramName,
                                  int paramOffset) {
         classMethods.get(methodName).addParam(paramName, paramOffset);
     }
 
-    public DAddr getMethodAddr(String methodName) {
-        return classMethods.get(methodName).getMethodAddr();
+    public int getParamOffsetOfMethod(String methodName, String paramName) {
+        return classMethods.get(methodName).getParamOffset(paramName);
     }
 
     public int getParamCountOfMethod(String methodName) {

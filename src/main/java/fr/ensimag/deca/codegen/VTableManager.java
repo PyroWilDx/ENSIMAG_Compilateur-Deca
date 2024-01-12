@@ -33,6 +33,11 @@ public class VTableManager {
         return vTables.get(className).getMethodAddr(methodName);
     }
 
+    public int getParamOffsetOfMethod(String className, String methodName,
+                                      String paramName) {
+        return vTables.get(className).getParamOffsetOfMethod(methodName, paramName);
+    }
+
     public int getParamCountOfMethod(String className, String methodName) {
         return vTables.get(className).getParamCountOfMethod(methodName);
     }
@@ -57,12 +62,16 @@ public class VTableManager {
         return getAddrOfClass(currClassName);
     }
 
-    public DAddr getCurrAddrOfMethod(String methodName) {
-        return getAddrOfMethod(currClassName, methodName);
+    public DAddr getCurrAddrOfMethod() {
+        return getAddrOfMethod(currClassName, currMethodName);
     }
 
-    public int getCurrParamCountOfMethod(String methodName) {
-        return getParamCountOfMethod(currClassName, methodName);
+    public int getCurrParamOffsetOfMethod(String paramName) {
+        return vTables.get(currClassName).getParamOffsetOfMethod(currMethodName, paramName);
+    }
+
+    public int getCurrParamCountOfMethod() {
+        return getParamCountOfMethod(currClassName, currMethodName);
     }
 
     public int getCurrOffsetOfField(String fieldName) {

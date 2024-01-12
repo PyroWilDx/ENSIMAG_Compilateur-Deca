@@ -30,15 +30,12 @@ public class DeclParam extends AbstractParam {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         type.prettyPrint(s,prefix,false);
         name.prettyPrint(s,prefix,true);
-        //throw new DecacInternalError("not implemented yet");
-
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO
-        throw new DecacInternalError("not implemented yet");
-
+        type.iterChildren(f);
+        name.iterChildren(f);
     }
 
     @Override

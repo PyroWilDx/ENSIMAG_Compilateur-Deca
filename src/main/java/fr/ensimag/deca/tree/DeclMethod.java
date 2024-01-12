@@ -20,7 +20,6 @@ public class DeclMethod extends AbstractDeclMethod {
     private final ListDeclVar listDeclVar;
     private final ListInst listInst;
     private String className;
-    private boolean shouldRedeclare;
     private Label mStartLabel;
     private Label mEndLabel;
 
@@ -32,7 +31,6 @@ public class DeclMethod extends AbstractDeclMethod {
         this.listDeclVar = listDeclVar;
         this.listInst = listInst;
         this.className = null;
-        this.shouldRedeclare = true;
         this.mStartLabel = null;
         this.mEndLabel = null;
     }
@@ -173,20 +171,20 @@ public class DeclMethod extends AbstractDeclMethod {
         for (AbstractParam param : params.getList()) {
             paramName = param.getName().getName();
             vTable.addParamToMethod(methodName, paramName, currParamOffset);
-            currParamOffset++;
+            currParamOffset--;
         }
         // Done
     }
 
     @Override
     public void codeGenDeclMethod(DecacCompiler compiler) {
-        if (!shouldRedeclare) return;
-
         RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(true);
         compiler.setStackManager(sM);
+        VTableManager vTM = compiler.getVTableManager();
 
         String methodName = name.getName().getName();
+        vTM.setCurrMethodName(methodName);
 
         compiler.addLabel(mStartLabel);
         int iTSTO = compiler.getProgramLineCount();
