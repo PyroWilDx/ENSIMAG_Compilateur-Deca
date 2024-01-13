@@ -228,6 +228,10 @@ def doTests():
     #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
     #          doAssert=False)
 
+    # doVerify("codegen/valid/classes/asmSimple.deca",
+    #          expectedResult=b"180\n",
+    #          doAssert=False)
+
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (INVALIDE)")
 
