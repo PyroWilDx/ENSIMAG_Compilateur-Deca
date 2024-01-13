@@ -487,9 +487,8 @@ literal returns[AbstractExpr tree]
     setLocation($tree,$THIS);
         }
     | NULL {
-//    $tree = new NullOperand();
-//    setLocation($tree, $NULL);
-    //TODO
+    $tree = new NullLiteral();
+    setLocation($tree, $NULL);
         }
     ;
 
