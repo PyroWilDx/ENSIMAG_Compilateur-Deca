@@ -148,10 +148,10 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addLabel(LabelUtils.getClassInitLabel(className));
         int iTSTO = compiler.getProgramLineCount();
 
+        compiler.addInstruction(
+                new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+        fields.codeGenSetFieldsTo0(compiler);
         if (!superClassName.equals(LabelUtils.OBJECT_CLASS_NAME)) {
-            compiler.addInstruction(
-                    new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
-            fields.codeGenSetFieldsTo0(compiler); // TODO (que les champs de cette classe)
             compiler.addInstruction(new PUSH(Register.R1));
             compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(superClassName)));
             compiler.addInstruction(new SUBSP(1));
@@ -160,7 +160,7 @@ public class DeclClass extends AbstractDeclClass {
         rM.saveUsedRegs();
         rM.freeAllRegs();
 
-        fields.codeGenListDeclField(compiler); // TODO (que les champs de cette classe)
+        fields.codeGenListDeclField(compiler); // TODO (vérif que les champs de cette classe)
 
         boolean[] usedRegs = rM.popUsedRegs();
         RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);

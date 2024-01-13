@@ -52,8 +52,6 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     }
 
     public void codeGenSetFieldsTo0(DecacCompiler compiler) {
-        compiler.addInstruction(
-                new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         int varOffset = 1;
         AbstractDeclField.TypeCode lastTypeCode = null;
         for (AbstractDeclField declField : getList()) {

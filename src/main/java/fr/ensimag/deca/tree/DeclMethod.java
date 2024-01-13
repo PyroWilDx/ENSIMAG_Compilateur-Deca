@@ -101,7 +101,7 @@ public class DeclMethod extends AbstractDeclMethod {
 
         if (!type.getType().isVoid()) {
             compiler.addInstruction(new WSTR("Error: Exiting function " + className +
-                    "." + methodName + " without return"));
+                    "." + methodName + "() without return"));
             compiler.addInstruction(new WNL());
             compiler.addInstruction(new ERROR());
         }
@@ -226,18 +226,15 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO
         type.prettyPrint(s, prefix, false);
         name.prettyPrint(s, prefix, false);
         params.prettyPrint(s, prefix, false);
         listDeclVar.prettyPrint(s, prefix, false);
         listInst.prettyPrint(s, prefix, true);
-
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO (iterchildren)
         type.iterChildren(f);
         name.iterChildren(f);
         params.iterChildren(f);

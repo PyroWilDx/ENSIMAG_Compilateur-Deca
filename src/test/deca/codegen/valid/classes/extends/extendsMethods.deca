@@ -1,8 +1,8 @@
 // Description :
-//    Test de l'héritage simple
+//    Test de l'héritage avec des méthodes
 //
 // Resultats :
-//    12420
+//    1 2 4 2 0
 
 class A {
     int x = 1;
@@ -17,7 +17,7 @@ class A {
     }
 }
 
-class B {
+class B extends A {
     int x = 4;
     int z;
 
@@ -35,10 +35,14 @@ class B {
     B b = new B();
 
     a.displayX();
+    print(" ");
     a.displayY();
+    print(" ");
 
     b.displayX();
+    print(" ");
     b.displayY();
+    print(" ");
     b.displayZ();
 
     println();

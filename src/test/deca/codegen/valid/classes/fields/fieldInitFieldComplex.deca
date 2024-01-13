@@ -3,13 +3,13 @@
 //    un autre attribut initialisé après
 //
 // Resultats :
-//    20
+//    0 20
 
 class A {
-    int a = arnaque();
+    int a = this.getB();
     int b = 20;
 
-    int arnaque() {
+    int getB() {
         return this.b;
     }
 

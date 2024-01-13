@@ -192,13 +192,11 @@ def doTests():
     doVerify("codegen/valid/classes/fields/fieldInitFieldSimple.deca",
              expectedResult=b"10\n")
 
-    # doVerify("codegen/valid/classes/fields/fieldInitMethod.deca",
-    #          expectedResult=b"30 60 10\n",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/fields/fieldInitMethod.deca",
+             expectedResult=b"30 60 10\n")
 
-    # doVerify("codegen/valid/classes/fields/fieldInitFieldComplex.deca",
-    #          expectedResult=b"20\n",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/fields/fieldInitFieldComplex.deca",
+             expectedResult=b"0 20\n")
 
     doVerify("codegen/valid/classes/this/thisSimple.deca",
              expectedResult=b"2 2\n"
@@ -223,12 +221,17 @@ def doTests():
     doVerify("codegen/valid/classes/methods/varInMethod.deca",
              expectedResult=b"2 4 16 22 44\n")
 
-    # doVerify("codegen/valid/classes/methods/recursiveMethod.deca",
-    #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
+    doVerify("codegen/valid/classes/methods/recursiveMethod.deca",
+             expectedResult=b"40 80 120 160 200 240 280 320 360 400\n"
+                            b"400 1 2\n")
+
+    # doVerify("codegen/valid/classes/extends/extendsFields.deca",
+    #          expectedResult=b"1 2\n"
+    #                         b"4 2 0\n",
     #          doAssert=False)
 
-    # doVerify("codegen/valid/classes/extends/extendsSimple.deca",
-    #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
+    # doVerify("codegen/valid/classes/extends/extendsMethods.deca",
+    #          expectedResult=b"1 2 4 2 0\n",
     #          doAssert=False)
 
     doVerify("codegen/valid/classes/examples/exPage181.deca",
@@ -280,7 +283,7 @@ def doTests():
              execError=True)
 
     doVerify("codegen/invalid/missingReturn.deca",
-             expectedResult=b"Error: Exiting function A.missingReturn without return\n",
+             expectedResult=b"Error: Exiting function A.missingReturn() without return\n",
              execError=True)
 
     return 0

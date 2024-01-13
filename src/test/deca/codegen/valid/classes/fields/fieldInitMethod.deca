@@ -6,7 +6,7 @@
 
 class A {
     int a = 20;
-    int b = initB();
+    int b = this.initB();
     int c = 10;
 
     int initB() {

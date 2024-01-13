@@ -2,7 +2,7 @@
 //    Test de l'erreur où il n'y a pas de return dans une méthode non void
 //
 // Resultats :
-//    Error: Exiting function A.missingReturn without return
+//    Error: Exiting function A.missingReturn() without return
 
 class A {
     int x = 10;

@@ -69,13 +69,11 @@ public class New extends AbstractExpr {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO
         type.prettyPrint(s, prefix, true);
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO (iterchildren)
         type.iterChildren(f);
     }
 }
