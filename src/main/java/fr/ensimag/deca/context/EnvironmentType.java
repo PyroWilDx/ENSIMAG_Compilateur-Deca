@@ -153,7 +153,7 @@ public class EnvironmentType {
             ClassType classType2 = (ClassType) type2;
             return classType.isSubClassOf(classType2);
         }
-        return (type1.equals(NULL) && type2.isClass());
+        return (type1.isNull() && type2.isClass());
 
     }
     public AbstractExpr assignCompatible(DecacCompiler compiler, Type type1,

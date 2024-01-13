@@ -100,9 +100,9 @@ public abstract class AbstractExpr extends AbstractInst {
     public void verifyExprPrint(DecacCompiler compiler, EnvironmentExp localEnv,
                                 ClassDefinition currentClass) throws ContextualError {
         Type exprType = this.verifyExpr(compiler, localEnv, currentClass);
-        if (!exprType.equals(compiler.environmentType.INT) &&
-                !exprType.equals(compiler.environmentType.FLOAT) &&
-                !exprType.equals(compiler.environmentType.STRING)) {
+        if (!exprType.isInt() &&
+                !exprType.isFloat() &&
+                !exprType.isString()) {
             throw new ContextualError("Invalid argument type for print : '"
                     + exprType.getName() +
                     "'\nArgument type must be 'int', 'float' or 'string'.", this.getLocation());
