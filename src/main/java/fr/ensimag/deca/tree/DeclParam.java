@@ -36,8 +36,8 @@ public class DeclParam extends AbstractParam {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO
-        throw new DecacInternalError("not implemented yet");
+        this.type.iter(f);
+        this.name.iter(f); // TODO je suis pas sûr
 
     }
 
