@@ -162,7 +162,7 @@ public class EnvironmentType {
         if (type1.isFloat() && type2.isInt()) {
             return new ConvFloat(expr2);
         }
-        if (type1.equals(type2) || compiler.environmentType.subtype(type1, type2)) return expr2;
+        if (type1.equals(type2) || compiler.environmentType.subtype(type2, type1)) return expr2;
         return null;
     }
 
