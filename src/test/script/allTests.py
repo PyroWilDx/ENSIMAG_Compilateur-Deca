@@ -196,7 +196,7 @@ def doTests():
              expectedResult=b"30 60 10\n")
 
     doVerify("codegen/valid/classes/fields/fieldInitFieldComplex.deca",
-             expectedResult=b"0 20\n")
+             expectedResult=b"0 0 20\n")
 
     doVerify("codegen/valid/classes/this/thisSimple.deca",
              expectedResult=b"2 2\n"
