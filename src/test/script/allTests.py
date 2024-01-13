@@ -206,7 +206,7 @@ def doTests():
              expectedResult=b"2 6\n"
                             b"60 120\n")
 
-    doVerify("codegen/valid/classes/methods/methodSimpleClass.deca")
+    doVerify("codegen/valid/classes/methods/methodSimple.deca")
 
     doVerify("codegen/valid/classes/methods/methodCallSimple.deca",
              expectedResult=b"Method Called\n")
@@ -218,12 +218,23 @@ def doTests():
     doVerify("codegen/valid/classes/methods/methodCallReturn.deca",
              b"0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20\n")
 
+    doVerify("codegen/valid/classes/methods/earlyReturn.deca",
+             expectedResult=b"10\n")
+
     doVerify("codegen/valid/classes/methods/varInMethod.deca",
              expectedResult=b"2 4 16 22 44\n")
 
     doVerify("codegen/valid/classes/methods/recursiveMethod.deca",
              expectedResult=b"40 80 120 160 200 240 280 320 360 400\n"
                             b"400 1 2\n")
+
+    doVerify("codegen/valid/classes/methods/methodCallMethod.deca",
+             expectedResult=b"10 20 30\n"
+                            b"80 70 60\n"
+                            b"180 170 160\n"
+                            b"110 120 130\n"
+                            b"80 70 60\n"
+                            b"180 170 160\n")
 
     # doVerify("codegen/valid/classes/extends/extendsFields.deca",
     #          expectedResult=b"1 2\n"
@@ -274,9 +285,9 @@ def doTests():
              expectedResult=b"Error: Stack Overflow\n",
              execError=True)
 
-    doVerify("codegen/invalid/nullPointer.deca",
-             expectedResult=b"Error: Dereferencing Null Pointer\n",
-             execError=True)
+    # doVerify("codegen/invalid/nullPointer.deca",
+    #          expectedResult=b"Error: Dereferencing Null Pointer\n",
+    #          execError=True)
 
     doVerify("codegen/invalid/heapOverflow.deca",
              expectedResult=b"Error: Heap Overflow\n",

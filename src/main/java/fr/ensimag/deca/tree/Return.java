@@ -11,6 +11,7 @@ import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -51,8 +52,9 @@ public class Return extends AbstractInst {
             }
         }
 
-        compiler.addInstruction(new BRA(LabelUtils.getMethodEndLabel(
-                vTM.getCurrClassName(), vTM.getCurrMethodName())));
+        Label mEndLabel =
+                LabelUtils.getMethodEndLabel(vTM.getCurrClassName(), vTM.getCurrMethodName());
+        compiler.addInstruction(new BRA(mEndLabel));
     }
 
     @Override

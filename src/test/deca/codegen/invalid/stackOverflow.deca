@@ -1,8 +1,8 @@
 // Description :
 //    Test de l'erreur de débordement de pile
-//    PS : C'est à exécuter :
-//             - Avec une pile de moins de 10000 mots
-//             - En ayant un nombre de registre inférieur ou égal à 16 où 2 sont scratch
+//    C'est à exécuter :
+//        - Avec une pile de moins de 10000 mots
+//        - En ayant un nombre de registre inférieur ou égal à 16 où 2 sont scratch
 //
 // Resultats :
 //    Pour que l'erreur se produise, la taille de la pile doit être de moins de 10000 mots

@@ -1,22 +1,19 @@
 // Description :
 //    Test de l'erreur de débordement du tas
-//    PS : C'est à exécuter :
-//             - Avec un tas de moins de 10000 mots
-//             - En ayant un nombre de registre inférieur ou égal à 16 où 2 sont scratch
+//    C'est à exécuter :
+//        - Avec un tas de moins de 10000 mots
+//        - En ayant un nombre de registre inférieur ou égal à 16 où 2 sont scratch
 //
 // Resultats :
 //    Pour que l'erreur se produise, la taille du tas doit être de moins de 10000 mots
 //    Dans ce cas, il s'affiche : Error: Heap Overflow
 //    Sinon, il ne s'affiche rien
 
-
-// On va créer une classe avec 99 variables, puis créer 100 instances de cette classe
-// Puis on va créer une seule instance d'une classe avec 0 variables
-// On aura alors 10001 mots dans le tas
-
-class NoVar {
-
-}
+/*
+On va créer une classe avec 99 variables, puis créer 100 instances de cette classe
+Puis on va créer une seule instance d'une classe avec 0 variables
+On aura alors 10001 mots dans le tas
+*/
 
 class A {
     int x0;
@@ -118,6 +115,10 @@ class A {
     int x96;
     int x97;
     int x98;
+}
+
+class NoVar {
+
 }
 
 {

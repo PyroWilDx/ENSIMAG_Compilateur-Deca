@@ -103,14 +103,19 @@ public class RegManager {
         StackManager sM = compiler.getStackManager();
 
         LinkedList<AbstractLine> startLines = new LinkedList<>();
-        if (sM.getMaxStackSize() > 0) {
-            startLines.addLast(new Line(new TSTO(sM.getMaxStackSize())));
-            startLines.addLast(new Line(new BOV(eM.getStackOverflowLabel())));
-        }
+        int usedCount = 0;
         for (int i = 2; i < usedRegs.length; i++) {
             if (usedRegs[i]) {
                 startLines.addLast(new Line(new PUSH(Register.getR(i))));
+                usedCount++;
             }
+        }
+        int maxStackSize = sM.getMaxStackSize() + usedCount;
+        if (maxStackSize > 0) {
+            // TODO (Je sais pas pourquoi avec -1 ça marche aussi)
+            startLines.addFirst(new Line(new ADDSP(sM.getAddSp() + usedCount)));
+            startLines.addFirst(new Line(new BOV(eM.getStackOverflowLabel())));
+            startLines.addFirst(new Line(new TSTO(maxStackSize)));
         }
         compiler.addAllLine(index, startLines);
     }
