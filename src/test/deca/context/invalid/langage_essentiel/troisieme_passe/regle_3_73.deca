@@ -10,5 +10,5 @@ class A {
 {
     A a = new A();
     int x = 1;
-    a(x);
+    a.f(x);
 }
