@@ -10,8 +10,4 @@ public abstract class AbstractStringLiteral extends AbstractLiteral {
 
     public abstract String getValue();
 
-    @Override
-    protected void codeGenInst(DecacCompiler compiler) {
-        // Done
-    }
 }

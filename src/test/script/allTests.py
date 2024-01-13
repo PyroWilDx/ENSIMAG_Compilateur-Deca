@@ -90,7 +90,7 @@ def doTests():
     doVerify("codegen/valid/iostream/printFloatHexa.deca",
              expectedResult=b"0x1.3851ecp+0 -0x1.5364d8p+5 0x0p+03.1416 -0x1.63d70ap+1\n")
 
-    doVerify("codegen/valid/iostream/include.deca",
+    doVerify("codegen/valid/iostream/includeSimple.deca",
              expectedResult=b"Hello World\n")
 
     doVerify("codegen/valid/declarations/declVarEasy.deca",
@@ -131,7 +131,7 @@ def doTests():
              expectedResult=b"")
 
     doVerify("codegen/valid/conditions/ifThenElseSimple.deca",
-             expectedResult=b"1234567\n")
+             expectedResult=b"12345678910111213141516\n")
 
     doVerify("codegen/valid/conditions/ifThenElseComplex.deca",
              expectedResult=b"OK\n")
@@ -177,27 +177,48 @@ def doTests():
 
     doVerify("codegen/valid/classes/fieldsComplexClass.deca")
 
-    doVerify("codegen/valid/classes/new.deca")
+    doVerify("codegen/valid/classes/newSimple.deca")
 
     doVerify("codegen/valid/classes/methodSimpleClass.deca")
 
-    # doVerify("codegen/valid/classes/methodCall.deca")
+    doVerify("codegen/valid/classes/methodCallSimple.deca",
+             expectedResult=b"Method Called\n")
+
+    doVerify("codegen/valid/classes/methodCallParams.deca",
+             expectedResult=b"x + y + z = 10 + 20 + 30 = 60\n"
+                            b"x * y * z = 2 * 6 * 10 = 120\n")
+
+    doVerify("codegen/valid/classes/methodCallReturn.deca",
+             b"0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20\n")
 
     doVerify("codegen/valid/classes/fieldSelection.deca",
              expectedResult=b"1.00000e+00 2 4 0 1.00000e+00\n"
                             b"8.00000e+00 3.20000e+01 16 0.00000e+00 1\n")
 
-    doVerify("codegen/valid/classes/this.deca",
-             expectedResult=b"2\n"
-                            b"4\n",
-             doAssert=False)
+    doVerify("codegen/valid/classes/thisSimple.deca",
+             expectedResult=b"2 2\n"
+                            b"6 6\n")
 
-    # doVerify("codegen/valid/classes/exPage181.deca",
-    #          expectedResult=b"a.getX() = 1\n",
+    doVerify("codegen/valid/classes/noThisAccess.deca",
+             expectedResult=b"2 6\n"
+                            b"60 120\n")
+
+    doVerify("codegen/valid/classes/varInMethod.deca",
+             expectedResult=b"2 4 16 22 44\n")
+
+    # doVerify("codegen/valid/classes/fieldInitFieldSimple.deca",
+    #          expectedResult=b"10\n",
     #          doAssert=False)
 
-    # doVerify("codegen/valid/recursiveMethod.deca",
-    #          expectedResult=b"12420",
+    # doVerify("codegen/valid/classes/fieldInitFieldComplex.deca",
+    #          expectedResult=b"20\n",
+    #          doAssert=False)
+
+    doVerify("codegen/valid/classes/exPage181.deca",
+             expectedResult=b"a.getX() = 1\n")
+
+    # doVerify("codegen/valid/classes/recursiveMethod.deca",
+    #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
     #          doAssert=False)
 
     # doVerify("codegen/valid/classes/extends.deca",
@@ -223,6 +244,27 @@ def doTests():
 
     doVerify("codegen/invalid/floatOverflow.deca",
              expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
+    doVerify("codegen/interactive/readErr.deca",
+             expectedResult=b"Error: Input/Output Error\n",
+             execError=True,
+             input=b"10")
+
+    doVerify("codegen/invalid/stackOverflow.deca",
+             expectedResult=b"Error: Stack Overflow\n",
+             execError=True)
+
+    # doVerify("codegen/invalid/nullPointer.deca",
+    #          expectedResult=b"Error: Dereferencing Null Pointer\n",
+    #          execError=True)
+
+    doVerify("codegen/invalid/heapOverflow.deca",
+             expectedResult=b"Error: Heap Overflow\n",
+             execError=True)
+
+    doVerify("codegen/invalid/missingReturn.deca",
+             expectedResult=b"Error: Exiting function A.missingReturn without return\n",
              execError=True)
 
     if not doParallel:

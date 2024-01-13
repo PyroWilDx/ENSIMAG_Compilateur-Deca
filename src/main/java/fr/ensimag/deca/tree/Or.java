@@ -1,13 +1,8 @@
 package fr.ensimag.deca.tree;
 
 
-import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.CondManager;
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  * @author gl47

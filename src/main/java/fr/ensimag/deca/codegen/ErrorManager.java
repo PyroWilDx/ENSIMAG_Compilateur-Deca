@@ -29,7 +29,7 @@ public class ErrorManager {
         errMsgs.put(ioErrLabel, "Error: Input/Output Error");
         errMsgs.put(stackOverflowLabel, "Error: Stack Overflow");
         errMsgs.put(nullPointerLabel, "Error: Dereferencing Null Pointer");
-        errMsgs.put(heapOverflowLabel, "Error: Head Overflow");
+        errMsgs.put(heapOverflowLabel, "Error: Heap Overflow");
 
         return errMsgs;
     }

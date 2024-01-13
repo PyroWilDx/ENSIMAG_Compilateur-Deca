@@ -9,7 +9,6 @@ import java.util.LinkedList;
 public class VTable {
 
     private final SymbolTable.Symbol superClassSymbol;
-    private final SymbolTable.Symbol classSymbol;
     private final String className;
     private final DAddr classAddr;
     private final HashMap<String, MethodInfo> classMethods;
@@ -19,7 +18,6 @@ public class VTable {
     public VTable(SymbolTable.Symbol superClassSymbol, SymbolTable.Symbol classSymbol,
                   DAddr classAddr) {
         this.superClassSymbol = superClassSymbol;
-        this.classSymbol = classSymbol;
         this.className = classSymbol.getName();
         this.classAddr = classAddr;
         this.classMethods = new HashMap<>();
@@ -27,16 +25,8 @@ public class VTable {
         this.classFields = new HashMap<>();
     }
 
-    public SymbolTable.Symbol getSuperClassSymbol() {
-        return superClassSymbol;
-    }
-
     public VTable getVTableOfSuperClass(VTableManager vTM) {
         return vTM.getVTable(superClassSymbol.getName());
-    }
-
-    public SymbolTable.Symbol getClassSymbol() {
-        return classSymbol;
     }
 
     public String getClassName() {
@@ -67,13 +57,17 @@ public class VTable {
         return classMethodsOrderered;
     }
 
+    public DAddr getMethodAddr(String methodName) {
+        return classMethods.get(methodName).getMethodAddr();
+    }
+
     public void addParamToMethod(String methodName, String paramName,
                                  int paramOffset) {
         classMethods.get(methodName).addParam(paramName, paramOffset);
     }
 
-    public DAddr getMethodAddr(String methodName) {
-        return classMethods.get(methodName).getMethodAddr();
+    public Integer getParamOffsetOfMethod(String methodName, String paramName) {
+        return classMethods.get(methodName).getParamOffset(paramName);
     }
 
     public int getParamCountOfMethod(String methodName) {

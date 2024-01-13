@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.RegManager;
+import fr.ensimag.deca.codegen.CodeGenUtils;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
@@ -11,6 +12,7 @@ import fr.ensimag.deca.tools.SymbolTable.Symbol;
 
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -254,8 +256,10 @@ public class Identifier extends AbstractIdentifier {
             vTM.setCurrClassName(getType().getName().getName());
         }
 
+        DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
+
         GPRegister gpReg = rM.getFreeReg();
-        compiler.addInstruction(new LOAD(getExpDefinition().getOperand(), gpReg));
+        compiler.addInstruction(new LOAD(iAddr, gpReg));
 
         if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             compiler.addInstruction(new CMP(0, gpReg));

@@ -41,8 +41,13 @@ public class RegManager {
     }
 
     public void freeReg(GPRegister gpReg) {
+        if (gpReg != null && gpReg.getNumber() > 1) {
+            freeRegs.addFirst(gpReg);
+        }
+    }
+
+    public void freeRegForce(GPRegister gpReg) {
         if (gpReg != null) {
-            assert (gpReg.getNumber() > 1);
             freeRegs.addFirst(gpReg);
         }
     }
@@ -80,14 +85,6 @@ public class RegManager {
             compiler.addInstruction(new LOAD(lastImm, gpReg));
         }
         return gpReg;
-    }
-
-    public void addScratchRegR0() {
-        freeRegs.addFirst(Register.R0);
-    }
-
-    public void removeScratchRegR0() {
-        freeRegs.remove(Register.R0);
     }
 
     public void saveUsedRegs() {

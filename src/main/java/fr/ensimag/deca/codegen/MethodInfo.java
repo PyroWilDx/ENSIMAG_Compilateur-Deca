@@ -18,14 +18,6 @@ public class MethodInfo {
         this.methodParams = new HashMap<>();
     }
 
-    public void addParam(String paramName, int paramOffset) {
-        methodParams.put(paramName, paramOffset);
-    }
-
-    public void copyParams(MethodInfo otherMethod) {
-        methodParams.putAll(otherMethod.methodParams);
-    }
-
     public String getClassName() {
         return className;
     }
@@ -36,6 +28,18 @@ public class MethodInfo {
 
     public DAddr getMethodAddr() {
         return methodAddr;
+    }
+
+    public void addParam(String paramName, int paramOffset) {
+        methodParams.put(paramName, paramOffset);
+    }
+
+    public Integer getParamOffset(String paramName) {
+        return methodParams.get(paramName);
+    }
+
+    public void copyParams(MethodInfo otherMethod) {
+        methodParams.putAll(otherMethod.methodParams);
     }
 
     public int getParamCount() {

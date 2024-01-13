@@ -1,0 +1,19 @@
+// Description :
+//    Test d'une classe où l'initilisation d'un attribut utilise un autre attribut après
+//
+// Resultats :
+//    20
+
+class A {
+    int a = b;
+    int b = 20;
+
+    void aDisplay() {
+        println(a);
+    }
+}
+
+{
+    A a = new A();
+    a.aDisplay();
+}

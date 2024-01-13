@@ -1,12 +1,17 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 import java.io.PrintStream;
 
@@ -23,10 +28,16 @@ public class This extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
 
         String className = getType().getName().getName();
         vTM.setCurrClassName(className);
+
+        GPRegister gpReg = rM.getFreeReg();
+        compiler.addInstruction(
+                new LOAD(new RegisterOffset(-2, Register.LB), gpReg));
+        rM.freeReg(gpReg);
         // Done
     }
 

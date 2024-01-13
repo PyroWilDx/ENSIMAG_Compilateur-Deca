@@ -9,6 +9,10 @@ public class LabelUtils {
     public static final String OBJECT_CLASS_NAME = "Object";
     public static final String EQUALS_METHOD_NAME = "equals";
 
+    private LabelUtils() {
+
+    }
+
     public static void setObjectClassSymbol(SymbolTable.Symbol value) {
         OBJECT_CLASS_SYMBOL = value;
     }

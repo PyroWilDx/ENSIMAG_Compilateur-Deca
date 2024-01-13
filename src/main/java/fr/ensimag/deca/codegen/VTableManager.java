@@ -7,8 +7,8 @@ import java.util.HashMap;
 public class VTableManager {
 
     private final HashMap<String, VTable> vTables;
-    private String currClassName;
-    private String currMethodName;
+    private String currClassName; // TODO (faudra surement une stack pour les méthodes d'une autre classe dans la méthode de cette classe)
+    private String currMethodName; // TODO (faudra surement une stack pour les méthode dans les méthode)...
 
     public VTableManager() {
         this.vTables = new HashMap<>();
@@ -31,6 +31,11 @@ public class VTableManager {
 
     public DAddr getAddrOfMethod(String className, String methodName) {
         return vTables.get(className).getMethodAddr(methodName);
+    }
+
+    public int getParamOffsetOfMethod(String className, String methodName,
+                                      String paramName) {
+        return vTables.get(className).getParamOffsetOfMethod(methodName, paramName);
     }
 
     public int getParamCountOfMethod(String className, String methodName) {
@@ -57,12 +62,16 @@ public class VTableManager {
         return getAddrOfClass(currClassName);
     }
 
-    public DAddr getCurrAddrOfMethod(String methodName) {
-        return getAddrOfMethod(currClassName, methodName);
+    public DAddr getCurrAddrOfMethod() {
+        return getAddrOfMethod(currClassName, currMethodName);
     }
 
-    public int getCurrParamCountOfMethod(String methodName) {
-        return getParamCountOfMethod(currClassName, methodName);
+    public Integer getCurrParamOffsetOfMethod(String paramName) {
+        return vTables.get(currClassName).getParamOffsetOfMethod(currMethodName, paramName);
+    }
+
+    public int getCurrParamCountOfMethod() {
+        return getParamCountOfMethod(currClassName, currMethodName);
     }
 
     public int getCurrOffsetOfField(String fieldName) {
