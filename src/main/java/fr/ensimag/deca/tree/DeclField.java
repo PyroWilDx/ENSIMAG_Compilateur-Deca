@@ -166,8 +166,8 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        this.type.iter(f);
-        this.name.iter(f);
-        this.init.iter(f); //  TODO pas sûr
+        type.iterChildren(f);
+        name.iterChildren(f);
+        init.iterChildren(f);
     }
 }

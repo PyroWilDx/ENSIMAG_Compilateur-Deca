@@ -44,6 +44,7 @@ public abstract class AbstractOpExactCmp extends AbstractOpCmp {
             }
         } else if (getLeftOperand() instanceof BooleanLiteral) {
             BooleanLiteral lOperand = (BooleanLiteral) getLeftOperand();
+            getRightOperand().isNotInFalse = isNotInFalse;
             if ((doEq() && !lOperand.getValue()) ||
                     (!doEq() && lOperand.getValue())) {
                 getRightOperand().isNotInFalse = !getRightOperand().isNotInFalse;
@@ -52,6 +53,7 @@ public abstract class AbstractOpExactCmp extends AbstractOpCmp {
             getRightOperand().codeGenInst(compiler);
         } else if (getRightOperand() instanceof BooleanLiteral) {
             BooleanLiteral rOperand = (BooleanLiteral) getRightOperand();
+            getLeftOperand().isNotInFalse = isNotInFalse;
             if ((doEq() && !rOperand.getValue()) ||
                     (!doEq() && rOperand.getValue())) {
                 getLeftOperand().isNotInFalse = !getLeftOperand().isNotInFalse;
