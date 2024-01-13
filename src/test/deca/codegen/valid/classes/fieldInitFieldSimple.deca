@@ -1,5 +1,6 @@
 // Description :
-//    Test d'une classe où l'initilisation d'un attribut utilise un autre attribut avant
+//    Test d'une classe où l'initilisation d'un attribut utilise
+//    un autre attribut initialisé avant
 //
 // Resultats :
 //    10

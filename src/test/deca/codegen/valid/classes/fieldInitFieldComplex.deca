@@ -1,19 +1,24 @@
 // Description :
-//    Test d'une classe où l'initilisation d'un attribut utilise un autre attribut après
+//    Test d'une classe où l'initilisation d'un attribut utilise
+//    un autre attribut initialisé après
 //
 // Resultats :
 //    20
 
 class A {
-    int a = b;
+    int a = arnaque();
     int b = 20;
 
-    void aDisplay() {
-        println(a);
+    int arnaque() {
+        return this.b;
+    }
+
+    void displayVars() {
+        println(a, " ", b);
     }
 }
 
 {
     A a = new A();
-    a.aDisplay();
+    a.displayVars();
 }

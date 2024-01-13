@@ -206,8 +206,11 @@ def doTests():
     doVerify("codegen/valid/classes/varInMethod.deca",
              expectedResult=b"2 4 16 22 44\n")
 
-    # doVerify("codegen/valid/classes/fieldInitFieldSimple.deca",
-    #          expectedResult=b"10\n",
+    doVerify("codegen/valid/classes/fieldInitFieldSimple.deca",
+             expectedResult=b"10\n")
+
+    # doVerify("codegen/valid/classes/fieldInitMethod.deca",
+    #          expectedResult=b"30 60 10\n",
     #          doAssert=False)
 
     # doVerify("codegen/valid/classes/fieldInitFieldComplex.deca",
