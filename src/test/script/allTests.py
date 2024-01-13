@@ -6,12 +6,14 @@ import subprocess
 allTestedFiles = []
 doParallel = False
 
+
 def prettyPrint(msg):
     print()
     print("==============================================")
     print(msg)
     print("==============================================")
     print()
+
 
 def printOrAssert(out, expectedResult, doAssert):
     if doAssert:
@@ -78,19 +80,19 @@ def doTests():
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (VALIDE)")
 
-    doVerify("codegen/valid/iostream/printString.deca",
+    doVerify("codegen/valid/iostreams/printString.deca",
              expectedResult=b"Hello World ! Second Argument\n"
                             b"Second Println\n"
                             b"Print Normal 1, Println Normal 2\n")
 
-    doVerify("codegen/valid/iostream/printIntFloat.deca",
+    doVerify("codegen/valid/iostreams/printIntFloat.deca",
              expectedResult=b"Chaine de Int : 1 2 42 -1 0 -42\n"
                             b"Chaine de Float : 1.22000e+00 -4.24242e+01 0.00000e+003.1416 -2.78000e+00\n")
 
-    doVerify("codegen/valid/iostream/printFloatHexa.deca",
+    doVerify("codegen/valid/iostreams/printFloatHexa.deca",
              expectedResult=b"0x1.3851ecp+0 -0x1.5364d8p+5 0x0p+03.1416 -0x1.63d70ap+1\n")
 
-    doVerify("codegen/valid/iostream/includeSimple.deca",
+    doVerify("codegen/valid/iostreams/includeSimple.deca",
              expectedResult=b"Hello World\n")
 
     doVerify("codegen/valid/declarations/declVarEasy.deca",
@@ -158,7 +160,7 @@ def doTests():
     doVerify("codegen/valid/options/optionParse.deca",
              # decacOptions="-p"
              decacOptions="-v"
-            )
+             )
 
     doVerify("codegen/valid/options/optionVerification.deca",
              expectedResult=b"",
@@ -173,64 +175,71 @@ def doTests():
              #          decacOptions="-d -d -d"
              )
 
-    doVerify("codegen/valid/classes/fieldsSimpleClass.deca")
+    # doVerify("codegen/valid/classes/others/asmSimple.deca",
+    #          expectedResult=b"180\n",
+    #          doAssert=False)
 
-    doVerify("codegen/valid/classes/fieldsComplexClass.deca")
+    doVerify("codegen/valid/classes/others/newSimple.deca")
 
-    doVerify("codegen/valid/classes/newSimple.deca")
+    doVerify("codegen/valid/classes/fields/fieldsSimpleClass.deca")
 
-    doVerify("codegen/valid/classes/methodSimpleClass.deca")
+    doVerify("codegen/valid/classes/fields/fieldsComplexClass.deca")
 
-    doVerify("codegen/valid/classes/methodCallSimple.deca",
-             expectedResult=b"Method Called\n")
-
-    doVerify("codegen/valid/classes/methodCallParams.deca",
-             expectedResult=b"x + y + z = 10 + 20 + 30 = 60\n"
-                            b"x * y * z = 2 * 6 * 10 = 120\n")
-
-    doVerify("codegen/valid/classes/methodCallReturn.deca",
-             b"0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20\n")
-
-    doVerify("codegen/valid/classes/fieldSelection.deca",
+    doVerify("codegen/valid/classes/fields/fieldSelection.deca",
              expectedResult=b"1.00000e+00 2 4 0 1.00000e+00\n"
                             b"8.00000e+00 3.20000e+01 16 0.00000e+00 1\n")
 
-    doVerify("codegen/valid/classes/thisSimple.deca",
-             expectedResult=b"2 2\n"
-                            b"6 6\n")
-
-    doVerify("codegen/valid/classes/noThisAccess.deca",
-             expectedResult=b"2 6\n"
-                            b"60 120\n")
-
-    doVerify("codegen/valid/classes/varInMethod.deca",
-             expectedResult=b"2 4 16 22 44\n")
-
-    doVerify("codegen/valid/classes/fieldInitFieldSimple.deca",
+    doVerify("codegen/valid/classes/fields/fieldInitFieldSimple.deca",
              expectedResult=b"10\n")
 
-    # doVerify("codegen/valid/classes/fieldInitMethod.deca",
+    # doVerify("codegen/valid/classes/fields/fieldInitMethod.deca",
     #          expectedResult=b"30 60 10\n",
     #          doAssert=False)
 
-    # doVerify("codegen/valid/classes/fieldInitFieldComplex.deca",
+    # doVerify("codegen/valid/classes/fields/fieldInitFieldComplex.deca",
     #          expectedResult=b"20\n",
     #          doAssert=False)
 
-    doVerify("codegen/valid/classes/exPage181.deca",
+    doVerify("codegen/valid/classes/this/thisSimple.deca",
+             expectedResult=b"2 2\n"
+                            b"6 6\n")
+
+    doVerify("codegen/valid/classes/this/noThisAccess.deca",
+             expectedResult=b"2 6\n"
+                            b"60 120\n")
+
+    doVerify("codegen/valid/classes/methods/methodSimpleClass.deca")
+
+    doVerify("codegen/valid/classes/methods/methodCallSimple.deca",
+             expectedResult=b"Method Called\n")
+
+    doVerify("codegen/valid/classes/methods/methodCallParams.deca",
+             expectedResult=b"x + y + z = 10 + 20 + 30 = 60\n"
+                            b"x * y * z = 2 * 6 * 10 = 120\n")
+
+    doVerify("codegen/valid/classes/methods/methodCallReturn.deca",
+             b"0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20\n")
+
+    doVerify("codegen/valid/classes/methods/varInMethod.deca",
+             expectedResult=b"2 4 16 22 44\n")
+
+    # doVerify("codegen/valid/classes/methods/recursiveMethod.deca",
+    #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
+    #          doAssert=False)
+
+    # doVerify("codegen/valid/classes/extends/extendsSimple.deca",
+    #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
+    #          doAssert=False)
+
+    doVerify("codegen/valid/classes/examples/exPage181.deca",
              expectedResult=b"a.getX() = 1\n")
 
-    # doVerify("codegen/valid/classes/recursiveMethod.deca",
-    #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
-    #          doAssert=False)
+    if not doParallel:
+        prettyPrint("TEST DE L'ÉTAPE C (INTERACTIVE)")
 
-    # doVerify("codegen/valid/classes/extends.deca",
-    #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
-    #          doAssert=False)
-
-    # doVerify("codegen/valid/classes/asmSimple.deca",
-    #          expectedResult=b"180\n",
-    #          doAssert=False)
+    doVerify("codegen/interactive/readIntFloat.deca",
+             expectedResult=b"3.20000e+00\n",
+             input=b"1\n2.2")
 
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (INVALIDE)")
@@ -273,13 +282,6 @@ def doTests():
     doVerify("codegen/invalid/missingReturn.deca",
              expectedResult=b"Error: Exiting function A.missingReturn without return\n",
              execError=True)
-
-    if not doParallel:
-        prettyPrint("TEST DE L'ÉTAPE C (INTERACTIVE)")
-
-    doVerify("codegen/interactive/readIntFloat.deca",
-             expectedResult=b"3.20000e+00\n",
-             input=b"1\n2.2")
 
     return 0
 
