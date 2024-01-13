@@ -8,27 +8,28 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
+import fr.ensimag.ima.pseudocode.NullOperand;
 
 import java.io.PrintStream;
+
 /**
  * Integer literal
  *
  * @author gl47
  * @date 13/01/2024
  */
-public class NullLiteral extends AbstractLiteral{
+public class NullLiteral extends AbstractLiteral {
 
-    public NullLiteral(){
+    public NullLiteral() {
 
     }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
-        Type exprType = compiler.environmentType.INT;
+        Type exprType = compiler.environmentType.NULL;
         setType(exprType);
         return exprType;
-        // TODO
     }
 
     @Override
@@ -38,12 +39,14 @@ public class NullLiteral extends AbstractLiteral{
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        //TODO
+        RegManager rM = compiler.getRegManager();
+
+        rM.setLastImm(new NullOperand());
     }
 
     @Override
     public void decompile(IndentPrintStream s) {
-        //TODO
+        s.print("null");
     }
 
 

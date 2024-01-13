@@ -1,7 +1,7 @@
 package fr.ensimag.deca.tree;
 
 /**
- * Literals.
+ * Literals
  *
  * @author gl47
  * @date 01/01/2024
