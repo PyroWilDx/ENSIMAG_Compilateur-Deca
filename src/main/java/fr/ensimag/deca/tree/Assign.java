@@ -75,7 +75,7 @@ public class Assign extends AbstractBinaryExpr {
                 if (!(getRightOperand() instanceof AbstractLiteral)) {
                     compiler.addInstruction(new PUSH(savedReg));
                     rM.freeReg(savedReg);
-                    sM.incrStackSize();
+                    sM.incrTmpVar();
                     pushed = true;
                 }
             }
@@ -89,7 +89,7 @@ public class Assign extends AbstractBinaryExpr {
             savedReg = regRight;
             regRight = Register.R0;
             compiler.addInstruction(new POP(savedReg));
-            sM.decrStackSize();
+            sM.decrTmpVar();
         }
 
         compiler.addInstruction(new STORE(regRight, iAddr));

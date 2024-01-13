@@ -94,7 +94,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             if (!(getRightOperand() instanceof AbstractLiteral)) {
                 compiler.addInstruction(new PUSH(regLeft));
                 rM.freeReg(regLeft);
-                sM.incrStackSize();
+                sM.incrTmpVar();
                 pushed = true;
             } // Else, don't need to PUSH because Literal don't need Registers.
         }
@@ -111,7 +111,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             regLeft = regRight;
             regRight = Register.R0;
             compiler.addInstruction(new POP(regLeft));
-            sM.decrStackSize();
+            sM.decrTmpVar();
         }
 
         DVal dVal = (lastImmRight == null) ? regRight : lastImmRight;

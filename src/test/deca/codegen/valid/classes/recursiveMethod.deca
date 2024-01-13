@@ -3,6 +3,7 @@
 //
 // Resultats :
 //    40 80 120 160 200 240 280 320 360 400
+//    400 1 2
 
 class A {
     int x;
@@ -10,10 +11,10 @@ class A {
     int z = 2;
 
     void recMethod() {
-        x = x + (2 * y + (z + (2 * y + (z + (2 +
+        x = x + (2 * y + (this.z + (2 * y + (this.z + (2 +
              (2 * 1 + (4 / 2 + (12 / 6 + (z + (2 * z / 2 +
-             (8 * y / 4 + (y * z + (z * z / 2 + (2 + (z * z * z * z / 8 +
-             (z / 2 * 2 + ((2 * 4 * y * y) / (y * z * z) + (2 + (2 + (2
+             (8 * y / 4 + (y * this.z + (z * z / 2 + (2 + (z * this.z * this.z * z / 8 +
+             (z / 2 * 2 + ((2 * 4 * y * this.y) / (y * this.z * z) + (2 + (2 + (2
              )))))
              )))))
              )))))
@@ -21,10 +22,9 @@ class A {
 
         if (x < 400) {
             print(x, " ");
-
             recMethod();
-        } else {
-            println(x);
+        } else { // 400
+            println(this.x);
         }
     }
 }
@@ -32,4 +32,5 @@ class A {
 {
     A a = new A();
     a.recMethod();
+    println(a.x, " ", a.y, " ", a.z);
 }

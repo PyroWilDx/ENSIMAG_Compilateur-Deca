@@ -29,8 +29,9 @@ public class CodeGenUtils {
             } else { // It's a Class Field
                 compiler.addInstruction(
                         new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
-                compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
-                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+                // Pas besoin vu qu'on est déjà dans une instance de la classe
+//                compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
+//                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
                 int fieldOffset = vTM.getCurrOffsetOfField(identName);
                 iAddr = new RegisterOffset(fieldOffset, Register.R0);
             }

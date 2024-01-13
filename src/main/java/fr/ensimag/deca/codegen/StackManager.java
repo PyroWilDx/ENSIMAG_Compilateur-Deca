@@ -6,28 +6,50 @@ import fr.ensimag.ima.pseudocode.RegisterOffset;
 public class StackManager {
 
     private final boolean methodStack;
-    private int stackSize;
+    private boolean doingDeclarations;
     private int maxStackSize;
+    private int stackSize;
+    private int tmpCpt;
     private int varCpt;
     private int vTableCpt;
 
     public StackManager(boolean methodStack) {
         this.methodStack = methodStack;
-        this.stackSize = 0;
+        this.doingDeclarations = false;
         this.maxStackSize = 0;
+        this.stackSize = 0;
+        this.tmpCpt = 0;
         this.varCpt = 0;
         this.vTableCpt = 0;
     }
 
-    public void incrStackSize() {
-        stackSize++;
-        if (stackSize > maxStackSize) {
-            maxStackSize = stackSize;
+    public void doDeclarations() {
+        doingDeclarations = true;
+    }
+
+    public void finishDoingDeclrations() {
+        doingDeclarations = false;
+        tmpCpt = 0;
+    }
+
+    public void updateMaxStackSize() {
+        if (stackSize + tmpCpt > maxStackSize) {
+            maxStackSize = stackSize + tmpCpt;
         }
     }
 
-    public void decrStackSize() {
-        stackSize--;
+    public void incrStackSize() {
+        stackSize++;
+        updateMaxStackSize();
+    }
+
+    public void incrTmpVar() {
+        tmpCpt++;
+        updateMaxStackSize();
+    }
+
+    public void decrTmpVar() {
+        if (!doingDeclarations) tmpCpt--;
     }
 
     public void incrGbVarCpt() {

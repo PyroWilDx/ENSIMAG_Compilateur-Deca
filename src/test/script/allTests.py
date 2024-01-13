@@ -152,12 +152,12 @@ def doTests():
 
     doVerify("codegen/valid/options/optionBanner.deca",
              expectedResult=b"Bonjour\n",
-             # decacOptions="-b" # à Remettre
+             # decacOptions="-b"
              )
 
     doVerify("codegen/valid/options/optionParse.deca",
-             # decacOptions="-p" # à Remettre
-             decacOptions="-v" # à Enlever
+             # decacOptions="-p"
+             decacOptions="-v"
             )
 
     doVerify("codegen/valid/options/optionVerification.deca",
@@ -203,9 +203,8 @@ def doTests():
              expectedResult=b"2 6\n"
                             b"60 120\n")
 
-    # doVerify("codegen/valid/classes/varInMethod.deca",
-    #          expectedResult=b"8\n",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/varInMethod.deca",
+             expectedResult=b"2 4 16 22 44\n")
 
     # doVerify("codegen/valid/classes/fieldInitFieldSimple.deca",
     #          expectedResult=b"10\n",
@@ -218,8 +217,8 @@ def doTests():
     doVerify("codegen/valid/classes/exPage181.deca",
              expectedResult=b"a.getX() = 1\n")
 
-    # doVerify("codegen/valid/recursiveMethod.deca",
-    #          expectedResult=b"12420",
+    # doVerify("codegen/valid/classes/recursiveMethod.deca",
+    #          expectedResult=b"40 80 120 160 200 240 280 320 360 400\n",
     #          doAssert=False)
 
     # doVerify("codegen/valid/classes/extends.deca",
@@ -245,6 +244,27 @@ def doTests():
 
     doVerify("codegen/invalid/floatOverflow.deca",
              expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
+    doVerify("codegen/interactive/readErr.deca",
+             expectedResult=b"Error: Input/Output Error\n",
+             execError=True,
+             input=b"10")
+
+    doVerify("codegen/invalid/stackOverflow.deca",
+             expectedResult=b"Error: Stack Overflow\n",
+             execError=True)
+
+    # doVerify("codegen/invalid/nullPointer.deca",
+    #          expectedResult=b"Error: Dereferencing Null Pointer\n",
+    #          execError=True)
+
+    doVerify("codegen/invalid/heapOverflow.deca",
+             expectedResult=b"Error: Heap Overflow\n",
+             execError=True)
+
+    doVerify("codegen/invalid/missingReturn.deca",
+             expectedResult=b"Error: Exiting function A.missingReturn without return\n",
              execError=True)
 
     if not doParallel:
