@@ -3,17 +3,18 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.ima.pseudocode.DAddr;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class VTableManager {
 
     private final HashMap<String, VTable> vTables;
-    private String currClassName; // TODO (faudra surement une stack pour les méthodes d'une autre classe dans la méthode de cette classe)
-    private String currMethodName; // TODO (faudra surement une stack pour les méthode dans les méthode)...
+    private final LinkedList<String> currClassNameStack;
+    private final LinkedList<String> currMethodNameStack;
 
     public VTableManager() {
         this.vTables = new HashMap<>();
-        this.currClassName = null;
-        this.currMethodName = null;
+        this.currClassNameStack = new LinkedList<>();
+        this.currMethodNameStack = new LinkedList<>();
     }
 
     public void addVTable(String className, VTable vTable) {
@@ -29,19 +30,6 @@ public class VTableManager {
         return vTables.get(className).getClassAddr();
     }
 
-    public DAddr getAddrOfMethod(String className, String methodName) {
-        return vTables.get(className).getMethodAddr(methodName);
-    }
-
-    public int getParamOffsetOfMethod(String className, String methodName,
-                                      String paramName) {
-        return vTables.get(className).getParamOffsetOfMethod(methodName, paramName);
-    }
-
-    public int getParamCountOfMethod(String className, String methodName) {
-        return vTables.get(className).getParamCountOfMethod(methodName);
-    }
-
     public int getOffsetOfField(String className, String fieldName) {
         return vTables.get(className).getFieldOffset(fieldName);
     }
@@ -50,44 +38,65 @@ public class VTableManager {
         return vTables.get(className).getFieldsCount();
     }
 
-    public void setCurrClassName(String value) {
-        currClassName = value;
+    public DAddr getAddrOfMethod(String className, String methodName) {
+        return vTables.get(className).getMethodAddr(methodName);
+    }
+
+    public Integer getParamOffsetOfMethod(String className, String methodName, String paramName) {
+        return vTables.get(className).getParamOffsetOfMethod(methodName, paramName);
+    }
+
+    public int getParamCountOfMethod(String className, String methodName) {
+        return vTables.get(className).getParamCountOfMethod(methodName);
+    }
+
+    public void enterClass(String className) {
+        currClassNameStack.addFirst(className);
+    }
+
+    public void exitClass() {
+        currClassNameStack.removeFirst();
     }
 
     public String getCurrClassName() {
-        return currClassName;
+        return currClassNameStack.peekFirst();
     }
 
     public DAddr getCurrAddrOfClass() {
-        return getAddrOfClass(currClassName);
-    }
-
-    public DAddr getCurrAddrOfMethod() {
-        return getAddrOfMethod(currClassName, currMethodName);
-    }
-
-    public Integer getCurrParamOffsetOfMethod(String paramName) {
-        return vTables.get(currClassName).getParamOffsetOfMethod(currMethodName, paramName);
-    }
-
-    public int getCurrParamCountOfMethod() {
-        return getParamCountOfMethod(currClassName, currMethodName);
+        return getAddrOfClass(getCurrClassName());
     }
 
     public int getCurrOffsetOfField(String fieldName) {
-        return getOffsetOfField(currClassName, fieldName);
+        return getOffsetOfField(getCurrClassName(), fieldName);
     }
 
     public int getCurrFieldCountOfClass() {
-        return getFieldCountOfClass(currClassName);
+        return getFieldCountOfClass(getCurrClassName());
     }
 
-    public void setCurrMethodName(String value) {
-        currMethodName = value;
+    public void enterMethod(String methodName) {
+        currMethodNameStack.addFirst(methodName);
+    }
+
+    public void exitMethod() {
+        currMethodNameStack.removeFirst();
     }
 
     public String getCurrMethodName() {
-        return currMethodName;
+        return currMethodNameStack.peekFirst();
+    }
+
+    public DAddr getCurrAddrOfMethod() {
+        return getAddrOfMethod(getCurrClassName(), getCurrMethodName());
+    }
+
+    public Integer getCurrParamOffsetOfMethod(String paramName) {
+        if (getCurrMethodName() == null) return null;
+        return getParamOffsetOfMethod(getCurrClassName(), getCurrMethodName(), paramName);
+    }
+
+    public int getCurrParamCountOfMethod() {
+        return getParamCountOfMethod(getCurrClassName(), getCurrMethodName());
     }
 
 }

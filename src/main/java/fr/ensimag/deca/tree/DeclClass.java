@@ -140,7 +140,8 @@ public class DeclClass extends AbstractDeclClass {
         VTableManager vTM = compiler.getVTableManager();
 
         String className = name.getName().getName();
-        vTM.setCurrClassName(className);
+        vTM.enterClass(className);
+
         String superClassName = superClass.getName().getName();
 
         compiler.addComment("Class " + className);
@@ -169,6 +170,8 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addInstruction(new RTS());
 
         methods.codeGenListDeclMethod(compiler);
+
+        vTM.exitClass();
         // Done
     }
 

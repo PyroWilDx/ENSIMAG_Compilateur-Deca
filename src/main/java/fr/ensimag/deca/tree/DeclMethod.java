@@ -84,7 +84,7 @@ public class DeclMethod extends AbstractDeclMethod {
         VTableManager vTM = compiler.getVTableManager();
 
         String methodName = name.getName().getName();
-        vTM.setCurrMethodName(methodName);
+        vTM.enterMethod(methodName);
 
         compiler.addLabel(mStartLabel);
         int iTSTO = compiler.getProgramLineCount();
@@ -110,6 +110,8 @@ public class DeclMethod extends AbstractDeclMethod {
         RegManager.addRestoreRegsInsts(compiler, usedRegs);
 
         compiler.addInstruction(new RTS());
+
+        vTM.exitMethod();
         // Done
     }
 

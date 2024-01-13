@@ -42,8 +42,7 @@ public class New extends AbstractExpr {
         ErrorManager eM = compiler.getErrorManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        String className = getType().getName().getName();
-        vTM.setCurrClassName(className);
+        vTM.enterClass(getType().getName().getName());
 
         int fieldsCount = vTM.getCurrFieldCountOfClass();
 
@@ -57,6 +56,8 @@ public class New extends AbstractExpr {
         rM.freeReg(gpReg);
         compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(vTM.getCurrClassName())));
         compiler.addInstruction(new POP(gpReg));
+
+        vTM.exitClass();
         // Done
     }
 

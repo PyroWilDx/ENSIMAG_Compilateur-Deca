@@ -77,6 +77,8 @@ public class FieldSelection extends AbstractLValue {
         ErrorManager eM = compiler.getErrorManager();
         VTableManager vTM = compiler.getVTableManager();
 
+        vTM.enterClass(expr.getType().getName().getName());
+
         String fieldName = fieldIdent.getName().getName();
 
         expr.codeGenInst(compiler);
@@ -90,6 +92,9 @@ public class FieldSelection extends AbstractLValue {
         int fieldOffset = vTM.getCurrOffsetOfField(fieldName);
         DAddr fAddr = new RegisterOffset(fieldOffset, gpReg);
         rM.freeReg(gpReg);
+
+        vTM.exitClass();
+
         return fAddr;
     }
 

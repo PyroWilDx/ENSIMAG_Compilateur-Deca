@@ -29,10 +29,6 @@ public class This extends AbstractExpr {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
-        VTableManager vTM = compiler.getVTableManager();
-
-        String className = getType().getName().getName();
-        vTM.setCurrClassName(className);
 
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(

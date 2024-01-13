@@ -252,10 +252,6 @@ public class Identifier extends AbstractIdentifier {
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        if (getType().isClass()) {
-            vTM.setCurrClassName(getType().getName().getName());
-        }
-
         DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
 
         GPRegister gpReg = rM.getFreeReg();

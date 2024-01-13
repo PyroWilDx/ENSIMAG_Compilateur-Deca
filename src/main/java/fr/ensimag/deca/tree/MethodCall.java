@@ -54,8 +54,10 @@ public class MethodCall extends AbstractMethodCall {
         ErrorManager eM = compiler.getErrorManager();
         VTableManager vTM = compiler.getVTableManager();
 
+        vTM.enterClass(expr.getType().getName().getName());
+
         String methodName = methodIdent.getName().getName();
-        vTM.setCurrMethodName(methodName);
+        vTM.enterMethod(methodName);
 
         int nbParam = vTM.getCurrParamCountOfMethod() + 1;
         compiler.addInstruction(new ADDSP(nbParam));
@@ -89,6 +91,9 @@ public class MethodCall extends AbstractMethodCall {
         if (!getType().isVoid()) {
             rM.freeRegForce(Register.R0);
         }
+
+        vTM.exitMethod();
+        vTM.exitClass();
     }
 
     @Override
