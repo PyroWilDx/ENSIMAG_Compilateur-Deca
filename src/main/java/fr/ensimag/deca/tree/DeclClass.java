@@ -25,7 +25,6 @@ public class DeclClass extends AbstractDeclClass {
     private final AbstractIdentifier superClass;
     private final ListDeclField fields;
     private final ListDeclMethod methods;
-
     public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass, ListDeclField fields, ListDeclMethod methods) {
         this.name = name;
         this.superClass = superClass;
@@ -87,12 +86,15 @@ public class DeclClass extends AbstractDeclClass {
     protected void verifyClassMembers(DecacCompiler compiler) throws ContextualError {
         EnvironmentExp envExpF = this.fields.verifyListDeclFieldMembers(compiler, this.superClass.getName(), name.getName());
         EnvironmentExp envExpM = this.methods.verifyListDeclMethodMembers(compiler, this.superClass.getName());
+        int lastIndex = this.methods.getLastIndex();
         SymbolTable.Symbol clone = envExpM.disjointUnion(envExpF);
         if (clone != null) {
             throw new ContextualError("'" + clone.getName() +
                     "' is a field and a method at once.", getLocation());
         }
-        EnvironmentExp voidClassEnv = ((ClassDefinition) compiler.environmentType.get(name.getName())).getMembers();
+        ClassDefinition classDef = (ClassDefinition) compiler.environmentType.get(name.getName());
+        EnvironmentExp voidClassEnv = classDef.getMembers();
+        classDef.setNumberOfMethods(lastIndex);
         voidClassEnv.disjointUnion(envExpM); // c'est vide donc pas de pb pour l'union disjointe !!
         // Done
     }
