@@ -20,6 +20,11 @@ public class Equals extends AbstractOpExactCmp {
     }
 
     @Override
+    public boolean doEq() {
+        return true;
+    }
+
+    @Override
     protected Instruction getBranchInvOpCmpInst(Label bLabel) {
         return new BNE(bLabel);
     }

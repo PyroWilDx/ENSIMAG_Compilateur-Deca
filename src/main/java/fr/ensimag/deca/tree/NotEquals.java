@@ -20,6 +20,11 @@ public class NotEquals extends AbstractOpExactCmp {
     }
 
     @Override
+    public boolean doEq() {
+        return false;
+    }
+
+    @Override
     protected Instruction getBranchInvOpCmpInst(Label bLabel) {
         return new BEQ(bLabel);
     }

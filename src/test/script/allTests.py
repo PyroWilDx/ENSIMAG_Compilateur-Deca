@@ -131,7 +131,7 @@ def doTests():
              expectedResult=b"")
 
     doVerify("codegen/valid/conditions/ifThenElseSimple.deca",
-             expectedResult=b"1234567\n")
+             expectedResult=b"12345678910111213141516\n")
 
     doVerify("codegen/valid/conditions/ifThenElseComplex.deca",
              expectedResult=b"OK\n")

@@ -58,12 +58,12 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         cM.exitCond();
     }
 
+    public abstract Label setOperandCondVals(CondManager cM);
+
     @Override
     protected void codeGenOp(DecacCompiler compiler,
                              DVal valReg, GPRegister saveReg) {
         // Not Used
     }
-
-    public abstract Label setOperandCondVals(CondManager cM);
 
 }
