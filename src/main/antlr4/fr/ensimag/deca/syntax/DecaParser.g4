@@ -187,7 +187,12 @@ if_then_else returns[IfThenElse tree]
       )*
       (ELSE OBRACE li_else=list_inst CBRACE {
         assert($li_else.tree != null ) ;
-        a.add($li_else.tree.getElement());
+        int i = 0;
+        int n = $li_else.tree.size();
+        while(i<n){
+        a.add($li_else.tree.getElement(i));
+        i++;
+        }
         }
       )?
 

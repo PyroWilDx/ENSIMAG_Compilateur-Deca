@@ -34,7 +34,6 @@ public abstract class TreeList<TreeType extends Tree> extends Tree {
     public List<TreeType> getList() {
         return Collections.unmodifiableList(list);
     }
-
     public TreeType set(int index, TreeType element) {
         return list.set(index, element);
     }
@@ -54,7 +53,7 @@ public abstract class TreeList<TreeType extends Tree> extends Tree {
  * @return the first element of a TreeList
  * used for the parser part in IfThenElse
  * */
-    public TreeType getElement(){Validate.notNull(0);return list.get(0);}
+    public TreeType getElement(int i){Validate.notNull(0);return list.get(i);}
 
     /**
      * Do not check anything about the location.
