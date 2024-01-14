@@ -10,14 +10,30 @@ cd "$(dirname "$0")"/../../.. || exit 1
 PATH=./src/test/script/launchers:"$PATH"
 
 
-if test_lex src/test/deca/syntax/invalid/helloWorld/simple_lex.deca 2>&1 \
-    | head -n 1 | grep -q 'simple_lex.deca:[0-9]'
-then
-    echo "Echec inattendu de test_lex sur simple_lex.deca XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
-    exit 1
-else
-    echo "Succes attendu de test_lex sur simple_lex.deca"
-fi
+test_lex_valide () {
+    test_synt "$1" > "${1%.deca}".res
+    if test_synt "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"
+    then
+        echo "Echec inattendu pour test_lex sur $1 XXXXXXXXXXXXXXXXXXXXXXXXX"
+        exit 1
+    else
+      echo "Succes attendu de test_lex sur $1"
+    fi
+}
+echo [ TESTS VALIDES POUR LE LEXEUR]
+
+test_lex_valide "src/test/deca/syntax/valid/helloWorld/hello.deca"
+test_lex_valide "src/test/deca/syntax/valid/helloWorld/hello.deca"
+
+for cas_de_test in src/test/deca/syntax/valid/sansObjet/*.deca
+do
+    test_lex_valide "$cas_de_test"
+done
+
+for cas_de_test in src/test/deca/syntax/valid/avecObjet/*.deca
+do
+    test_lex_valide "$cas_de_test"
+done
 
 echo [ TESTS INVALIDES POUR LE LEXEUR]
 

@@ -63,7 +63,9 @@ do
     test_synt_invalide "$cas_de_test"
 done
 
+test_synt_valide "src/test/deca/syntax/valid/sansObjet/noOperation.deca"
 test_synt_valide "src/test/deca/syntax/valid/sansObjet/sansObjet.deca"
+test_synt_valide "src/test/deca/syntax/valid/sansObjet/sansObjetComplexe.deca"
 
 echo "-----------Langage Avec Objets-----------"
 for cas_de_test in src/test/deca/syntax/valid/avecObjet/*.deca
