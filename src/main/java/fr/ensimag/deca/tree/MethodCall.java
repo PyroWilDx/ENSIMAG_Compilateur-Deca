@@ -80,8 +80,10 @@ public class MethodCall extends AbstractMethodCall {
 
         gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), gpReg));
-        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-        compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+        if (compiler.getCompilerOptions().doCheck()) {
+            compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+            compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+        }
         compiler.addInstruction(new LOAD(new RegisterOffset(0, gpReg), gpReg));
         compiler.addInstruction(new BSR(new RegisterOffset(vTM.getCurrMethodOffset(), gpReg)));
         rM.freeReg(gpReg);

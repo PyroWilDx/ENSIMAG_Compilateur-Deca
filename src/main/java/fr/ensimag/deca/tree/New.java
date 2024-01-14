@@ -48,7 +48,9 @@ public class New extends AbstractExpr {
 
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new NEW(fieldsCount + 1, gpReg));
-        compiler.addInstruction(new BOV(eM.getHeapOverflowLabel()));
+        if (compiler.getCompilerOptions().doCheck()) {
+            compiler.addInstruction(new BOV(eM.getHeapOverflowLabel()));
+        }
         compiler.addInstruction(new LEA(vTM.getCurrClassAddr(), Register.R0));
         compiler.addInstruction(
                 new STORE(Register.R0, new RegisterOffset(0, gpReg)));

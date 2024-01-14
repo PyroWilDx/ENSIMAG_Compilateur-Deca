@@ -87,9 +87,15 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new HALT());
         compiler.addComment("End of Main Program");
 
-        compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
-        compiler.addInstruction(1, new BOV(eM.getStackOverflowLabel()));
-        compiler.addInstruction(2, new ADDSP(sM.getAddSp()));
+        if (sM.getMaxStackSize() > 0) {
+            if (sM.getAddSp() > 0) {
+                compiler.addInstruction(0, new ADDSP(sM.getAddSp()));
+            }
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(0, new BOV(eM.getStackOverflowLabel()));
+                compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
+            }
+        }
 
         if (generateObjectClass) {
             compiler.addComment("");

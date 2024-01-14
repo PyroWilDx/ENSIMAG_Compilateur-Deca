@@ -134,7 +134,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         codeGenOp(compiler, dVal, regLeft);
 
         if (getType().isFloat()) {
-            compiler.addInstruction(new BOV(eM.getFloatOverflowLabel()));
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(new BOV(eM.getFloatOverflowLabel()));
+            }
         }
 
         rM.freeReg(regRight);
@@ -147,9 +149,11 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     @Override
     public void decompile(IndentPrintStream s) {
+        s.print("(");
         getLeftOperand().decompile(s);
-        s.print(getOperatorName());
+        s.print(" " + getOperatorName() + " ");
         getRightOperand().decompile(s);
+        s.print(")");
     }
 
     abstract protected String getOperatorName();

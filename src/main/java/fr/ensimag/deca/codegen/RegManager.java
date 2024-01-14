@@ -114,9 +114,13 @@ public class RegManager {
         int maxStackSize = sM.getMaxStackSize() + usedCount;
         if (maxStackSize > 0) {
             // TODO (Je sais pas pourquoi avec -1 ça marche aussi)
-            startLines.addFirst(new Line(new ADDSP(sM.getAddSp() + usedCount)));
-            startLines.addFirst(new Line(new BOV(eM.getStackOverflowLabel())));
-            startLines.addFirst(new Line(new TSTO(maxStackSize)));
+            if (sM.getAddSp() + usedCount > 0) {
+                startLines.addFirst(new Line(new ADDSP(sM.getAddSp() + usedCount)));
+            }
+            if (compiler.getCompilerOptions().doCheck()) {
+                startLines.addFirst(new Line(new BOV(eM.getStackOverflowLabel())));
+                startLines.addFirst(new Line(new TSTO(maxStackSize)));
+            }
         }
         compiler.addAllLine(index, startLines);
     }

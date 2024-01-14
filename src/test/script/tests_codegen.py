@@ -261,29 +261,6 @@ def doTests():
                             b"OK\n",
              decacOptions="-r 4")
 
-    doVerify("codegen/valid/options/optionBanner.deca",
-             expectedResult=b"Bonjour\n",
-             # decacOptions="-b"
-             )
-
-    doVerify("codegen/valid/options/optionParse.deca",
-             # decacOptions="-p"
-             decacOptions="-v"
-             )
-
-    doVerify("codegen/valid/options/optionVerification.deca",
-             expectedResult=b"",
-             decacOptions="-v")
-
-    doVerify("codegen/valid/options/optionNoCheck.deca",
-             expectedResult=b"1\n",
-             decacOptions="-n")
-
-    doVerify("codegen/valid/options/optionDebug.deca",
-             expectedResult=b"z = 6.00000e+00\n",
-             #          decacOptions="-d -d -d"
-             )
-
     doVerify("codegen/valid/provided/ecrit0.deca",
              expectedResult=b"ok\n"
                             b"ok\n")
@@ -297,6 +274,26 @@ def doTests():
 
     doVerify("codegen/valid/provided/exdoc.deca",
              expectedResult=b"a.getX() = 1\n")
+
+    doVerify("codegen/valid/options/optionBanner.deca",
+             expectedResult=b"Bonjour\n",
+             decacOptions="-b")
+
+    doVerify("codegen/valid/options/optionParse.deca",
+             decacOptions="-p")
+
+    doVerify("codegen/valid/options/optionVerification.deca",
+             expectedResult=b"",
+             decacOptions="-v")
+
+    doVerify("codegen/invalid/errors/optionNoCheck.deca",
+             expectedResult=b"1\n",
+             decacOptions="-n")
+
+    doVerify("codegen/valid/options/optionDebug.deca",
+             expectedResult=b"z = 6.00000e+00\n",
+             #          decacOptions="-d -d -d"
+             )
 
     """
     ============================================

@@ -106,13 +106,6 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
-    public void decompile(IndentPrintStream s) {
-        getLeftOperand().decompile(s);
-        s.print(" = ");
-        getRightOperand().decompile(s);
-    }
-
-    @Override
     protected String getOperatorName() {
         return "=";
     }

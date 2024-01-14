@@ -110,10 +110,12 @@ public class DeclMethod extends AbstractDeclMethod {
         RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
 
         if (!type.getType().isVoid()) {
-            compiler.addInstruction(new WSTR("Error: Exiting function " + className +
-                    "." + methodName + "() without return"));
-            compiler.addInstruction(new WNL());
-            compiler.addInstruction(new ERROR());
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(new WSTR("Error: Exiting function " + className +
+                        "." + methodName + "() without return"));
+                compiler.addInstruction(new WNL());
+                compiler.addInstruction(new ERROR());
+            }
         }
 
         compiler.addLabel(mEndLabel);

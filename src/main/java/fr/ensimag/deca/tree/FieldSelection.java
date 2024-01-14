@@ -87,8 +87,10 @@ public class FieldSelection extends AbstractLValue {
 
         GPRegister gpReg = rM.getLastReg();
         if (!(expr instanceof This)) {
-            compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-            compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+            }
         } // Else, pas besoin vu qu'on est déjà dans une instance de la classe
 
         int fieldOffset = vTM.getCurrFieldOffset(fieldName);
