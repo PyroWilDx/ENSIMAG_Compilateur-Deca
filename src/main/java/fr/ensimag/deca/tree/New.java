@@ -65,7 +65,7 @@ public class New extends AbstractExpr {
     public void decompile(IndentPrintStream s) {
         s.print("new ");
         type.decompile(s);
-        s.println("();");
+        s.print("()");
     }
 
     @Override
