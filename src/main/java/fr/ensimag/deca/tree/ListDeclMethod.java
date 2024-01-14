@@ -59,9 +59,9 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         VTableManager vTM = compiler.getVTableManager();
 
         VTable superClassVTable = vTable.getVTableOfSuperClass(vTM);
-        LinkedList<MethodInfo> superClassMethods =
+        LinkedList<VMethodInfo> superClassMethods =
                 superClassVTable.getClassMethodsOrderered();
-        for (MethodInfo methodInfo : superClassMethods) {
+        for (VMethodInfo methodInfo : superClassMethods) {
             boolean isPresentInCurrClass = false;
             for (AbstractDeclMethod declMethod : getList()) {
                 if (methodInfo.getMethodName().equals(declMethod.getName().getName())) {

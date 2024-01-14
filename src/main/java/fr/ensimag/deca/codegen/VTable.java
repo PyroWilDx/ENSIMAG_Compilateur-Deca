@@ -11,8 +11,8 @@ public class VTable {
     private final SymbolTable.Symbol superClassSymbol;
     private final String className;
     private final DAddr classAddr;
-    private final HashMap<String, MethodInfo> classMethods;
-    private final LinkedList<MethodInfo> classMethodsOrderered;
+    private final HashMap<String, VMethodInfo> classMethods;
+    private final LinkedList<VMethodInfo> classMethodsOrderered;
     private final HashMap<String, Integer> classFields;
 
     public VTable(SymbolTable.Symbol superClassSymbol, SymbolTable.Symbol classSymbol,
@@ -38,13 +38,13 @@ public class VTable {
     }
 
     public void addMethod(String methodName, DAddr mAddr) {
-        MethodInfo methodInfo = new MethodInfo(className, methodName, mAddr);
+        VMethodInfo methodInfo = new VMethodInfo(className, methodName, mAddr);
         classMethods.put(methodName, methodInfo);
         classMethodsOrderered.addLast(methodInfo);
     }
 
     public void addSuperMethod(String superClassName, String methodName, DAddr mAddr) {
-        MethodInfo methodInfo = new MethodInfo(superClassName, methodName, mAddr);
+        VMethodInfo methodInfo = new VMethodInfo(superClassName, methodName, mAddr);
         classMethods.put(methodName, methodInfo);
         classMethodsOrderered.addLast(methodInfo);
     }
@@ -53,7 +53,7 @@ public class VTable {
         classMethods.get(methodName).copyParams(otherVTable.classMethods.get(methodName));
     }
 
-    public LinkedList<MethodInfo> getClassMethodsOrderered() {
+    public LinkedList<VMethodInfo> getClassMethodsOrderered() {
         return classMethodsOrderered;
     }
 
@@ -76,6 +76,10 @@ public class VTable {
 
     public void addField(String fieldName, int fieldOffset) {
         classFields.put(fieldName, fieldOffset);
+    }
+
+    public void addAllFields(VTable otherVTable) {
+        classFields.putAll(otherVTable.classFields);
     }
 
     public int getFieldOffset(String fieldName) {
