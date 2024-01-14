@@ -220,14 +220,12 @@ def doTests():
              expectedResult=b"1 2\n"
                             b"1 2 0\n")
 
-    # doVerify("codegen/valid/classes/extends/extendsFields.deca",
-    #          expectedResult=b"1 2\n"
-    #                         b"4 2 0\n",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/extends/extendsFields.deca",
+             expectedResult=b"1 2\n"
+                            b"4 2 0\n")
 
-    # doVerify("codegen/valid/classes/extends/extendsMethods.deca",
-    #          expectedResult=b"1 2 4 2 0\n",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/extends/extendsMethods.deca",
+             expectedResult=b"1 2 4 2 0\n")
 
     doVerify("codegen/valid/classes/miscellaneous/assignInside.deca",
              expectedResult=b"0 0\n"

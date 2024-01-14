@@ -14,6 +14,7 @@ public class VTable {
     private final HashMap<String, VMethodInfo> classMethods;
     private final LinkedList<VMethodInfo> classMethodsOrderered;
     private final HashMap<String, Integer> classFields;
+    private int redefinedFieldsCount;
 
     public VTable(SymbolTable.Symbol superClassSymbol, SymbolTable.Symbol classSymbol,
                   DAddr classAddr) {
@@ -23,6 +24,7 @@ public class VTable {
         this.classMethods = new HashMap<>();
         this.classMethodsOrderered = new LinkedList<>();
         this.classFields = new HashMap<>();
+        this.redefinedFieldsCount = 0;
     }
 
     public VTable getVTableOfSuperClass(VTableManager vTM) {
@@ -75,6 +77,9 @@ public class VTable {
     }
 
     public void addField(String fieldName, int fieldOffset) {
+        if (classFields.containsKey(fieldName)) {
+            redefinedFieldsCount++;
+        }
         classFields.put(fieldName, fieldOffset);
     }
 
@@ -87,7 +92,7 @@ public class VTable {
     }
 
     public int getFieldsCount() {
-        return classFields.size();
+        return classFields.size() + redefinedFieldsCount;
     }
 
 }
