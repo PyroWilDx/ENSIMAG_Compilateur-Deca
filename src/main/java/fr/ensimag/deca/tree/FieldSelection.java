@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.ErrorManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.VTableManager;
@@ -58,6 +59,12 @@ public class FieldSelection extends AbstractLValue {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
+        CondManager cM = compiler.getCondManager();
+        if (cM.isDoingCond()) {
+            fieldIdent.isNotInFalse = isNotInFalse;
+            fieldIdent.branchLabel = branchLabel;
+        }
+
         DAddr fAddr = getAddrOfField(compiler);
         fieldIdent.getExpDefinition().setOperand(fAddr);
 

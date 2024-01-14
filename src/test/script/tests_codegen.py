@@ -216,6 +216,10 @@ def doTests():
                             b"80 70 60\n"
                             b"180 170 160\n")
 
+    doVerify("codegen/valid/classes/extends/extendsFieldSimple.deca",
+             expectedResult=b"",
+             doAssert=False)
+
     # doVerify("codegen/valid/classes/extends/extendsFields.deca",
     #          expectedResult=b"1 2\n"
     #                         b"4 2 0\n",
