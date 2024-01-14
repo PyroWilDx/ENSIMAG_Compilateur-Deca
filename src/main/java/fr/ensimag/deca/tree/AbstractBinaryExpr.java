@@ -88,6 +88,12 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
         getLeftOperand().codeGenInst(compiler);
         GPRegister regLeft = rM.getLastRegOrImm(compiler);
+        if (regLeft == Register.R0) { // On vient de faire un return
+            // L'opérande de droite peut aussi utiliser R0
+            // Donc on fait un LOAD, nécessaire pour sauvegarder la valeur
+            regLeft = rM.getFreeReg();
+            compiler.addInstruction(new LOAD(Register.R0, regLeft));
+        }
 
         boolean pushed = false;
         if (rM.isUsingAllRegs()) {
@@ -104,6 +110,14 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         GPRegister regRight = null;
         if (lastImmRight == null) {
             regRight = rM.getLastReg();
+            if (regRight == Register.R0) { // On vient de faire un return
+                if (pushed) {
+                    // Si on avait PUSH, alors on va utiliser R0 juste après
+                    // Donc on doit sauvegarder la valeur
+                    regRight = rM.getFreeReg();
+                    compiler.addInstruction(new LOAD(Register.R0, regLeft));
+                }
+            }
         }
 
         if (pushed) {
@@ -121,7 +135,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             compiler.addInstruction(new BOV(eM.getFloatOverflowLabel()));
         }
 
-        if (!pushed) rM.freeReg(regRight);
+        rM.freeReg(regRight);
         rM.freeReg(regLeft);
         // Done
     }

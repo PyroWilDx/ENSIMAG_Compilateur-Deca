@@ -250,7 +250,6 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
-        VTableManager vTM = compiler.getVTableManager();
 
         DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
 

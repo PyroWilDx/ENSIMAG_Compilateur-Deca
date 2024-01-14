@@ -2,10 +2,7 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractIdentifier;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.NullOperand;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.BEQ;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
@@ -17,7 +14,7 @@ public class CodeGenUtils {
     }
 
     public static DAddr extractAddrFromIdent(DecacCompiler compiler, AbstractIdentifier ident) {
-        ErrorManager eM = compiler.getErrorManager();
+        RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
 
         DAddr iAddr = ident.getExpDefinition().getOperand();
@@ -27,13 +24,15 @@ public class CodeGenUtils {
             if (paramOffset != null) { // It's a Method Param
                 iAddr = new RegisterOffset(paramOffset, Register.LB);
             } else { // It's a Class Field
+                GPRegister gpReg = rM.getFreeReg();
                 compiler.addInstruction(
-                        new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+                        new LOAD(new RegisterOffset(-2, Register.LB), gpReg));
                 // Pas besoin vu qu'on est déjà dans une instance de la classe
 //                compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
 //                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
                 int fieldOffset = vTM.getCurrOffsetOfField(identName);
-                iAddr = new RegisterOffset(fieldOffset, Register.R0);
+                iAddr = new RegisterOffset(fieldOffset, gpReg);
+                rM.freeReg(gpReg);
             }
         }
 

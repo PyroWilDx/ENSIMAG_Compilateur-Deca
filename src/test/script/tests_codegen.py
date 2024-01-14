@@ -223,10 +223,9 @@ def doTests():
              expectedResult=b"52 52\n",
              decacOptions="-r 4")
 
-    # doVerify("codegen/valid/registers/methodRegOverflow.deca",
-    #          expectedResult=b"600\n",
-    #          decacOptions="-r 8",
-    #          doAssert=False)
+    doVerify("codegen/valid/registers/methodRegOverflow.deca",
+             expectedResult=b"600\n",
+             decacOptions="-r 4")
 
     doVerify("codegen/valid/options/optionBanner.deca",
              expectedResult=b"Bonjour\n",
@@ -271,9 +270,9 @@ def doTests():
     doVerify("codegen/perf/provided/ln2.deca",
              expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n")
 
-    # doVerify("codegen/perf/provided/ln2_fct.deca",
-    #          expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n",
-    #          doAssert=False)
+    doVerify("codegen/perf/provided/ln2_fct.deca",
+             expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n",
+             doAssert=False)
 
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (INTERACTIVE)")

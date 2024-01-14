@@ -93,8 +93,8 @@ public class Assign extends AbstractBinaryExpr {
         }
 
         compiler.addInstruction(new STORE(regRight, iAddr));
-        if (!pushed) rM.freeReg(regRight);
-        if (savedReg != null) rM.freeReg(savedReg);
+        rM.freeReg(regRight);
+        rM.freeReg(savedReg);
         // Done
     }
 
