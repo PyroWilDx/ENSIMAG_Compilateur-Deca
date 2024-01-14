@@ -19,6 +19,6 @@ class B extends A {
     A a = new A();
     B b = new B();
 
-    println(a.x, " ", a.y, " ");
+    println(a.x, " ", a.y);
     println(b.x, " ", b.y, " ", b.z);
 }
