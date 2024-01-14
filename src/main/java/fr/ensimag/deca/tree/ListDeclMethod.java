@@ -16,6 +16,12 @@ import fr.ensimag.ima.pseudocode.instructions.STORE;
 import java.util.LinkedList;
 
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
+    private int lastIndex;
+
+    public int getLastIndex() {
+        return lastIndex;
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclMethod decl : getList()) {
@@ -26,15 +32,17 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     public EnvironmentExp verifyListDeclMethodMembers(DecacCompiler compiler,
                                                       SymbolTable.Symbol superClass) throws ContextualError {
         EnvironmentExp envReturn = new EnvironmentExp(null);
-        int index = 1;
+        ClassDefinition superClassDef = compiler.environmentType.get(superClass).asClassDefinition("Impossible d'arriver ici", getLocation());
+        int index = superClassDef.getNumberOfMethods() + 1;
         for (AbstractDeclMethod decl : this.getList()) {
             EnvironmentExp env = decl.verifyDeclMethodMembers(compiler, superClass, index);
-            index++;
+            if (!decl.isOverride()) index++;
             if (envReturn.disjointUnion(env) != null) {
                 throw new ContextualError("Method '" + decl.getName()
                         + "' already defined.", decl.getLocation());
             }
         }
+        this.lastIndex = index;
         return envReturn;
     }
 

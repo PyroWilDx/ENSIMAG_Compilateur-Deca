@@ -3,21 +3,22 @@ class GameBoy {
     protected int height = 144;
 
     int getWidth() {
-        return width;
+        return this.width;
     }
 
     int getHeight() {
-        return height;
+        return this.height;
     }
     void init () asm (
+    "d"
 
     ); // TODO pour faire les trucs assembleurs de bases genre main loop et tout jsp
     void setPixel(int x, int y) asm (
-        load a,b
+        "load a,b
         cp 24*8
         ret nc
         push bc
-            push de
+            push de"
             
     ); // TODO;
     void drawRect(int x, int y, int with, int height) {

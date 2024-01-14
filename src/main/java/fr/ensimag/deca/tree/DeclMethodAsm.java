@@ -23,6 +23,11 @@ public class DeclMethodAsm extends AbstractDeclMethod {
         this.params = params;
     }
 
+    @Override
+    public boolean isOverride() {
+        return false; // TODO
+    }
+
     public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
         // nothing
     }
@@ -42,12 +47,14 @@ public class DeclMethodAsm extends AbstractDeclMethod {
                                                   SymbolTable.Symbol superClass,
                                                   int index) {
         return null;
+        // TODO faut pas faire un truc là ?
         // Done
     }
 
     public void verifyDeclMethodBody(DecacCompiler compiler,
                                      EnvironmentExp localEnv,
                                      ClassDefinition currentClass) {
+        // TODO faut pas faire un truc là ?
     }
 
     @Override

@@ -61,6 +61,7 @@ public class EnvironmentType {
         }
         envTypes.put(objectSymb, OBJECT.getDefinition());
         classesAndNull.add(OBJECT);
+        OBJECT.getDefinition().incNumberOfMethods();
 
         Symbol nullSymb = compiler.createSymbol("null");
         NULL = new NullType(nullSymb);

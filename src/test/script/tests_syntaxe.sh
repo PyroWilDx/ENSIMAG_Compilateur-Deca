@@ -3,23 +3,18 @@
 # Auteur : gl47
 # Version initiale : 01/01/2024
 
-# Test minimaliste de la syntaxe.
-# On lance test_synt sur un fichier valide, et les tests invalides.
+# Notre script de tests de la syntaxe
 
-# dans le cas du fichier valide, on teste seulement qu'il n'y a pas eu
-# d'erreur. Il faudrait tester que l'arbre donné est bien le bon. Par
-# exemple, en stoquant la valeur attendue quelque part, et en
+# dans le cas du fichier valide, on vérifie qu'il n'y a pas eu
+# d'erreur et que l'arbre est correct l'arbre donné est bien le bon
+# en stoquant la valeur attendue dans un fichier et en
 # utilisant la commande unix "diff".
 #
-# Il faudrait aussi lancer ces tests sur tous les fichiers deca
-# automatiquement. Un exemple d'automatisation est donné avec une
-# boucle for sur les tests invalides, il faut aller encore plus loin.
 
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
 
-# exemple de définition d'une fonction
 test_synt_invalide () {
     # $1 = premier argument.
     if test_synt "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"

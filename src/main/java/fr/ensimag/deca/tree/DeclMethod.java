@@ -22,6 +22,11 @@ public class DeclMethod extends AbstractDeclMethod {
     private String className;
     private Label mStartLabel;
     private Label mEndLabel;
+    private boolean override = false;
+    private int methodIndex;
+    public boolean isOverride() {
+        return this.override;
+    }
 
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name,
                       ListDeclParam params, ListDeclVar listDeclVar, ListInst listInst) {
@@ -163,6 +168,7 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     public EnvironmentExp verifyDeclMethodMembers(DecacCompiler compiler, SymbolTable.Symbol superClass, int index) throws ContextualError {
+        int realIndex = index;
         Type t = this.type.verifyType(compiler);
         Signature sig = this.params.verifyListDeclParamMembers(compiler);
         TypeDefinition def = compiler.environmentType.get(superClass);
@@ -171,6 +177,7 @@ public class DeclMethod extends AbstractDeclMethod {
             EnvironmentExp envExpSuper = superClassDef.getMembers();
             ExpDefinition expDef = envExpSuper.get(this.name.getName());
             if (expDef != null) {
+                this.override = true;
                 if (!expDef.isMethod()) {
                     throw new ContextualError("A field '" +
                             this.name.getName() + "' already " +
@@ -188,10 +195,12 @@ public class DeclMethod extends AbstractDeclMethod {
                     throw new ContextualError("Return type of override must be" +
                             " subtype of the return type of the method declared in super class.", getLocation());
                 }
+                realIndex = methodDefinition.getIndex();
             }
         }
         EnvironmentExp env = new EnvironmentExp(null);
-        ExpDefinition newDef = new MethodDefinition(t, getLocation(), sig, index);
+        ExpDefinition newDef = new MethodDefinition(t, getLocation(), sig, realIndex);
+        this.methodIndex = realIndex;
         try {
             env.declare(this.name.getName(), newDef);
         } catch (EnvironmentExp.DoubleDefException e) {
@@ -228,6 +237,7 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
+        s.println(prefix + "index : " + this.methodIndex);
         type.prettyPrint(s, prefix, false);
         name.prettyPrint(s, prefix, false);
         params.prettyPrint(s, prefix, false);
