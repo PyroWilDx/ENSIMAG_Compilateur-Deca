@@ -51,6 +51,11 @@ public class Signature {
     }
 
     @Override
+    public int hashCode() {
+        return this.args.hashCode();
+    }
+
+    @Override
     public String toString() {
         return args.toString();
     }
