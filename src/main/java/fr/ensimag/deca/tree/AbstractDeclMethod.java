@@ -8,8 +8,11 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.SymbolTable;
 
 public abstract class AbstractDeclMethod extends Tree {
-    // TODO
+
     public abstract boolean isOverride();
+
+    public abstract int getMethodIndex();
+
     public abstract void codeGenVTable(DecacCompiler compiler, VTable vTable, int methodOffset);
 
     public abstract void codeGenDeclMethod(DecacCompiler compiler);

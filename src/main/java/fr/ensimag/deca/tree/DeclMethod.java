@@ -28,6 +28,11 @@ public class DeclMethod extends AbstractDeclMethod {
         return this.override;
     }
 
+    @Override
+    public int getMethodIndex() {
+        return methodIndex;
+    }
+
     public DeclMethod(AbstractIdentifier type, AbstractIdentifier name,
                       ListDeclParam params, ListDeclVar listDeclVar, ListInst listInst) {
         this.type = type;

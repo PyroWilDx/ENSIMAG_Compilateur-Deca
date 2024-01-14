@@ -9,9 +9,9 @@ doParallel = False
 
 def prettyPrint(msg):
     print()
-    print("==============================================")
-    print(msg)
-    print("==============================================")
+    print("\033[32m==============================================\033[0m")
+    print(f"\033[32m{msg}\033[0m")
+    print("\033[32m==============================================\033[0m")
     print()
 
 
@@ -227,9 +227,19 @@ def doTests():
     doVerify("codegen/valid/classes/extends/extendsMethods.deca",
              expectedResult=b"1 2 4 2 0\n")
 
+    doVerify("codegen/valid/classes/polymorphisms/redefinedMethodOrder.deca",
+             expectedResult=b"A0 A10 A20 A30 A40\n"
+                            b"A0 B10 B20 B30 A40 B50 B60\n"
+                            b"A0 C10 B20 B30 C40 B50 C60 C70 C80\n")
+
+    doVerify("codegen/valid/classes/polymorphisms/fieldRedef.deca",
+             expectedResult=b"1 2 1\n")
+
     doVerify("codegen/valid/classes/polymorphisms/ex_Video5_Page11.deca",
-             expectedResult=b"",
-             doAssert=False)
+             expectedResult=b"p1 : Point 2d : (1, 1)\n"
+                            b"p3 before p2.diag(3) : Point 3d : (2, 2, 2)\n"
+                            b"p3 after p2.diag(3) : Point 3d : (5, 5, 5)\n"
+                            b"p2 : Point 3d : (5, 5, 5)\n")
 
     doVerify("codegen/valid/classes/miscellaneous/assignInside.deca",
              expectedResult=b"0 0\n"

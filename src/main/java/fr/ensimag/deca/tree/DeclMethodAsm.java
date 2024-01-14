@@ -28,6 +28,11 @@ public class DeclMethodAsm extends AbstractDeclMethod {
         return false; // TODO
     }
 
+    @Override
+    public int getMethodIndex() {
+        return 0; // TODO
+    }
+
     public void codeGenVTable(DecacCompiler compiler, VTable vTable, int methodOffset) {
         // nothing
     }

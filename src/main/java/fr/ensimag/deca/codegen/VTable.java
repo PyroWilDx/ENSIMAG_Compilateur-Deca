@@ -12,7 +12,6 @@ public class VTable {
     private final String className;
     private final DAddr classAddr;
     private final OrderedHashMap<String, VMethodInfo> classMethods;
-
     private final HashMap<String, Integer> classFields;
     private int redefinedFieldsCount;
 

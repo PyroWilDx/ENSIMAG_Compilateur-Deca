@@ -13,7 +13,10 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     private int lastIndex;
@@ -54,21 +57,48 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
     }
 
+    public LinkedList<AbstractDeclMethod> getListOrdered() {
+        ArrayList<AbstractDeclMethod> list = new ArrayList<>(getList());
+        LinkedList<AbstractDeclMethod> ordered = new LinkedList<>();
+
+        if (list.isEmpty()) return ordered;
+
+        // Bon, un tri en O(n²) devrait pas trop poser de problème, à part si la classe contient des milliers de méthodes
+        for (int i = 0; i < list.size(); i++) {
+            int minIndex = -1;
+            int minVal = Integer.MAX_VALUE;
+            for (int j = 0; j < list.size(); j++) {
+                if (list.get(j) != null &&
+                        list.get(j).getMethodIndex() < minVal) {
+                    minVal = list.get(j).getMethodIndex();
+                    minIndex = j;
+                }
+            }
+            ordered.add(list.get(minIndex));
+            list.set(minIndex, null);
+        }
+
+        return ordered;
+    }
+
     public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
 
+        LinkedList<AbstractDeclMethod> orderedMethods = getListOrdered();
+
         VTable superClassVTable = vTable.getVTableOfSuperClass(vTM);
-        LinkedList<VMethodInfo> superClassMethods =
-                superClassVTable.getClassMethods();
+        LinkedList<VMethodInfo> superClassMethods = superClassVTable.getClassMethods();
 
         int methodOffset = 1;
 
         for (VMethodInfo methodInfo : superClassMethods) {
             boolean isPresentInCurrClass = false;
-            for (AbstractDeclMethod declMethod : getList()) {
+            AbstractDeclMethod redefinedMethod = null;
+            for (AbstractDeclMethod declMethod : orderedMethods) {
                 if (methodInfo.getMethodName().equals(declMethod.getName().getName())) {
                     isPresentInCurrClass = true;
+                    redefinedMethod = declMethod;
                     break;
                 }
             }
@@ -83,12 +113,15 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
                 vTable.addSuperMethod(methodInfo.getClassName(),
                         methodInfo.getMethodName(), methodOffset);
-                methodOffset++;
                 vTable.copyMethodParams(superClassVTable, methodInfo.getMethodName());
+            } else {
+                redefinedMethod.codeGenVTable(compiler, vTable, methodOffset);
+                orderedMethods.remove(redefinedMethod);
             }
+            methodOffset++;
         }
 
-        for (AbstractDeclMethod declMethod : getList()) {
+        for (AbstractDeclMethod declMethod : orderedMethods) {
             declMethod.codeGenVTable(compiler, vTable, methodOffset);
             methodOffset++;
         }
@@ -96,7 +129,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     }
 
     public void codeGenListDeclMethod(DecacCompiler compiler) {
-        for (AbstractDeclMethod method : getList()) {
+        for (AbstractDeclMethod method : getListOrdered()) {
             method.codeGenDeclMethod(compiler);
         }
     }
