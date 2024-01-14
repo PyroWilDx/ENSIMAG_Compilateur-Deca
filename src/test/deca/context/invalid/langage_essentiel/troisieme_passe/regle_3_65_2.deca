@@ -1,13 +1,13 @@
 // Description:
-//    regle 3.67 à 3.69, pas une classe
+//    regle 3.65, la classe de l'expression n'est pas sous classe de la classe courante.
 //
 // Resultats:
-//    Ligne 11: 'f' must be a field, a parameter or a variable, but it is a method.
+//    Ligne 11: 'x' is protected.
 class A {
-    int f() {
-    return 1;
-    }
-    void g(){
-        f = 1;
+    protected int x = 1;
+}
+class B extends A {
+    int getX(A a) {
+        return a.x;
     }
 }

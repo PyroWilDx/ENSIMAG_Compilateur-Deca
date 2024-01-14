@@ -1,5 +1,5 @@
 // Description:
-//    regle 3.67 à 3.69, pas une classe
+//    regle 3.67 à 3.69
 //
 // Resultats:
 //    Ligne 11: 'f' must be a field, a parameter or a variable, but it is a method.
