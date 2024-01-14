@@ -96,7 +96,7 @@ public class DeclClass extends AbstractDeclClass {
         ClassDefinition classDef = (ClassDefinition) compiler.environmentType.get(name.getName());
         EnvironmentExp voidClassEnv = classDef.getMembers();
         classDef.setNumberOfMethods(lastIndex);
-        voidClassEnv.disjointUnion(envExpM); // c'est vide donc pas de pb pour l'union disjointe !!
+        voidClassEnv.putAll(envExpM); // c'est vide donc pas de pb pour l'union disjointe !!
         // Done
     }
 

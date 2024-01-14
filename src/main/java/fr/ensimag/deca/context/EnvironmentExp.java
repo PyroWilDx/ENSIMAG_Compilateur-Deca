@@ -45,7 +45,12 @@ public class EnvironmentExp {
 
         return null;
     }
-
+    public void putAll(EnvironmentExp env) {
+        for (Symbol s1 : env.getKeys()) {
+            ExpDefinition def = env.env.get(s1);
+            this.env.put(s1, def);
+        }
+    }
     public void setEnv(HashMap<Symbol, ExpDefinition> env) {
         this.env = env;
     }
