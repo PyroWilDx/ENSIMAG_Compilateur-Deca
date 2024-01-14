@@ -6,6 +6,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
+import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.POP;
@@ -102,6 +103,13 @@ public class Assign extends AbstractBinaryExpr {
         rM.freeReg(regRight);
         rM.freeReg(savedReg);
         // Done
+    }
+
+    @Override
+    public void decompile(IndentPrintStream s) {
+        getLeftOperand().decompile(s);
+        s.print(" = ");
+        getRightOperand().decompile(s);
     }
 
     @Override

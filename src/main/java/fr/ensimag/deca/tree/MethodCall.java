@@ -103,7 +103,7 @@ public class MethodCall extends AbstractMethodCall {
         this.methodIdent.decompile(s);
         s.print("(");
         this.rValueStar.decompile(s);
-        s.println(");");
+        s.print(")");
     }
 
     @Override
