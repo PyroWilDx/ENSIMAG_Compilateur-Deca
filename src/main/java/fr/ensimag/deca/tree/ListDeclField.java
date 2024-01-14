@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.VTable;
+import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -44,31 +45,32 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     }
 
     public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
-        int offset = 1;
+        VTableManager vTM = compiler.getVTableManager();
+
+        VTable superClassVTable = vTable.getVTableOfSuperClass(vTM);
+        vTable.addAllFields(superClassVTable);
+
+        int fieldOffset = superClassVTable.getFieldsCount() + 1;
         for (AbstractDeclField declField : getList()) {
-            declField.codeGenVTable(compiler, vTable, offset);
-            offset++;
+            declField.codeGenVTable(compiler, vTable, fieldOffset);
+            fieldOffset++;
         }
     }
 
     public void codeGenSetFieldsTo0(DecacCompiler compiler) {
-        int varOffset = 1;
         AbstractDeclField.TypeCode lastTypeCode = null;
         for (AbstractDeclField declField : getList()) {
             AbstractDeclField.TypeCode currTypeCode = declField.getInitTypeCode();
-            declField.codeGenSetFieldTo0(compiler, varOffset, currTypeCode != lastTypeCode);
-            varOffset++;
+            declField.codeGenSetFieldTo0(compiler, currTypeCode != lastTypeCode);
             lastTypeCode = currTypeCode;
         }
     }
 
     public void codeGenListDeclField(DecacCompiler compiler) {
-        int varOffset = 1;
         AbstractDeclField.TypeCode lastTypeCode = null;
         for (AbstractDeclField declField : getList()) {
             AbstractDeclField.TypeCode currTypeCode =
-                    declField.codeGenDeclField(compiler, varOffset, lastTypeCode);
-            varOffset++;
+                    declField.codeGenDeclField(compiler, lastTypeCode);
             lastTypeCode = currTypeCode;
         }
     }

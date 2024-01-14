@@ -4,14 +4,14 @@ import fr.ensimag.ima.pseudocode.DAddr;
 
 import java.util.HashMap;
 
-public class MethodInfo {
+public class VMethodInfo {
 
     private final String className;
     private final String methodName;
     private final DAddr methodAddr;
     private final HashMap<String, Integer> methodParams;
 
-    public MethodInfo(String className, String methodName, DAddr methodAddr) {
+    public VMethodInfo(String className, String methodName, DAddr methodAddr) {
         this.className = className;
         this.methodName = methodName;
         this.methodAddr = methodAddr;
@@ -38,7 +38,7 @@ public class MethodInfo {
         return methodParams.get(paramName);
     }
 
-    public void copyParams(MethodInfo otherMethod) {
+    public void copyParams(VMethodInfo otherMethod) {
         methodParams.putAll(otherMethod.methodParams);
     }
 

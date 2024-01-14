@@ -15,13 +15,11 @@ public abstract class AbstractDeclField extends Tree {
         OBJECT
     }
 
-    public abstract void codeGenVTable(DecacCompiler compiler, VTable vTable, int offset);
+    public abstract void codeGenVTable(DecacCompiler compiler, VTable vTable, int fieldOffset);
 
-    public abstract void codeGenSetFieldTo0(DecacCompiler compiler, int varOffset,
-                                            boolean doLoad);
+    public abstract void codeGenSetFieldTo0(DecacCompiler compiler, boolean doLoad);
 
-    public abstract TypeCode codeGenDeclField(DecacCompiler compiler, int varOffset,
-                                              TypeCode lastTypeCode);
+    public abstract TypeCode codeGenDeclField(DecacCompiler compiler, TypeCode lastTypeCode);
 
     public abstract TypeCode getInitTypeCode();
 

@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.VTable;
+import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -37,13 +38,16 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    public void codeGenVTable(DecacCompiler compiler, VTable vTable, int offset) {
-        vTable.addField(getName().getName(), offset);
+    public void codeGenVTable(DecacCompiler compiler, VTable vTable, int fieldOffset) {
+        // Si y a déjà une variable du même nom, on la remplace dans le HashMap
+        // Comme l'ancienne ne sera pas utilisée (car redéfinie), il ne devrait pas y avoir de problème
+        vTable.addField(getName().getName(), fieldOffset);
     }
 
     @Override
-    public void codeGenSetFieldTo0(DecacCompiler compiler, int varOffset,
-                                   boolean doLoad) {
+    public void codeGenSetFieldTo0(DecacCompiler compiler, boolean doLoad) {
+        VTableManager vTM = compiler.getVTableManager();
+
         if (doLoad) {
             if (getInitTypeCode() == TypeCode.INT_OR_BOOL) {
                 compiler.addInstruction(new LOAD(0, Register.R0));
@@ -53,16 +57,18 @@ public class DeclField extends AbstractDeclField {
                 compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
             }
         }
+
+        int fieldOffset = vTM.getCurrOffsetOfField(getName().getName());
         compiler.addInstruction(
-                new STORE(Register.R0, new RegisterOffset(varOffset, Register.R1)));
+                new STORE(Register.R0, new RegisterOffset(fieldOffset, Register.R1)));
     }
 
     @Override
-    public TypeCode codeGenDeclField(DecacCompiler compiler, int varOffset,
-                                     TypeCode lastTypeCode) {
-        TypeCode returnValue = null;
-
+    public TypeCode codeGenDeclField(DecacCompiler compiler, TypeCode lastTypeCode) {
         RegManager rM = compiler.getRegManager();
+        VTableManager vTM = compiler.getVTableManager();
+
+        TypeCode returnValue = null;
 
         init.setVarTypeCode(getInitTypeCode());
         init.codeGenInit(compiler);
@@ -83,10 +89,11 @@ public class DeclField extends AbstractDeclField {
             }
         }
 
+        int fieldOffset = vTM.getCurrOffsetOfField(getName().getName());
         compiler.addInstruction(
                 new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         compiler.addInstruction(
-                new STORE(regValue, new RegisterOffset(varOffset, Register.R1)));
+                new STORE(regValue, new RegisterOffset(fieldOffset, Register.R1)));
         if (regValue != Register.R0) {
             rM.freeReg(regValue);
         }
