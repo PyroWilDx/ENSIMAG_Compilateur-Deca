@@ -50,10 +50,15 @@ public class DecacCompiler {
 
     public DecacCompiler(CompilerOptions compilerOptions, File source) {
         super();
-        this.compilerOptions = compilerOptions;
+
+        if (compilerOptions != null) {
+            this.compilerOptions = compilerOptions;
+        } else {
+            this.compilerOptions = new CompilerOptions();
+        }
         this.source = source;
 
-        this.regManager = new RegManager(compilerOptions.getNOfRegs());
+        this.regManager = new RegManager(this.compilerOptions.getNOfRegs());
         this.errorManager = new ErrorManager();
         this.stackManager = null;
         this.condManager = new CondManager();

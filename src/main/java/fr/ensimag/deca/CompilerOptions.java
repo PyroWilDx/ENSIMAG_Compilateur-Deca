@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import fr.ensimag.deca.codegen.RegManager;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
@@ -56,7 +57,7 @@ public class CompilerOptions {
     private boolean parse = false;
     private boolean verification = false;
     private boolean noCheck = false;
-    private int nOfRegs = 16;
+    private int nOfRegs = RegManager.MAX_REG;
     private int debug = QUIET;
     private boolean parallel = false;
     private final List<File> sourceFiles = new ArrayList<File>();

@@ -22,7 +22,7 @@ def printOrAssert(out, expectedResult, doAssert, perf=False):
         else:
             expectedLength = len(expectedResult)
             print(out[expectedLength:])
-            assert expectedResult == out[:expectedLength] # Devrait suffir
+            assert expectedResult == out[:expectedLength]
     else:
         print(out)
 

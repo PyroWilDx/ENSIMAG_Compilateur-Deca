@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class RegManager {
+    public static final int MAX_REG = 16;
 
     public final int nRegs;
     private final LinkedList<GPRegister> freeRegs;
