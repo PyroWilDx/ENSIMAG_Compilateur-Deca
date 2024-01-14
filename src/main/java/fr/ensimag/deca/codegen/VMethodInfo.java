@@ -1,7 +1,5 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.ima.pseudocode.DAddr;
-
 import java.util.HashMap;
 
 public class VMethodInfo {

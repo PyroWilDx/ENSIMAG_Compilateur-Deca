@@ -16,7 +16,7 @@ import java.util.Map;
  * @date 01/01/2024
  */
 public class SymbolTable {
-    private Map<String, Symbol> map = new HashMap<String, Symbol>();
+    private final Map<String, Symbol> map = new HashMap<String, Symbol>();
 
     /**
      * Create or reuse a symbol.
@@ -51,7 +51,7 @@ public class SymbolTable {
             return name;
         }
 
-        private String name;
+        private final String name;
 
         @Override
         public boolean equals(Object o) {

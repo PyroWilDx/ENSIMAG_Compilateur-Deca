@@ -10,7 +10,8 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2024
  */
 public class BinaryInstruction extends Instruction {
-    private Operand operand1, operand2;
+    private final Operand operand1;
+    private final Operand operand2;
 
     public Operand getOperand1() {
         return operand1;

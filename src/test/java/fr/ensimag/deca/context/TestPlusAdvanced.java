@@ -8,13 +8,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 /**
  * Test for the Plus node using mockito, using @Mock and @Before annotations.
@@ -61,7 +59,7 @@ public class TestPlusAdvanced {
         // check the result
         assertTrue(t.verifyExpr(compiler, envExp, null).isFloat());
         // ConvFloat should have been inserted on the right side
-        assertTrue(t.getLeftOperand() instanceof ConvFloat);    // On s'attend que le int soit converti en float avec ConvFloat
+        assertInstanceOf(ConvFloat.class, t.getLeftOperand());    // On s'attend que le int soit converti en float avec ConvFloat
         assertFalse(t.getRightOperand() instanceof ConvFloat);  // On s'attend que le float ne soit pas converti en
                                                                 // ConvFloat car il est déjà en float
         // check that the mocks have been called properly.
@@ -75,7 +73,7 @@ public class TestPlusAdvanced {
         // check the result
         assertTrue(t.verifyExpr(compiler, envExp, null).isFloat());
         // ConvFloat should have been inserted on the right side
-        assertTrue(t.getRightOperand() instanceof ConvFloat);
+        assertInstanceOf(ConvFloat.class, t.getRightOperand());
         assertFalse(t.getLeftOperand() instanceof ConvFloat);
         // check that the mocks have been called properly.
         verify(intexpr1).verifyExpr(compiler, envExp, null);

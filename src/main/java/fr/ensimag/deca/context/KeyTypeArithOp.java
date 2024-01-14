@@ -1,8 +1,8 @@
 package fr.ensimag.deca.context;
 
 public class KeyTypeArithOp {
-    private Type type1;
-    private Type type2;
+    private final Type type1;
+    private final Type type2;
     public KeyTypeArithOp(Type t1, Type t2) {
         this.type1 = t1;
         this.type2 = t2;

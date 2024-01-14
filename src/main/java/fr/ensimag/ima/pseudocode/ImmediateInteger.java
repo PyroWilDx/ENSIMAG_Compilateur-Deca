@@ -7,7 +7,7 @@ package fr.ensimag.ima.pseudocode;
  * @date 01/01/2024
  */
 public class ImmediateInteger extends DVal {
-    private int value;
+    private final int value;
 
     public ImmediateInteger(int value) {
         super();

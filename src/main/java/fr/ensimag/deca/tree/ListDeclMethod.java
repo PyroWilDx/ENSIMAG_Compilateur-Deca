@@ -14,9 +14,7 @@ import fr.ensimag.ima.pseudocode.instructions.LOAD;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 
 public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
     private int lastIndex;

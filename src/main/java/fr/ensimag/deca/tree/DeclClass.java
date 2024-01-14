@@ -163,7 +163,7 @@ public class DeclClass extends AbstractDeclClass {
         rM.saveUsedRegs();
         rM.freeAllRegs();
 
-        fields.codeGenListDeclField(compiler); // TODO (vérif que les champs de cette classe)
+        fields.codeGenListDeclField(compiler);
 
         boolean[] usedRegs = rM.popUsedRegs();
         RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);

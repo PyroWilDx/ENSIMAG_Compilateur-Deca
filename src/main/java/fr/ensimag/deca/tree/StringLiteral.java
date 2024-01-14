@@ -20,7 +20,7 @@ public class StringLiteral extends AbstractStringLiteral {
         return value;
     }
 
-    private String value;
+    private final String value;
 
     public StringLiteral(String value) {
         Validate.notNull(value);

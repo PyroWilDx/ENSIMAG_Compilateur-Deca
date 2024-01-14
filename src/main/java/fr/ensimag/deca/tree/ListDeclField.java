@@ -8,9 +8,6 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 public class ListDeclField extends TreeList<AbstractDeclField> {
     @Override
@@ -69,9 +66,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     public void codeGenListDeclField(DecacCompiler compiler) {
         AbstractDeclField.TypeCode lastTypeCode = null;
         for (AbstractDeclField declField : getList()) {
-            AbstractDeclField.TypeCode currTypeCode =
-                    declField.codeGenDeclField(compiler, lastTypeCode);
-            lastTypeCode = currTypeCode;
+            lastTypeCode = declField.codeGenDeclField(compiler, lastTypeCode);
         }
     }
 

@@ -23,7 +23,7 @@ import org.apache.log4j.Logger;
 public class DecacErrorListner implements ANTLRErrorListener {
     private static final Logger LOG = Logger.getLogger(DecacErrorListner.class);
 
-    private IntStream input;
+    private final IntStream input;
 
     public DecacErrorListner(IntStream input) {
         this.input = input;

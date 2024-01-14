@@ -19,8 +19,8 @@ import org.apache.commons.lang.Validate;
  * @date 01/01/2024
  */
 public class While extends AbstractInst {
-    private AbstractExpr condition;
-    private ListInst body;
+    private final AbstractExpr condition;
+    private final ListInst body;
 
     public AbstractExpr getCondition() {
         return condition;

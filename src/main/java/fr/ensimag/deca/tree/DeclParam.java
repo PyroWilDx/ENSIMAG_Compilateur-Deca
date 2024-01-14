@@ -9,8 +9,8 @@ import fr.ensimag.deca.tools.SymbolTable;
 import java.io.PrintStream;
 
 public class DeclParam extends AbstractParam {
-    private AbstractIdentifier type;
-    private AbstractIdentifier name;
+    private final AbstractIdentifier type;
+    private final AbstractIdentifier name;
 
     public DeclParam(AbstractIdentifier type, AbstractIdentifier name) {
         this.type = type;

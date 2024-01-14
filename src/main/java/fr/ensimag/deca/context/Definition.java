@@ -43,7 +43,7 @@ public abstract class Definition {
     }
 
     private Location location;
-    private Type type;
+    private final Type type;
 
     public boolean isField() {
         return false;

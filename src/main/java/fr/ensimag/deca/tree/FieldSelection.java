@@ -15,8 +15,8 @@ import fr.ensimag.ima.pseudocode.instructions.CMP;
 import java.io.PrintStream;
 
 public class FieldSelection extends AbstractLValue {
-    private AbstractExpr expr;
-    private AbstractIdentifier fieldIdent;
+    private final AbstractExpr expr;
+    private final AbstractIdentifier fieldIdent;
 
     public FieldSelection(AbstractExpr expr, AbstractIdentifier fieldIdent) {
         this.expr = expr;

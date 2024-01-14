@@ -113,7 +113,6 @@ public class RegManager {
         }
         int maxStackSize = sM.getMaxStackSize() + usedCount;
         if (maxStackSize > 0) {
-            // TODO (Je sais pas pourquoi avec -1 ça marche aussi)
             if (sM.getAddSp() + usedCount > 0) {
                 startLines.addFirst(new Line(new ADDSP(sM.getAddSp() + usedCount)));
             }

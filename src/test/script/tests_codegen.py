@@ -292,8 +292,7 @@ def doTests():
 
     doVerify("codegen/valid/options/optionDebug.deca",
              expectedResult=b"z = 6.00000e+00\n",
-             #          decacOptions="-d -d -d"
-             )
+                      decacOptions="-d")
 
     """
     ============================================

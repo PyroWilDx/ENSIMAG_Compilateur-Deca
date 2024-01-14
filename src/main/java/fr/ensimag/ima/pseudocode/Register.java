@@ -7,7 +7,7 @@ package fr.ensimag.ima.pseudocode;
  * @date 01/01/2024
  */
 public class Register extends DVal {
-    private String name;
+    private final String name;
     protected Register(String name) {
         this.name = name;
     }

@@ -18,7 +18,7 @@ public class LexTest {
     * */
     @Test
     public void testLex() throws IOException {
-        StringBuilder sb = new StringBuilder();
+        String sb = "";
         Path decas = Paths.get("src/test/deca/syntax/decaFiles");
         Stream<Path> paths = Files.list(decas);
         
@@ -27,7 +27,7 @@ public class LexTest {
 //            sb.append(Files.readAllLines(deca));
         });
 
-        System.out.println(sb.toString());
+        System.out.println(sb);
         System.out.println("====================================");
 //        DecaLexer lex = new DecaLexer(CharStreams.fromString(program));
 

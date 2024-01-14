@@ -16,9 +16,9 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
 
 public class MethodCall extends AbstractMethodCall {
-    private AbstractExpr expr;
-    private AbstractIdentifier methodIdent;
-    private RValueStar rValueStar;
+    private final AbstractExpr expr;
+    private final AbstractIdentifier methodIdent;
+    private final RValueStar rValueStar;
 
     public MethodCall(AbstractExpr expr,AbstractIdentifier methodIdent,RValueStar rValueStar){
         this.expr = expr;

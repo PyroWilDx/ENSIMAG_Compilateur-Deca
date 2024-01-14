@@ -65,6 +65,8 @@ public class DeclField extends AbstractDeclField {
 
     @Override
     public TypeCode codeGenDeclField(DecacCompiler compiler, TypeCode lastTypeCode) {
+        if (init instanceof NoInitialization) return null;
+
         RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
 
@@ -79,14 +81,15 @@ public class DeclField extends AbstractDeclField {
             regValue = rM.getLastReg();
         } else {
             regValue = Register.R0;
-            if (init instanceof NoInitialization) {
-                returnValue = getInitTypeCode();
-                if (lastTypeCode == null || lastTypeCode != getInitTypeCode()) {
-                    compiler.addInstruction(new LOAD(lastImm, regValue));
-                }
-            } else {
-                compiler.addInstruction(new LOAD(lastImm, regValue));
-            }
+            // Utile dans le cas où on fait pas l'init à 0
+//            if (init instanceof NoInitialization) {
+//                returnValue = getInitTypeCode();
+//                if (lastTypeCode == null || lastTypeCode != getInitTypeCode()) {
+//                    compiler.addInstruction(new LOAD(lastImm, regValue));
+//                }
+//            } else {
+            compiler.addInstruction(new LOAD(lastImm, regValue));
+//            }
         }
 
         int fieldOffset = vTM.getCurrFieldOffset(getName().getName());

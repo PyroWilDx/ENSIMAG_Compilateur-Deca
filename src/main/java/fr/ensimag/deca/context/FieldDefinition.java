@@ -14,7 +14,7 @@ public class FieldDefinition extends ExpDefinition {
         return index;
     }
 
-    private int index;
+    private final int index;
     
     @Override
     public boolean isField() {

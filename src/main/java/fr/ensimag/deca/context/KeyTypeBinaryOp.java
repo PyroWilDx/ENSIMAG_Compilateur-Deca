@@ -1,9 +1,9 @@
 package fr.ensimag.deca.context;
 
 public class KeyTypeBinaryOp {
-    private String op;
-    private Type type1;
-    private Type type2;
+    private final String op;
+    private final Type type1;
+    private final Type type2;
     public KeyTypeBinaryOp(String op, Type t1, Type t2) {
         this.op = op;
         this.type1 = t1;

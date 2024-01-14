@@ -18,7 +18,7 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
 
 public class New extends AbstractExpr {
-    private AbstractIdentifier type;
+    private final AbstractIdentifier type;
 
     public New(AbstractIdentifier type) {
         this.type = type;

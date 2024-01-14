@@ -10,7 +10,7 @@ import java.util.concurrent.*;
  * @date 01/01/2024
  */
 public class DecacMain {
-    private static Logger LOG = Logger.getLogger(DecacMain.class);
+    private static final Logger LOG = Logger.getLogger(DecacMain.class);
     
     public static void main(String[] args) {
         // example log4j message.

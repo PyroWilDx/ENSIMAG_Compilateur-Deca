@@ -26,7 +26,7 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         return operand;
     }
 
-    private AbstractExpr operand;
+    private final AbstractExpr operand;
 
     public AbstractUnaryExpr(AbstractExpr operand) {
         Validate.notNull(operand);
