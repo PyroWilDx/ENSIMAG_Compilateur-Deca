@@ -285,9 +285,9 @@ def doTests():
              expectedResult=b"Error: Stack Overflow\n",
              execError=True)
 
-    # doVerify("codegen/invalid/nullPointer.deca",
-    #          expectedResult=b"Error: Dereferencing Null Pointer\n",
-    #          execError=True)
+    doVerify("codegen/invalid/nullPointer.deca",
+             expectedResult=b"Error: Dereferencing Null Pointer\n",
+             execError=True)
 
     doVerify("codegen/invalid/heapOverflow.deca",
              expectedResult=b"Error: Heap Overflow\n",
