@@ -8,13 +8,13 @@ public class VMethodInfo {
 
     private final String className;
     private final String methodName;
-    private final DAddr methodAddr;
+    private final int methodOffset;
     private final HashMap<String, Integer> methodParams;
 
-    public VMethodInfo(String className, String methodName, DAddr methodAddr) {
+    public VMethodInfo(String className, String methodName, int methodOffset) {
         this.className = className;
         this.methodName = methodName;
-        this.methodAddr = methodAddr;
+        this.methodOffset = methodOffset;
         this.methodParams = new HashMap<>();
     }
 
@@ -26,8 +26,8 @@ public class VMethodInfo {
         return methodName;
     }
 
-    public DAddr getMethodAddr() {
-        return methodAddr;
+    public int getMethodOffset() {
+        return methodOffset;
     }
 
     public void addParam(String paramName, int paramOffset) {

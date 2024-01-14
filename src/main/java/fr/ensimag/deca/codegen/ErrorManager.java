@@ -46,7 +46,7 @@ public class ErrorManager {
     }
 
     public void codeGenAllErrors(DecacCompiler compiler) {
-        for (Label bLabel : errMap.getOrderedLinkedList()) {
+        for (Label bLabel : errMap.getOrderedKeys()) {
             if (errMap.get(bLabel).equals(true)) {
                 compiler.addLabel(bLabel);
                 compiler.addInstruction(new WSTR(errMsgs.get(bLabel)));

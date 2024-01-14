@@ -28,7 +28,7 @@ public class DeclMethodAsm extends AbstractDeclMethod {
         return false; // TODO
     }
 
-    public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
+    public void codeGenVTable(DecacCompiler compiler, VTable vTable, int methodOffset) {
         // nothing
     }
 

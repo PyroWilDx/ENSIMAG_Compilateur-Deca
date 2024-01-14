@@ -71,7 +71,7 @@ public class Program extends AbstractProgram {
             sM.incrVTableCpt();
 
             DAddr eAddr = sM.getOffsetAddr();
-            vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, eAddr);
+            vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, 1);
             eLabel = LabelUtils.getMethodLabel(
                     LabelUtils.OBJECT_CLASS_NAME, LabelUtils.EQUALS_METHOD_NAME);
             compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));

@@ -58,7 +58,7 @@ public class DeclField extends AbstractDeclField {
             }
         }
 
-        int fieldOffset = vTM.getCurrOffsetOfField(getName().getName());
+        int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
         compiler.addInstruction(
                 new STORE(Register.R0, new RegisterOffset(fieldOffset, Register.R1)));
     }
@@ -89,7 +89,7 @@ public class DeclField extends AbstractDeclField {
             }
         }
 
-        int fieldOffset = vTM.getCurrOffsetOfField(getName().getName());
+        int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
         compiler.addInstruction(
                 new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         compiler.addInstruction(

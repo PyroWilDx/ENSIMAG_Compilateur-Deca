@@ -227,6 +227,10 @@ def doTests():
     doVerify("codegen/valid/classes/extends/extendsMethods.deca",
              expectedResult=b"1 2 4 2 0\n")
 
+    doVerify("codegen/valid/classes/polymorphisms/ex_Video5_Page11.deca",
+             expectedResult=b"",
+             doAssert=False)
+
     doVerify("codegen/valid/classes/miscellaneous/assignInside.deca",
              expectedResult=b"0 0\n"
                             b"10 0\n"
@@ -235,7 +239,7 @@ def doTests():
                             b"36 100\n")
 
     # doVerify("codegen/valid/classes/miscellaneous/asmSimple.deca",
-    #          expectedResult=b"180\n",
+    #          expectedResult=b"10 180\n",
     #          doAssert=False)
 
     doVerify("codegen/valid/registers/opRegOverflow.deca",

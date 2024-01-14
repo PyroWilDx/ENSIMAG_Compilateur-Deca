@@ -91,7 +91,7 @@ public class FieldSelection extends AbstractLValue {
             compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
         } // Else, pas besoin vu qu'on est déjà dans une instance de la classe
 
-        int fieldOffset = vTM.getCurrOffsetOfField(fieldName);
+        int fieldOffset = vTM.getCurrFieldOffset(fieldName);
         DAddr fAddr = new RegisterOffset(fieldOffset, gpReg);
         rM.freeReg(gpReg);
 

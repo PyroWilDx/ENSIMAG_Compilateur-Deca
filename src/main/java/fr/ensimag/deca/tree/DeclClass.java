@@ -126,7 +126,7 @@ public class DeclClass extends AbstractDeclClass {
         vTM.addVTable(className, vT);
 
         compiler.addInstruction(
-                new LEA(vTM.getAddrOfClass(superClassName), Register.R0));
+                new LEA(vTM.getClassAddr(superClassName), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, startAddr));
         sM.incrVTableCpt();
 

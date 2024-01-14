@@ -65,11 +65,7 @@ public class MethodCall extends AbstractMethodCall {
         expr.codeGenInst(compiler);
 
         GPRegister gpReg = rM.getLastReg();
-        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-        compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
-
-        compiler.addInstruction(
-                new STORE(gpReg, new RegisterOffset(0, Register.SP)));
+        compiler.addInstruction(new STORE(gpReg, new RegisterOffset(0, Register.SP)));
         rM.freeReg(gpReg);
 
         int currParamIndex = -1;
@@ -83,7 +79,11 @@ public class MethodCall extends AbstractMethodCall {
         }
 
         gpReg = rM.getFreeReg();
-        compiler.addInstruction(new BSR(vTM.getCurrAddrOfMethod()));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), gpReg));
+        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+        compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, gpReg), gpReg));
+        compiler.addInstruction(new BSR(new RegisterOffset(vTM.getCurrMethodOffset(), gpReg)));
         rM.freeReg(gpReg);
 
         compiler.addInstruction(new SUBSP(nbParam));

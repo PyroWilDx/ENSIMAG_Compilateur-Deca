@@ -5,25 +5,29 @@ import java.util.LinkedList;
 
 public class OrderedHashMap<K, V> extends HashMap<K, V> {
     private static final long serialVersionUID = 5554277472235530940L;
-    private final LinkedList<K> linkedList;
+    private final LinkedList<K> keysList;
+    private final LinkedList<V> valuesList;
 
     public OrderedHashMap() {
         super();
 
-        linkedList = new LinkedList<>();
+        this.keysList = new LinkedList<>();
+        this.valuesList = new LinkedList<>();
     }
 
     public void addFirst(K key, V value) {
         if (!containsKey(key)) {
             put(key, value);
-            linkedList.addFirst(key);
+            keysList.addFirst(key);
+            valuesList.addFirst(value);
         }
     }
 
     public void addLast(K key, V value) {
         if (!containsKey(key)) {
             put(key, value);
-            linkedList.addLast(key);
+            keysList.addLast(key);
+            valuesList.addFirst(value);
         }
     }
 
@@ -33,7 +37,11 @@ public class OrderedHashMap<K, V> extends HashMap<K, V> {
         }
     }
 
-    public LinkedList<K> getOrderedLinkedList() {
-        return linkedList;
+    public LinkedList<K> getOrderedKeys() {
+        return keysList;
+    }
+
+    public LinkedList<V> getOrderedValues() {
+        return valuesList;
     }
 }

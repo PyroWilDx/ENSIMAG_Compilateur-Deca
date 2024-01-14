@@ -42,14 +42,14 @@ public class New extends AbstractExpr {
         ErrorManager eM = compiler.getErrorManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        vTM.enterClass(getType().getName().getName());
+        vTM.enterClass(type.getType().getName().getName());
 
         int fieldsCount = vTM.getCurrFieldCountOfClass();
 
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new NEW(fieldsCount + 1, gpReg));
         compiler.addInstruction(new BOV(eM.getHeapOverflowLabel()));
-        compiler.addInstruction(new LEA(vTM.getCurrAddrOfClass(), Register.R0));
+        compiler.addInstruction(new LEA(vTM.getCurrClassAddr(), Register.R0));
         compiler.addInstruction(
                 new STORE(Register.R0, new RegisterOffset(0, gpReg)));
         compiler.addInstruction(new PUSH(gpReg));

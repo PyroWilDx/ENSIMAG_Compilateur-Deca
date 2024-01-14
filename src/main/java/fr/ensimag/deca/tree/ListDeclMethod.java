@@ -60,7 +60,10 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
 
         VTable superClassVTable = vTable.getVTableOfSuperClass(vTM);
         LinkedList<VMethodInfo> superClassMethods =
-                superClassVTable.getClassMethodsOrderered();
+                superClassVTable.getClassMethods();
+
+        int methodOffset = 1;
+
         for (VMethodInfo methodInfo : superClassMethods) {
             boolean isPresentInCurrClass = false;
             for (AbstractDeclMethod declMethod : getList()) {
@@ -79,13 +82,15 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
                 sM.incrVTableCpt();
 
                 vTable.addSuperMethod(methodInfo.getClassName(),
-                        methodInfo.getMethodName(), mAddr);
+                        methodInfo.getMethodName(), methodOffset);
+                methodOffset++;
                 vTable.copyMethodParams(superClassVTable, methodInfo.getMethodName());
             }
         }
 
         for (AbstractDeclMethod declMethod : getList()) {
-            declMethod.codeGenVTable(compiler, vTable);
+            declMethod.codeGenVTable(compiler, vTable, methodOffset);
+            methodOffset++;
         }
         // Done
     }

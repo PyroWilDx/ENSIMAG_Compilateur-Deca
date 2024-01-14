@@ -26,11 +26,11 @@ public class VTableManager {
         return vTables.get(className);
     }
 
-    public DAddr getAddrOfClass(String className) {
+    public DAddr getClassAddr(String className) {
         return vTables.get(className).getClassAddr();
     }
 
-    public int getOffsetOfField(String className, String fieldName) {
+    public int getFieldOffset(String className, String fieldName) {
         return vTables.get(className).getFieldOffset(fieldName);
     }
 
@@ -38,8 +38,8 @@ public class VTableManager {
         return vTables.get(className).getFieldsCount();
     }
 
-    public DAddr getAddrOfMethod(String className, String methodName) {
-        return vTables.get(className).getMethodAddr(methodName);
+    public int getMethodOffset(String className, String methodName) {
+        return vTables.get(className).getMethodOffset(methodName);
     }
 
     public Integer getParamOffsetOfMethod(String className, String methodName, String paramName) {
@@ -62,12 +62,12 @@ public class VTableManager {
         return currClassNameStack.peekFirst();
     }
 
-    public DAddr getCurrAddrOfClass() {
-        return getAddrOfClass(getCurrClassName());
+    public DAddr getCurrClassAddr() {
+        return getClassAddr(getCurrClassName());
     }
 
-    public int getCurrOffsetOfField(String fieldName) {
-        return getOffsetOfField(getCurrClassName(), fieldName);
+    public int getCurrFieldOffset(String fieldName) {
+        return getFieldOffset(getCurrClassName(), fieldName);
     }
 
     public int getCurrFieldCountOfClass() {
@@ -90,8 +90,8 @@ public class VTableManager {
         return getCurrMethodName() != null;
     }
 
-    public DAddr getCurrAddrOfMethod() {
-        return getAddrOfMethod(getCurrClassName(), getCurrMethodName());
+    public int getCurrMethodOffset() {
+        return getMethodOffset(getCurrClassName(), getCurrMethodName());
     }
 
     public Integer getCurrParamOffsetOfMethod(String paramName) {

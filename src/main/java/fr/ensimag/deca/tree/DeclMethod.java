@@ -55,7 +55,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    public void codeGenVTable(DecacCompiler compiler, VTable vTable) {
+    public void codeGenVTable(DecacCompiler compiler, VTable vTable, int methodOffset) {
         StackManager sM = compiler.getStackManager();
 
         className = vTable.getClassName();
@@ -69,7 +69,7 @@ public class DeclMethod extends AbstractDeclMethod {
         compiler.addInstruction(new STORE(Register.R0, mAddr));
         sM.incrVTableCpt();
 
-        vTable.addMethod(methodName, mAddr);
+        vTable.addMethod(methodName, methodOffset);
 
         String paramName;
         int currParamOffset = -3;
