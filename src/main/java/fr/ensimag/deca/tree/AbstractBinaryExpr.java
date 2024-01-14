@@ -55,6 +55,8 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
+        if (localEnv == null) localEnv = new EnvironmentExp(null);
+        if (currentClass == null) currentClass = compiler.environmentType.OBJECT.getDefinition();
         String op = this.getOperatorName();
         Type type1 = this.getLeftOperand().verifyExpr(compiler, localEnv, currentClass);
         Type type2 = this.getRightOperand().verifyExpr(compiler, localEnv, currentClass);
