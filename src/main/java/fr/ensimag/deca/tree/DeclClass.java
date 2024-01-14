@@ -75,8 +75,9 @@ public class DeclClass extends AbstractDeclClass {
             throw new ContextualError("A class identifier is required.",
                     superClass.getLocation());
         }
+        ClassDefinition superClassDef = (ClassDefinition) compiler.environmentType.get(this.superClass.getName());
         if (!compiler.environmentType.declareClasse(this.name,
-                this.superClass.getClassDefinition(), this.getLocation())) {
+                superClassDef, this.getLocation())) {
             throw new ContextualError("Class or type already exists.", this.name.getLocation());
         }
         // Done
