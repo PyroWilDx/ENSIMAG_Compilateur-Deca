@@ -25,7 +25,7 @@
    |  ||         `> ListInst [List with 2 elements]
    |  ||            []> [14, 8] Print
    |  ||            ||  `> ListExpr [List with 1 elements]
-   |  ||            ||     []> [14, 14] Plus
+   |  ||            ||     []> [14, 15] Plus
    |  ||            ||         +> [14, 14] Identifier (b)
    |  ||            ||         `> [14, 16] Int (1)
    |  ||            []> [15, 8] Return
@@ -49,12 +49,12 @@
       |         `> [22, 14] New
       |            `> [22, 18] Identifier (A)
       `> ListInst [List with 2 elements]
-         []> [23, 4] Assign
-         ||  +> [23, 4] FieldSelection
+         []> [23, 12] Assign
+         ||  +> [23, 9] FieldSelection
          ||  |  +> [23, 4] Identifier (anass)
          ||  |  `> [23, 10] Identifier (a)
          ||  `> [23, 14] Int (1)
-         []> [24, 4] MethodCall
+         []> [24, 14] MethodCall
              +> [24, 4] Identifier (anass)
              +> [24, 10] Identifier (summ)
              `> [24, 15] RValueStar [List with 2 elements]

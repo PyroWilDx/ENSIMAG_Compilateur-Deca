@@ -22,7 +22,7 @@
    |         ||  +> ListDeclVar [List with 0 elements]
    |         ||  `> ListInst [List with 1 elements]
    |         ||     []> [14, 8] Return
-   |         ||         `> [14, 15] FieldSelection
+   |         ||         `> [14, 19] FieldSelection
    |         ||            +> [14, 15] This
    |         ||            `> [14, 20] Identifier (a)
    |         []> [16, 4] DeclMethod
@@ -33,7 +33,7 @@
    |             +> ListDeclVar [List with 0 elements]
    |             `> ListInst [List with 1 elements]
    |                []> [17, 8] Return
-   |                    `> [17, 15] MethodCall
+   |                    `> [17, 24] MethodCall
    |                       +> [17, 15] This
    |                       +> [17, 20] Identifier (summ)
    |                       `> [17, 25] RValueStar [List with 1 elements]
@@ -50,7 +50,7 @@
       |  ||  +> [22, 4] Identifier (int)
       |  ||  +> [22, 8] Identifier (c)
       |  ||  `> [22, 10] Initialization
-      |  ||     `> [22, 12] MethodCall
+      |  ||     `> [22, 22] MethodCall
       |  ||        +> [22, 12] Identifier (anass)
       |  ||        +> [22, 18] Identifier (summ)
       |  ||        `> [22, 23] RValueStar [List with 1 elements]
@@ -59,7 +59,7 @@
       |      +> [23, 4] Identifier (int)
       |      +> [23, 8] Identifier (d)
       |      `> [23, 10] Initialization
-      |         `> [23, 12] MethodCall
+      |         `> [23, 23] MethodCall
       |            +> [23, 12] Identifier (anass)
       |            +> [23, 18] Identifier (summ2)
       |            `> [23, 24] RValueStar [List with 0 elements]

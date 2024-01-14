@@ -20,7 +20,7 @@
       |            `> [5, 19] Identifier (A)
       `> ListInst [List with 1 elements]
          []> [6, 4] IfThenElse
-             +> [6, 7] NotEquals
+             +> [6, 14] NotEquals
              |  +> [6, 7] Identifier (class1)
              |  `> [6, 17] (null)
              +> ListInst [List with 1 elements]
