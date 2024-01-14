@@ -111,41 +111,32 @@
         </predecessors>
       </task>
     </task>
-    <task id="19" name="Compilateur pour la totalit&#xE9; du langage" note="" work="1197000" start="20240102T143000Z" end="20240115T100000Z" work-start="20240102T143000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+    <task id="19" name="Compilateur pour la totalit&#xE9; du langage" note="" work="495600" start="20240102T143000Z" end="20240108T144640Z" work-start="20240102T143000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
       <predecessors>
         <predecessor id="1" predecessor-id="10" type="FS"/>
       </predecessors>
-      <task id="20" name="Analyse lexicosyntaxique(&#xC9;tape A)" note="" work="232200" start="20240102T143000Z" end="20240108T120000Z" work-start="20240102T143000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+      <task id="20" name="Analyse lexicosyntaxique(&#xC9;tape A)" note="" work="162000" start="20240102T143000Z" end="20240105T141500Z" work-start="20240102T143000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
         <task id="21" name="Lexeur" note="" work="67500" start="20240102T143000Z" end="20240104T144500Z" work-start="20240102T143000Z" percent-complete="100" priority="0" type="normal" scheduling="fixed-work"/>
-        <task id="22" name="Parseur" note="" work="164700" start="20240104T144500Z" end="20240108T120000Z" work-start="20240104T144500Z" percent-complete="43" priority="0" type="normal" scheduling="fixed-work">
-          <predecessors>
-            <predecessor id="1" predecessor-id="21" type="FS"/>
-          </predecessors>
-        </task>
+        <task id="22" name="Parseur" note="" work="94500" start="20240102T143000Z" end="20240105T141500Z" work-start="20240102T143000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
       </task>
-      <task id="23" name="Analyse contextuelle(&#xC9;tape B)" note="" work="202500" start="20240108T120000Z" end="20240110T154500Z" work-start="20240108T120000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+      <task id="23" name="Analyse contextuelle(&#xC9;tape B)" note="" work="48900" start="20240105T141500Z" end="20240106T154640Z" work-start="20240105T141500Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
         <predecessors>
           <predecessor id="1" predecessor-id="22" type="FS"/>
           <predecessor id="1" predecessor-id="21" type="FS"/>
         </predecessors>
       </task>
-      <task id="24" name="G&#xE9;n&#xE9;ration de code(&#xC9;tape C)" note="" work="186300" start="20240110T154500Z" end="20240112T170000Z" work-start="20240110T154500Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+      <task id="24" name="G&#xE9;n&#xE9;ration de code(&#xC9;tape C)" note="" work="72000" start="20240106T154640Z" end="20240108T102640Z" work-start="20240106T154640Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
         <predecessors>
           <predecessor id="1" predecessor-id="23" type="FS"/>
         </predecessors>
       </task>
-      <task id="25" name="Tests &#xC9;tape B" note="" work="259200" start="20240108T120000Z" end="20240112T170000Z" work-start="20240108T120000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+      <task id="25" name="Tests &#xC9;tape B" note="" work="63300" start="20240105T141500Z" end="20240108T080140Z" work-start="20240105T141500Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
         <predecessors>
           <predecessor id="1" predecessor-id="22" type="FS"/>
         </predecessors>
       </task>
-      <task id="26" name="Tests &#xC9;tape A" note="" work="63000" start="20240108T120000Z" end="20240109T134500Z" work-start="20240108T120000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
-        <predecessors>
-          <predecessor id="1" predecessor-id="22" type="FS"/>
-          <predecessor id="1" predecessor-id="21" type="FS"/>
-        </predecessors>
-      </task>
-      <task id="27" name="Tests &#xC9;tape C" note="" work="253800" start="20240110T154500Z" end="20240115T100000Z" work-start="20240110T154500Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+      <task id="26" name="Tests &#xC9;tape A" note="" work="77400" start="20240102T143000Z" end="20240105T161500Z" work-start="20240102T143000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work"/>
+      <task id="27" name="Tests &#xC9;tape C" note="" work="72000" start="20240106T154640Z" end="20240108T144640Z" work-start="20240106T154640Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
         <predecessors>
           <predecessor id="1" predecessor-id="23" type="FS"/>
         </predecessors>
