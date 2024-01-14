@@ -48,7 +48,7 @@ testChemin;
 
 echo;echo;
 echo ==========================================================;
-echo "                   LANGUAGE SANS OBJET"
+echo "                   LANGUAGE AVEC OBJET"
 echo ==========================================================;
 chemin="../deca/context/invalid/langage_essentiel/*/*.deca"
 testChemin;
