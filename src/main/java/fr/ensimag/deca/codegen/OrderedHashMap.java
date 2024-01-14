@@ -27,7 +27,7 @@ public class OrderedHashMap<K, V> extends HashMap<K, V> {
         if (!containsKey(key)) {
             put(key, value);
             keysList.addLast(key);
-            valuesList.addFirst(value);
+            valuesList.addLast(value);
         }
     }
 
