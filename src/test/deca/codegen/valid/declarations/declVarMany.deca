@@ -9,6 +9,8 @@
     int x = 1;
     int y = 42;
     float z = 3.1416;
+    boolean b0 = true;
+    boolean b1 = false;
 
     println("x = ", x);
     println("y = ", y, " | z = ", z);

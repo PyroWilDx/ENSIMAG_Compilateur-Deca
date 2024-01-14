@@ -1,8 +1,8 @@
 // Description :
-//    Test de s'il n'y a pas assez de registres
+//    Test de s'il n'y a pas assez de registres pour une opération arithmétique
 //
 // Resultats :
-//    5252
+//    52 52
 
 {
     int x = 1;
@@ -17,6 +17,8 @@
         ))))
         ))))
         ))));
+
+    print(" ");
 
     println(x + (x + (x + (x +
         (1 + (x + (1 + (x +

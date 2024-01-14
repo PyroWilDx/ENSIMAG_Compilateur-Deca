@@ -1,5 +1,6 @@
 // Description :
 //    Test de lecture d'un float invalide
+//    TODO (Je sais pas trop s'il faut mettre ce test dans "interactive" ou "invalid")
 //
 // Resultats :
 //    Pour que l'erreur se produise, il faut entrer un float invalide

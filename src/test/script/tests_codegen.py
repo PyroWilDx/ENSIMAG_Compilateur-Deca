@@ -95,7 +95,7 @@ def doTests():
     doVerify("codegen/valid/iostreams/includeSimple.deca",
              expectedResult=b"Hello World\n")
 
-    doVerify("codegen/valid/declarations/declVarEasy.deca",
+    doVerify("codegen/valid/declarations/declVarSimple.deca",
              expectedResult=b"x = 1 | y = 2\n")
 
     doVerify("codegen/valid/declarations/declVarMany.deca",
@@ -148,46 +148,20 @@ def doTests():
     doVerify("codegen/valid/conditions/whileIfThenElse.deca",
              expectedResult=b"4321\n")
 
-    doVerify("codegen/valid/registers/registerOverflow.deca",
-             expectedResult=b"5252\n",
-             decacOptions="-r 4")
-
-    doVerify("codegen/valid/options/optionBanner.deca",
-             expectedResult=b"Bonjour\n",
-             # decacOptions="-b"
-             )
-
-    doVerify("codegen/valid/options/optionParse.deca",
-             # decacOptions="-p"
-             decacOptions="-v"
-             )
-
-    doVerify("codegen/valid/options/optionVerification.deca",
-             expectedResult=b"",
-             decacOptions="-v")
-
-    doVerify("codegen/valid/options/optionNoCheck.deca",
-             expectedResult=b"1\n",
-             decacOptions="-n")
-
-    doVerify("codegen/valid/options/optionDebug.deca",
-             expectedResult=b"z = 6.00000e+00\n",
-             #          decacOptions="-d -d -d"
-             )
-
     # doVerify("codegen/valid/classes/others/asmSimple.deca",
     #          expectedResult=b"180\n",
     #          doAssert=False)
 
     doVerify("codegen/valid/classes/others/newSimple.deca")
 
-    doVerify("codegen/valid/classes/fields/fieldsSimpleClass.deca")
-
-    doVerify("codegen/valid/classes/fields/fieldsComplexClass.deca")
+    doVerify("codegen/valid/classes/fields/fieldSimple.deca")
 
     doVerify("codegen/valid/classes/fields/fieldSelection.deca",
              expectedResult=b"1.00000e+00 2 4 0 1.00000e+00\n"
                             b"8.00000e+00 3.20000e+01 16 0.00000e+00 1\n")
+
+    doVerify("codegen/valid/classes/fields/fieldInitReg.deca",
+             expectedResult=b"1 20 2\n")
 
     doVerify("codegen/valid/classes/fields/fieldInitFieldSimple.deca",
              expectedResult=b"10\n")
@@ -245,55 +219,108 @@ def doTests():
     #          expectedResult=b"1 2 4 2 0\n",
     #          doAssert=False)
 
-    doVerify("codegen/valid/classes/examples/exPage181.deca",
+    doVerify("codegen/valid/registers/opRegOverflow.deca",
+             expectedResult=b"52 52\n",
+             decacOptions="-r 4")
+
+    # doVerify("codegen/valid/registers/methodRegOverflow.deca",
+    #          expectedResult=b"600\n",
+    #          decacOptions="-r 8",
+    #          doAssert=False)
+
+    doVerify("codegen/valid/options/optionBanner.deca",
+             expectedResult=b"Bonjour\n",
+             # decacOptions="-b"
+             )
+
+    doVerify("codegen/valid/options/optionParse.deca",
+             # decacOptions="-p"
+             decacOptions="-v"
+             )
+
+    doVerify("codegen/valid/options/optionVerification.deca",
+             expectedResult=b"",
+             decacOptions="-v")
+
+    doVerify("codegen/valid/options/optionNoCheck.deca",
+             expectedResult=b"1\n",
+             decacOptions="-n")
+
+    doVerify("codegen/valid/options/optionDebug.deca",
+             expectedResult=b"z = 6.00000e+00\n",
+             #          decacOptions="-d -d -d"
+             )
+
+    doVerify("codegen/valid/provided/ecrit0.deca",
+             expectedResult=b"ok\n"
+                            b"ok\n")
+
+    doVerify("codegen/valid/provided/entier1.deca",
+             expectedResult=b"1\n"
+                            b"2\n")
+
+    doVerify("codegen/valid/provided/cond0.deca",
+             expectedResult=b"ok\n")
+
+    doVerify("codegen/valid/provided/exdoc.deca",
              expectedResult=b"a.getX() = 1\n")
+
+    doVerify("codegen/perf/provided/syracuse42.deca",
+             expectedResult=b"8\n")
+
+    doVerify("codegen/perf/provided/ln2.deca",
+             expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n")
+
+    # doVerify("codegen/perf/provided/ln2_fct.deca",
+    #          expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n",
+    #          doAssert=False)
 
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (INTERACTIVE)")
 
-    doVerify("codegen/interactive/readIntFloat.deca",
+    doVerify("codegen/interactive/iostreams/readIntFloat.deca",
              expectedResult=b"3.20000e+00\n",
              input=b"1\n2.2")
 
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (INVALIDE)")
 
-    doVerify("codegen/invalid/declVarNoInit.deca",
+    doVerify("codegen/invalid/errors/declVarNoInit.deca",
              expectedResult=b"  ** IMA ** ERREUR ** Ligne 13 : \n"
                             b"    WINT avec R1 indefini\n",
              execError=True)
 
-    doVerify("codegen/invalid/divisionBy0.deca",
+    doVerify("codegen/invalid/errors/divisionBy0.deca",
              expectedResult=b"Error: Division by 0\n",
              execError=True)
 
-    doVerify("codegen/invalid/moduloBy0.deca",
+    doVerify("codegen/invalid/errors/moduloBy0.deca",
              expectedResult=b"2\n"
                             b"Error: Division by 0\n",
              execError=True)
 
-    doVerify("codegen/invalid/floatOverflow.deca",
+    doVerify("codegen/invalid/errors/floatOverflow.deca",
              expectedResult=b"Error: Float Operation Overflow\n",
              execError=True)
 
-    doVerify("codegen/interactive/readErr.deca",
+    doVerify("codegen/interactive/errors/readError.deca",
              expectedResult=b"Error: Input/Output Error\n",
              execError=True,
              input=b"10")
 
-    doVerify("codegen/invalid/stackOverflow.deca",
+    doVerify("codegen/invalid/errors/stackOverflow.deca",
              expectedResult=b"Error: Stack Overflow\n",
              execError=True)
 
-    doVerify("codegen/invalid/nullPointer.deca",
+    doVerify("codegen/invalid/errors/nullPointer.deca",
              expectedResult=b"Error: Dereferencing Null Pointer\n",
              execError=True)
 
-    doVerify("codegen/invalid/heapOverflow.deca",
+    doVerify("codegen/invalid/errors/heapOverflow.deca",
              expectedResult=b"Error: Heap Overflow\n",
              execError=True)
 
-    doVerify("codegen/invalid/missingReturn.deca",
+    doVerify("codegen/invalid/errors/missingReturn.deca",
              expectedResult=b"Error: Exiting function A.missingReturn() without return\n",
              execError=True)
 
