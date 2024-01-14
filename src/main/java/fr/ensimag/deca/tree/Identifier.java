@@ -256,7 +256,7 @@ public class Identifier extends AbstractIdentifier {
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD(iAddr, gpReg));
 
-        if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+        if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             compiler.addInstruction(new CMP(0, gpReg));
             if (isNotInFalse) compiler.addInstruction(new BNE(branchLabel));
             else compiler.addInstruction(new BEQ(branchLabel));
