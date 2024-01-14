@@ -1,8 +1,6 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.deca.codegen.StackManager;
-import fr.ensimag.deca.codegen.CodeGenUtils;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -52,6 +50,8 @@ public class Assign extends AbstractBinaryExpr {
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         StackManager sM = compiler.getStackManager();
+        CondManager cM = compiler.getCondManager();
+        VTableManager vTM = compiler.getVTableManager();
 
         boolean saveReg = false;
         DAddr iAddr;
@@ -83,6 +83,12 @@ public class Assign extends AbstractBinaryExpr {
 
         getRightOperand().codeGenInst(compiler);
         GPRegister regRight = rM.getLastRegOrImm(compiler);
+        if (regRight == Register.R0) {
+            if (pushed || cM.isDoingCond() || vTM.isInMethod()) {
+                regRight = rM.getFreeReg();
+                compiler.addInstruction(new LOAD(Register.R0, regRight));
+            }
+        }
 
         if (pushed) {
             compiler.addInstruction(new LOAD(regRight, Register.R0));

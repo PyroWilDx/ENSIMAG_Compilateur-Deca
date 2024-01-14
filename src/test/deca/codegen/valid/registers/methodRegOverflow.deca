@@ -3,6 +3,7 @@
 //
 // Resultats :
 //    600
+//    OK
 
 class A {
     int x = 10;
@@ -56,4 +57,23 @@ class A {
             )))))
             )))));
     println(x);
+
+    if (
+        (4 * 6 + (4 * 4 + (a.get10() + (a.get20() + (a.get30() +
+        (10 * 2 + (40 / 2 + (a.get30() + (a.get20() + (a.get10() +
+        (a.get30() + (30 + (a.get10() + (10 + (a.get20() +
+        (a.get10() + (a.get20() + (a.get30() + (10 + (60 / 2 +
+        (a.get20() + (a.get20() + (2 * a.get10() + (a.get30() + (a.get10() +
+        (a.get30() / 2 + (a.get30() / 2 + (a.get20() + (2 * a.get10() + (a.get30()
+        )))))
+        )))))
+        )))))
+        )))))
+        )))))
+        )))))
+       == 600) {
+        println("OK");
+    } else {
+        println("FAIL");
+    }
 }

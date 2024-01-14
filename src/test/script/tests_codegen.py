@@ -15,9 +15,14 @@ def prettyPrint(msg):
     print()
 
 
-def printOrAssert(out, expectedResult, doAssert):
+def printOrAssert(out, expectedResult, doAssert, perf=False):
     if doAssert:
-        assert out == expectedResult
+        if not perf:
+            assert expectedResult == out
+        else:
+            expectedLength = len(expectedResult)
+            print(out[expectedLength:])
+            assert expectedResult == out[:expectedLength] # Devrait suffir
     else:
         print(out)
 
@@ -27,6 +32,7 @@ def doVerify(decaFilePath,
              decacOptions="", decacFail=False,
              execError=False, execFail=False,
              input="",
+             imaOptions="",
              doAssert=True):
     extIndex = decaFilePath.rfind(".")
     decaFilePathNoExt = decaFilePath[:extIndex]
@@ -41,7 +47,7 @@ def doVerify(decaFilePath,
     print(f"=========== {'/'.join(decaFilePath.split('/')[2:])} ===========")
 
     if not doParallel:
-        decacCmd = f"./src/main/bin/decac {decacOptions} ./src/test/deca/{decaFilePath}"
+        decacCmd = f"decac {decacOptions} ./src/test/deca/{decaFilePath}"
         if decacFail:
             decacCmd += " > /dev/null 2>&1"
             out = os.system(decacCmd)
@@ -53,7 +59,7 @@ def doVerify(decaFilePath,
     if ("-v" in decacOptions) or ("-p" in decacOptions):
         return 0
 
-    execCmd = f"./global/bin/ima ./src/test/deca/{decaFilePathNoExt}.ass"
+    execCmd = f"ima {imaOptions} ./src/test/deca/{decaFilePathNoExt}.ass"
     if execError:
         try:
             subprocess.check_output(execCmd, input=input, shell=True)  # Sould Fail
@@ -71,12 +77,16 @@ def doVerify(decaFilePath,
             return 0
 
     out = subprocess.check_output(execCmd, input=input, shell=True)
-    printOrAssert(out, expectedResult, doAssert)
+    printOrAssert(out, expectedResult, doAssert, "-s" in imaOptions)
 
 
 def doTests():
-    """Tests"""
+    """Test Étape C"""
 
+    """
+    ============================================
+    ============================================
+    """
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (VALIDE)")
 
@@ -148,11 +158,7 @@ def doTests():
     doVerify("codegen/valid/conditions/whileIfThenElse.deca",
              expectedResult=b"4321\n")
 
-    # doVerify("codegen/valid/classes/others/asmSimple.deca",
-    #          expectedResult=b"180\n",
-    #          doAssert=False)
-
-    doVerify("codegen/valid/classes/others/newSimple.deca")
+    doVerify("codegen/valid/classes/fields/newSimple.deca")
 
     doVerify("codegen/valid/classes/fields/fieldSimple.deca")
 
@@ -219,12 +225,24 @@ def doTests():
     #          expectedResult=b"1 2 4 2 0\n",
     #          doAssert=False)
 
+    doVerify("codegen/valid/classes/miscellaneous/assignInside.deca",
+             expectedResult=b"0 0\n"
+                            b"10 0\n"
+                            b"OK\n"
+                            b"36 6\n"
+                            b"36 100\n")
+
+    # doVerify("codegen/valid/classes/miscellaneous/asmSimple.deca",
+    #          expectedResult=b"180\n",
+    #          doAssert=False)
+
     doVerify("codegen/valid/registers/opRegOverflow.deca",
              expectedResult=b"52 52\n",
              decacOptions="-r 4")
 
     doVerify("codegen/valid/registers/methodRegOverflow.deca",
-             expectedResult=b"600\n",
+             expectedResult=b"600\n"
+                            b"OK\n",
              decacOptions="-r 4")
 
     doVerify("codegen/valid/options/optionBanner.deca",
@@ -264,16 +282,10 @@ def doTests():
     doVerify("codegen/valid/provided/exdoc.deca",
              expectedResult=b"a.getX() = 1\n")
 
-    doVerify("codegen/perf/provided/syracuse42.deca",
-             expectedResult=b"8\n")
-
-    doVerify("codegen/perf/provided/ln2.deca",
-             expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n")
-
-    doVerify("codegen/perf/provided/ln2_fct.deca",
-             expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n",
-             doAssert=False)
-
+    """
+    ============================================
+    ============================================
+    """
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (INTERACTIVE)")
 
@@ -281,6 +293,10 @@ def doTests():
              expectedResult=b"3.20000e+00\n",
              input=b"1\n2.2")
 
+    """
+    ============================================
+    ============================================
+    """
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (INVALIDE)")
 
@@ -322,6 +338,25 @@ def doTests():
     doVerify("codegen/invalid/errors/missingReturn.deca",
              expectedResult=b"Error: Exiting function A.missingReturn() without return\n",
              execError=True)
+
+    """
+    ============================================
+    ============================================
+    """
+    if not doParallel:
+        prettyPrint("TEST DE L'ÉTAPE C (PERF)")
+
+    doVerify("codegen/perf/provided/syracuse42.deca",
+             expectedResult=b"8\n",
+             imaOptions="-s")
+
+    doVerify("codegen/perf/provided/ln2.deca",
+             expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n",
+             imaOptions="-s")
+
+    doVerify("codegen/perf/provided/ln2_fct.deca",
+             expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n",
+             imaOptions="-s")
 
     return 0
 

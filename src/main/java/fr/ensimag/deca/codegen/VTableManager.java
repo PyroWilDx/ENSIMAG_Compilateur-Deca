@@ -86,6 +86,10 @@ public class VTableManager {
         return currMethodNameStack.peekFirst();
     }
 
+    public boolean isInMethod() {
+        return getCurrMethodName() != null;
+    }
+
     public DAddr getCurrAddrOfMethod() {
         return getAddrOfMethod(getCurrClassName(), getCurrMethodName());
     }
