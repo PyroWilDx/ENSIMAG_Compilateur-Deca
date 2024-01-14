@@ -122,6 +122,8 @@ inst returns[AbstractInst tree]
             setLocation($tree, $e1.start);
         }
     | SEMI {
+            $tree = new NoOperation();
+            setLocation($tree, $SEMI);
         }
     | PRINT OPARENT list_expr CPARENT SEMI {
             assert($list_expr.tree != null);
@@ -190,9 +192,9 @@ if_then_else returns[IfThenElse tree]
         int i = 0;
         int n = $li_else.tree.size();
         while(i<n){
-        a.add($li_else.tree.getElement(i));
-        i++;
-        }
+            a.add($li_else.tree.getElement(i));
+            i++;
+            }
         }
       )?
 
@@ -222,7 +224,7 @@ assign_expr returns[AbstractExpr tree]
     : e=or_expr (
         /* condition: expression e must be a "LVALUE" */ {
             if (! ($e.tree instanceof AbstractLValue)) {
-                throw new InvalidLValue(this, $ctx); // what is ctx ?
+                throw new InvalidLValue(this, $ctx);
             }
         }
         EQUALS e2=assign_expr {
@@ -234,7 +236,7 @@ assign_expr returns[AbstractExpr tree]
       | /* epsilon */ {
             assert($e.tree != null);
             $tree = $e.tree ;
-            setLocation($tree,$e.start);//TODO not tested
+            setLocation($tree,$e.start);
         }
       )
     ;
@@ -483,12 +485,12 @@ literal returns[AbstractExpr tree]
         setLocation($tree,$FALSE);
         }
     | THIS {
-    $tree = new This();
-    setLocation($tree,$THIS);
+        $tree = new This();
+        setLocation($tree,$THIS);
         }
     | NULL {
-    $tree = new NullLiteral();
-    setLocation($tree, $NULL);
+        $tree = new NullLiteral();
+        setLocation($tree, $NULL);
         }
     ;
 
@@ -526,6 +528,7 @@ class_decl returns[DeclClass tree]
 
 class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
+        assert($ident.tree != null);
         $tree = $ident.tree;
         setLocation($tree,$ident.start);
         }
