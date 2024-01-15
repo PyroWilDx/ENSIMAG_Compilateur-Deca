@@ -25,13 +25,6 @@ public class MethodCall extends AbstractMethodCall {
         this.methodIdent = methodIdent;
         this.rValueStar = rValueStar;
     }
-
-    public MethodCall(AbstractIdentifier methodIdent,RValueStar rValueStar){
-        this.expr = new This();
-        this.methodIdent = methodIdent;
-        this.rValueStar = rValueStar;
-    }
-
     public Type verifyMethodCall(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         Type type = this.expr.verifyExpr(compiler, localEnv, currentClass);
         TypeDefinition definition = compiler.environmentType.get(type.getName());

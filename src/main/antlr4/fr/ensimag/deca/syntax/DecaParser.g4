@@ -94,7 +94,7 @@ decl_var[AbstractIdentifier t] returns[AbstractDeclVar tree]
         setLocation($tree, $i.start);
         }
       (EQUALS e=expr {
-      assert($e.tree != null) ; //ana
+      assert($e.tree != null) ;
       Initialization init = new Initialization($e.tree);
       setLocation(init, $EQUALS);
       $tree = new DeclVar($t, $i.tree, init);
@@ -415,9 +415,10 @@ primary_expr returns[AbstractExpr tree]
             assert($args.tree != null);
             assert($m.tree != null);
             RValueStar params = new RValueStar($args.tree);
-            $tree = new MethodCall($m.tree,params);
+            AbstractExpr implicitThis = new This() ;
+            setLocation(implicitThis,$m.start);
+            $tree = new MethodCall(implicitThis,$m.tree,params);
             setLocation($tree, $o);
-            //TODO
         }
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
@@ -556,7 +557,6 @@ visibility returns[Visibility visi]
 
 list_decl_field[ListDeclField fields, Visibility v, AbstractIdentifier t]
     : dv1=decl_field[v, t] {
-        //setLocation($fields,$dv1.start);
         $fields.add($dv1.tree);
     }
         (COMMA dv2=decl_field[v, t] {
