@@ -1,0 +1,10 @@
+
+On dispose de tiles de 8*8 pixels de 16 octets chacune (8*8 pixels * 4 couleurs = 16 octets).
+Elles sont indexées de 0x8000 à 0x8800 donc il y en a 128 si j'ai bien compris. 
+Alors que, les dimensions de l'écran étant 144*160, il y a 360 tiles affichées en même temps.
+Donc il y a forcément des répétitions.
+
+On a également une foreground map et un background map qui contiennent les indices des tiles à afficher
+Ces maps sont de dimension 32*32 (soit 1024 tiles à selectionner parmis les 128 disponibles, par map).
+
+De plus jusqu'à 40 sprites
