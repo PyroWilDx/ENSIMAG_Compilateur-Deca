@@ -39,7 +39,6 @@ prog returns[AbstractProgram tree]
     : list_classes main EOF {
             assert($list_classes.tree != null);
             assert($main.tree != null);
-
             $tree = new Program($list_classes.tree, $main.tree);
             setLocation($tree, $list_classes.start);
         }
@@ -385,7 +384,6 @@ select_expr returns[AbstractExpr tree]
     : e=primary_expr {
             assert($e.tree != null);
             $tree = $e.tree;
-//            setLocation($tree, $e.start);
         }
    | e1=select_expr DOT i=ident {
             assert( $e1.tree != null);
@@ -412,7 +410,6 @@ primary_expr returns[AbstractExpr tree]
     : ident {
             assert($ident.tree != null);
             $tree = $ident.tree;
-//            setLocation($tree, $ident.start);
         }
     | m=ident OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
@@ -422,7 +419,6 @@ primary_expr returns[AbstractExpr tree]
     | OPARENT expr CPARENT {
             assert($expr.tree != null);
             $tree = $expr.tree ;
-//            setLocation($tree,$expr.start);
         }
     | READINT OPARENT CPARENT {
             $tree= new ReadInt();
@@ -445,7 +441,6 @@ primary_expr returns[AbstractExpr tree]
     | literal {
             assert($literal.tree != null);
             $tree = $literal.tree ;
-//            setLocation($tree, $literal.start);
         }
     ;
 
@@ -453,7 +448,6 @@ type returns[AbstractIdentifier tree]
     : ident {
             assert($ident.tree != null);
             $tree = $ident.tree ;
-//            setLocation($tree, $ident.start);
         }
     ;
 
@@ -506,7 +500,6 @@ list_classes returns[ListDeclClass tree]
 
       (c1=class_decl {
         $tree.add($c1.tree);
-        //setLocation($tree, $c1.start);
         }
       )*
     ;
@@ -524,7 +517,6 @@ class_extension returns[AbstractIdentifier tree]
     : EXTENDS ident {
         assert($ident.tree != null);
         $tree = $ident.tree;
-//        setLocation($tree,$ident.start);
         }
     | /* epsilon */ {
         $tree = new Identifier(this.getDecacCompiler().createSymbol("Object"));
