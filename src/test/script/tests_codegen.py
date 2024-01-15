@@ -28,7 +28,7 @@ def printOrAssert(out, expectedResult, doAssert, perf=False):
 
 
 def doVerify(decaFilePath,
-             expectedResult=b"",
+             expectedResult=b"", decacExpected="",
              decacOptions="", decacFail=False,
              execError=False, execFail=False,
              input="",
@@ -48,11 +48,16 @@ def doVerify(decaFilePath,
 
     if not doParallel:
         decacCmd = f"decac {decacOptions} ./src/test/deca/{decaFilePath}"
-        if decacFail:
+        if decacFail: # Ne doit plus être utilisé
             decacCmd += " > /dev/null 2>&1"
             out = os.system(decacCmd)
             assert (os.WEXITSTATUS(out) != 0)
             return 0
+        if ("-b" in decacOptions) or ("-p" in decacOptions) or ("-d" in decacOptions):
+            out = subprocess.check_output(decacCmd, shell=True)
+            printOrAssert(out, decacExpected, doAssert)
+            if "-p" in decacOptions:
+                return 0
 
         os.system(decacCmd)
 
@@ -277,13 +282,14 @@ def doTests():
 
     doVerify("codegen/valid/options/optionBanner.deca",
              expectedResult=b"Bonjour\n",
+             decacExpected=b"== Banner : Gr10 / Gl47 ==\n",
              decacOptions="-b")
 
     doVerify("codegen/valid/options/optionParse.deca",
+             decacExpected=b"{\n\tint x = 1;\n\tfloat y = 2;\n\tfloat z;\n\t(z = ((x + y) - (x * (x + y))));\n\tprint(x, y, z);\n\tprintln(\"z = \", z);\n\tprintln(y, z);\n\tif ((y == z)) {\n\t\t(y = z);\n\t} else {\n\t\t(y = (z - 1));\n\t}\n\twhile (true) {\n\t\tif ((y != z)) {\n\t\t\tif ((y < z)) {\n\t\t\t\tif ((y > z)) {\n\t\t\t\t\t(x = 2);\n\t\t\t\t} else {\n\t\t\t\t\t(y = 4);\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t}\n\t\t} else {\n\t\t\twhile (false) {\n\t\t\t\tprint(40);\n\t\t\t}\n\t\t}\n\t\t(x = 10);\n\t}\n\tx;\n\ty;\n\tz;\n}\n",
              decacOptions="-p")
 
     doVerify("codegen/valid/options/optionVerification.deca",
-             expectedResult=b"",
              decacOptions="-v")
 
     doVerify("codegen/invalid/errors/optionNoCheck.deca",
@@ -292,7 +298,8 @@ def doTests():
 
     doVerify("codegen/valid/options/optionDebug.deca",
              expectedResult=b"z = 6.00000e+00\n",
-                      decacOptions="-d")
+             decacExpected=b"INFO  fr.ensimag.deca.CompilerOptions.parseArgs(CompilerOptions.java:133) - Application-wide trace level set to INFO\nINFO  fr.ensimag.deca.CompilerOptions.parseArgs(CompilerOptions.java:138) - Java assertions enabled\nINFO  fr.ensimag.deca.DecacCompiler.doCompile(DecacCompiler.java:224) - Lexing and parsing of /user/9/.base/linp/home/Documents/2A/Projet_GL/./src/test/deca/codegen/valid/options/optionDebug.deca...\nINFO  fr.ensimag.deca.DecacCompiler.doCompile(DecacCompiler.java:231) - Lexing and parsing of /user/9/.base/linp/home/Documents/2A/Projet_GL/./src/test/deca/codegen/valid/options/optionDebug.deca successful.\nINFO  fr.ensimag.deca.DecacCompiler.doCompile(DecacCompiler.java:234) - Decompiling /user/9/.base/linp/home/Documents/2A/Projet_GL/./src/test/deca/codegen/valid/options/optionDebug.deca...\n{\n\tint x = 1;\n\tfloat y = 2;\n\tfloat z;\n\t(y = 2);\n\t(z = ((((x * y) + x) + x) + y));\n\tprintln(\"z = \", z);\n}\nINFO  fr.ensimag.deca.DecacCompiler.doCompile(DecacCompiler.java:236) - Decompilation of /user/9/.base/linp/home/Documents/2A/Projet_GL/./src/test/deca/codegen/valid/options/optionDebug.deca successful.\nINFO  fr.ensimag.deca.DecacCompiler.doCompile(DecacCompiler.java:237) - Stopping because of -p...\n",
+             decacOptions="-p -d")
 
     """
     ============================================
