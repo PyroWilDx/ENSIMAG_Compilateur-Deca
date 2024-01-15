@@ -260,7 +260,7 @@ public class Identifier extends AbstractIdentifier {
             if (isNotInFalse) compiler.addInstruction(new BNE(branchLabel));
             else compiler.addInstruction(new BEQ(branchLabel));
         } else {
-            if (!isNotInFalse) {
+            if (getType().isBoolean() && !isNotInFalse) {
                 compiler.addInstruction(new CMP(0, gpReg));
                 compiler.addInstruction(new SEQ(gpReg));
             }
