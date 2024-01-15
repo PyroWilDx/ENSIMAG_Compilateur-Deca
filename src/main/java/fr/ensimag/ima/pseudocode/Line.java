@@ -1,5 +1,7 @@
 package fr.ensimag.ima.pseudocode;
 
+import fr.ensimag.deca.codegen.GameBoy;
+
 import java.io.PrintStream;
 
 /**
@@ -59,7 +61,8 @@ public class Line extends AbstractLine {
         }
         if (instruction != null) {
             s.print("\t");
-            instruction.display(s);
+            if (GameBoy.doCp) instruction.displayGameBoy(s);
+            else instruction.display(s);
             tab = true;
         }
         if (comment != null) {

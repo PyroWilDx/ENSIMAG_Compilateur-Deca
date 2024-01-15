@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import fr.ensimag.deca.codegen.GameBoy;
 import fr.ensimag.deca.codegen.RegManager;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -93,6 +94,7 @@ public class CompilerOptions {
                         i++;
                         try {
                             nOfRegs = Integer.parseInt(nOfRegsStr);
+                            if (GameBoy.doCp && nOfRegs > GameBoy.N_OF_REGS) nOfRegs = GameBoy.N_OF_REGS;
                             if (nOfRegs < 4 || nOfRegs > 16) {
                                 throw new NumberFormatException();
                             }
@@ -105,6 +107,10 @@ public class CompilerOptions {
                         break;
                     case 'P': // Parallel
                         parallel = true;
+                        break;
+                    case 'g':
+                        if (nOfRegs > GameBoy.N_OF_REGS) nOfRegs = GameBoy.N_OF_REGS;
+                        GameBoy.doCp = true;
                         break;
                     default:
                         throwError("-" + arg.charAt(1) + " is not a valid option.");

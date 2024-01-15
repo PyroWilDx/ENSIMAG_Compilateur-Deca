@@ -18,6 +18,12 @@ public abstract class UnaryInstruction extends Instruction {
         s.print(operand);
     }
 
+    @Override
+    public void displayOperandsGameBoy(PrintStream s) {
+        s.print(" ");
+        s.print(operand);
+    }
+
     protected UnaryInstruction(Operand operand) {
         Validate.notNull(operand);
         this.operand = operand;

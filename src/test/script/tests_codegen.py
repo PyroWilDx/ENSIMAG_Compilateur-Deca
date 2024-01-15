@@ -26,7 +26,7 @@ def printOrAssert(out, expectedResult, doAssert, perf=False):
             print("\033[0m", end="")
         else:
             expectedLength = len(expectedResult)
-            print(f"\033[1;36m{out[expectedLength:]}\033[0m")
+            print(f"\033[1;36m{out[expectedLength:-2].decode('utf-8')}\033[0m")
             print("\033[0;31m", end="")
             assert expectedResult == out[:expectedLength]
             print("\033[0m", end="")

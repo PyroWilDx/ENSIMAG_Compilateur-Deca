@@ -13,4 +13,9 @@ public abstract class NullaryInstruction extends Instruction {
     void displayOperands(PrintStream s) {
         // no operand
     }
+
+    @Override
+    public void displayOperandsGameBoy(PrintStream s) {
+        // no operand
+    }
 }

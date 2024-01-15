@@ -29,6 +29,14 @@ public class BinaryInstruction extends Instruction {
         s.print(operand2);
     }
 
+    @Override
+    public void displayOperandsGameBoy(PrintStream s) {
+        s.print(" ");
+        s.print(operand2);
+        s.print(", ");
+        s.print(operand1);
+    }
+
     protected BinaryInstruction(Operand op1, Operand op2) {
         Validate.notNull(op1);
         Validate.notNull(op2);
