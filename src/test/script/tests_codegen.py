@@ -10,11 +10,11 @@ doParallel = False
 def prettyPrint(msg):
     print()
     # print("\033[32m==============================================\033[0m")
-    print("==============================================")
+    print("\033[1m==============================================\033[0m")
     # print(f"\033[32m{msg}\033[0m")
-    print(f"{msg}")
+    print(f"\033[1m{msg}\033[0m")
     # print("\033[32m==============================================\033[0m")
-    print("==============================================")
+    print("\033[1m==============================================\033[0m")
     print()
 
 
@@ -26,7 +26,7 @@ def printOrAssert(out, expectedResult, doAssert, perf=False):
             print("\033[0m", end="")
         else:
             expectedLength = len(expectedResult)
-            print(out[expectedLength:])
+            print(f"\033[1;36m{out[expectedLength:]}\033[0m")
             print("\033[0;31m", end="")
             assert expectedResult == out[:expectedLength]
             print("\033[0m", end="")
@@ -308,7 +308,6 @@ def doTests():
 
     doVerify("codegen/valid/options/optionDebug.deca",
              expectedResult=b"z = 6.00000e+00\n",
-             # decacExpected=b"INFO  fr.ensimag.deca.CompilerOptions.parseArgs(CompilerOptions.java:133) - Application-wide trace level set to INFO\nINFO  fr.ensimag.deca.CompilerOptions.parseArgs(CompilerOptions.java:138) - Java assertions enabled\nINFO  fr.ensimag.deca.DecacCompiler.doCompile(DecacCompiler.java:224) - Lexing and parsing of /user/9/.base/linp/home/Documents/2A/Projet_GL/./src/test/deca/codegen/valid/options/optionDebug.deca...\nINFO  fr.ensimag.deca.DecacCompiler.doCompile(DecacCompiler.java:231) - Lexing and parsing of /user/9/.base/linp/home/Documents/2A/Projet_GL/./src/test/deca/codegen/valid/options/optionDebug.deca successful.\nINFO  fr.ensimag.deca.DecacCompiler.doCompile(DecacCompiler.java:234) - Decompiling /user/9/.base/linp/home/Documents/2A/Projet_GL/./src/test/deca/codegen/valid/options/optionDebug.deca...\n{\n\tint x = 1;\n\tfloat y = 2;\n\tfloat z;\n\t(y = 2);\n\t(z = ((((x * y) + x) + x) + y));\n\tprintln(\"z = \", z);\n}\nINFO  fr.ensimag.deca.DecacCompiler.doCompile(DecacCompiler.java:236) - Decompilation of /user/9/.base/linp/home/Documents/2A/Projet_GL/./src/test/deca/codegen/valid/options/optionDebug.deca successful.\nINFO  fr.ensimag.deca.DecacCompiler.doCompile(DecacCompiler.java:237) - Stopping because of -p...\n",
              # decacOptions="-p -d"
              )
 
@@ -400,10 +399,10 @@ def decacParallel():
     decacCmd = f"./src/main/bin/decac -P"
     for filePath in allTestedFiles:
         decacCmd += f" ./src/test/deca/{filePath}.deca"
-    print("Removing .ass files...")
+    print("\033[1mRemoving .ass files...\033[0m")
     for filePath in allTestedFiles:  # To Ensure that -P Recompiles All
         os.system(f"\\rm ./src/test/deca/{filePath}.ass")
-    print("Remove Successful")
+    print("\033[1mRemove Successful\033[0m")
     print()
 
     os.system(decacCmd)
