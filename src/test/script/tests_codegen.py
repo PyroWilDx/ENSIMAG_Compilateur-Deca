@@ -9,20 +9,27 @@ doParallel = False
 
 def prettyPrint(msg):
     print()
-    print("\033[32m==============================================\033[0m")
-    print(f"\033[32m{msg}\033[0m")
-    print("\033[32m==============================================\033[0m")
+    # print("\033[32m==============================================\033[0m")
+    print("==============================================")
+    # print(f"\033[32m{msg}\033[0m")
+    print(f"{msg}")
+    # print("\033[32m==============================================\033[0m")
+    print("==============================================")
     print()
 
 
 def printOrAssert(out, expectedResult, doAssert, perf=False):
     if doAssert:
         if not perf:
+            print("\033[0;31m", end="")
             assert expectedResult == out
+            print("\033[0m", end="")
         else:
             expectedLength = len(expectedResult)
             print(out[expectedLength:])
+            print("\033[0;31m", end="")
             assert expectedResult == out[:expectedLength]
+            print("\033[0m", end="")
     else:
         print(out)
 
@@ -44,7 +51,7 @@ def doVerify(decaFilePath,
     if doParallel and (decaFilePathNoExt not in allTestedFiles):
         return 0
 
-    print(f"=========== {'/'.join(decaFilePath.split('/')[2:])} ===========")
+    print(f"\033[32m=========== {'/'.join(decaFilePath.split('/')[2:])} ===========\033[0m")
 
     if not doParallel:
         decacCmd = f"decac {decacOptions} ./src/test/deca/{decaFilePath}"
@@ -246,9 +253,8 @@ def doTests():
                             b"p3 after p2.diag(3) : Point 3d : (5, 5, 5)\n"
                             b"p2 : Point 3d : (5, 5, 5)\n")
 
-    # doVerify("codegen/valid/classes/miscellaneous/equalsSimple.deca",
-    #          expectedResult=b"OK1 OK2 OK3 OK4 OK5 OK6\n",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/miscellaneous/equalsSimple.deca",
+             expectedResult=b"OK1 OK2 OK3 OK4 OK5 OK6\n")
 
     doVerify("codegen/valid/classes/miscellaneous/assignInside.deca",
              expectedResult=b"0 0\n"

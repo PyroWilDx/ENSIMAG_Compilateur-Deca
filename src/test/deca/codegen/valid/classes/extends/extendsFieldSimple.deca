@@ -24,4 +24,10 @@ class B extends A {
     if (b.b) {
         println("FAIL");
     }
+    b.b = true;
+    if (b.b) {
+
+    } else {
+        println("FAIL");
+    }
 }

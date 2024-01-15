@@ -16,6 +16,9 @@ class B extends A {
     A a = new A();
     B b = new B();
 
+    boolean x = a.equals(b);
+    boolean y = x;
+
     if (a.equals(b)) {
         println("FAIL");
     } else {

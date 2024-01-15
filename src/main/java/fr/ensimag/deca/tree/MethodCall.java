@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.ErrorManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.VTableManager;
@@ -52,6 +53,7 @@ public class MethodCall extends AbstractMethodCall {
     public void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         ErrorManager eM = compiler.getErrorManager();
+        CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
 
         vTM.enterClass(expr.getType().getName().getName());
@@ -92,6 +94,21 @@ public class MethodCall extends AbstractMethodCall {
 
         if (!getType().isVoid()) {
             rM.freeRegForce(Register.R0);
+        }
+
+        if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+            rM.getLastReg(); // On enlève R0
+            compiler.addInstruction(new CMP(0, Register.R0));
+            if (isNotInFalse) compiler.addInstruction(new BNE(branchLabel));
+            else compiler.addInstruction(new BEQ(branchLabel));
+        } else {
+            if (getType().isBoolean() && !isNotInFalse) {
+                rM.getLastReg(); // On enlève R0
+                gpReg = rM.getFreeReg();
+                compiler.addInstruction(new CMP(0, Register.R0));
+                compiler.addInstruction(new SEQ(gpReg));
+                rM.freeReg(gpReg);
+            }
         }
 
         vTM.exitMethod();
