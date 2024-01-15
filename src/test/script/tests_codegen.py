@@ -246,6 +246,10 @@ def doTests():
                             b"p3 after p2.diag(3) : Point 3d : (5, 5, 5)\n"
                             b"p2 : Point 3d : (5, 5, 5)\n")
 
+    # doVerify("codegen/valid/classes/miscellaneous/equalsSimple.deca",
+    #          expectedResult=b"OK1 OK2 OK3 OK4 OK5 OK6\n",
+    #          doAssert=False)
+
     doVerify("codegen/valid/classes/miscellaneous/assignInside.deca",
              expectedResult=b"0 0\n"
                             b"10 0\n"
