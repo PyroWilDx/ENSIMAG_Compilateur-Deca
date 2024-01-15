@@ -414,10 +414,8 @@ primary_expr returns[AbstractExpr tree]
     | m=ident o=OPARENT args=list_expr CPARENT {
             assert($args.tree != null);
             assert($m.tree != null);
-            setLocation($m.tree, $m.start);
             RValueStar params = new RValueStar($args.tree);
-            setLocation(params, $args.start);
-            $tree = new MethodCall(new This(),$m.tree,params);
+            $tree = new MethodCall($m.tree,params);
             setLocation($tree, $o);
             //TODO
         }
