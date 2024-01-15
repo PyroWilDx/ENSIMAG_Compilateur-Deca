@@ -19,7 +19,7 @@ import java.io.PrintStream;
  */
 public class BooleanLiteral extends AbstractLiteral {
 
-    private boolean value;
+    private final boolean value;
 
     public BooleanLiteral(boolean value) {
         this.value = value;

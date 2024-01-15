@@ -16,9 +16,9 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 import java.io.PrintStream;
 
 public class MethodCall extends AbstractMethodCall {
-    private AbstractExpr expr;
-    private AbstractIdentifier methodIdent;
-    private RValueStar rValueStar;
+    private final AbstractExpr expr;
+    private final AbstractIdentifier methodIdent;
+    private final RValueStar rValueStar;
 
     public MethodCall(AbstractExpr expr,AbstractIdentifier methodIdent,RValueStar rValueStar){
         this.expr = expr;
@@ -65,11 +65,7 @@ public class MethodCall extends AbstractMethodCall {
         expr.codeGenInst(compiler);
 
         GPRegister gpReg = rM.getLastReg();
-        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-        compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
-
-        compiler.addInstruction(
-                new STORE(gpReg, new RegisterOffset(0, Register.SP)));
+        compiler.addInstruction(new STORE(gpReg, new RegisterOffset(0, Register.SP)));
         rM.freeReg(gpReg);
 
         int currParamIndex = -1;
@@ -83,7 +79,13 @@ public class MethodCall extends AbstractMethodCall {
         }
 
         gpReg = rM.getFreeReg();
-        compiler.addInstruction(new BSR(vTM.getCurrAddrOfMethod()));
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), gpReg));
+        if (compiler.getCompilerOptions().doCheck()) {
+            compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+            compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+        }
+        compiler.addInstruction(new LOAD(new RegisterOffset(0, gpReg), gpReg));
+        compiler.addInstruction(new BSR(new RegisterOffset(vTM.getCurrMethodOffset(), gpReg)));
         rM.freeReg(gpReg);
 
         compiler.addInstruction(new SUBSP(nbParam));
@@ -103,7 +105,7 @@ public class MethodCall extends AbstractMethodCall {
         this.methodIdent.decompile(s);
         s.print("(");
         this.rValueStar.decompile(s);
-        s.println(");");
+        s.print(")");
     }
 
     @Override

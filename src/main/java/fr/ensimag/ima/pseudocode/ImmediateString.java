@@ -7,7 +7,7 @@ package fr.ensimag.ima.pseudocode;
  * @date 01/01/2024
  */
 public class ImmediateString extends Operand {
-    private String value;
+    private final String value;
 
     public ImmediateString(String value) {
         super();

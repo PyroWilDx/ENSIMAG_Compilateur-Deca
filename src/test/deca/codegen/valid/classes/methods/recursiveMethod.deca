@@ -24,7 +24,7 @@ class A {
 
         if (x < 400) {
             print(x, " ");
-            this.recMethod();
+            recMethod();
         } else { // 400
             println(this.x);
         }

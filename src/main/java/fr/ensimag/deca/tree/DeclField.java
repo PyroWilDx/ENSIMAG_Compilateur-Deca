@@ -58,13 +58,15 @@ public class DeclField extends AbstractDeclField {
             }
         }
 
-        int fieldOffset = vTM.getCurrOffsetOfField(getName().getName());
+        int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
         compiler.addInstruction(
                 new STORE(Register.R0, new RegisterOffset(fieldOffset, Register.R1)));
     }
 
     @Override
     public TypeCode codeGenDeclField(DecacCompiler compiler, TypeCode lastTypeCode) {
+        if (init instanceof NoInitialization) return null;
+
         RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
 
@@ -79,17 +81,18 @@ public class DeclField extends AbstractDeclField {
             regValue = rM.getLastReg();
         } else {
             regValue = Register.R0;
-            if (init instanceof NoInitialization) {
-                returnValue = getInitTypeCode();
-                if (lastTypeCode == null || lastTypeCode != getInitTypeCode()) {
-                    compiler.addInstruction(new LOAD(lastImm, regValue));
-                }
-            } else {
-                compiler.addInstruction(new LOAD(lastImm, regValue));
-            }
+            // Utile dans le cas où on fait pas l'init à 0
+//            if (init instanceof NoInitialization) {
+//                returnValue = getInitTypeCode();
+//                if (lastTypeCode == null || lastTypeCode != getInitTypeCode()) {
+//                    compiler.addInstruction(new LOAD(lastImm, regValue));
+//                }
+//            } else {
+            compiler.addInstruction(new LOAD(lastImm, regValue));
+//            }
         }
 
-        int fieldOffset = vTM.getCurrOffsetOfField(getName().getName());
+        int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
         compiler.addInstruction(
                 new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         compiler.addInstruction(
@@ -161,6 +164,7 @@ public class DeclField extends AbstractDeclField {
         s.print(" ");
         this.name.decompile(s);
         this.init.decompile(s);
+        s.println(";");
     }
 
     @Override

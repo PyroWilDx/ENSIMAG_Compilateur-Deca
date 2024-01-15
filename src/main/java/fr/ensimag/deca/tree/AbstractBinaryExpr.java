@@ -134,7 +134,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         codeGenOp(compiler, dVal, regLeft);
 
         if (getType().isFloat()) {
-            compiler.addInstruction(new BOV(eM.getFloatOverflowLabel()));
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(new BOV(eM.getFloatOverflowLabel()));
+            }
         }
 
         rM.freeReg(regRight);

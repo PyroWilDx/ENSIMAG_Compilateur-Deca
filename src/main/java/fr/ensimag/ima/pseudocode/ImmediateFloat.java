@@ -7,7 +7,7 @@ package fr.ensimag.ima.pseudocode;
  * @date 01/01/2024
  */
 public class ImmediateFloat extends DVal {
-    private float value;
+    private final float value;
 
     public ImmediateFloat(float value) {
         super();

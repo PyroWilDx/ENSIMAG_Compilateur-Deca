@@ -20,7 +20,7 @@ import org.apache.commons.lang.Validate;
  */
 public abstract class AbstractPrint extends AbstractInst {
 
-    private boolean printHex;
+    private final boolean printHex;
     private ListExpr arguments = new ListExpr();
     
     abstract String getSuffix();

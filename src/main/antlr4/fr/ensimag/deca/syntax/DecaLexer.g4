@@ -83,21 +83,21 @@ IDENT : (LETTER | '$' | '_')(LETTER | DIGIT |'_')*;
 
 MULTI_LINE_STRING : '"'(STRING_CAR | '\\' | '\\\\' | '\n')*'"';
 
-POSITIVE_DIGIT : '1'..'9';
-DIGIT : '0'..'9';
-LETTER : ('a'..'z'|'A'..'Z');
+fragment POSITIVE_DIGIT : '1'..'9';
+fragment DIGIT : '0'..'9';
+fragment LETTER : ('a'..'z'|'A'..'Z');
 
 
-NUM : DIGIT+;
-EXP : ('E' | 'e') ('+' | '-')? NUM;
-DEC : NUM '.' NUM;
-FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
-DIGITHEX : DIGIT | ('A'..'F') | ('a'..'f');
-NUMHEX : DIGITHEX+;
-FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') ('+' | '-')? NUM ('F' | 'f')?;
+fragment NUM : DIGIT+;
+fragment EXP : ('E' | 'e') ('+' | '-')? NUM;
+fragment DEC : NUM '.' NUM;
+fragment FLOATDEC : (DEC | DEC EXP) ('F' | 'f')?;
+fragment DIGITHEX : DIGIT | ('A'..'F') | ('a'..'f');
+fragment NUMHEX : DIGITHEX+;
+fragment FLOATHEX : ('0x' | '0X') NUMHEX '.' NUMHEX ('P' | 'p') ('+' | '-')? NUM ('F' | 'f')?;
 
+fragment STRING_CAR : ~ ('"' | '\\' | '\n');
 
 RTL : '\n' {skip();};
 TAB : '\t' {skip();};
 SPACE : ' ' {skip();};
-STRING_CAR : ~ ('"' | '\\' | '\n');

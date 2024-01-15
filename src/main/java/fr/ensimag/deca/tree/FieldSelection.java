@@ -15,8 +15,8 @@ import fr.ensimag.ima.pseudocode.instructions.CMP;
 import java.io.PrintStream;
 
 public class FieldSelection extends AbstractLValue {
-    private AbstractExpr expr;
-    private AbstractIdentifier fieldIdent;
+    private final AbstractExpr expr;
+    private final AbstractIdentifier fieldIdent;
 
     public FieldSelection(AbstractExpr expr, AbstractIdentifier fieldIdent) {
         this.expr = expr;
@@ -87,11 +87,13 @@ public class FieldSelection extends AbstractLValue {
 
         GPRegister gpReg = rM.getLastReg();
         if (!(expr instanceof This)) {
-            compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-            compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+            }
         } // Else, pas besoin vu qu'on est déjà dans une instance de la classe
 
-        int fieldOffset = vTM.getCurrOffsetOfField(fieldName);
+        int fieldOffset = vTM.getCurrFieldOffset(fieldName);
         DAddr fAddr = new RegisterOffset(fieldOffset, gpReg);
         rM.freeReg(gpReg);
 

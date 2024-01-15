@@ -20,7 +20,7 @@ public abstract class TreeList<TreeType extends Tree> extends Tree {
      * IfThenElse, While, ...). If external iteration is needed, use getList().
      */
 
-    private List<TreeType> list = new ArrayList<TreeType>();
+    private final List<TreeType> list = new ArrayList<TreeType>();
 
     public void add(TreeType i) {
         Validate.notNull(i);
@@ -34,6 +34,7 @@ public abstract class TreeList<TreeType extends Tree> extends Tree {
     public List<TreeType> getList() {
         return Collections.unmodifiableList(list);
     }
+
     public TreeType set(int index, TreeType element) {
         return list.set(index, element);
     }

@@ -25,6 +25,7 @@ public class DeclClass extends AbstractDeclClass {
     private final AbstractIdentifier superClass;
     private final ListDeclField fields;
     private final ListDeclMethod methods;
+
     public DeclClass(AbstractIdentifier name, AbstractIdentifier superClass, ListDeclField fields, ListDeclMethod methods) {
         this.name = name;
         this.superClass = superClass;
@@ -52,9 +53,7 @@ public class DeclClass extends AbstractDeclClass {
         }
         s.print("class ");
         name.decompile(s);
-        if (!superClass.getName().getName().equals("Object")) {
-            s.print(" extends " + superClass.getName().getName());
-        }
+        s.print(" extends " + superClass.getName().getName());
         s.println(" {");
         s.indent();
         fields.decompile(s);
@@ -126,7 +125,7 @@ public class DeclClass extends AbstractDeclClass {
         vTM.addVTable(className, vT);
 
         compiler.addInstruction(
-                new LEA(vTM.getAddrOfClass(superClassName), Register.R0));
+                new LEA(vTM.getClassAddr(superClassName), Register.R0));
         compiler.addInstruction(new STORE(Register.R0, startAddr));
         sM.incrVTableCpt();
 
@@ -164,7 +163,7 @@ public class DeclClass extends AbstractDeclClass {
         rM.saveUsedRegs();
         rM.freeAllRegs();
 
-        fields.codeGenListDeclField(compiler); // TODO (vérif que les champs de cette classe)
+        fields.codeGenListDeclField(compiler);
 
         boolean[] usedRegs = rM.popUsedRegs();
         RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
@@ -181,7 +180,7 @@ public class DeclClass extends AbstractDeclClass {
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         name.prettyPrint(s, prefix, false);
-        superClass.prettyPrint(s,prefix,false);
+        superClass.prettyPrint(s, prefix, false);
         fields.prettyPrint(s, prefix, false);
         methods.prettyPrint(s, prefix, true);
     }

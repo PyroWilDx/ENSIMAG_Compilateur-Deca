@@ -31,7 +31,7 @@ public class MethodDefinition extends ExpDefinition {
         return index;
     }
 
-    private int index;
+    private final int index;
 
     @Override
     public MethodDefinition asMethodDefinition(String errorMessage, Location l)

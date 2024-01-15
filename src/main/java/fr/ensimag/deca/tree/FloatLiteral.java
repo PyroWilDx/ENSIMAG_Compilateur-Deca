@@ -25,7 +25,7 @@ public class FloatLiteral extends AbstractLiteral {
         return value;
     }
 
-    private float value;
+    private final float value;
 
     public FloatLiteral(float value) {
         Validate.isTrue(!Float.isInfinite(value),

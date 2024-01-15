@@ -1,0 +1,55 @@
+// Description :
+//    Test de la fonction equals définie de base dans Object
+//
+// Resultats :
+//    OK1 OK2 OK3 OK4 OK5 OK6
+
+class A {
+    int x;
+}
+
+class B extends A {
+    int y;
+}
+
+{
+    A a = new A();
+    B b = new B();
+
+    if (a.equals(b)) {
+        println("FAIL");
+    } else {
+        print("OK1 ");
+    }
+
+    if (a.equals(a)) {
+        print("OK2 ");
+    } else {
+        println("FAIL");
+    }
+
+    if (b.equals(a)) {
+        println("FAIL");
+    } else {
+        print("OK3 ");
+    }
+
+    if (b.equals(b)) {
+        print("OK4 ");
+    } else {
+        println("FAIL");
+    }
+
+    a = b; // Polymorphisme
+    if (!a.equals(b)) {
+        println("FAIL");
+    } else {
+        print("OK5 ");
+    }
+
+    if (b.equals(a)) {
+        println("OK6");
+    } else {
+        println("FAIL");
+    }
+}

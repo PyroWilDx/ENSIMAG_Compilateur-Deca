@@ -71,7 +71,7 @@ public class Program extends AbstractProgram {
             sM.incrVTableCpt();
 
             DAddr eAddr = sM.getOffsetAddr();
-            vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, eAddr);
+            vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, 1);
             eLabel = LabelUtils.getMethodLabel(
                     LabelUtils.OBJECT_CLASS_NAME, LabelUtils.EQUALS_METHOD_NAME);
             compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
@@ -87,9 +87,15 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new HALT());
         compiler.addComment("End of Main Program");
 
-        compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
-        compiler.addInstruction(1, new BOV(eM.getStackOverflowLabel()));
-        compiler.addInstruction(2, new ADDSP(sM.getAddSp()));
+        if (sM.getMaxStackSize() > 0) {
+            if (sM.getAddSp() > 0) {
+                compiler.addInstruction(0, new ADDSP(sM.getAddSp()));
+            }
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(0, new BOV(eM.getStackOverflowLabel()));
+                compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
+            }
+        }
 
         if (generateObjectClass) {
             compiler.addComment("");

@@ -3,7 +3,6 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.CodeGenUtils;
-import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -175,7 +174,7 @@ public class Identifier extends AbstractIdentifier {
         return name;
     }
 
-    private Symbol name;
+    private final Symbol name;
 
     public Identifier(Symbol name) {
         Validate.notNull(name);

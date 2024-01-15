@@ -8,7 +8,6 @@ import java.util.Stack;
 
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
-import org.antlr.v4.runtime.CommonToken;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.IntStream;
 import org.antlr.v4.runtime.Lexer;
@@ -275,7 +274,7 @@ public abstract class AbstractDecaLexer extends Lexer {
         // Skip first token after switching on another input.
         // You need to use this rather than super as there may be nested include
         // files
-        if (((CommonToken) token).getStartIndex() < 0) {
+        if (token.getStartIndex() < 0) {
             token = this.nextToken();
         }
 

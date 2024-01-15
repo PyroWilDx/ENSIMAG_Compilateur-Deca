@@ -1,8 +1,8 @@
 package fr.ensimag.deca.context;
 
 public class KeyTypeUnaryOp {
-    private String op;
-    private Type type;
+    private final String op;
+    private final Type type;
     public KeyTypeUnaryOp(String op, Type type) {
         this.op = op;
         this.type = type;

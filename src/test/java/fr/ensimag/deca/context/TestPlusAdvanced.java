@@ -8,13 +8,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.mockito.Mockito.*;
 
 import org.mockito.MockitoAnnotations;
-import org.mockito.Spy;
 
 /**
  * Test for the Plus node using mockito, using @Mock and @Before annotations.
@@ -23,10 +21,6 @@ import org.mockito.Spy;
  * @date 01/01/2024
  */
 public class TestPlusAdvanced {
-
-    final Type INT = new IntType(null);
-    final Type FLOAT = new FloatType(null);
-
     @Mock
     AbstractExpr intexpr1 = new IntLiteral(1);
     @Mock
@@ -43,11 +37,10 @@ public class TestPlusAdvanced {
         MockitoAnnotations.initMocks(this);
         compiler = new DecacCompiler(new CompilerOptions(), null);
         envExp = new EnvironmentExp(null);
-        // TODO: Fix des erreurs de l'environnement
-        when(intexpr1.verifyExpr(compiler, envExp, null)).thenReturn(INT);
-        when(intexpr2.verifyExpr(compiler, envExp, null)).thenReturn(INT);
-        when(floatexpr1.verifyExpr(compiler, envExp, null)).thenReturn(FLOAT);
-        when(floatexpr2.verifyExpr(compiler, envExp, null)).thenReturn(FLOAT);
+        when(intexpr1.verifyExpr(compiler, envExp, null)).thenReturn(compiler.environmentType.INT);
+        when(intexpr2.verifyExpr(compiler, envExp, null)).thenReturn(compiler.environmentType.INT);
+        when(floatexpr1.verifyExpr(compiler, envExp, null)).thenReturn(compiler.environmentType.FLOAT);
+        when(floatexpr2.verifyExpr(compiler, envExp, null)).thenReturn(compiler.environmentType.FLOAT);
     }
 
     @Test
@@ -66,8 +59,9 @@ public class TestPlusAdvanced {
         // check the result
         assertTrue(t.verifyExpr(compiler, envExp, null).isFloat());
         // ConvFloat should have been inserted on the right side
-        assertTrue(t.getLeftOperand() instanceof ConvFloat);
-        assertFalse(t.getRightOperand() instanceof ConvFloat);
+        assertInstanceOf(ConvFloat.class, t.getLeftOperand());    // On s'attend que le int soit converti en float avec ConvFloat
+        assertFalse(t.getRightOperand() instanceof ConvFloat);  // On s'attend que le float ne soit pas converti en
+                                                                // ConvFloat car il est déjà en float
         // check that the mocks have been called properly.
         verify(intexpr1).verifyExpr(compiler, envExp, null);
         verify(floatexpr1).verifyExpr(compiler, envExp, null);
@@ -79,7 +73,7 @@ public class TestPlusAdvanced {
         // check the result
         assertTrue(t.verifyExpr(compiler, envExp, null).isFloat());
         // ConvFloat should have been inserted on the right side
-        assertTrue(t.getRightOperand() instanceof ConvFloat);
+        assertInstanceOf(ConvFloat.class, t.getRightOperand());
         assertFalse(t.getLeftOperand() instanceof ConvFloat);
         // check that the mocks have been called properly.
         verify(intexpr1).verifyExpr(compiler, envExp, null);

@@ -8,7 +8,7 @@ import java.io.PrintStream;
  * @date 01/01/2024
  */
 public class IndentPrintStream {
-    private PrintStream stream;
+    private final PrintStream stream;
     public IndentPrintStream(PrintStream stream) {
         this.stream = stream;
     }

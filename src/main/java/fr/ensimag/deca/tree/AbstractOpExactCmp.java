@@ -6,7 +6,6 @@ import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 /**
  * @author gl47

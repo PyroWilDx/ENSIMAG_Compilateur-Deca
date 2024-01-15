@@ -22,7 +22,7 @@ public class IntLiteral extends AbstractLiteral {
         return value;
     }
 
-    private int value;
+    private final int value;
 
     public IntLiteral(int value) {
         this.value = value;

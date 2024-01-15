@@ -3,8 +3,6 @@ package fr.ensimag.deca.codegen;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
 public class CodeGenUtils {
@@ -30,7 +28,7 @@ public class CodeGenUtils {
                 // Pas besoin vu qu'on est déjà dans une instance de la classe
 //                compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
 //                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
-                int fieldOffset = vTM.getCurrOffsetOfField(identName);
+                int fieldOffset = vTM.getCurrFieldOffset(identName);
                 iAddr = new RegisterOffset(fieldOffset, gpReg);
                 rM.freeReg(gpReg);
             }

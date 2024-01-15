@@ -13,7 +13,7 @@ public class LabelOperand extends DVal {
         return label;
     }
 
-    private Label label;
+    private final Label label;
     
     public LabelOperand(Label label) {
         super();
