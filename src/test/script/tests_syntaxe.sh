@@ -11,6 +11,10 @@
 # utilisant la commande unix "diff".
 #
 
+RED='\033[0;31m';
+GREEN='\033[0;32m';
+NC='\033[0m'; # No Color
+
 cd "$(dirname "$0")"/../../.. || exit 1
 
 PATH=./src/test/script/launchers:"$PATH"
@@ -19,7 +23,7 @@ test_synt_invalide () {
     # $1 = premier argument.
     if test_synt "$1" 2>&1 | grep -q -e "$1:[0-9][0-9]*:"
     then
-        echo "Echec attendu pour test_synt sur $1."
+        echo "${GREEN}Echec attendu pour test_synt sur $1.${NC}"
     else
         echo "KO -- Succes inattendu de test_synt sur $1. ------"
         exit 1
@@ -37,7 +41,7 @@ test_synt_valide () {
     else
       if diff -q "${1%.deca}_resultatCorrect.res" "${1%.deca}".res
       then
-        echo "Succes attendu et arbres compatibles de test_synt sur $1"
+        echo "${GREEN}Succes attendu et arbres compatibles de test_synt sur $1${NC}"
       else
         echo "KO -- arbre incompatible,pourtant Succes attendu de test_synt sur $1"
       fi
