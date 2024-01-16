@@ -1,10 +1,18 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.LabelUtils;
+import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.codegen.VTable;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.SymbolTable;
+import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.LabelOperand;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.STORE;
 
 public abstract class AbstractDeclMethod extends Tree {
 
@@ -12,18 +20,52 @@ public abstract class AbstractDeclMethod extends Tree {
 
     public abstract int getMethodIndex();
 
-    public abstract void codeGenVTable(DecacCompiler compiler, VTable vTable, int methodOffset);
+    protected String className = null;
+    protected Label mStartLabel = null;
+    protected Label mEndLabel = null;
+
+    public void codeGenVTable(DecacCompiler compiler, VTable vTable, int methodOffset) {
+        StackManager sM = compiler.getStackManager();
+
+        className = vTable.getClassName();
+        String methodName = getName().getName();
+
+        mStartLabel = LabelUtils.getMethodLabel(className, methodName);
+        mEndLabel = LabelUtils.getMethodEndLabel(className, methodName);
+        compiler.addInstruction(new LOAD(new LabelOperand(mStartLabel), Register.R0));
+
+        DAddr mAddr = sM.getOffsetAddr();
+        compiler.addInstruction(new STORE(Register.R0, mAddr));
+        sM.incrVTableCpt();
+
+        vTable.addMethod(methodName, methodOffset);
+
+        String paramName;
+        int currParamOffset = -3;
+        for (AbstractParam param : getParams().getList()) {
+            paramName = param.getName().getName();
+            vTable.addParamToMethod(methodName, paramName, currParamOffset);
+            currParamOffset--;
+        }
+        // Done
+    }
+
     protected boolean override = false;
     protected int methodIndex;
+
     public abstract void codeGenDeclMethod(DecacCompiler compiler);
+
     public abstract SymbolTable.Symbol getName();
+
     public abstract AbstractIdentifier getTypeIdent();
+
     public abstract AbstractIdentifier getNameIdent();
+
     public abstract ListDeclParam getParams();
 
     public EnvironmentExp verifyDeclMethodMembers(DecacCompiler compiler,
-                                                           SymbolTable.Symbol superClass,
-                                                           int index) throws ContextualError {
+                                                  SymbolTable.Symbol superClass,
+                                                  int index) throws ContextualError {
         int realIndex = index;
         Type t = this.getTypeIdent().verifyType(compiler);
         Signature sig = this.getParams().verifyListDeclParamMembers(compiler);
