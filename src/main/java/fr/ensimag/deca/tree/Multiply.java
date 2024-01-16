@@ -36,7 +36,7 @@ public class Multiply extends AbstractOpArith {
                 }
             } else {
                 Label startLabel = new Label("MulStart" + cM.getUniqueId());
-                Label set0Label = new Label("Mul0" + cM.getUniqueId());
+                Label set0Label = new Label("MulByZero" + cM.getUniqueId());
                 Label endLabel = new Label("MulEnd" + cM.getUniqueId());
 
                 GPRegister valGpReg = (GPRegister) valReg;
