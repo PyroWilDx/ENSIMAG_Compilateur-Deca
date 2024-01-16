@@ -61,7 +61,7 @@ public class FieldSelection extends AbstractLValue {
     protected void codeGenInst(DecacCompiler compiler) {
         CondManager cM = compiler.getCondManager();
         if (cM.isDoingCond()) {
-            fieldIdent.isNotInFalse = isNotInFalse;
+            fieldIdent.isInTrue = isInTrue;
             fieldIdent.branchLabel = branchLabel;
         }
 

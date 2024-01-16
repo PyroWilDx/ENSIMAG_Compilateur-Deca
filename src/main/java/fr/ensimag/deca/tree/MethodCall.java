@@ -99,10 +99,10 @@ public class MethodCall extends AbstractMethodCall {
         if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             rM.getLastReg(); // On enlève R0
             compiler.addInstruction(new CMP(0, Register.R0));
-            if (isNotInFalse) compiler.addInstruction(new BNE(branchLabel));
+            if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
             else compiler.addInstruction(new BEQ(branchLabel));
         } else {
-            if (getType().isBoolean() && !isNotInFalse) {
+            if (getType().isBoolean() && !isInTrue) {
                 rM.getLastReg(); // On enlève R0
                 gpReg = rM.getFreeReg();
                 compiler.addInstruction(new CMP(0, Register.R0));

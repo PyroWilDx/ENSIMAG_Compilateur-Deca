@@ -1,0 +1,14 @@
+{
+    int a = 1;
+    int b = 2;
+    if (a >= b) {
+        println("test");
+    } else {
+        println("nul");
+    }
+    if (!(a < b)) {
+        println("test");
+    } else {
+        println("nul");
+    }
+}

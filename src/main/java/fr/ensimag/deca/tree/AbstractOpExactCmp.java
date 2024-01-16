@@ -26,10 +26,10 @@ public abstract class AbstractOpExactCmp extends AbstractOpCmp {
                 getRightOperand() instanceof BooleanLiteral) {
             BooleanLiteral lOperand = (BooleanLiteral) getLeftOperand();
             BooleanLiteral rOperand = (BooleanLiteral) getRightOperand();
-            boolean caseTrue1 = (doEq() && lOperand.getValue() == rOperand.getValue() && isNotInFalse) ||
-                    (!doEq() && lOperand.getValue() != rOperand.getValue() && isNotInFalse);
-            boolean caseTrue2 = (doEq() && lOperand.getValue() != rOperand.getValue() && !isNotInFalse) ||
-                    (!doEq() && lOperand.getValue() == rOperand.getValue() && !isNotInFalse);
+            boolean caseTrue1 = (doEq() && lOperand.getValue() == rOperand.getValue() && isInTrue) ||
+                    (!doEq() && lOperand.getValue() != rOperand.getValue() && isInTrue);
+            boolean caseTrue2 = (doEq() && lOperand.getValue() != rOperand.getValue() && !isInTrue) ||
+                    (!doEq() && lOperand.getValue() == rOperand.getValue() && !isInTrue);
             if (caseTrue1 || caseTrue2) {
                 if (cM.isDoingCond()) {
                     compiler.addInstruction(new BRA(branchLabel));
@@ -43,19 +43,19 @@ public abstract class AbstractOpExactCmp extends AbstractOpCmp {
             }
         } else if (getLeftOperand() instanceof BooleanLiteral) {
             BooleanLiteral lOperand = (BooleanLiteral) getLeftOperand();
-            getRightOperand().isNotInFalse = isNotInFalse;
+            getRightOperand().isInTrue = isInTrue;
             if ((doEq() && !lOperand.getValue()) ||
                     (!doEq() && lOperand.getValue())) {
-                getRightOperand().isNotInFalse = !getRightOperand().isNotInFalse;
+                getRightOperand().isInTrue = !getRightOperand().isInTrue;
             }
             getRightOperand().branchLabel = branchLabel;
             getRightOperand().codeGenInst(compiler);
         } else if (getRightOperand() instanceof BooleanLiteral) {
             BooleanLiteral rOperand = (BooleanLiteral) getRightOperand();
-            getLeftOperand().isNotInFalse = isNotInFalse;
+            getLeftOperand().isInTrue = isInTrue;
             if ((doEq() && !rOperand.getValue()) ||
                     (!doEq() && rOperand.getValue())) {
-                getLeftOperand().isNotInFalse = !getLeftOperand().isNotInFalse;
+                getLeftOperand().isInTrue = !getLeftOperand().isInTrue;
             }
             getLeftOperand().branchLabel = branchLabel;
             getLeftOperand().codeGenInst(compiler);

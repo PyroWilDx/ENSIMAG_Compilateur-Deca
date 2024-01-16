@@ -19,6 +19,11 @@ public class LowerOrEqual extends AbstractOpIneq {
     }
 
     @Override
+    protected boolean doAdd() {
+        return true;
+    }
+
+    @Override
     protected Instruction getBranchInvOpCmpInst(Label bLabel) {
         return new BGT(bLabel);
     }

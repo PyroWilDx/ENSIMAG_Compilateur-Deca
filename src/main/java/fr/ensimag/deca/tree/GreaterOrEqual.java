@@ -22,11 +22,6 @@ public class GreaterOrEqual extends AbstractOpIneq {
     }
 
     @Override
-    protected boolean doSub() {
-        return true;
-    }
-
-    @Override
     protected Instruction getBranchInvOpCmpInst(Label bLabel) {
         return new BLT(bLabel);
     }

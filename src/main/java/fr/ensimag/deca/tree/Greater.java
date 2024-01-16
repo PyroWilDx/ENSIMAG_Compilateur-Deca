@@ -20,6 +20,11 @@ public class Greater extends AbstractOpIneq {
     }
 
     @Override
+    protected boolean doAdd() {
+        return true;
+    }
+
+    @Override
     protected Instruction getBranchInvOpCmpInst(Label bLabel) {
         return new BLE(bLabel);
     }

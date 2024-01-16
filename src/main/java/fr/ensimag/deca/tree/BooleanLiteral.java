@@ -43,7 +43,7 @@ public class BooleanLiteral extends AbstractLiteral {
         CondManager cM = compiler.getCondManager();
 
         if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
-            if ((value && isNotInFalse) || (!value && !isNotInFalse)) {
+            if ((value && isInTrue) || (!value && !isInTrue)) {
                 compiler.addInstruction(new BRA(branchLabel));
             }
         } else {

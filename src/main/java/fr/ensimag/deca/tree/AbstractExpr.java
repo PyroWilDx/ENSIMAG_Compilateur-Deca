@@ -164,7 +164,7 @@ public abstract class AbstractExpr extends AbstractInst {
         // Done
     }
 
-    protected boolean isNotInFalse = true;
+    protected boolean isInTrue = true;
     protected Label branchLabel = null;
 
     @Override

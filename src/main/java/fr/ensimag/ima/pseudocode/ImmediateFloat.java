@@ -16,8 +16,8 @@ public class ImmediateFloat extends DVal {
         this.value = value;
     }
 
-    public void decrValue() {
-        value--;
+    public void addValue(int value) {
+        this.value += value;
     }
 
     public int getIntValue() {

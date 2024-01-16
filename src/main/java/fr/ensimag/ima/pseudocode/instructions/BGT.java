@@ -16,6 +16,6 @@ public class BGT extends BranchInstruction {
 
     @Override
     public String getGameBoyAsm() {
-        return "jp C,";
+        return "jp !C,";
     }
 }

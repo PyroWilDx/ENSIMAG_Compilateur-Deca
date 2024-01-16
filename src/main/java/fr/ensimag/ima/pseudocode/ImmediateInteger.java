@@ -16,12 +16,12 @@ public class ImmediateInteger extends DVal {
         this.value = value;
     }
 
-    public void decrValue() {
-        value--;
-    }
-
     public void oppValue() {
         value = -value;
+    }
+
+    public void addValue(int value) {
+        this.value += value;
     }
 
     public int getValue() {

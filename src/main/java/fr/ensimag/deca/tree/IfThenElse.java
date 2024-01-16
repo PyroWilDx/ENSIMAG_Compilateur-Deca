@@ -52,7 +52,7 @@ public class IfThenElse extends AbstractInst {
         Label startElseLabel = cM.getUniqueLabel();
         Label endIfThenElseLabel = cM.getUniqueLabel();
 
-        condition.isNotInFalse = false;
+        condition.isInTrue = false;
         condition.branchLabel = startElseLabel;
         cM.doCond();
         condition.codeGenInst(compiler);

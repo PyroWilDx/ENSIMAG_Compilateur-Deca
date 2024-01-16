@@ -18,16 +18,16 @@ public class And extends AbstractOpBool {
     public Label setOperandCondVals(CondManager cM) {
         Label fastEndLabel = null;
 
-        if (isNotInFalse) {
-            getLeftOperand().isNotInFalse = false;
+        if (isInTrue) {
+            getLeftOperand().isInTrue = false;
             fastEndLabel = cM.getUniqueLabel();
             getLeftOperand().branchLabel = fastEndLabel;
-            getRightOperand().isNotInFalse = true;
+            getRightOperand().isInTrue = true;
             getRightOperand().branchLabel = branchLabel;
         } else {
-            getLeftOperand().isNotInFalse = false;
+            getLeftOperand().isInTrue = false;
             getLeftOperand().branchLabel = branchLabel;
-            getRightOperand().isNotInFalse = false;
+            getRightOperand().isInTrue = false;
             getRightOperand().branchLabel = branchLabel;
         }
 
