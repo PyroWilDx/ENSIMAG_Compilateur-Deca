@@ -48,6 +48,21 @@ public class DeclMethodAsm extends AbstractDeclMethod {
         return null;
     }
 
+    @Override
+    public AbstractIdentifier getTypeIdent() {
+        return this.type;
+    }
+
+    @Override
+    public AbstractIdentifier getNameIdent() {
+        return name;
+    }
+
+    @Override
+    public ListDeclParam getParams() {
+        return params;
+    }
+
     public EnvironmentExp verifyDeclMethodMembers(DecacCompiler compiler,
                                                   SymbolTable.Symbol superClass,
                                                   int index) {
