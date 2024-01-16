@@ -45,11 +45,11 @@ public class Divide extends AbstractOpArith {
         } else {
             if (getLeftOperand().getType().isInt() && getRightOperand().getType().isInt()) {
                 compiler.addInstruction(new QUO(valReg, saveReg));
+                if (compiler.getCompilerOptions().doCheck()) {
+                    compiler.addInstruction(new BOV(eM.getDivBy0Label()));
+                }
             } else {
                 compiler.addInstruction(new DIV(valReg, saveReg));
-            }
-            if (compiler.getCompilerOptions().doCheck()) {
-                compiler.addInstruction(new BOV(eM.getDivBy0Label()));
             }
         }
         // Done

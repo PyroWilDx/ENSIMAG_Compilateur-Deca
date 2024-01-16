@@ -36,7 +36,7 @@ public class LOAD extends BinaryInstructionDValToReg {
             String gbAsm = "ld hl, SP";
             gbAsm += "\n\tadd hl, " + GameBoy.getImmToken() +
                     ((RegisterOffset) getOperand1()).getOffset();
-            gbAsm += "\n\tld " + getOperand2() + ", (hl)";
+            gbAsm += "\n\tld " + getOperand2() + ", [hl]";
             return gbAsm;
         }
         return "ld";

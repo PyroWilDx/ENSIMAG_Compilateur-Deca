@@ -10,15 +10,17 @@ import java.util.LinkedList;
 public class RegManager {
     public static final int MAX_REG = 16;
 
+    private static int startReg;
     public final int nRegs;
     private final LinkedList<GPRegister> freeRegs;
     private final LinkedList<boolean[]> usedRegsStack;
     private DVal lastImm;
 
     public RegManager(int nRegs) {
+        startReg = (GameBoy.doCp) ? 1 : 2;
         this.nRegs = nRegs;
         this.freeRegs = new LinkedList<>();
-        for (int i = 2; i < nRegs; i++) {
+        for (int i = startReg; i < nRegs; i++) {
             freeRegs.addLast(Register.getR(i));
         }
         this.usedRegsStack = new LinkedList<>();
@@ -28,7 +30,7 @@ public class RegManager {
     public GPRegister getFreeReg() {
         if (!freeRegs.isEmpty()) {
             GPRegister freeReg = freeRegs.removeFirst();
-            if (!usedRegsStack.isEmpty() && freeReg.getNumber() > 1) {
+            if (!usedRegsStack.isEmpty() && freeReg.getNumber() > (startReg - 1)) {
                 boolean[] usedRegs = usedRegsStack.getFirst();
                 usedRegs[freeReg.getNumber()] = true;
             }
@@ -42,7 +44,7 @@ public class RegManager {
     }
 
     public void freeReg(GPRegister gpReg) {
-        if (gpReg != null && gpReg.getNumber() > 1) {
+        if (gpReg != null && gpReg.getNumber() > (startReg - 1)) {
             freeRegs.addFirst(gpReg);
         }
     }
@@ -55,7 +57,7 @@ public class RegManager {
 
     public void freeAllRegs() {
         freeRegs.clear();
-        for (int i = 2; i < nRegs; i++) {
+        for (int i = startReg; i < nRegs; i++) {
             freeRegs.addLast(Register.getR(i));
         }
     }
@@ -105,7 +107,7 @@ public class RegManager {
 
         LinkedList<AbstractLine> startLines = new LinkedList<>();
         int usedCount = 0;
-        for (int i = 2; i < usedRegs.length; i++) {
+        for (int i = startReg; i < usedRegs.length; i++) {
             if (usedRegs[i]) {
                 startLines.addLast(new Line(new PUSH(Register.getR(i))));
                 usedCount++;
@@ -127,7 +129,7 @@ public class RegManager {
     }
 
     public static void addRestoreRegsInsts(DecacCompiler compiler, boolean[] usedRegs) {
-        for (int i = usedRegs.length - 1; i > 1; i--) {
+        for (int i = usedRegs.length - 1; i > (startReg - 1); i--) {
             if (usedRegs[i]) {
                 compiler.addInstruction(new POP(Register.getR(i)));
             }

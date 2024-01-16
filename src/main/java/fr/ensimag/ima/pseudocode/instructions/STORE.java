@@ -27,7 +27,7 @@ public class STORE extends BinaryInstruction {
         String gbAsm = "ld hl, SP";
         gbAsm += "\n\tadd hl, " + GameBoy.getImmToken() +
                 ((RegisterOffset) getOperand2()).getOffset();
-        gbAsm += "\n\tld (hl), " + getOperand1();
+        gbAsm += "\n\tld [hl], " + getOperand1();
         return gbAsm;
     }
 }

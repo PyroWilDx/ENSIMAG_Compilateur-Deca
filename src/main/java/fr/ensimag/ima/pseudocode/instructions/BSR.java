@@ -1,9 +1,8 @@
 package fr.ensimag.ima.pseudocode.instructions;
 
-import fr.ensimag.ima.pseudocode.DVal;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.LabelOperand;
-import fr.ensimag.ima.pseudocode.UnaryInstruction;
+import fr.ensimag.ima.pseudocode.*;
+
+import java.io.PrintStream;
 
 /**
  * @author Ensimag

@@ -11,6 +11,7 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -87,6 +88,20 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         RegManager rM = compiler.getRegManager();
         ErrorManager eM = compiler.getErrorManager();
         StackManager sM = compiler.getStackManager();
+
+        if ((getLeftOperand() instanceof FloatLiteral) && // Juste pour test rapide haha
+            getRightOperand() instanceof FloatLiteral) {
+            if (this instanceof Divide) {
+                FloatLiteral fLL = (FloatLiteral) getLeftOperand();
+                FloatLiteral fLR = (FloatLiteral) getRightOperand();
+                if (fLR.getValue() != 0.f) {
+                    GPRegister gpReg = rM.getFreeReg();
+                    compiler.addInstruction(new LOAD(fLL.getValue() / fLR.getValue(), gpReg));
+                    rM.freeReg(gpReg);
+                    return;
+                }
+            }
+        }
 
         getLeftOperand().codeGenInst(compiler);
         GPRegister regLeft = rM.getLastRegOrImm(compiler);

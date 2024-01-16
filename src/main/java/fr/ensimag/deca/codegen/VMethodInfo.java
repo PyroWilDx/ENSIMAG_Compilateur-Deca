@@ -1,5 +1,7 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.ima.pseudocode.Label;
+
 import java.util.HashMap;
 
 public class VMethodInfo {
@@ -26,6 +28,10 @@ public class VMethodInfo {
 
     public int getMethodOffset() {
         return methodOffset;
+    }
+
+    public Label getMethodLabel() {
+        return LabelUtils.getMethodLabel(className, methodName);
     }
 
     public void addParam(String paramName, int paramOffset) {

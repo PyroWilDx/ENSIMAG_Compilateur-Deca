@@ -376,15 +376,18 @@ def doTests():
         prettyPrint("TEST DE L'ÉTAPE C (PERF)")
 
     doVerify("codegen/perf/provided/syracuse42.deca",
+             decacOptions="-n",
              expectedResult=b"8\n",
              imaOptions="-s")
 
     doVerify("codegen/perf/provided/ln2.deca",
              expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n",
+             decacOptions="-n",
              imaOptions="-s")
 
     doVerify("codegen/perf/provided/ln2_fct.deca",
              expectedResult=b"6.93148e-01 = 0x1.62e448p-1\n",
+             decacOptions="-n",
              imaOptions="-s")
 
     return 0

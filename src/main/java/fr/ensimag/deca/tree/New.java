@@ -7,6 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
@@ -44,9 +45,15 @@ public class New extends AbstractExpr {
         int fieldsCount = vTM.getCurrFieldCountOfClass();
 
         GPRegister gpReg = rM.getFreeReg();
-        compiler.addInstruction(new NEW(fieldsCount + 1, gpReg));
-        if (compiler.getCompilerOptions().doCheck()) {
-            if (!GameBoy.doCp) {
+        if (GameBoy.doCp) {
+            StackManager sM = compiler.getStackManager();
+
+            DAddr objAddr = sM.getOffsetAddr();
+            compiler.addInstruction(new LOAD(objAddr, gpReg));
+            sM.incrStackSizeByValue(fieldsCount + 1);
+        } else {
+            compiler.addInstruction(new NEW(fieldsCount + 1, gpReg));
+            if (compiler.getCompilerOptions().doCheck()) {
                 compiler.addInstruction(new BOV(eM.getHeapOverflowLabel()));
             }
         }
@@ -54,9 +61,9 @@ public class New extends AbstractExpr {
         compiler.addInstruction(
                 new STORE(Register.R0, new RegisterOffset(0, gpReg)));
         compiler.addInstruction(new PUSH(gpReg));
-        rM.freeReg(gpReg);
         compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(vTM.getCurrClassName())));
         compiler.addInstruction(new POP(gpReg));
+        rM.freeReg(gpReg);
 
         vTM.exitClass();
         // Done
