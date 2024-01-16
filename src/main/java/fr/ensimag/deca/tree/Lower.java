@@ -33,8 +33,7 @@ public class Lower extends AbstractOpIneq {
     protected Instruction getInvOpCmpInst(GPRegister gpReg) {
         return new SGE(gpReg);
     }
-
-
+    
     @Override
     protected String getOperatorName() {
         return "<";

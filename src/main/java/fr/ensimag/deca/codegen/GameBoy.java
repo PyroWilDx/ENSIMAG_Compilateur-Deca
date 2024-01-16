@@ -6,7 +6,7 @@ public class GameBoy {
     public static boolean doCp = false;
 
     public static String getImmToken() {
-        return (doCp) ? "$" : "#";
+        return (doCp) ? "" : "#";
     }
 
 }
