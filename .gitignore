@@ -18,6 +18,7 @@ docker/ima_sources/
 *.tokens
 *.interp
 *.ass
+*.asm
 *.res
 !*resultatCorrect.res
 

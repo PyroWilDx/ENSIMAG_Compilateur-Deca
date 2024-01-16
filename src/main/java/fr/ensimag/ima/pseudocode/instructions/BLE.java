@@ -11,7 +11,11 @@ import fr.ensimag.ima.pseudocode.Label;
 public class BLE extends BranchInstruction {
 
     public BLE(Label op) {
-        super(op);
+        super(op);;
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return "jp !C,";
+    }
 }

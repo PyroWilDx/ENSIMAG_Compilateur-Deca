@@ -14,4 +14,8 @@ public class BRA extends BranchInstruction {
         super(op);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return "jp";
+    }
 }

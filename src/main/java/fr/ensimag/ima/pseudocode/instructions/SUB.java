@@ -11,4 +11,12 @@ public class SUB extends BinaryInstructionDValToReg {
         super(op1, op2);
     }
 
+    public SUB(int i, GPRegister op2) {
+        super(new ImmediateInteger(i), op2);
+    }
+
+    @Override
+    public String getGameBoyAsm() {
+        return "sub";
+    }
 }

@@ -20,14 +20,23 @@ public abstract class Instruction {
         displayOperands(s);
     }
 
-    public String getNameGameBoy() {
+//    protected int nbGbAsmInst = 1;
+
+    public String getGameBoyAsm() { // TODO (a enlever et mettre en abstract)
         return getName();
     }
+
+//    public abstract String getGameBoyAsm();
 
     public abstract void displayOperandsGameBoy(PrintStream s);
 
     public void displayGameBoy(PrintStream s) {
-        s.print(getName());
+//        while (nbGbAsmInst > 0) {
+        String gbAsmInstName = getGameBoyAsm();
+        assert (gbAsmInstName != null); // Une opération qui ne devrait pas être utilisée renvoie null
+        s.print(gbAsmInstName);
         displayOperandsGameBoy(s);
+//            nbGbAsmInst--;
+//        }
     }
 }

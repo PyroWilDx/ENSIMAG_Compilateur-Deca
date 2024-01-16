@@ -14,4 +14,8 @@ public class BNE extends BranchInstruction {
         super(op);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return "jp !Z,";
+    }
 }
