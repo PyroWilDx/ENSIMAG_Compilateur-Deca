@@ -2,6 +2,7 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Label;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -59,6 +60,9 @@ public class VTable {
         return classMethods.get(methodName).getMethodOffset();
     }
 
+    public Label getMethodLabel(String methodName) {
+        return classMethods.get(methodName).getMethodLabel();
+    }
     public void addParamToMethod(String methodName, String paramName,
                                  int paramOffset) {
         classMethods.get(methodName).addParam(paramName, paramOffset);

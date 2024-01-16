@@ -1,6 +1,7 @@
 package fr.ensimag.deca.codegen;
 
 import fr.ensimag.ima.pseudocode.DAddr;
+import fr.ensimag.ima.pseudocode.Label;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -40,6 +41,10 @@ public class VTableManager {
 
     public int getMethodOffset(String className, String methodName) {
         return vTables.get(className).getMethodOffset(methodName);
+    }
+
+    public Label getMethodLabel(String className, String methodName) {
+        return vTables.get(className).getMethodLabel(methodName);
     }
 
     public Integer getParamOffsetOfMethod(String className, String methodName, String paramName) {
@@ -92,6 +97,10 @@ public class VTableManager {
 
     public int getCurrMethodOffset() {
         return getMethodOffset(getCurrClassName(), getCurrMethodName());
+    }
+
+    public Label getCurrMethodLabel() {
+        return getMethodLabel(getCurrClassName(), getCurrMethodName());
     }
 
     public Integer getCurrParamOffsetOfMethod(String paramName) {

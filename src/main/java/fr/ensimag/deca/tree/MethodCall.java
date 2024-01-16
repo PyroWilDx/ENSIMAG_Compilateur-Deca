@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.CondManager;
-import fr.ensimag.deca.codegen.ErrorManager;
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.deca.codegen.VTableManager;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -21,11 +18,12 @@ public class MethodCall extends AbstractMethodCall {
     private final AbstractIdentifier methodIdent;
     private final RValueStar rValueStar;
 
-    public MethodCall(AbstractExpr expr,AbstractIdentifier methodIdent,RValueStar rValueStar){
+    public MethodCall(AbstractExpr expr, AbstractIdentifier methodIdent, RValueStar rValueStar) {
         this.expr = expr;
         this.methodIdent = methodIdent;
         this.rValueStar = rValueStar;
     }
+
     public Type verifyMethodCall(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         Type type = this.expr.verifyExpr(compiler, localEnv, currentClass);
         TypeDefinition definition = compiler.environmentType.get(type.getName());
@@ -53,6 +51,7 @@ public class MethodCall extends AbstractMethodCall {
     public void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         ErrorManager eM = compiler.getErrorManager();
+        StackManager sM = compiler.getStackManager();
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
 
@@ -61,8 +60,10 @@ public class MethodCall extends AbstractMethodCall {
         String methodName = methodIdent.getName().getName();
         vTM.enterMethod(methodName);
 
-        int nbParam = vTM.getCurrParamCountOfMethod() + 1;
-        compiler.addInstruction(new ADDSP(nbParam));
+        int addSp = vTM.getCurrParamCountOfMethod() + 1;
+        if (GameBoy.doCp) addSp += sM.getAddSp();
+
+        compiler.addInstruction(new ADDSP(addSp));
 
         expr.codeGenInst(compiler);
 
@@ -87,10 +88,19 @@ public class MethodCall extends AbstractMethodCall {
             compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
         }
         compiler.addInstruction(new LOAD(new RegisterOffset(0, gpReg), gpReg));
-        compiler.addInstruction(new BSR(new RegisterOffset(vTM.getCurrMethodOffset(), gpReg)));
+
+        if (GameBoy.doCp) {
+            // TODO (cf BSR page 109 pour polymorphisme)
+            compiler.addInstruction(new ADD(vTM.getCurrMethodOffset(), gpReg));
+            compiler.addInstruction(new BSR(vTM.getCurrMethodLabel()));
+        } else {
+            compiler.addInstruction(
+                    new BSR(new RegisterOffset(vTM.getCurrMethodOffset(), gpReg)));
+        }
+
         rM.freeReg(gpReg);
 
-        compiler.addInstruction(new SUBSP(nbParam));
+        compiler.addInstruction(new SUBSP(addSp));
 
         if (!getType().isVoid()) {
             rM.freeRegForce(Register.R0);
@@ -129,7 +139,7 @@ public class MethodCall extends AbstractMethodCall {
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         expr.prettyPrint(s, prefix, false);
         methodIdent.prettyPrint(s, prefix, false);
-        rValueStar.prettyPrint(s,prefix,true);
+        rValueStar.prettyPrint(s, prefix, true);
     }
 
     @Override
