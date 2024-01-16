@@ -22,4 +22,10 @@ Class Events {
         this.previoustEvent = event;
     }
 
-        }
+    public int Execute(){
+        // je c pas ce que doit faire chaque evenement
+        return 1;
+    }
+
+
+}
