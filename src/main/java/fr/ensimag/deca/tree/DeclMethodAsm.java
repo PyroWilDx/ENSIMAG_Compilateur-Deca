@@ -60,7 +60,9 @@ public class DeclMethodAsm extends AbstractDeclMethod {
 
     public void verifyDeclMethodBody(DecacCompiler compiler,
                                      EnvironmentExp localEnv,
-                                     ClassDefinition currentClass) {
+                                     ClassDefinition currentClass) throws ContextualError{
+        this.type.verifyType(compiler);
+        this.params.verifyListDeclParamBody(compiler);
         // TODO faut pas faire un truc là ? Je pense pas
     }
 
