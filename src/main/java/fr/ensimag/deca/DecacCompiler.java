@@ -63,6 +63,7 @@ public class DecacCompiler {
         this.stackManager = null;
         this.condManager = new CondManager();
         this.vTableManager = new VTableManager();
+        this.gameBoyManager = new GameBoyManager();
     }
 
     /**
@@ -172,7 +173,7 @@ public class DecacCompiler {
         String destFile;
         if (extensionIndex != -1) destFile = sourceFile.substring(0, extensionIndex);
         else destFile = sourceFile;
-        if (GameBoy.doCp) destFile += ".asm";
+        if (GameBoyManager.doCp) destFile += ".asm";
         else destFile += ".ass";
         // Done
         PrintStream err = System.err;
@@ -208,6 +209,7 @@ public class DecacCompiler {
     private StackManager stackManager;
     private final CondManager condManager;
     private final VTableManager vTableManager;
+    private final GameBoyManager gameBoyManager;
 
     /**
      * Internal function that does the job of compiling (i.e. calling lexer,
@@ -320,6 +322,10 @@ public class DecacCompiler {
 
     public VTableManager getVTableManager() {
         return vTableManager;
+    }
+
+    public GameBoyManager getGameBoyManager() {
+        return gameBoyManager;
     }
 
 }

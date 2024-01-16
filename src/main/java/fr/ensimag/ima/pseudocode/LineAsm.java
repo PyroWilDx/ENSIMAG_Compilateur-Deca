@@ -12,7 +12,6 @@ public class LineAsm extends AbstractLine {
 
     @Override
     void display(PrintStream s) {
-        s.print(asm);
-        s.println();
+        s.println(asm);
     }
 }

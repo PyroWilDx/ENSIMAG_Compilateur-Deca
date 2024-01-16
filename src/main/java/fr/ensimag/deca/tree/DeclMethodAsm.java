@@ -35,7 +35,7 @@ public class DeclMethodAsm extends AbstractDeclMethod {
 
     public void codeGenDeclMethod(DecacCompiler compiler) {
         compiler.addLabel(mStartLabel);
-        compiler.add(new LineAsm(code));
+        compiler.add(new LineAsm(code.substring(1, code.length() - 1)));
     }
 
     public SymbolTable.Symbol getName() {

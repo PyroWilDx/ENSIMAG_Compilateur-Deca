@@ -57,6 +57,11 @@ public class Program extends AbstractProgram {
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
 
+        if (GameBoyManager.doCp) {
+            GameBoyManager.loadAddr0(compiler, "SP");
+            GameBoyManager.loadAddr0(compiler, "hl");
+        }
+
         boolean generateObjectClass = !classes.getList().isEmpty();
 
         Label eLabel = null;
@@ -87,7 +92,7 @@ public class Program extends AbstractProgram {
         compiler.addInstruction(new HALT());
         compiler.addComment("End of Main Program");
 
-        if (!GameBoy.doCp) {
+        if (!GameBoyManager.doCp) {
             if (sM.getMaxStackSize() > 0) {
                 if (sM.getAddSp() > 0) {
                     compiler.addInstruction(0, new ADDSP(sM.getAddSp()));

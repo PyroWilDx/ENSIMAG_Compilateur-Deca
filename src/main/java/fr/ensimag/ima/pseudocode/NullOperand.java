@@ -1,6 +1,6 @@
 package fr.ensimag.ima.pseudocode;
 
-import fr.ensimag.deca.codegen.GameBoy;
+import fr.ensimag.deca.codegen.GameBoyManager;
 
 /**
  * The #null operand.
@@ -12,8 +12,8 @@ public class NullOperand extends DVal {
 
     @Override
     public String toString() {
-        if (GameBoy.doCp) return GameBoy.getImmToken() + "0";
-        else return GameBoy.getImmToken() + "null";
+        if (GameBoyManager.doCp) return GameBoyManager.getImmToken() + "0";
+        else return GameBoyManager.getImmToken() + "null";
     }
 
 }

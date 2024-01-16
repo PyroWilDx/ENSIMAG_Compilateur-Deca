@@ -17,7 +17,8 @@ public class RegManager {
     private DVal lastImm;
 
     public RegManager(int nRegs) {
-        startReg = (GameBoy.doCp) ? 1 : 2;
+//        startReg = (GameBoyManager.doCp) ? 1 : 2;
+        startReg = 2;
         this.nRegs = nRegs;
         this.freeRegs = new LinkedList<>();
         for (int i = startReg; i < nRegs; i++) {
@@ -119,7 +120,7 @@ public class RegManager {
                 startLines.addFirst(new Line(new ADDSP(sM.getAddSp() + usedCount)));
             }
             if (compiler.getCompilerOptions().doCheck()) {
-                if (!GameBoy.doCp) {
+                if (!GameBoyManager.doCp) {
                     startLines.addFirst(new Line(new BOV(eM.getStackOverflowLabel())));
                     startLines.addFirst(new Line(new TSTO(maxStackSize)));
                 }

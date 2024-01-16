@@ -61,7 +61,7 @@ public class MethodCall extends AbstractMethodCall {
         vTM.enterMethod(methodName);
 
         int addSp = vTM.getCurrParamCountOfMethod() + 1;
-        if (GameBoy.doCp) addSp += sM.getAddSp();
+        if (GameBoyManager.doCp) addSp += sM.getAddSp();
 
         compiler.addInstruction(new ADDSP(addSp));
 
@@ -89,7 +89,7 @@ public class MethodCall extends AbstractMethodCall {
         }
         compiler.addInstruction(new LOAD(new RegisterOffset(0, gpReg), gpReg));
 
-        if (GameBoy.doCp) {
+        if (GameBoyManager.doCp) {
             // TODO (cf BSR page 109 pour polymorphisme)
             compiler.addInstruction(new ADD(vTM.getCurrMethodOffset(), gpReg));
             compiler.addInstruction(new BSR(vTM.getCurrMethodLabel()));

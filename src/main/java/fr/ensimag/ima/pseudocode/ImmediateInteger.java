@@ -1,6 +1,6 @@
 package fr.ensimag.ima.pseudocode;
 
-import fr.ensimag.deca.codegen.GameBoy;
+import fr.ensimag.deca.codegen.GameBoyManager;
 
 /**
  * Immediate operand representing an integer.
@@ -30,6 +30,6 @@ public class ImmediateInteger extends DVal {
 
     @Override
     public String toString() {
-        return GameBoy.getImmToken() + value;
+        return GameBoyManager.getImmToken() + value;
     }
 }

@@ -1,7 +1,5 @@
 package fr.ensimag.ima.pseudocode;
 
-import fr.ensimag.deca.codegen.GameBoy;
-
 /**
  * Operand representing a register indirection with offset, e.g. 42(R3).
  *
@@ -9,6 +7,8 @@ import fr.ensimag.deca.codegen.GameBoy;
  * @date 01/01/2024
  */
 public class RegisterOffset extends DAddr {
+    
+    @Override
     public int getOffset() {
         return offset;
     }
