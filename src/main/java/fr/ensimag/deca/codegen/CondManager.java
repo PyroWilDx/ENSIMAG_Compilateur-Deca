@@ -4,7 +4,7 @@ import fr.ensimag.ima.pseudocode.Label;
 
 public class CondManager {
 
-    private int idCpt;
+    private long idCpt;
     private int doingCondCount;
     private boolean doingOpCmp;
 
@@ -18,6 +18,10 @@ public class CondManager {
         Label uniqueLabel = new Label("L" + idCpt);
         idCpt++;
         return uniqueLabel;
+    }
+
+    public long getUniqueId() {
+        return idCpt++;
     }
 
     public void doCond() {

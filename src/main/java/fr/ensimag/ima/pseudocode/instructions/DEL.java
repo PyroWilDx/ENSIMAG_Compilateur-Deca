@@ -13,4 +13,8 @@ public class DEL extends UnaryInstructionToReg {
         super(op);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return null;
+    }
 }

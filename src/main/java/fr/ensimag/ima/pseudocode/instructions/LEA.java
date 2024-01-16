@@ -14,4 +14,8 @@ public class LEA extends BinaryInstructionDAddrToReg {
         super(op1, op2);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return "ld";
+    }
 }

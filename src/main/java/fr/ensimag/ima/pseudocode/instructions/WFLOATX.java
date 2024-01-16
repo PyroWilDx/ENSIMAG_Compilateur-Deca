@@ -8,4 +8,8 @@ import fr.ensimag.ima.pseudocode.NullaryInstruction;
  */
 public class WFLOATX extends NullaryInstruction {
 
+    @Override
+    public String getGameBoyAsm() {
+        return null; // Pas d'affichage dans la console
+    }
 }

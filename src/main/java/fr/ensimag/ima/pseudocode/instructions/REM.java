@@ -15,4 +15,8 @@ public class REM extends BinaryInstructionDValToReg {
         super(op1, op2);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return null; // Pas de modulo
+    }
 }

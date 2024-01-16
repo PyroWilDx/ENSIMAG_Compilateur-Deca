@@ -9,4 +9,8 @@ import fr.ensimag.ima.pseudocode.NullaryInstruction;
  */
 public class ERROR extends NullaryInstruction {
 
+    @Override
+    public String getGameBoyAsm() {
+        return "stop"; // TODO (STOP ou HALT ?)
+    }
 }

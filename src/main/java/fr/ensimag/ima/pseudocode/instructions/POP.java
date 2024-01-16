@@ -14,4 +14,8 @@ public class POP extends UnaryInstructionToReg {
         super(op);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return "pop";
+    }
 }

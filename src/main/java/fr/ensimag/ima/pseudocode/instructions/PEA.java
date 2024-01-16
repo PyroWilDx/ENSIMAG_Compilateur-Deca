@@ -13,4 +13,8 @@ public class PEA extends UnaryInstruction {
         super(operand);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return null;
+    }
 }
