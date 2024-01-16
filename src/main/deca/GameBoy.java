@@ -60,12 +60,16 @@ class GameBoy {
         return this.height;
     }
     void init () asm (
-    "ElementaryTiles :
+    "
+    ; Les tiles élémentaire
+    ElementaryTiles :
     db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
     db $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff
     db $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00
     db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
     ElementaryTilesEnd :
+
+    ; On met ces tiles elementaires dans la mémoire
     ld de, ElementaryTiles
     ld hl, $9000
     ld bc, ElementaryTiles - ElementaryTilesEnd
@@ -77,6 +81,8 @@ class GameBoy {
     ld a, b
     or a, c
     jp nz, CopyElementaryTiles
+
+    ; Label menant à une map toute blanche
     WhiteTilemap:
     db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
     db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
@@ -97,6 +103,8 @@ class GameBoy {
     db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
     db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
     WhiteTilemap:
+
+    ; Label menant à une map toute blanche
     BlackTilemap:
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
@@ -117,6 +125,9 @@ class GameBoy {
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
     db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
     BlackTilemap:
+
+    ; Label pour avec la taille de la map dans bc
+    ; et l adresse de la map dans be
     CopyTilemap:
     ld a, [de]
     ld [hli], a
@@ -124,6 +135,7 @@ class GameBoy {
     dec bc
     ld a, b
     or a, c
+    jp nz, CopyTilemap
     " // TODO commencer la gameloop
     ); // TODO pour faire les trucs assembleurs de bases genre main loop et tout jsp
     void setTileMap(Color color) {
