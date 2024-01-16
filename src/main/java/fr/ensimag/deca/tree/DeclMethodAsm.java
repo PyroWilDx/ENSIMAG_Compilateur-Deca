@@ -57,13 +57,6 @@ public class DeclMethodAsm extends AbstractDeclMethod {
         return params;
     }
 
-    public EnvironmentExp verifyDeclMethodMembers(DecacCompiler compiler,
-                                                  SymbolTable.Symbol superClass,
-                                                  int index) {
-        return null;
-        // TODO faut pas faire un truc là ?
-        // Done
-    }
 
     public void verifyDeclMethodBody(DecacCompiler compiler,
                                      EnvironmentExp localEnv,
