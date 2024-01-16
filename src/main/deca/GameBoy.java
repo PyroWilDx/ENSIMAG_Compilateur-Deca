@@ -1,8 +1,10 @@
-#include "Utils.decah"
+#include "Utils.java"
 
 class Tile {
-    int index;
-    void placeForeGround{
+    protected int index;
+    protected int firstTileAdress = 36864;
+    protected Utils utils = new Utils();
+    void placeForeGround(){
 
     }
     void place(boolean foreground, int x, int y) {
@@ -11,11 +13,11 @@ class Tile {
         // TODO
     }
     void setTilePixel(int x, int y, Color color) {
-        int tileAddr = this.firstVRamAdress + numTile * 16; // une tile c'est 16 octets
+        int tileAddr = this.firstTileAdress + this.index * 16; // une tile c'est 16 octets
         int addr1 = tileAddr + 2*y;
         int addr2 = addr1 + 1;
-        int oct1 = Utils.get(addr1);
-        int oct2 = Utils.get(addr2);
+        int oct1 = utils.get(addr1);
+        int oct2 = utils.get(addr2);
         int newValue1 = oct1;
         int newValue2 = oct2;
         int powerOfTwo = this.utils.pow(2, 7 - x);
@@ -39,7 +41,7 @@ class Tile {
         }
         utils.push(addr1, newValue1);
         utils.push(addr2, newValue2);
-    };
+    }
     void setBlack() {
         this.index = 0;
     }
@@ -47,7 +49,7 @@ class Tile {
         this.index = 1;
     }
     void setLight() {
-        this.index = 2
+        this.index = 2;
     }
     void setWhite() {
         this.index = 3;
@@ -55,8 +57,8 @@ class Tile {
 
 }
 class Color {
-    boolean bit1 = 0;
-    boolean bit2 = 0;
+    boolean bit1 = false;
+    boolean bit2 = false;
     void setBlack() {
         this.bit1 = false;
         this.bit2 = false;
@@ -86,8 +88,8 @@ class GameBoy {
     protected int width = 160;
     protected int height = 144;
     protected int firstVRamAdress = 32768;
-    protected utils = new Utils();
-    protected isWhiteMapLabelDefined = false;
+    protected Utils utils = new Utils();
+    protected boolean isWhiteMapLabelDefined = false;
 
     int getWidth() {
         return this.width;
