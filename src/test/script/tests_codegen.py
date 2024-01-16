@@ -263,9 +263,9 @@ def doTests():
                             b"36 6\n"
                             b"36 100\n")
 
-    # doVerify("codegen/valid/classes/miscellaneous/asmSimple.deca",
-    #          expectedResult=b"10 180\n",
-    #          doAssert=False)
+    doVerify("codegen/valid/classes/miscellaneous/asmSimple.deca",
+             expectedResult=b"10 180\n",
+             doAssert=False)
 
     doVerify("codegen/valid/registers/opRegOverflow.deca",
              expectedResult=b"52 52\n",

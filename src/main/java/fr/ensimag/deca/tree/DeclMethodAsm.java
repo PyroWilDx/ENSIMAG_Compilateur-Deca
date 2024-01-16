@@ -33,14 +33,8 @@ public class DeclMethodAsm extends AbstractDeclMethod {
         return 0; // TODO
     }
 
-    public void codeGenVTable(DecacCompiler compiler, VTable vTable, int methodOffset) {
-        // nothing
-    }
-
     public void codeGenDeclMethod(DecacCompiler compiler) {
-        String methodName = name.getName().getName();
-
-        compiler.addLabel(new Label(methodName));
+        compiler.addLabel(mStartLabel);
         compiler.add(new LineAsm(code));
     }
 

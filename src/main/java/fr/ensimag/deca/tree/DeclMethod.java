@@ -19,9 +19,6 @@ public class DeclMethod extends AbstractDeclMethod {
     // TODO mais dans ce cas penser à changer le parser
     private final ListDeclVar listDeclVar;
     private final ListInst listInst;
-    private String className;
-    private Label mStartLabel;
-    private Label mEndLabel;
 
     public boolean isOverride() {
         return this.override;
@@ -39,9 +36,6 @@ public class DeclMethod extends AbstractDeclMethod {
         this.params = params;
         this.listDeclVar = listDeclVar;
         this.listInst = listInst;
-        this.className = null;
-        this.mStartLabel = null;
-        this.mEndLabel = null;
     }
 
     public EnvironmentExp getEnvOfClass(DecacCompiler compiler, SymbolTable.Symbol classSymbol) {
@@ -85,33 +79,6 @@ public class DeclMethod extends AbstractDeclMethod {
         EnvironmentExp envReturn = this.listDeclVar.verifyListDeclVariable(compiler, localEnv, envParams, currentClass);
         EnvironmentExp envEmpile = EnvironmentExp.empile(envReturn, localEnv);
         this.listInst.verifyListInst(compiler, envEmpile, currentClass, returnType);
-        // Done
-    }
-
-    @Override
-    public void codeGenVTable(DecacCompiler compiler, VTable vTable, int methodOffset) {
-        StackManager sM = compiler.getStackManager();
-
-        className = vTable.getClassName();
-        String methodName = name.getName().getName();
-
-        mStartLabel = LabelUtils.getMethodLabel(className, methodName);
-        mEndLabel = LabelUtils.getMethodEndLabel(className, methodName);
-        compiler.addInstruction(new LOAD(new LabelOperand(mStartLabel), Register.R0));
-
-        DAddr mAddr = sM.getOffsetAddr();
-        compiler.addInstruction(new STORE(Register.R0, mAddr));
-        sM.incrVTableCpt();
-
-        vTable.addMethod(methodName, methodOffset);
-
-        String paramName;
-        int currParamOffset = -3;
-        for (AbstractParam param : params.getList()) {
-            paramName = param.getName().getName();
-            vTable.addParamToMethod(methodName, paramName, currParamOffset);
-            currParamOffset--;
-        }
         // Done
     }
 
