@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.context.*;
@@ -10,6 +11,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import org.apache.commons.lang.Validate;
 
@@ -67,7 +69,14 @@ public class DeclVar extends AbstractDeclVar {
         GPRegister gpReg = rM.getLastRegOrImm(compiler);
         DAddr varAddr = sM.getOffsetAddr();
         varName.getExpDefinition().setOperand(varAddr);
-        compiler.addInstruction(new STORE(gpReg, varAddr));
+        if (GameBoyManager.doCp) {
+            GameBoyManager gbM = compiler.getGameBoyManager();
+            compiler.addInstruction(new PUSH(gpReg));
+            gbM.addGlobalVar(varName.getName().getName(), varAddr.getOffset(),
+                    type.getType().isClass());
+        } else {
+            compiler.addInstruction(new STORE(gpReg, varAddr));
+        }
         rM.freeReg(gpReg);
         sM.incrGbVarCpt();
         // Done

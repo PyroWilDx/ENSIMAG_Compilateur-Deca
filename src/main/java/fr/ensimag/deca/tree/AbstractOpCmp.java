@@ -3,7 +3,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.CondManager;
-import fr.ensimag.deca.codegen.GameBoy;
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
 import fr.ensimag.ima.pseudocode.instructions.CMP;
@@ -32,7 +32,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
                              DVal valReg, GPRegister saveReg) {
         CondManager cM = compiler.getCondManager();
 
-        if (GameBoy.doCp) {
+        if (GameBoyManager.doCp) {
             if (doAdd()) {
                 if (!(valReg instanceof GPRegister)) {
                     if (valReg instanceof ImmediateInteger) {

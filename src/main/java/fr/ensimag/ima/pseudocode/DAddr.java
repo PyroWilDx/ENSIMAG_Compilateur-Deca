@@ -7,5 +7,5 @@ package fr.ensimag.ima.pseudocode;
  * @date 01/01/2024
  */
 public abstract class DAddr extends DVal {
-
+    public abstract int getOffset();
 }

@@ -1,6 +1,6 @@
 package fr.ensimag.ima.pseudocode;
 
-import fr.ensimag.deca.codegen.GameBoy;
+import fr.ensimag.deca.codegen.GameBoyManager;
 
 /**
  * Immediate operand containing a float value.
@@ -26,7 +26,7 @@ public class ImmediateFloat extends DVal {
 
     @Override
     public String toString() {
-        if (GameBoy.doCp) return GameBoy.getImmToken() + ((int) value);
-        return GameBoy.getImmToken() + Float.toHexString(value);
+        if (GameBoyManager.doCp) return GameBoyManager.getImmToken() + ((int) value);
+        return GameBoyManager.getImmToken() + Float.toHexString(value);
     }
 }

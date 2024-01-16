@@ -1,6 +1,6 @@
 package fr.ensimag.ima.pseudocode.instructions;
 
-import fr.ensimag.deca.codegen.GameBoy;
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.ima.pseudocode.BinaryInstructionDAddrToReg;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
@@ -29,7 +29,7 @@ public class LEA extends BinaryInstructionDAddrToReg {
     public String getGameBoyAsm() {
         if (getOperand1() instanceof RegisterOffset) {
             String gbAsm = "ld hl, SP";
-            gbAsm += "\n\tadd hl, " + GameBoy.getImmToken() +
+            gbAsm += "\n\tadd hl, " + GameBoyManager.getImmToken() +
                     ((RegisterOffset) getOperand1()).getOffset();
             gbAsm += "\n\tld [hl], " + getOperand2();
             return gbAsm;

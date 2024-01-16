@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.codegen.CondManager;
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.CodeGenUtils;
 import fr.ensimag.deca.context.*;
@@ -13,6 +14,8 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.LineGb;
+import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
 
@@ -250,10 +253,24 @@ public class Identifier extends AbstractIdentifier {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 
-        DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
+        GPRegister gpReg = null;
 
-        GPRegister gpReg = rM.getFreeReg();
-        compiler.addInstruction(new LOAD(iAddr, gpReg));
+        if (GameBoyManager.doCp) {
+//            GameBoyManager gbM = compiler.getGameBoyManager();
+//            int varOffset = gbM.getGlobalVarOffset(getName().getName());
+//            boolean isAddr = gbM.isGlobalVarAddr(getName().getName());
+//            GameBoyManager.loadAddrFromOffset(compiler, "hl", varOffset);
+//            if (isAddr) {
+//                rM.freeReg(gpReg);
+////                gpReg = rM.getFreeReg16();
+//            }
+//            compiler.addInstruction(new LOAD(Register.HL, gpReg));
+//            GameBoyManager.loadAddr0(compiler, "hl");
+        } else {
+            DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
+            gpReg = rM.getFreeReg();
+            compiler.addInstruction(new LOAD(iAddr, gpReg));
+        }
 
         if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             compiler.addInstruction(new CMP(0, gpReg));

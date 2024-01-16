@@ -1,6 +1,6 @@
 package fr.ensimag.ima.pseudocode.instructions;
 
-import fr.ensimag.deca.codegen.GameBoy;
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
@@ -25,7 +25,7 @@ public class STORE extends BinaryInstruction {
     @Override
     public String getGameBoyAsm() {
         String gbAsm = "ld hl, SP";
-        gbAsm += "\n\tadd hl, " + GameBoy.getImmToken() +
+        gbAsm += "\n\tadd hl, " + GameBoyManager.getImmToken() +
                 ((RegisterOffset) getOperand2()).getOffset();
         gbAsm += "\n\tld [hl], " + getOperand1();
         return gbAsm;

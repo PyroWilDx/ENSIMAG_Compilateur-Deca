@@ -1,6 +1,6 @@
 package fr.ensimag.ima.pseudocode;
 
-import fr.ensimag.deca.codegen.GameBoy;
+import fr.ensimag.deca.codegen.GameBoyManager;
 
 /**
  * General Purpose Register operand (R0, R1, ... R15).
@@ -9,8 +9,7 @@ import fr.ensimag.deca.codegen.GameBoy;
  * @date 01/01/2024
  */
 public class GPRegister extends Register {
-        public static final String[] gameBoyRegs = {"a", "b", "c", "d", "e", "h", "l"};
-//    public static final String[] gameBoyRegs = {"bc", "de", "hl"};
+    public static final String[] gameBoyRegs = {"a", "hl", "bc", "de"};
 
     /**
      * @return the number of the register, e.g. 12 for R12.
@@ -21,8 +20,8 @@ public class GPRegister extends Register {
 
     private final int number;
 
-    GPRegister(String name, int number) {
-        super((GameBoy.doCp && number < GameBoy.N_OF_REGS) ? gameBoyRegs[number] : name);
+    public GPRegister(String name, int number) {
+        super((GameBoyManager.doCp && number < GameBoyManager.nRegs) ? gameBoyRegs[number] : name);
         this.number = number;
     }
 }

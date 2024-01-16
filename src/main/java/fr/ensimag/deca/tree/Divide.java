@@ -4,7 +4,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.ErrorManager;
-import fr.ensimag.deca.codegen.GameBoy;
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -23,7 +23,7 @@ public class Divide extends AbstractOpArith {
         ErrorManager eM = compiler.getErrorManager();
         CondManager cM = compiler.getCondManager();
 
-        if (GameBoy.doCp) {
+        if (GameBoyManager.doCp) {
             Label startLabel = new Label("DivStart" + cM.getUniqueId());
             Label endLabel = new Label("DivEnd" + cM.getUniqueId());
 
