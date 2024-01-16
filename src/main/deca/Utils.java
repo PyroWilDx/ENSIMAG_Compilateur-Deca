@@ -20,6 +20,6 @@ class Utils {
     void push(int addr, int value) asm(
             "LOAD addr,r0
             LOAD -4lb, r1
-            STORE r1, 0(r0)
+            STORE r1, 0(r0)"
             ) // TODO traduire en gameboy
 }
