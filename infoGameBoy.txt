@@ -7,7 +7,7 @@ Donc il y a forcément des répétitions.
 On a également une foreground map et un background map qui contiennent les indices des tiles à afficher
 Ces maps sont de dimension 32*32 (soit 1024 tiles à selectionner parmis les 128 disponibles, par map).
 
-De plus jusqu'à 40 sprites
+De plus jusqu'à 40 sprites, 10 par lignes
 
 
 #include tiles "nom_fichier.
