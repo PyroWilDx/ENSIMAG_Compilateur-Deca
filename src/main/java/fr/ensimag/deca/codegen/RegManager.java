@@ -117,8 +117,10 @@ public class RegManager {
                 startLines.addFirst(new Line(new ADDSP(sM.getAddSp() + usedCount)));
             }
             if (compiler.getCompilerOptions().doCheck()) {
-                startLines.addFirst(new Line(new BOV(eM.getStackOverflowLabel())));
-                startLines.addFirst(new Line(new TSTO(maxStackSize)));
+                if (!GameBoy.doCp) {
+                    startLines.addFirst(new Line(new BOV(eM.getStackOverflowLabel())));
+                    startLines.addFirst(new Line(new TSTO(maxStackSize)));
+                }
             }
         }
         compiler.addAllLine(index, startLines);

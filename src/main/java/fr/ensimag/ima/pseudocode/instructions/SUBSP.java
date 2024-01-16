@@ -18,4 +18,10 @@ public class SUBSP extends UnaryInstructionImmInt {
         super(i);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        ImmediateInteger opImmInt = (ImmediateInteger) getOperand();
+        opImmInt.oppValue();
+        return "add SP,";
+    }
 }

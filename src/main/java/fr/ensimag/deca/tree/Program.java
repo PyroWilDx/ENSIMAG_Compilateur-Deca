@@ -92,8 +92,10 @@ public class Program extends AbstractProgram {
                 compiler.addInstruction(0, new ADDSP(sM.getAddSp()));
             }
             if (compiler.getCompilerOptions().doCheck()) {
-                compiler.addInstruction(0, new BOV(eM.getStackOverflowLabel()));
-                compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
+                if (!GameBoy.doCp) {
+                    compiler.addInstruction(0, new BOV(eM.getStackOverflowLabel()));
+                    compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
+                }
             }
         }
 

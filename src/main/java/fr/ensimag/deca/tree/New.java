@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ErrorManager;
-import fr.ensimag.deca.codegen.LabelUtils;
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.deca.codegen.VTableManager;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
@@ -49,7 +46,9 @@ public class New extends AbstractExpr {
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new NEW(fieldsCount + 1, gpReg));
         if (compiler.getCompilerOptions().doCheck()) {
-            compiler.addInstruction(new BOV(eM.getHeapOverflowLabel()));
+            if (!GameBoy.doCp) {
+                compiler.addInstruction(new BOV(eM.getHeapOverflowLabel()));
+            }
         }
         compiler.addInstruction(new LEA(vTM.getCurrClassAddr(), Register.R0));
         compiler.addInstruction(

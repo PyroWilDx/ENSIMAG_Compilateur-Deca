@@ -15,5 +15,9 @@ public class WSTR extends UnaryInstruction {
     public WSTR(String message) {
         super(new ImmediateString(message));
     }
-    
+
+    @Override
+    public String getGameBoyAsm() {
+        return null; // Pas d'affichage dans la console
+    }
 }

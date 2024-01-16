@@ -296,7 +296,7 @@ def doTests():
              decacOptions="-b")
 
     doVerify("codegen/valid/options/optionParse.deca",
-             decacExpected=b"{\n\tint x = 1;\n\tfloat y = 2;\n\tfloat z;\n\t(z = ((x + y) - (x * (x + y))));\n\tprint(x, y, z);\n\tprintln(\"z = \", z);\n\tprintln(y, z);\n\tif ((y == z)) {\n\t\t(y = z);\n\t} else {\n\t\t(y = (z - 1));\n\t}\n\twhile (true) {\n\t\tif ((y != z)) {\n\t\t\tif ((y < z)) {\n\t\t\t\tif ((y > z)) {\n\t\t\t\t\t(x = 2);\n\t\t\t\t} else {\n\t\t\t\t\t(y = 4);\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t}\n\t\t} else {\n\t\t\twhile (false) {\n\t\t\t\tprint(40);\n\t\t\t}\n\t\t}\n\t\t(x = 10);\n\t}\n\tx;\n\ty;\n\tz;\n}\n",
+             decacExpected=b"{\n\tint x = 1;\n\tfloat y = 2;\n\tfloat z;\n\t(z = ((x + y) - (x * (x + y))));\n\tprint(x, y, z);\n\tprintln(\"z = \", z);\n\tprintln(y, z);\n\tif ((y == z)) {\n\t\t(y = z);\n\t} else {\n\t\t(y = (z - 1));\n\t}\n\twhile (false) {\n\t\tif ((y != z)) {\n\t\t\tif ((y < z)) {\n\t\t\t\tif ((y > z)) {\n\t\t\t\t\t(x = 2);\n\t\t\t\t} else {\n\t\t\t\t\t(y = 4);\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t}\n\t\t} else {\n\t\t\twhile (false) {\n\t\t\t\tprint(40);\n\t\t\t}\n\t\t}\n\t\t(x = 10);\n\t}\n\tx;\n\ty;\n\tz;\n}\n",
              decacOptions="-p")
 
     doVerify("codegen/valid/options/optionVerification.deca",

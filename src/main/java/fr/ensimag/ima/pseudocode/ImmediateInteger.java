@@ -20,6 +20,14 @@ public class ImmediateInteger extends DVal {
         value--;
     }
 
+    public void oppValue() {
+        value = -value;
+    }
+
+    public int getValue() {
+        return value;
+    }
+
     @Override
     public String toString() {
         return GameBoy.getImmToken() + value;

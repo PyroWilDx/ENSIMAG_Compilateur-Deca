@@ -20,6 +20,10 @@ public class ImmediateFloat extends DVal {
         value--;
     }
 
+    public int getIntValue() {
+        return (int) value;
+    }
+
     @Override
     public String toString() {
         if (GameBoy.doCp) return GameBoy.getImmToken() + ((int) value);

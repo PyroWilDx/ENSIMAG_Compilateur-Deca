@@ -12,4 +12,9 @@ public class STORE extends BinaryInstruction {
     public STORE(Register op1, DAddr op2) {
         super(op1, op2);
     }
+
+    @Override
+    public String getGameBoyAsm() {
+        return "ld";
+    }
 }

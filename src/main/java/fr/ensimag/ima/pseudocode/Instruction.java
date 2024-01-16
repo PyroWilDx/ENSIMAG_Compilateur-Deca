@@ -20,7 +20,7 @@ public abstract class Instruction {
         displayOperands(s);
     }
 
-//    protected int nbGbAsmInst = 1;
+    protected int nbGbAsmInst = 1;
 
     public String getGameBoyAsm() { // TODO (a enlever et mettre en abstract)
         return getName();
@@ -33,7 +33,7 @@ public abstract class Instruction {
     public void displayGameBoy(PrintStream s) {
 //        while (nbGbAsmInst > 0) {
         String gbAsmInstName = getGameBoyAsm();
-        assert (gbAsmInstName != null); // Une opération qui ne devrait pas être utilisée renvoie null
+        if (gbAsmInstName == null) gbAsmInstName = getName();
         s.print(gbAsmInstName);
         displayOperandsGameBoy(s);
 //            nbGbAsmInst--;

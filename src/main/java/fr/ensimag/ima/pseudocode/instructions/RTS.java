@@ -8,4 +8,8 @@ import fr.ensimag.ima.pseudocode.NullaryInstruction;
  */
 public class RTS extends NullaryInstruction {
 
+    @Override
+    public String getGameBoyAsm() {
+        return "ret";
+    }
 }
