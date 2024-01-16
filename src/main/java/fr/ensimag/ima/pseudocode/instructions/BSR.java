@@ -19,4 +19,8 @@ public class BSR extends UnaryInstruction {
         super(new LabelOperand(target));
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return "call";
+    }
 }

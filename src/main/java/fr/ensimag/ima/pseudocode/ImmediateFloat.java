@@ -1,5 +1,7 @@
 package fr.ensimag.ima.pseudocode;
 
+import fr.ensimag.deca.codegen.GameBoy;
+
 /**
  * Immediate operand containing a float value.
  * 
@@ -7,15 +9,20 @@ package fr.ensimag.ima.pseudocode;
  * @date 01/01/2024
  */
 public class ImmediateFloat extends DVal {
-    private final float value;
+    private float value;
 
     public ImmediateFloat(float value) {
         super();
         this.value = value;
     }
 
+    public void decrValue() {
+        value--;
+    }
+
     @Override
     public String toString() {
-        return "#" + Float.toHexString(value);
+        if (GameBoy.doCp) return GameBoy.getImmToken() + ((int) value);
+        return GameBoy.getImmToken() + Float.toHexString(value);
     }
 }

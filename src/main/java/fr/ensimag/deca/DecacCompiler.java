@@ -172,7 +172,8 @@ public class DecacCompiler {
         String destFile;
         if (extensionIndex != -1) destFile = sourceFile.substring(0, extensionIndex);
         else destFile = sourceFile;
-        destFile += ".ass";
+        if (GameBoy.doCp) destFile += ".asm";
+        else destFile += ".ass";
         // Done
         PrintStream err = System.err;
         PrintStream out = System.out;

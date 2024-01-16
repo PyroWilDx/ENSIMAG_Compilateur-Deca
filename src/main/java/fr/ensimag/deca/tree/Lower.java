@@ -1,13 +1,9 @@
 package fr.ensimag.deca.tree;
 
 
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Instruction;
-import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.BGE;
-import fr.ensimag.ima.pseudocode.instructions.BLT;
-import fr.ensimag.ima.pseudocode.instructions.SGE;
-import fr.ensimag.ima.pseudocode.instructions.SLT;
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * @author gl47
@@ -17,6 +13,11 @@ public class Lower extends AbstractOpIneq {
 
     public Lower(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
+    }
+
+    @Override
+    protected boolean doSub() {
+        return true;
     }
 
     @Override

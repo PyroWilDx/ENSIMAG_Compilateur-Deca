@@ -19,4 +19,8 @@ public class ADDSP extends UnaryInstructionImmInt {
         super(i);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return "add SP,";
+    }
 }

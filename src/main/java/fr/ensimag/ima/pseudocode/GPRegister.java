@@ -9,7 +9,7 @@ import fr.ensimag.deca.codegen.GameBoy;
  * @date 01/01/2024
  */
 public class GPRegister extends Register {
-    private static final String[] gameBoyRegs = {"A", "B", "C", "D", "E", "H", "L"};
+    private static final String[] gameBoyRegs = {"a", "b", "c", "d", "e", "h", "l"};
 
     /**
      * @return the number of the register, e.g. 12 for R12.

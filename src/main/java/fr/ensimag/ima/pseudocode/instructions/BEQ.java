@@ -14,4 +14,8 @@ public class BEQ extends BranchInstruction {
         super(op);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return "jp Z,";
+    }
 }

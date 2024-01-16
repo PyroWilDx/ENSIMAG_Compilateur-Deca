@@ -1,5 +1,7 @@
 package fr.ensimag.ima.pseudocode;
 
+import fr.ensimag.deca.codegen.GameBoy;
+
 /**
  * The #null operand.
  *
@@ -10,7 +12,8 @@ public class NullOperand extends DVal {
 
     @Override
     public String toString() {
-        return "#null";
+        if (GameBoy.doCp) return GameBoy.getImmToken() + "0";
+        else return GameBoy.getImmToken() + "null";
     }
 
 }

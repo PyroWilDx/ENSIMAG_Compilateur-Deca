@@ -1,0 +1,11 @@
+// Description :
+//    Test de l'option -n
+//    TODO (Je sais pas s'il faut mettre ça dans "valid" ou "invalid")
+//
+// Resultats :
+//    !! SI EXECUTION AVEC L'OPTION -n !!
+//    L'exécution affiche : 1
+
+{
+    println(1 / 0);
+}

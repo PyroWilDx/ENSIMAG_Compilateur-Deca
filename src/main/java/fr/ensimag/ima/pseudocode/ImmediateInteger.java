@@ -1,5 +1,7 @@
 package fr.ensimag.ima.pseudocode;
 
+import fr.ensimag.deca.codegen.GameBoy;
+
 /**
  * Immediate operand representing an integer.
  * 
@@ -7,15 +9,19 @@ package fr.ensimag.ima.pseudocode;
  * @date 01/01/2024
  */
 public class ImmediateInteger extends DVal {
-    private final int value;
+    private int value;
 
     public ImmediateInteger(int value) {
         super();
         this.value = value;
     }
 
+    public void decrValue() {
+        value--;
+    }
+
     @Override
     public String toString() {
-        return "#" + value;
+        return GameBoy.getImmToken() + value;
     }
 }

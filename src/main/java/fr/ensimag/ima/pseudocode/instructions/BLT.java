@@ -14,4 +14,8 @@ public class BLT extends BranchInstruction {
         super(op);
     }
 
+    @Override
+    public String getGameBoyAsm() {
+        return "jp !C,";
+    }
 }
