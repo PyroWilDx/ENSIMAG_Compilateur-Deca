@@ -13,13 +13,17 @@ class Utils {
         }
     }
     int get(int addr) asm(
-            "LOAD addr,r0
-            LOAD 0(r0),r0
-            RTS"
-            ) // TODO traduire en gameboy
+            "
+            ld bc, -6[sp]
+            ld [bc], bc
+            rts
+            "
+            ) // TODO VRAIMENT PAS SUR.
     void push(int addr, int value) asm(
-            "LOAD addr,r0
-            LOAD -4lb, r1
-            STORE r1, 0(r0)"
-            ) // TODO traduire en gameboy
+            "
+            ld bc, -8[sp]
+            ld de, -6[sp]
+            ld [bc], de
+            "
+            ) // TODO VRAIMENT PAS SÛR
 }

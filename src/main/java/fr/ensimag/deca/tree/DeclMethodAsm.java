@@ -45,7 +45,7 @@ public class DeclMethodAsm extends AbstractDeclMethod {
     }
 
     public SymbolTable.Symbol getName() {
-        return null;
+        return name.getName();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class DeclMethodAsm extends AbstractDeclMethod {
     public void verifyDeclMethodBody(DecacCompiler compiler,
                                      EnvironmentExp localEnv,
                                      ClassDefinition currentClass) {
-        // TODO faut pas faire un truc là ?
+        // TODO faut pas faire un truc là ? Je pense pas
     }
 
     @Override
