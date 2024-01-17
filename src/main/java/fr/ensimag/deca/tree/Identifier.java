@@ -14,7 +14,6 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.LineGb;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -166,7 +165,7 @@ public class Identifier extends AbstractIdentifier {
         FieldDefinition fieldDefinition = def.asFieldDefinition("'" +
                 this.name + "' must be a field.", getLocation());
         Visibility visib = fieldDefinition.getVisibility();
-        ClassDefinition classDefinition  = fieldDefinition.getContainingClass();
+        ClassDefinition classDefinition = fieldDefinition.getContainingClass();
         Type type = fieldDefinition.getType();
         return new FieldIdentNonTerminalReturn(visib, classDefinition, type);
         // Done
@@ -253,19 +252,19 @@ public class Identifier extends AbstractIdentifier {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 
-        GPRegister gpReg = null;
+        GPRegister gpReg;
 
         if (GameBoyManager.doCp) {
-//            GameBoyManager gbM = compiler.getGameBoyManager();
-//            int varOffset = gbM.getGlobalVarOffset(getName().getName());
-//            boolean isAddr = gbM.isGlobalVarAddr(getName().getName());
-//            GameBoyManager.loadAddrFromOffset(compiler, "hl", varOffset);
-//            if (isAddr) {
-//                rM.freeReg(gpReg);
-////                gpReg = rM.getFreeReg16();
-//            }
-//            compiler.addInstruction(new LOAD(Register.HL, gpReg));
-//            GameBoyManager.loadAddr0(compiler, "hl");
+            GameBoyManager gbM = compiler.getGameBoyManager();
+            int varOffset = gbM.getGlobalVarOffset(getName().getName());
+            boolean isAddr = gbM.isGlobalVarAddr(getName().getName());
+            gpReg = rM.getFreeReg();
+            compiler.addInstruction(new LOAD_INT(GameBoyManager.getVarAddr(varOffset), Register.HL));
+            if (isAddr) {
+                compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
+                compiler.addInstruction(new LOAD_INT(GameBoyManager.getVarAddr(varOffset) - 8, Register.HL));
+            }
+            compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
         } else {
             DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
             gpReg = rM.getFreeReg();

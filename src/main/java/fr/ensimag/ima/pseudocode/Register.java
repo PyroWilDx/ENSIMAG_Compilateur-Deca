@@ -19,10 +19,16 @@ public class Register extends DVal {
     }
 
     public String toStringHigh() {
+        if (name.length() < 2) {
+            return null;
+        }
         return name.substring(0, 1);
     }
 
     public String toStringLow() {
+        if (name.length() < 2) {
+            return null;
+        }
         return name.substring(1, 2);
     }
 
@@ -61,8 +67,9 @@ public class Register extends DVal {
      */
     public static final GPRegister R1 = R[1];
 
-    public static final GPRegister A = R[0]; // 8 Bits
-    public static final GPRegister HL = R[1]; // 16 Bits
+    public static final GPRegister HL = R[0]; // 16 Bits
+    
+    public static final GPRegister A = R[1]; // 8 Bits
 
     static private GPRegister[] initRegisters() {
         GPRegister[] res = new GPRegister[16];

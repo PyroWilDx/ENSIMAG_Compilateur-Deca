@@ -11,7 +11,7 @@ import java.util.HashMap;
  * @date 01/01/2024
  */
 public class GPRegister extends Register {
-    public static final String[] gameBoyRegs = {"a", "hl", "bc", "de"};
+    public static final String[] gameBoyRegs = {"hl", "a", "bc", "de"};
 
     /**
      * @return the number of the register, e.g. 12 for R12.
@@ -31,6 +31,8 @@ public class GPRegister extends Register {
     private static final GPRegister C = new GPRegister("c", 42);
     private static final GPRegister D = new GPRegister("d", 42);
     private static final GPRegister E = new GPRegister("e", 42);
+    private static final GPRegister H = new GPRegister("h", 42);
+    private static final GPRegister L = new GPRegister("l", 42);
     private static final HashMap<String, GPRegister> reg8BitMap = initReg8BitMap();
 
     private static HashMap<String, GPRegister> initReg8BitMap() {
@@ -39,14 +41,20 @@ public class GPRegister extends Register {
         map.put("c", C);
         map.put("d", D);
         map.put("e", E);
+        map.put("h", H);
+        map.put("l", L);
         return map;
     }
 
     public GPRegister getHighReg() {
-        return reg8BitMap.get(toStringHigh());
+        String hStr = toStringHigh();
+        if (hStr == null) return this;
+        return reg8BitMap.get(hStr);
     }
 
     public GPRegister getLowReg() {
-        return reg8BitMap.get(toStringLow());
+        String lStr = toStringLow();
+        if (lStr == null) return this;
+        return reg8BitMap.get(lStr);
     }
 }

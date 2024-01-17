@@ -1,15 +1,13 @@
 package fr.ensimag.deca.codegen;
 
-import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.ima.pseudocode.Line;
-import fr.ensimag.ima.pseudocode.LineGb;
-
 import java.util.HashMap;
 
 public class GameBoyManager {
 
     public static final int nRegs = 4;
-    public static final int Addr_0 = 65535;
+    public static final int Addr0 = 57344;
+    public static final int AddrMax = 49152;
+    public static final int AddrMethod = AddrMax + 32 * 16;
 
     public static boolean doCp = false;
 
@@ -17,12 +15,12 @@ public class GameBoyManager {
         return (doCp) ? "" : "#";
     }
 
-    public static void loadAddr0(DecacCompiler compiler, String regName) {
-        compiler.add(new LineGb("ld " + regName + ", " + Addr_0));
+    public static int getVarAddr(int varOffset) {
+        return Addr0 - varOffset * 16;
     }
 
-    public static void loadAddrFromOffset(DecacCompiler compiler, String regName, int offset) {
-        compiler.add(new LineGb("ld " + regName + ", " + (Addr_0 - offset * 16)));
+    public static int getArgAddr(int argOffset) {
+        return AddrMethod + argOffset * 16;
     }
 
     private final HashMap<String, GlobalVarInfo> globalVars;

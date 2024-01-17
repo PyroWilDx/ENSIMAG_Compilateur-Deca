@@ -53,13 +53,13 @@ public class Program extends AbstractProgram {
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
         ErrorManager eM = compiler.getErrorManager();
+        CondManager cM = compiler.getCondManager();
         StackManager sM = new StackManager(false);
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
 
         if (GameBoyManager.doCp) {
-            GameBoyManager.loadAddr0(compiler, "SP");
-            GameBoyManager.loadAddr0(compiler, "hl");
+            compiler.add(new LineGb("ld SP, " + GameBoyManager.Addr0));
         }
 
         boolean generateObjectClass = !classes.getList().isEmpty();
@@ -108,12 +108,39 @@ public class Program extends AbstractProgram {
             compiler.addComment("");
             compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
             compiler.addLabel(eLabel);
-            compiler.addInstruction(
-                    new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
-            compiler.addInstruction(
-                    new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
-            compiler.addInstruction(new SEQ(Register.R0));
-            compiler.addInstruction(new RTS());
+            if (GameBoyManager.doCp) {
+                Label falseLabel = cM.getUniqueLabel();
+                compiler.addInstruction(
+                        new LOAD_INT(GameBoyManager.getArgAddr(-2) + 8, Register.HL));
+                compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+                compiler.addInstruction(
+                        new LOAD_INT(GameBoyManager.getArgAddr(-3) + 8, Register.HL));
+                compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
+
+                compiler.addInstruction(new CMP(Register.A, Register.HL.getLowReg()));
+                compiler.addInstruction(new BNE(falseLabel));
+
+                compiler.addInstruction(
+                        new LOAD_INT(GameBoyManager.getArgAddr(-2), Register.HL));
+                compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+                compiler.addInstruction(
+                        new LOAD_INT(GameBoyManager.getArgAddr(-3), Register.HL));
+                compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
+                compiler.addInstruction(new BNE(falseLabel));
+
+                compiler.addInstruction(new LOAD_INT(1, Register.HL.getLowReg()));
+
+                compiler.addLabel(falseLabel);
+                compiler.addInstruction(new LOAD_INT(0, Register.HL.getLowReg()));
+                compiler.addInstruction(new RTS());
+            } else {
+                compiler.addInstruction(
+                        new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+                compiler.addInstruction(
+                        new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
+                compiler.addInstruction(new SEQ(Register.R0));
+                compiler.addInstruction(new RTS());
+            }
         }
 
         classes.codeGenListDeclClass(compiler);
