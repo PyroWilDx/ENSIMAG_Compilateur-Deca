@@ -12,6 +12,13 @@
     boolean b0 = true;
     boolean b1 = false;
 
-    println("x = ", x);
-    println("y = ", y, " | z = ", z);
+    if (x != 1) {
+        println();
+    }
+    if (y != 42) {
+        println();
+    }
+    if (z != 3.1416) {
+        println();
+    }
 }

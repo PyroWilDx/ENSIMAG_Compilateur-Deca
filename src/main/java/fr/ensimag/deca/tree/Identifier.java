@@ -254,20 +254,9 @@ public class Identifier extends AbstractIdentifier {
 
         GPRegister gpReg;
 
-        if (GameBoyManager.doCp) {
-            GameBoyManager gbM = compiler.getGameBoyManager();
-            Integer varAddr = gbM.extractAddrFromIdent(compiler, this);
-            if (varAddr == null) return;
-            compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
-            gpReg = rM.getFreeReg();
-            compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
-            compiler.addInstruction(new LOAD_INT(varAddr - 8, Register.HL));
-            compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
-        } else {
-            DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
-            gpReg = rM.getFreeReg();
-            compiler.addInstruction(new LOAD(iAddr, gpReg));
-        }
+        DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
+        gpReg = rM.getFreeReg();
+        compiler.addInstruction(new LOAD(iAddr, gpReg));
 
         if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             compiler.addInstruction(new CMP(0, gpReg));
@@ -298,7 +287,7 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
         gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
-        compiler.addInstruction(new LOAD_INT(varAddr - 8, Register.HL));
+        compiler.addInstruction(new LOAD_INT(varAddr - 1, Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
 
         if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {

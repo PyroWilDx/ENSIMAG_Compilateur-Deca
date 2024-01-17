@@ -136,8 +136,8 @@ public class MethodCall extends AbstractMethodCall {
 
 //        compiler.add(new LineGb("ld hl, SP"));
 //        compiler.addInstruction(new PUSH(Register.HL));
-        compiler.addInstruction(
-                new LOAD_SP(GameBoyManager.getMethodLastParamAddr(addSp), Register.SP));
+//        compiler.addInstruction(
+//                new LOAD_SP(GameBoyManager.getMethodLastParamAddr(addSp), Register.SP));
 
         List<AbstractExpr> args = rValueStar.getList();
         for (int i = args.size() - 1; i >= 0; i--) {

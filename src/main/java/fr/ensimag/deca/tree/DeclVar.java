@@ -77,22 +77,16 @@ public class DeclVar extends AbstractDeclVar {
 
     @Override
     protected void codeGenDeclVarGb(DecacCompiler compiler) {
-        // TODO (GB)
         RegManager rM = compiler.getRegManager();
-        StackManager sM = compiler.getStackManager();
 
 //        initialization.setVarType(type.getType()); // No Init
         initialization.codeGenInit(compiler);
 
         GPRegister gpReg = rM.getLastRegOrImm(compiler);
-        DAddr varAddr = sM.getOffsetAddr();
-        varName.getExpDefinition().setOperand(varAddr);
         GameBoyManager gbM = compiler.getGameBoyManager();
         compiler.addInstruction(new PUSH(gpReg));
-        gbM.addGlobalVar(varName.getName().getName(),
-                varAddr.getOffset() - 1);
+        gbM.addGlobalVar(varName.getName().getName());
         rM.freeReg(gpReg);
-        sM.incrGbVarCpt();
         // Done
     }
 

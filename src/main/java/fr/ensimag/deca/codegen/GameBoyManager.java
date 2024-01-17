@@ -11,7 +11,6 @@ public class GameBoyManager {
     public static final int nRegs = 4;
     public static final int Addr0 = 57344;
     public static final int AddrMax = 49152;
-    public static final int AddrMethod = AddrMax + 32 * 16;
 
     public static boolean doCp = false;
 
@@ -20,15 +19,7 @@ public class GameBoyManager {
     }
 
     public static int getVarAddr(int varOffset) {
-        return Addr0 - varOffset * 16;
-    }
-
-    public static int getArgAddr(int argOffset) {
-        return AddrMethod + argOffset * 16;
-    }
-
-    public static int getMethodLastParamAddr(int paramCount) {
-        return AddrMethod + paramCount * 16 + 16;
+        return Addr0 - varOffset;
     }
 
     private final HashMap<String, Integer> globalVars;
@@ -39,12 +30,13 @@ public class GameBoyManager {
         this.currClassVarStack = new LinkedList<>();
     }
 
-    public void addGlobalVar(String varName, int varOffset) {
-        globalVars.put(varName, varOffset);
+    public void addGlobalVar(String varName) {
+        globalVars.put(varName, globalVars.size());
     }
 
-    public Integer getGlobalVarOffset(String varName) {
-        return globalVars.get(varName);
+    public Integer getGlobalVarAddr(String varName) {
+        if (!globalVars.containsKey(varName)) return null;
+        return (Addr0 - 1) - (globalVars.get(varName) * 2);
     }
 
     public String getCurrClassVarName() {
@@ -56,16 +48,11 @@ public class GameBoyManager {
     }
 
     public int getGlobalAddrSP() {
-        return Addr0 - (globalVars.size() * 16);
-    }
-
-    public Integer getGlobalVarAddr(String varName) {
-        if (getGlobalVarOffset(varName) == null) return null;
-        return Addr0 - (getGlobalVarOffset(varName) * 16);
+        return Addr0 - globalVars.size();
     }
 
     public int getCurrClassFieldAddr(int fieldOffset) {
-        return Addr0 - ((globalVars.get(getCurrClassVarName()) - fieldOffset) * 16);
+        return Addr0 - (globalVars.get(getCurrClassVarName()) - fieldOffset);
     }
 
     public Integer extractAddrFromIdent(DecacCompiler compiler, AbstractIdentifier ident) {
@@ -77,7 +64,8 @@ public class GameBoyManager {
         if (varAddr == null) { // It's a Method Param or Class Field
             Integer paramOffset = vTM.getCurrParamOffsetOfMethod(identName);
             if (paramOffset != null) { // It's a Method Param
-                varAddr = getArgAddr(paramOffset);
+//                varAddr = getArgAddr(paramOffset);
+                varAddr = 42; // TODO (GB)
             } else { // It's a Class Field
                 vTM.enterClass(getCurrClassVarClassName());
                 int fieldOffset = vTM.getCurrFieldOffset(identName);

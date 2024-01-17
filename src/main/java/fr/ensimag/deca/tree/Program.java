@@ -167,21 +167,22 @@ public class Program extends AbstractProgram {
             compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
             compiler.addLabel(eLabel);
             Label falseLabel = cM.getUniqueLabel();
-            compiler.addInstruction(
-                    new LOAD_INT(GameBoyManager.getArgAddr(-2) + 8, Register.HL));
-            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-            compiler.addInstruction(
-                    new LOAD_INT(GameBoyManager.getArgAddr(-3) + 8, Register.HL));
-            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
+            // TODO (GB)
+//            compiler.addInstruction(
+//                    new LOAD_INT(GameBoyManager.getArgAddr(-2) + 8, Register.HL));
+//            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+//            compiler.addInstruction(
+//                    new LOAD_INT(GameBoyManager.getArgAddr(-3) + 8, Register.HL));
+//            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
 
             compiler.addInstruction(new CMP(Register.A, Register.HL.getLowReg()));
             compiler.addInstruction(new BNE(falseLabel));
 
-            compiler.addInstruction(
-                    new LOAD_INT(GameBoyManager.getArgAddr(-2), Register.HL));
-            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-            compiler.addInstruction(
-                    new LOAD_INT(GameBoyManager.getArgAddr(-3), Register.HL));
+//            compiler.addInstruction(
+//                    new LOAD_INT(GameBoyManager.getArgAddr(-2), Register.HL));
+//            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+//            compiler.addInstruction(
+//                    new LOAD_INT(GameBoyManager.getArgAddr(-3), Register.HL));
             compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
             compiler.addInstruction(new BNE(falseLabel));
 
