@@ -57,6 +57,11 @@ public class MethodCall extends AbstractMethodCall {
 
         String methodName = methodIdent.getName().getName();
         vTM.enterMethod(methodName);
+        if (GameBoyManager.doCp) {
+            if (!(expr instanceof This)) {
+                gbM.currClassVarStack.addFirst((AbstractIdentifier) expr);
+            }
+        }
 
         int addSp = vTM.getCurrParamCountOfMethod() + 1;
 
@@ -146,6 +151,11 @@ public class MethodCall extends AbstractMethodCall {
             }
         }
 
+        if (GameBoyManager.doCp) {
+            if (!(expr instanceof This)) {
+                gbM.currClassVarStack.removeFirst();
+            }
+        }
         vTM.exitMethod();
         vTM.exitClass();
     }

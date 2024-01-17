@@ -7,7 +7,7 @@
 
 class A {
     int a = 10;
-    int b = a;
+    int b = this.a;
 
     void bDisplay() {
         println(b);
