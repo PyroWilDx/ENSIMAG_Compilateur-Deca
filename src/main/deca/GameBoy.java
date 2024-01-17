@@ -327,7 +327,177 @@ class GameBoy {
     "
     );
 
-    
+    void inputUtils() asm (
+        "
+    ; ANCHOR: input-utils
+    SECTION "InputUtilsVariables", WRAM0
+
+    mWaitKey:: db
+
+    SECTION "InputUtils", ROM0
+
+    WaitForKeyFunction::
+
+    ; Save our original value
+    push bc
+
+
+    WaitForKeyFunction_Loop:
+
+    ; save the keys last frame
+    ld a, [wCurKeys]
+    ld [wLastKeys], a
+
+    ; This is in input.asm
+    ; It's straight from: https://gbdev.io/gb-asm-tutorial/part2/input.html
+    ; In their words (paraphrased): reading player input for gameboy is NOT a trivial task
+            ; So it's best to use some tested code
+    call Input
+
+
+    ld a, [mWaitKey]
+    ld b,a
+    ld a, [wCurKeys]
+    and a, b
+    jp z,WaitForKeyFunction_NotPressed
+
+    ld a, [wLastKeys]
+    and a, b
+    jp nz,WaitForKeyFunction_NotPressed
+
+            ; restore our original value
+    pop bc
+
+    ret
+
+
+    WaitForKeyFunction_NotPressed:
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ; Wait a small amount of time
+            ; Save our count in this variable
+    ld a, 1
+    ld [wVBlankCount], a
+
+    ; Call our function that performs the code
+    call WaitForVBlankFunction
+            ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+    jp WaitForKeyFunction_Loop
+            ; ANCHOR_END: input-utils
+        "
+    );
+
+    void backGroundUtils() asm (
+        "
+    ; ANCHOR: background-utils
+    include "src/main/utils/hardware.inc"
+
+    SECTION "Background", ROM0
+
+    ClearBackground::
+
+    ; Turn the LCD off
+    ld a, 0
+    ld [rLCDC], a
+
+    ld bc,1024
+    ld hl, $9800
+
+    ClearBackgroundLoop:
+
+    ld a,0
+    ld [hli], a
+
+
+    dec bc
+    ld a, b
+    or a, c
+
+    jp nz, ClearBackgroundLoop
+
+
+            ; Turn the LCD on
+    ld a, LCDCF_ON  | LCDCF_BGON|LCDCF_OBJON | LCDCF_OBJ16
+    ld [rLCDC], a
+
+
+            ret
+            ; ANCHOR_END: background-utils
+    "
+    );
+
+    /////////////////////////////////////////////////////////////////////
+    // TEXT
+    /////////////////////////////////////////////////////////////////////
+    void textUtils() asm (
+        "
+
+    SECTION "Text", ROM0
+
+    textFontTileData: INCBIN "src/generated/backgrounds/text-font.2bpp"
+    textFontTileDataEnd:
+
+    LoadTextFontIntoVRAM::
+    ; Copy the tile data
+    ld de, textFontTileData ; de contains the address where data will be copied from;
+    ld hl, $9000 ; hl contains the address where data will be copied to;
+    ld bc, textFontTileDataEnd - textFontTileData ; bc contains how many bytes we have to copy.
+            call CopyDEintoMemoryAtHL
+    ret
+
+    ; ANCHOR: draw-text-tiles
+    DrawTextTilesLoop::
+
+    ; Check for the end of string character 255
+    ld a, [hl]
+    cp 255
+    ret z
+
+            ; Write the current character (in hl) to the address
+            ; on the tilemap (in de)
+    ld a, [hl]
+    ld [de], a
+
+    inc hl
+    inc de
+
+            ; move to the next character and next background tile
+    jp DrawTextTilesLoop
+            ; ANCHOR_END: draw-text-tiles
+
+    ; ANCHOR: typewriter-effect
+    DrawText_WithTypewriterEffect::
+
+    ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ; Wait a small amount of time
+            ; Save our count in this variable
+    ld a, 3
+    ld [wVBlankCount], a
+
+    ; Call our function that performs the code
+    call WaitForVBlankFunction
+            ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+
+    ; Check for the end of string character 255
+    ld a, [hl]
+    cp 255
+    ret z
+
+            ; Write the current character (in hl) to the address
+            ; on the tilemap (in de)
+    ld a, [hl]
+    ld [de], a
+
+    ; move to the next character and next background tile
+    inc hl
+    inc de
+
+    jp DrawText_WithTypewriterEffect
+            ; ANCHOR_END: typewriter-effect
+        "
+    )
     void textMacro() asm (
             "
     ; ANCHOR: charmap
@@ -362,6 +532,7 @@ class GameBoy {
     CHARMAP "y", 50
     CHARMAP "z", 51
     ; ANCHOR_END: charmap
+    "
         );
 
     /////////////////////////////////////////////////////////////////////////////////////
@@ -413,7 +584,7 @@ class GameBoy {
     IF  \1 > 4.0 ;PUT REVISION NUMBER HERE
     WARN    "Version \1 or later of 'hardware.inc' is required."
     ENDC
-            ENDM
+    ENDM
 
     DEF _VRAM        EQU $8000 ; $8000->$9FFF
     DEF _VRAM8000    EQU _VRAM
@@ -437,10 +608,10 @@ class GameBoy {
     DEF rRAMB        EQU $4000 ; $4000->$5fff - Bit 3 enables rumble (if present)
 
 
-            ;***************************************************************************
+    ;***************************************************************************
     ;*
     ;* Custom registers
-            ;*
+    ;*
     ;***************************************************************************
 
     ; --
