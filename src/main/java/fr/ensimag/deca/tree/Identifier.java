@@ -265,7 +265,6 @@ public class Identifier extends AbstractIdentifier {
             compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
         } else {
             DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
-            if (iAddr == null) return;
             gpReg = rM.getFreeReg();
             compiler.addInstruction(new LOAD(iAddr, gpReg));
         }

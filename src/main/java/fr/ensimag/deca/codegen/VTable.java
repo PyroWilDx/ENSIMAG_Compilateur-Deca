@@ -69,6 +69,7 @@ public class VTable {
     }
 
     public Integer getParamOffsetOfMethod(String methodName, String paramName) {
+        if (!classMethods.containsKey(methodName)) return null;
         return classMethods.get(methodName).getParamOffset(paramName);
     }
 

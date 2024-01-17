@@ -1,33 +1,43 @@
+// Description :
+//    Test de création d'une liste chainée
+//
+// Resultats :
+//    3
+//    2
+//    1
+
 class Event {
     Event nextEvent;
     Event previousEvent;
     int i;
-    void initEvent(Event nextEvent,Event previousEvent ,int i){
+
+    void initEvent(Event nextEvent, Event previousEvent, int i) {
         this.nextEvent = nextEvent;
         this.previousEvent = previousEvent;
         this.i = i;
     }
-    Event getNext(){
+
+    Event getNext() {
         return this.nextEvent;
     }
 
-    Event getPrevious(){
+    Event getPrevious() {
         return this.previousEvent;
     }
 
-    void setNext(Event event){
+    void setNext(Event event) {
         this.nextEvent = event;
     }
 
-    void setPrevious(Event event){
+    void setPrevious(Event event) {
         this.previousEvent = event;
     }
-    int Execute(){
-        // je c pas ce que doit faire chaque evenement
+
+    int Execute() {
         return 1;
     }
 }
-//------------------------------------------------
+
 class DoubleLinkedListEvents {
     Event head=null;
     Event tail=null;
@@ -42,6 +52,7 @@ class DoubleLinkedListEvents {
             this.tail = event;
         }
     }
+
     void removeEvent(Event event) {
         Event prev = event.getPrevious();
         Event next = event.getNext();
@@ -53,7 +64,6 @@ class DoubleLinkedListEvents {
         if (next != null) {
             next.setPrevious(prev);
         } else {
-            // Updating tail if removing the last element
             head = prev;
         }
     }
@@ -66,17 +76,18 @@ class DoubleLinkedListEvents {
         return head;
     }
 
-    Event popLast(){
+    Event popLast() {
         Event a = tail;
         removeEvent(tail);
         return a;
 
     }
 
-    Event popFirst(){
+    Event popFirst() {
         return head;
         removeEvent(head);
     }
+
     void displayEvents() {
         Event current = tail;
         boolean test = current != null;
@@ -88,15 +99,15 @@ class DoubleLinkedListEvents {
 }
 
 {
- DoubleLinkedListEvents events = new DoubleLinkedListEvents();
- Event firstEvent = new Event();
- Event secondEvent = new Event();
- Event thirdEvent = new Event();
- firstEvent.initEvent(null,null,1);
- secondEvent.initEvent(null,null,2);
- thirdEvent.initEvent(null,null,3);
- events.addEvent(firstEvent);
- events.addEvent(secondEvent);
- events.addEvent(thirdEvent);
- events.displayEvents();
+    DoubleLinkedListEvents events = new DoubleLinkedListEvents();
+    Event firstEvent = new Event();
+    Event secondEvent = new Event();
+    Event thirdEvent = new Event();
+    firstEvent.initEvent(null,null,1);
+    secondEvent.initEvent(null,null,2);
+    thirdEvent.initEvent(null,null,3);
+    events.addEvent(firstEvent);
+    events.addEvent(secondEvent);
+    events.addEvent(thirdEvent);
+    events.displayEvents();
 }

@@ -67,7 +67,6 @@ public class Assign extends AbstractBinaryExpr {
                 saveReg = true;
             }
             iAddr = CodeGenUtils.extractAddrFromIdent(compiler, lIdent);
-            if (iAddr == null) return;
         } else { // Should be a FieldSelection
             FieldSelection lFieldSelect = (FieldSelection) getLeftOperand();
             saveReg = true;
@@ -127,7 +126,6 @@ public class Assign extends AbstractBinaryExpr {
                 saveReg = true;
             }
             iAddr = CodeGenUtils.extractAddrFromIdent(compiler, lIdent);
-            if (iAddr == null) return;
         } else { // Should be a FieldSelection
             FieldSelection lFieldSelect = (FieldSelection) getLeftOperand();
             saveReg = true;

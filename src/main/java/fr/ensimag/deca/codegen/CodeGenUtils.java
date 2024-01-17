@@ -30,25 +30,8 @@ public class CodeGenUtils {
                 // Pas besoin vu qu'on est déjà dans une instance de la classe
 //                compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
 //                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
-                Integer fieldOffset = null;
-                LinkedList<String> popeds = new LinkedList<>();
-                while (fieldOffset == null) {
-                    fieldOffset = vTM.getCurrFieldOffset(identName);
-                    if (fieldOffset != null) {
-                        iAddr = new RegisterOffset(fieldOffset, gpReg);
-                    }
-                    if (fieldOffset == null) {
-                        popeds.addFirst(vTM.getCurrClassName());
-                        vTM.exitClass();
-                    }
-                    if (vTM.getCurrClassName() == null) {
-                        iAddr = null;
-                        break;
-                    }
-                }
-                for (String poped : popeds) {
-                    vTM.enterClass(poped);
-                }
+                Integer fieldOffset = vTM.getCurrFieldOffset(identName);
+                iAddr = new RegisterOffset(fieldOffset, gpReg);
                 rM.freeReg(gpReg);
             }
         }

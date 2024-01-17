@@ -72,7 +72,11 @@ public class VTableManager {
     }
 
     public Integer getCurrFieldOffset(String fieldName) {
-        return getFieldOffset(getCurrClassName(), fieldName);
+        for (String className : currClassNameStack) {
+            Integer fieldOffset = getFieldOffset(className, fieldName);
+            if (fieldOffset != null) return fieldOffset;
+        }
+        return null;
     }
 
     public int getCurrFieldCountOfClass() {
@@ -105,7 +109,13 @@ public class VTableManager {
 
     public Integer getCurrParamOffsetOfMethod(String paramName) {
         if (getCurrMethodName() == null) return null;
-        return getParamOffsetOfMethod(getCurrClassName(), getCurrMethodName(), paramName);
+        for (String className : currClassNameStack) {
+            for (String methodName : currMethodNameStack) {
+                Integer paramOffset = getParamOffsetOfMethod(className, methodName, paramName);
+                if (paramOffset != null) return paramOffset;
+            }
+        }
+        return null;
     }
 
     public int getCurrParamCountOfMethod() {
