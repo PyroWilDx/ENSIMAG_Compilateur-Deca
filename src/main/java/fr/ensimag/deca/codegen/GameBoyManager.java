@@ -23,6 +23,10 @@ public class GameBoyManager {
         return AddrMethod + argOffset * 16;
     }
 
+    public static int getMethodLastParamAddr(int paramCount) {
+        return AddrMethod + paramCount * 16 + 16;
+    }
+
     private final HashMap<String, GlobalVarInfo> globalVars;
 
     public GameBoyManager() {
@@ -39,6 +43,10 @@ public class GameBoyManager {
 
     public boolean isGlobalVarAddr(String varName) {
         return globalVars.get(varName).isAddr;
+    }
+
+    public int getGlobalAddrSP() {
+        return Addr0 - globalVars.size() * 16;
     }
 }
 

@@ -5,13 +5,11 @@ import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.NullOperand;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
+import java.util.List;
 
 public class MethodCall extends AbstractMethodCall {
     private final AbstractExpr expr;
@@ -51,9 +49,9 @@ public class MethodCall extends AbstractMethodCall {
     public void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         ErrorManager eM = compiler.getErrorManager();
-        StackManager sM = compiler.getStackManager();
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         vTM.enterClass(expr.getType().getName().getName());
 
@@ -61,37 +59,60 @@ public class MethodCall extends AbstractMethodCall {
         vTM.enterMethod(methodName);
 
         int addSp = vTM.getCurrParamCountOfMethod() + 1;
-        if (GameBoyManager.doCp) addSp += sM.getAddSp();
 
-        compiler.addInstruction(new ADDSP(addSp));
-
-        expr.codeGenInst(compiler);
-
-        GPRegister gpReg = rM.getLastReg();
-        compiler.addInstruction(new STORE(gpReg, new RegisterOffset(0, Register.SP)));
-        rM.freeReg(gpReg);
-
-        int currParamIndex = -1;
-        for (AbstractExpr arg : rValueStar.getList()) {
-            arg.codeGenInst(compiler);
-            gpReg = rM.getLastRegOrImm(compiler);
+        if (GameBoyManager.doCp) {
+//            compiler.add(new LineGb("ld hl, SP"));
+//            compiler.addInstruction(new PUSH(Register.HL));
             compiler.addInstruction(
-                    new STORE(gpReg, new RegisterOffset(currParamIndex, Register.SP)));
-            rM.freeReg(gpReg);
-            currParamIndex--;
+                    new LOAD_SP(GameBoyManager.getMethodLastParamAddr(addSp), Register.SP));
+        } else {
+            compiler.addInstruction(new ADDSP(addSp));
         }
 
-        gpReg = rM.getFreeReg();
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), gpReg));
-        if (compiler.getCompilerOptions().doCheck()) {
-            compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-            compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+        if (GameBoyManager.doCp) {
+            List<AbstractExpr> args = rValueStar.getList();
+            for (int i = args.size() - 1; i >= 0; i--) {
+                AbstractExpr arg = args.get(i);
+                arg.codeGenInst(compiler);
+                GPRegister gpReg = rM.getLastRegOrImm(compiler);
+                compiler.addInstruction(new PUSH(gpReg));
+                rM.freeReg(gpReg);
+            }
+
+            expr.codeGenInst(compiler);
+            GPRegister gpReg = rM.getLastReg();
+            compiler.addInstruction(new PUSH(gpReg));
+            rM.freeReg(gpReg);
+        } else {
+            expr.codeGenInst(compiler);
+            GPRegister gpReg = rM.getLastReg();
+            compiler.addInstruction(new STORE(gpReg, new RegisterOffset(0, Register.SP)));
+            rM.freeReg(gpReg);
+
+            int currParamIndex = -1;
+            for (AbstractExpr arg : rValueStar.getList()) {
+                arg.codeGenInst(compiler);
+                gpReg = rM.getLastRegOrImm(compiler);
+                compiler.addInstruction(
+                        new STORE(gpReg, new RegisterOffset(currParamIndex, Register.SP)));
+                rM.freeReg(gpReg);
+                currParamIndex--;
+            }
         }
-        compiler.addInstruction(new LOAD(new RegisterOffset(0, gpReg), gpReg));
+
+        GPRegister gpReg = rM.getFreeReg();
+
+        if (!GameBoyManager.doCp) {
+            compiler.addInstruction(new LOAD(new RegisterOffset(0, Register.SP), gpReg));
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+            }
+            compiler.addInstruction(new LOAD(new RegisterOffset(0, gpReg), gpReg));
+        }
 
         if (GameBoyManager.doCp) {
             // TODO (cf BSR page 109 pour polymorphisme)
-            compiler.addInstruction(new ADD(vTM.getCurrMethodOffset(), gpReg));
             compiler.addInstruction(new BSR(vTM.getCurrMethodLabel()));
         } else {
             compiler.addInstruction(
@@ -100,13 +121,19 @@ public class MethodCall extends AbstractMethodCall {
 
         rM.freeReg(gpReg);
 
-        compiler.addInstruction(new SUBSP(addSp));
-
-        if (!getType().isVoid()) {
-            rM.freeRegForce(Register.R0);
+        if (GameBoyManager.doCp) {
+            compiler.addInstruction(new LOAD_SP(gbM.getGlobalAddrSP(), Register.SP));
+            if (!getType().isVoid()) {
+                rM.freeRegForce(Register.HL);
+            }
+        } else {
+            compiler.addInstruction(new SUBSP(addSp));
+            if (!getType().isVoid()) {
+                rM.freeRegForce(Register.R0);
+            }
         }
 
-        if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+        if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             rM.getLastReg(); // On enlève R0
             compiler.addInstruction(new CMP(0, Register.R0));
             if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
