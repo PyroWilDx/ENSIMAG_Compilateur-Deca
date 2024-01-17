@@ -123,26 +123,24 @@ public class MethodCall extends AbstractMethodCall {
 
         if (GameBoyManager.doCp) {
             compiler.addInstruction(new LOAD_SP(gbM.getGlobalAddrSP(), Register.SP));
-            if (!getType().isVoid()) {
-                rM.freeRegForce(Register.HL);
-            }
         } else {
             compiler.addInstruction(new SUBSP(addSp));
-            if (!getType().isVoid()) {
-                rM.freeRegForce(Register.R0);
-            }
+        }
+
+        if (!getType().isVoid()) {
+            rM.freeRegForce(Register.getR0HL());
         }
 
         if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             rM.getLastReg(); // On enlève R0
-            compiler.addInstruction(new CMP(0, Register.R0));
+            compiler.addInstruction(new CMP(0, Register.getR0HL()));
             if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
             else compiler.addInstruction(new BEQ(branchLabel));
         } else {
             if (getType().isBoolean() && !isInTrue) {
                 rM.getLastReg(); // On enlève R0
                 gpReg = rM.getFreeReg();
-                compiler.addInstruction(new CMP(0, Register.R0));
+                compiler.addInstruction(new CMP(0, Register.getR0HL()));
                 compiler.addInstruction(new SEQ(gpReg));
                 rM.freeReg(gpReg);
             }

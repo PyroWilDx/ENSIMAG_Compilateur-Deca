@@ -108,16 +108,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
 
         getLeftOperand().codeGenInst(compiler);
         GPRegister regLeft = rM.getLastRegOrImm(compiler);
-        if (GameBoyManager.doCp) {
-            if (regLeft == Register.HL) {
-                regLeft = rM.getFreeReg();
+        if (regLeft == Register.getR0HL()) { // On vient de faire un return
+            regLeft = rM.getFreeReg();
+            if (GameBoyManager.doCp) {
                 compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regLeft.getLowReg()));
-            }
-        } else {
-            if (regLeft == Register.R0) { // On vient de faire un return
+            } else {
                 // L'opérande de droite peut aussi utiliser R0
                 // Donc on fait un LOAD, nécessaire pour sauvegarder la valeur
-                regLeft = rM.getFreeReg();
                 compiler.addInstruction(new LOAD(Register.R0, regLeft));
             }
         }
@@ -137,21 +134,14 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         GPRegister regRight = null;
         if (lastImmRight == null) {
             regRight = rM.getLastReg();
-            if (GameBoyManager.doCp) {
-                if (regRight == Register.HL) {
-                    if (pushed) {
-                        regRight = rM.getFreeReg();
-                        compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
-                    }
-                }
-            } else {
-                if (regRight == Register.R0) { // On vient de faire un return
-                    if (pushed) {
-                        // Si on avait PUSH, alors on va utiliser R0 juste après
-                        // Donc on doit sauvegarder la valeur
-                        regRight = rM.getFreeReg();
-                        compiler.addInstruction(new LOAD(Register.R0, regLeft));
-                    }
+            if (regRight == Register.getR0HL() && pushed) { // On vient de faire un return et on a PUSH
+                regRight = rM.getFreeReg();
+                if (GameBoyManager.doCp) {
+                    compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
+                } else {
+                    // Si on avait PUSH, alors on va utiliser R0 juste après
+                    // Donc on doit sauvegarder la valeur
+                    compiler.addInstruction(new LOAD(Register.R0, regLeft));
                 }
             }
         }
@@ -164,17 +154,14 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.addInstruction(new LOAD(regRight, Register.R0));
             }
             regLeft = regRight;
-            if (GameBoyManager.doCp) {
-                regRight = Register.HL;
-            } else {
-                regRight = Register.R0;
-            }
+            regRight = Register.getR0HL();
             compiler.addInstruction(new POP(regLeft));
             sM.decrTmpVar();
         }
 
         if (GameBoyManager.doCp) {
             DVal dVal = (lastImmRight == null) ? regRight.getLowReg() : lastImmRight;
+            // Non ce n'est toujours pas null IDEA
             codeGenOp(compiler, dVal, regLeft.getLowReg());
         } else {
             DVal dVal = (lastImmRight == null) ? regRight : lastImmRight;

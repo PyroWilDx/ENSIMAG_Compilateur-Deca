@@ -1,5 +1,7 @@
 package fr.ensimag.ima.pseudocode;
 
+import fr.ensimag.deca.codegen.GameBoyManager;
+
 /**
  * Register operand (including special registers like SP).
  *
@@ -77,5 +79,9 @@ public class Register extends DVal {
             res[i] = new GPRegister("R" + i, i);
         }
         return res;
+    }
+
+    public static GPRegister getR0HL() {
+        return (GameBoyManager.doCp) ? HL : R0;
     }
 }

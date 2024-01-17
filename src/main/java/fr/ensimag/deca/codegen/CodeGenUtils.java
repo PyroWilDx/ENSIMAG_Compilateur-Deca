@@ -28,7 +28,8 @@ public class CodeGenUtils {
                 // Pas besoin vu qu'on est déjà dans une instance de la classe
 //                compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
 //                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
-                int fieldOffset = vTM.getCurrFieldOffset(identName);
+                Integer fieldOffset = vTM.getCurrFieldOffset(identName);
+                if (fieldOffset == null) return null; // Jsp
                 iAddr = new RegisterOffset(fieldOffset, gpReg);
                 rM.freeReg(gpReg);
             }

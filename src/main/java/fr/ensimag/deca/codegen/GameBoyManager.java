@@ -1,5 +1,8 @@
 package fr.ensimag.deca.codegen;
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.tree.AbstractIdentifier;
+
 import java.util.HashMap;
 
 public class GameBoyManager {
@@ -27,35 +30,52 @@ public class GameBoyManager {
         return AddrMethod + paramCount * 16 + 16;
     }
 
-    private final HashMap<String, GlobalVarInfo> globalVars;
+    private final HashMap<String, Integer> globalVars;
+    public String currClassVar;
 
     public GameBoyManager() {
         this.globalVars = new HashMap<>();
+        this.currClassVar = null;
     }
 
-    public void addGlobalVar(String varName, int varOffset, boolean isAddr) {
-        globalVars.put(varName, new GlobalVarInfo(varOffset, isAddr));
+    public void addGlobalVar(String varName, int varOffset) {
+        globalVars.put(varName, varOffset);
     }
 
-    public int getGlobalVarOffset(String varName) {
-        return globalVars.get(varName).varOffset;
-    }
-
-    public boolean isGlobalVarAddr(String varName) {
-        return globalVars.get(varName).isAddr;
+    public Integer getGlobalVarOffset(String varName) {
+        return globalVars.get(varName);
     }
 
     public int getGlobalAddrSP() {
-        return Addr0 - globalVars.size() * 16;
+        return Addr0 - (globalVars.size() * 16);
     }
-}
 
-class GlobalVarInfo {
-    int varOffset;
-    boolean isAddr;
+    public Integer getGlobalVarAddr(String varName) {
+        if (getGlobalVarOffset(varName) == null) return null;
+        return Addr0 - (getGlobalVarOffset(varName) * 16);
+    }
 
-    public GlobalVarInfo(int varOffset, boolean isAddr) {
-        this.varOffset = varOffset;
-        this.isAddr = isAddr;
+    public int getCurrClassFieldAddr(int fieldOffset) {
+        System.out.println("TEST" + currClassVar);
+        return Addr0 - ((globalVars.get(currClassVar) - fieldOffset) * 16);
+    }
+
+    public int extractAddrFromIdent(DecacCompiler compiler, AbstractIdentifier ident) {
+        VTableManager vTM = compiler.getVTableManager();
+
+        String identName = ident.getName().getName();
+
+        System.out.println(identName);
+        Integer varAddr = getGlobalVarAddr(identName);
+        if (varAddr == null) { // It's a Method Param or Class Field
+            Integer paramOffset = vTM.getCurrParamOffsetOfMethod(identName);
+            if (paramOffset != null) { // It's a Method Param
+                varAddr = getArgAddr(paramOffset);
+            } else { // It's a Class Field
+                int fieldOffset = vTM.getCurrFieldOffset(identName);
+                varAddr = getCurrClassFieldAddr(fieldOffset);
+            }
+        }
+        return varAddr;
     }
 }
