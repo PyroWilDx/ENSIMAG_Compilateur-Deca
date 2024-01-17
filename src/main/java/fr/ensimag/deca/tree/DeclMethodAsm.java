@@ -25,12 +25,12 @@ public class DeclMethodAsm extends AbstractDeclMethod {
 
     @Override
     public boolean isOverride() {
-        return false; // TODO
+        return this.override;
     }
 
     @Override
     public int getMethodIndex() {
-        return 0; // TODO
+        return methodIndex;
     }
 
     public void codeGenDeclMethod(DecacCompiler compiler) {
@@ -84,8 +84,6 @@ public class DeclMethodAsm extends AbstractDeclMethod {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO
-
         type.prettyPrint(s, prefix, false);
         name.prettyPrint(s, prefix, false);
         params.prettyPrint(s, prefix, false);

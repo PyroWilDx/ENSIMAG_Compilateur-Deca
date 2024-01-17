@@ -10,7 +10,7 @@
 class A {
     void testAsm(int x, int y)
     asm(
-    "LOAD #80, R14
+    "    LOAD #80, R14
     LOAD #100, R12
     ADD R14, R12
     LOAD R12, R0

@@ -2,6 +2,7 @@ package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.ErrorManager;
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
 import fr.ensimag.deca.context.*;
@@ -89,27 +90,36 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         ErrorManager eM = compiler.getErrorManager();
         StackManager sM = compiler.getStackManager();
 
-        if ((getLeftOperand() instanceof FloatLiteral) && // Juste pour test rapide haha
-            getRightOperand() instanceof FloatLiteral) {
-            if (this instanceof Divide) {
-                FloatLiteral fLL = (FloatLiteral) getLeftOperand();
-                FloatLiteral fLR = (FloatLiteral) getRightOperand();
-                if (fLR.getValue() != 0.f) {
-                    GPRegister gpReg = rM.getFreeReg();
-                    compiler.addInstruction(new LOAD(fLL.getValue() / fLR.getValue(), gpReg));
-                    rM.freeReg(gpReg);
-                    return;
+        if (!GameBoyManager.doCp) {
+            if ((getLeftOperand() instanceof FloatLiteral) && // Juste pour test rapide haha
+                    getRightOperand() instanceof FloatLiteral) {
+                if (this instanceof Divide) {
+                    FloatLiteral fLL = (FloatLiteral) getLeftOperand();
+                    FloatLiteral fLR = (FloatLiteral) getRightOperand();
+                    if (fLR.getValue() != 0.f) {
+                        GPRegister gpReg = rM.getFreeReg();
+                        compiler.addInstruction(new LOAD(fLL.getValue() / fLR.getValue(), gpReg));
+                        rM.freeReg(gpReg);
+                        return;
+                    }
                 }
             }
         }
 
         getLeftOperand().codeGenInst(compiler);
         GPRegister regLeft = rM.getLastRegOrImm(compiler);
-        if (regLeft == Register.R0) { // On vient de faire un return
-            // L'opérande de droite peut aussi utiliser R0
-            // Donc on fait un LOAD, nécessaire pour sauvegarder la valeur
-            regLeft = rM.getFreeReg();
-            compiler.addInstruction(new LOAD(Register.R0, regLeft));
+        if (GameBoyManager.doCp) {
+            if (regLeft == Register.HL) {
+                regLeft = rM.getFreeReg();
+                compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regLeft.getLowReg()));
+            }
+        } else {
+            if (regLeft == Register.R0) { // On vient de faire un return
+                // L'opérande de droite peut aussi utiliser R0
+                // Donc on fait un LOAD, nécessaire pour sauvegarder la valeur
+                regLeft = rM.getFreeReg();
+                compiler.addInstruction(new LOAD(Register.R0, regLeft));
+            }
         }
 
         boolean pushed = false;
@@ -127,30 +137,55 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         GPRegister regRight = null;
         if (lastImmRight == null) {
             regRight = rM.getLastReg();
-            if (regRight == Register.R0) { // On vient de faire un return
-                if (pushed) {
-                    // Si on avait PUSH, alors on va utiliser R0 juste après
-                    // Donc on doit sauvegarder la valeur
-                    regRight = rM.getFreeReg();
-                    compiler.addInstruction(new LOAD(Register.R0, regLeft));
+            if (GameBoyManager.doCp) {
+                if (regRight == Register.HL) {
+                    if (pushed) {
+                        regRight = rM.getFreeReg();
+                        compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
+                    }
+                }
+            } else {
+                if (regRight == Register.R0) { // On vient de faire un return
+                    if (pushed) {
+                        // Si on avait PUSH, alors on va utiliser R0 juste après
+                        // Donc on doit sauvegarder la valeur
+                        regRight = rM.getFreeReg();
+                        compiler.addInstruction(new LOAD(Register.R0, regLeft));
+                    }
                 }
             }
         }
 
         if (pushed) {
-            compiler.addInstruction(new LOAD(regRight, Register.R0));
+            if (GameBoyManager.doCp) {
+                // Non ce n'est pas null IDEA
+                compiler.addInstruction(new LOAD_REG(regRight.getLowReg(), Register.HL.getLowReg()));
+            } else {
+                compiler.addInstruction(new LOAD(regRight, Register.R0));
+            }
             regLeft = regRight;
-            regRight = Register.R0;
+            if (GameBoyManager.doCp) {
+                regRight = Register.HL;
+            } else {
+                regRight = Register.R0;
+            }
             compiler.addInstruction(new POP(regLeft));
             sM.decrTmpVar();
         }
 
-        DVal dVal = (lastImmRight == null) ? regRight : lastImmRight;
-        codeGenOp(compiler, dVal, regLeft);
+        if (GameBoyManager.doCp) {
+            DVal dVal = (lastImmRight == null) ? regRight.getLowReg() : lastImmRight;
+            codeGenOp(compiler, dVal, regLeft.getLowReg());
+        } else {
+            DVal dVal = (lastImmRight == null) ? regRight : lastImmRight;
+            codeGenOp(compiler, dVal, regLeft);
+        }
 
-        if (getType().isFloat()) {
-            if (compiler.getCompilerOptions().doCheck()) {
-                compiler.addInstruction(new BOV(eM.getFloatOverflowLabel()));
+        if (!GameBoyManager.doCp) {
+            if (getType().isFloat()) {
+                if (compiler.getCompilerOptions().doCheck()) {
+                    compiler.addInstruction(new BOV(eM.getFloatOverflowLabel()));
+                }
             }
         }
 

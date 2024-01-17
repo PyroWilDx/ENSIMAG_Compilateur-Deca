@@ -20,8 +20,6 @@ public abstract class Instruction {
         displayOperands(s);
     }
 
-    protected int nbGbAsmInst = 1;
-
     public String getGameBoyAsm() { // TODO (a enlever et mettre en abstract)
         return getName();
     }
@@ -31,12 +29,9 @@ public abstract class Instruction {
     public abstract void displayOperandsGameBoy(PrintStream s);
 
     public void displayGameBoy(PrintStream s) {
-//        while (nbGbAsmInst > 0) {
         String gbAsmInstName = getGameBoyAsm();
         if (gbAsmInstName == null) gbAsmInstName = getName();
         s.print(gbAsmInstName);
         displayOperandsGameBoy(s);
-//            nbGbAsmInst--;
-//        }
     }
 }
