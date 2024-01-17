@@ -14,15 +14,15 @@ class Utils {
     }
     int get(int addr) asm(
             "
-            ld bc, -6[sp]
+            ld bc, 49664
             ld [bc], bc
             rts
             "
             ); // TODO VRAIMENT PAS SUR.
     void push(int addr, int value) asm(
             "
-            ld bc, -8[sp]
-            ld de, -6[sp]
+            ld bc, 49670
+            ld de, 49664
             ld [bc], de
             "
             ); // TODO VRAIMENT PAS SÛR
