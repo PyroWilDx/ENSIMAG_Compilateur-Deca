@@ -102,6 +102,8 @@ def doTests():
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (VALIDE)")
 
+    doVerify("codegen/valid/classes/extends/test.deca", doAssert=False)
+
     doVerify("codegen/valid/iostreams/printString.deca",
              expectedResult=b"Hello World ! Second Argument\n"
                             b"Second Println\n"

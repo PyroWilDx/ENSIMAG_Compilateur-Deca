@@ -31,7 +31,7 @@ public class VTableManager {
         return vTables.get(className).getClassAddr();
     }
 
-    public int getFieldOffset(String className, String fieldName) {
+    public Integer getFieldOffset(String className, String fieldName) {
         return vTables.get(className).getFieldOffset(fieldName);
     }
 
@@ -71,7 +71,7 @@ public class VTableManager {
         return getClassAddr(getCurrClassName());
     }
 
-    public int getCurrFieldOffset(String fieldName) {
+    public Integer getCurrFieldOffset(String fieldName) {
         return getFieldOffset(getCurrClassName(), fieldName);
     }
 

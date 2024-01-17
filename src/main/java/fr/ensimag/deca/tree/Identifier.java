@@ -256,17 +256,15 @@ public class Identifier extends AbstractIdentifier {
 
         if (GameBoyManager.doCp) {
             GameBoyManager gbM = compiler.getGameBoyManager();
-            int varOffset = gbM.getGlobalVarOffset(getName().getName());
-            boolean isAddr = gbM.isGlobalVarAddr(getName().getName());
+            int varAddr = gbM.extractAddrFromIdent(compiler, this);
+            compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
             gpReg = rM.getFreeReg();
-            compiler.addInstruction(new LOAD_INT(GameBoyManager.getVarAddr(varOffset), Register.HL));
-            if (isAddr) {
-                compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
-                compiler.addInstruction(new LOAD_INT(GameBoyManager.getVarAddr(varOffset) - 8, Register.HL));
-            }
+            compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
+            compiler.addInstruction(new LOAD_INT(varAddr - 8, Register.HL));
             compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
         } else {
             DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
+            if (iAddr == null) return;
             gpReg = rM.getFreeReg();
             compiler.addInstruction(new LOAD(iAddr, gpReg));
         }

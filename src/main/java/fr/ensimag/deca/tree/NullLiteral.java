@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
@@ -7,6 +8,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
+import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.NullOperand;
 
 import java.io.PrintStream;
@@ -40,7 +42,11 @@ public class NullLiteral extends AbstractLiteral {
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
 
-        rM.setLastImm(new NullOperand());
+        if (GameBoyManager.doCp) {
+            rM.setLastImm(new ImmediateInteger(0));
+        } else {
+            rM.setLastImm(new NullOperand());
+        }
     }
 
     @Override

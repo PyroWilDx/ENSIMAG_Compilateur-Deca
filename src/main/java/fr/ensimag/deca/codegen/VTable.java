@@ -87,7 +87,7 @@ public class VTable {
         classFields.putAll(otherVTable.classFields);
     }
 
-    public int getFieldOffset(String fieldName) {
+    public Integer getFieldOffset(String fieldName) {
         return classFields.get(fieldName);
     }
 

@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.deca.codegen.LabelUtils;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.VTableManager;
@@ -15,6 +16,8 @@ import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.LOAD_INT;
+import fr.ensimag.ima.pseudocode.instructions.LOAD_REG;
 
 import java.io.PrintStream;
 
@@ -45,10 +48,23 @@ public class Return extends AbstractInst {
             DVal dVal = rM.getLastImm();
             if (dVal == null) {
                 GPRegister gpReg = rM.getLastReg();
-                compiler.addInstruction(new LOAD(gpReg, Register.R0));
+                if (GameBoyManager.doCp) {
+                    if (expr.getType().isClass()) {
+                        compiler.addInstruction(new LOAD_REG(gpReg.getHighReg(), Register.HL.getHighReg()));
+                        compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
+                    } else {
+                        compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
+                    }
+                } else {
+                    compiler.addInstruction(new LOAD(gpReg, Register.R0));
+                }
                 rM.freeReg(gpReg);
             } else {
-                compiler.addInstruction(new LOAD(dVal, Register.R0));
+                if (GameBoyManager.doCp) {
+                    compiler.addInstruction(new LOAD_INT(dVal, Register.HL));
+                } else {
+                    compiler.addInstruction(new LOAD(dVal, Register.R0));
+                }
             }
         }
 

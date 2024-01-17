@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.CondManager;
-import fr.ensimag.deca.codegen.ErrorManager;
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.deca.codegen.VTableManager;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
@@ -67,6 +64,10 @@ public class FieldSelection extends AbstractLValue {
 
         DAddr fAddr = getAddrOfField(compiler);
         fieldIdent.getExpDefinition().setOperand(fAddr);
+
+        if (GameBoyManager.doCp) {
+
+        }
 
         fieldIdent.codeGenInst(compiler);
 
