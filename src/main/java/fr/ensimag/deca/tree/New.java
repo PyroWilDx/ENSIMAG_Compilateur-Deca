@@ -46,7 +46,7 @@ public class New extends AbstractExpr {
         int fieldsCount = vTM.getCurrFieldCountOfClass();
 
         GPRegister gpReg = rM.getFreeReg();
-        
+
         if (GameBoyManager.doCp) {
             StackManager sM = compiler.getStackManager();
 

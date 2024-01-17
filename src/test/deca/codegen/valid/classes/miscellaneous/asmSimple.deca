@@ -2,10 +2,7 @@
 //    Test de la fonction asm
 //
 // Resultats :
-//    10
-//    180
-//    2
-//    4
+//    10 180 2 4
 
 class A {
     void testAsm(int x, int y)
@@ -18,13 +15,13 @@ class A {
     PUSH R1
     LOAD #10, R1
     WINT
-    WNL
+    WSTR \" \"
     POP R1
     WINT
-    WNL
+    WSTR \" \"
     LOAD -3(LB), R1
     WINT
-    WNL
+    WSTR \" \"
     LOAD -4(LB), R1
     WINT
     WNL

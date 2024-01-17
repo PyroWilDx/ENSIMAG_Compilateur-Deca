@@ -256,7 +256,8 @@ public class Identifier extends AbstractIdentifier {
 
         if (GameBoyManager.doCp) {
             GameBoyManager gbM = compiler.getGameBoyManager();
-            int varAddr = gbM.extractAddrFromIdent(compiler, this);
+            Integer varAddr = gbM.extractAddrFromIdent(compiler, this);
+            if (varAddr == null) return;
             compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
             gpReg = rM.getFreeReg();
             compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));

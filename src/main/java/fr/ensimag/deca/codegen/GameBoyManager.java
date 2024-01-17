@@ -4,6 +4,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractIdentifier;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class GameBoyManager {
 
@@ -31,11 +32,11 @@ public class GameBoyManager {
     }
 
     private final HashMap<String, Integer> globalVars;
-    public String currClassVar;
+    public LinkedList<AbstractIdentifier> currClassVarStack;
 
     public GameBoyManager() {
         this.globalVars = new HashMap<>();
-        this.currClassVar = null;
+        this.currClassVarStack = new LinkedList<>();
     }
 
     public void addGlobalVar(String varName, int varOffset) {
@@ -44,6 +45,14 @@ public class GameBoyManager {
 
     public Integer getGlobalVarOffset(String varName) {
         return globalVars.get(varName);
+    }
+
+    public String getCurrClassVarName() {
+        return currClassVarStack.peekFirst().getName().getName();
+    }
+
+    public String getCurrClassVarClassName() {
+        return currClassVarStack.peekFirst().getType().getName().getName();
     }
 
     public int getGlobalAddrSP() {
@@ -56,23 +65,23 @@ public class GameBoyManager {
     }
 
     public int getCurrClassFieldAddr(int fieldOffset) {
-        System.out.println("TEST" + currClassVar);
-        return Addr0 - ((globalVars.get(currClassVar) - fieldOffset) * 16);
+        return Addr0 - ((globalVars.get(getCurrClassVarName()) - fieldOffset) * 16);
     }
 
-    public int extractAddrFromIdent(DecacCompiler compiler, AbstractIdentifier ident) {
+    public Integer extractAddrFromIdent(DecacCompiler compiler, AbstractIdentifier ident) {
         VTableManager vTM = compiler.getVTableManager();
 
         String identName = ident.getName().getName();
 
-        System.out.println(identName);
         Integer varAddr = getGlobalVarAddr(identName);
         if (varAddr == null) { // It's a Method Param or Class Field
             Integer paramOffset = vTM.getCurrParamOffsetOfMethod(identName);
             if (paramOffset != null) { // It's a Method Param
                 varAddr = getArgAddr(paramOffset);
             } else { // It's a Class Field
+                vTM.enterClass(getCurrClassVarClassName());
                 int fieldOffset = vTM.getCurrFieldOffset(identName);
+                vTM.exitClass();
                 varAddr = getCurrClassFieldAddr(fieldOffset);
             }
         }

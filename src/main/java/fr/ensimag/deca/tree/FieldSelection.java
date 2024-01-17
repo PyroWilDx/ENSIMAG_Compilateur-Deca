@@ -66,12 +66,22 @@ public class FieldSelection extends AbstractLValue {
         fieldIdent.getExpDefinition().setOperand(fAddr);
 
         if (GameBoyManager.doCp) {
-
+            GameBoyManager gbM = compiler.getGameBoyManager();
+            if (expr instanceof AbstractIdentifier) {
+                gbM.currClassVarStack.addFirst((AbstractIdentifier) expr);
+            }
         }
 
         fieldIdent.codeGenInst(compiler);
 
         fieldIdent.getExpDefinition().setOperand(null);
+
+        if (GameBoyManager.doCp) {
+            GameBoyManager gbM = compiler.getGameBoyManager();
+            if (expr instanceof AbstractIdentifier) {
+                gbM.currClassVarStack.removeFirst();
+            }
+        }
         // Done
     }
 
