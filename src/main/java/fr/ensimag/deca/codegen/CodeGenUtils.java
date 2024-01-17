@@ -5,6 +5,8 @@ import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
+import java.util.LinkedList;
+
 public class CodeGenUtils {
 
     private CodeGenUtils() {
@@ -28,9 +30,25 @@ public class CodeGenUtils {
                 // Pas besoin vu qu'on est déjà dans une instance de la classe
 //                compiler.addInstruction(new CMP(new NullOperand(), Register.R0));
 //                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
-                Integer fieldOffset = vTM.getCurrFieldOffset(identName);
-                if (fieldOffset == null) return null; // Jsp
-                iAddr = new RegisterOffset(fieldOffset, gpReg);
+                Integer fieldOffset = null;
+                LinkedList<String> popeds = new LinkedList<>();
+                while (fieldOffset == null) {
+                    fieldOffset = vTM.getCurrFieldOffset(identName);
+                    if (fieldOffset != null) {
+                        iAddr = new RegisterOffset(fieldOffset, gpReg);
+                    }
+                    if (fieldOffset == null) {
+                        popeds.addFirst(vTM.getCurrClassName());
+                        vTM.exitClass();
+                    }
+                    if (vTM.getCurrClassName() == null) {
+                        iAddr = null;
+                        break;
+                    }
+                }
+                for (String poped : popeds) {
+                    vTM.enterClass(poped);
+                }
                 rM.freeReg(gpReg);
             }
         }

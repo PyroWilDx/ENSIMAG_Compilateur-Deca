@@ -37,9 +37,9 @@ class DoubleLinkedListEvents {
             head = event;
             tail = event;
         } else {
-            tail.setNext(event);
-            event.setPrevious(tail);
-            tail = event;
+            this.tail.setPrevious(event);
+            event.setNext(tail);
+            this.tail = event;
         }
     }
     void removeEvent(Event event) {
@@ -78,7 +78,8 @@ class DoubleLinkedListEvents {
         removeEvent(head);
     }
     void displayEvents() {
-        Event current = head;
+        Event current = tail;
+        boolean test = current != null;
         while (current != null) {
             println(current.i);
             current = current.getNext();
@@ -87,15 +88,15 @@ class DoubleLinkedListEvents {
 }
 
 {
- //DoubleLinkedListEvents events = new DoubleLinkedListEvents();
- //Event firstEvent = new Event();
- //Event secondEvent = new Event();
- //Event thirdEvent = new Event();
- //firstEvent.initEvent(null,null,1);
- //secondEvent.initEvent(null,firstEvent,2);
- //thirdEvent.initEvent(null,secondEvent,3);
- //events.addEvent(firstEvent);
- //events.addEvent(secondEvent);
- //events.addEvent(thirdEvent);
- //events.displayEvents();
+ DoubleLinkedListEvents events = new DoubleLinkedListEvents();
+ Event firstEvent = new Event();
+ Event secondEvent = new Event();
+ Event thirdEvent = new Event();
+ firstEvent.initEvent(null,null,1);
+ secondEvent.initEvent(null,null,2);
+ thirdEvent.initEvent(null,null,3);
+ events.addEvent(firstEvent);
+ events.addEvent(secondEvent);
+ events.addEvent(thirdEvent);
+ events.displayEvents();
 }

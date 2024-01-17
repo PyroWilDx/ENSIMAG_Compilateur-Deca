@@ -1,0 +1,541 @@
+	TSTO #23
+	BOV stackOverflowError
+	ADDSP #23
+; VTable of Object
+	LOAD #null, R0
+	STORE R0, 1(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 2(GB)
+; VTable of Event
+	LEA 1(GB), R0
+	STORE R0, 3(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 4(GB)
+	LOAD code.Event.initEvent, R0
+	STORE R0, 5(GB)
+	LOAD code.Event.getNext, R0
+	STORE R0, 6(GB)
+	LOAD code.Event.getPrevious, R0
+	STORE R0, 7(GB)
+	LOAD code.Event.setNext, R0
+	STORE R0, 8(GB)
+	LOAD code.Event.setPrevious, R0
+	STORE R0, 9(GB)
+	LOAD code.Event.Execute, R0
+	STORE R0, 10(GB)
+; VTable of DoubleLinkedListEvents
+	LEA 1(GB), R0
+	STORE R0, 11(GB)
+	LOAD code.Object.equals, R0
+	STORE R0, 12(GB)
+	LOAD code.DoubleLinkedListEvents.addEvent, R0
+	STORE R0, 13(GB)
+	LOAD code.DoubleLinkedListEvents.removeEvent, R0
+	STORE R0, 14(GB)
+	LOAD code.DoubleLinkedListEvents.getTail, R0
+	STORE R0, 15(GB)
+	LOAD code.DoubleLinkedListEvents.getHead, R0
+	STORE R0, 16(GB)
+	LOAD code.DoubleLinkedListEvents.popLast, R0
+	STORE R0, 17(GB)
+	LOAD code.DoubleLinkedListEvents.popFirst, R0
+	STORE R0, 18(GB)
+	LOAD code.DoubleLinkedListEvents.displayEvents, R0
+	STORE R0, 19(GB)
+; Start of Main Program
+; Main Program
+; Beginning of Main Declarations:
+	NEW #3, R2
+	BOV heapOverflowError
+	LEA 11(GB), R0
+	STORE R0, 0(R2)
+	PUSH R2
+	BSR init.DoubleLinkedListEvents
+	POP R2
+	STORE R2, 20(GB)
+	NEW #4, R2
+	BOV heapOverflowError
+	LEA 3(GB), R0
+	STORE R0, 0(R2)
+	PUSH R2
+	BSR init.Event
+	POP R2
+	STORE R2, 21(GB)
+	NEW #4, R2
+	BOV heapOverflowError
+	LEA 3(GB), R0
+	STORE R0, 0(R2)
+	PUSH R2
+	BSR init.Event
+	POP R2
+	STORE R2, 22(GB)
+	NEW #4, R2
+	BOV heapOverflowError
+	LEA 3(GB), R0
+	STORE R0, 0(R2)
+	PUSH R2
+	BSR init.Event
+	POP R2
+	STORE R2, 23(GB)
+; Beginning of Main Instructions:
+	ADDSP #4
+	LOAD 21(GB), R2
+	STORE R2, 0(SP)
+	LOAD #null, R2
+	STORE R2, -1(SP)
+	LOAD #null, R2
+	STORE R2, -2(SP)
+	LOAD #1, R2
+	STORE R2, -3(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 2(R2)
+	SUBSP #4
+	ADDSP #4
+	LOAD 22(GB), R2
+	STORE R2, 0(SP)
+	LOAD #null, R2
+	STORE R2, -1(SP)
+	LOAD #null, R2
+	STORE R2, -2(SP)
+	LOAD #2, R2
+	STORE R2, -3(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 2(R2)
+	SUBSP #4
+	ADDSP #4
+	LOAD 23(GB), R2
+	STORE R2, 0(SP)
+	LOAD #null, R2
+	STORE R2, -1(SP)
+	LOAD #null, R2
+	STORE R2, -2(SP)
+	LOAD #3, R2
+	STORE R2, -3(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 2(R2)
+	SUBSP #4
+	ADDSP #2
+	LOAD 20(GB), R2
+	STORE R2, 0(SP)
+	LOAD 21(GB), R2
+	STORE R2, -1(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 2(R2)
+	SUBSP #2
+	ADDSP #2
+	LOAD 20(GB), R2
+	STORE R2, 0(SP)
+	LOAD 22(GB), R2
+	STORE R2, -1(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 2(R2)
+	SUBSP #2
+	ADDSP #2
+	LOAD 20(GB), R2
+	STORE R2, 0(SP)
+	LOAD 23(GB), R2
+	STORE R2, -1(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 2(R2)
+	SUBSP #2
+	ADDSP #1
+	LOAD 20(GB), R2
+	STORE R2, 0(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 8(R2)
+	SUBSP #1
+	HALT
+; End of Main Program
+; 
+; Class Object
+code.Object.equals:
+	LOAD -2(LB), R0
+	CMP -3(LB), R0
+	SEQ R0
+	RTS
+; Class Event
+init.Event:
+	LOAD -2(LB), R1
+	LOAD #null, R0
+	STORE R0, 1(R1)
+	STORE R0, 2(R1)
+	LOAD #0, R0
+	STORE R0, 3(R1)
+	RTS
+code.Event.initEvent:
+	TSTO #2
+	BOV stackOverflowError
+	ADDSP #2
+	PUSH R2
+	PUSH R3
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	STORE R3, 1(R2)
+	LOAD -2(LB), R2
+	LOAD -4(LB), R3
+	STORE R3, 2(R2)
+	LOAD -2(LB), R2
+	LOAD -5(LB), R3
+	STORE R3, 3(R2)
+end.Event.initEvent:
+	POP R3
+	POP R2
+	RTS
+code.Event.getNext:
+	TSTO #1
+	BOV stackOverflowError
+	ADDSP #1
+	PUSH R2
+	LOAD -2(LB), R2
+	LOAD 1(R2), R2
+	LOAD R2, R0
+	BRA end.Event.getNext
+	WSTR "Error: Exiting function Event.getNext() without return"
+	WNL
+	ERROR
+end.Event.getNext:
+	POP R2
+	RTS
+code.Event.getPrevious:
+	TSTO #1
+	BOV stackOverflowError
+	ADDSP #1
+	PUSH R2
+	LOAD -2(LB), R2
+	LOAD 2(R2), R2
+	LOAD R2, R0
+	BRA end.Event.getPrevious
+	WSTR "Error: Exiting function Event.getPrevious() without return"
+	WNL
+	ERROR
+end.Event.getPrevious:
+	POP R2
+	RTS
+code.Event.setNext:
+	TSTO #2
+	BOV stackOverflowError
+	ADDSP #2
+	PUSH R2
+	PUSH R3
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	STORE R3, 1(R2)
+end.Event.setNext:
+	POP R3
+	POP R2
+	RTS
+code.Event.setPrevious:
+	TSTO #2
+	BOV stackOverflowError
+	ADDSP #2
+	PUSH R2
+	PUSH R3
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	STORE R3, 2(R2)
+end.Event.setPrevious:
+	POP R3
+	POP R2
+	RTS
+code.Event.Execute:
+	LOAD #1, R0
+	BRA end.Event.Execute
+	WSTR "Error: Exiting function Event.Execute() without return"
+	WNL
+	ERROR
+end.Event.Execute:
+	RTS
+; Class DoubleLinkedListEvents
+init.DoubleLinkedListEvents:
+	LOAD -2(LB), R1
+	LOAD #null, R0
+	STORE R0, 1(R1)
+	STORE R0, 2(R1)
+	LOAD #null, R0
+	LOAD -2(LB), R1
+	STORE R0, 1(R1)
+	LOAD #null, R0
+	LOAD -2(LB), R1
+	STORE R0, 2(R1)
+	RTS
+code.DoubleLinkedListEvents.addEvent:
+	TSTO #2
+	BOV stackOverflowError
+	ADDSP #2
+	PUSH R2
+	PUSH R3
+	LOAD -2(LB), R2
+	LOAD 1(R2), R2
+	CMP #null, R2
+	BNE L0
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	STORE R3, 1(R2)
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	STORE R3, 2(R2)
+	BRA L1
+L0:
+	ADDSP #2
+	LOAD -2(LB), R2
+	LOAD 2(R2), R2
+	STORE R2, 0(SP)
+	LOAD -3(LB), R2
+	STORE R2, -1(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 6(R2)
+	SUBSP #2
+	ADDSP #2
+	LOAD -3(LB), R2
+	STORE R2, 0(SP)
+	LOAD -2(LB), R2
+	LOAD 2(R2), R2
+	STORE R2, -1(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 5(R2)
+	SUBSP #2
+	LOAD -2(LB), R2
+	LOAD -3(LB), R3
+	STORE R3, 2(R2)
+L1:
+end.DoubleLinkedListEvents.addEvent:
+	POP R3
+	POP R2
+	RTS
+code.DoubleLinkedListEvents.removeEvent:
+	TSTO #4
+	BOV stackOverflowError
+	ADDSP #4
+	PUSH R2
+	PUSH R3
+	ADDSP #1
+	LOAD -2(LB), R2
+	STORE R2, 0(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 4(R2)
+	SUBSP #1
+	STORE R0, 1(LB)
+	ADDSP #1
+	LOAD -2(LB), R2
+	STORE R2, 0(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 3(R2)
+	SUBSP #1
+	STORE R0, 2(LB)
+	LOAD 1(LB), R2
+	CMP #null, R2
+	BEQ L2
+	ADDSP #2
+	LOAD 1(LB), R2
+	STORE R2, 0(SP)
+	LOAD 2(LB), R2
+	STORE R2, -1(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 5(R2)
+	SUBSP #2
+	BRA L3
+L2:
+	LOAD -2(LB), R2
+	LOAD 2(LB), R3
+	STORE R3, 2(R2)
+L3:
+	LOAD 2(LB), R2
+	CMP #null, R2
+	BEQ L4
+	ADDSP #2
+	LOAD 2(LB), R2
+	STORE R2, 0(SP)
+	LOAD 1(LB), R2
+	STORE R2, -1(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 6(R2)
+	SUBSP #2
+	BRA L5
+L4:
+	LOAD -2(LB), R2
+	LOAD 1(LB), R3
+	STORE R3, 1(R2)
+L5:
+end.DoubleLinkedListEvents.removeEvent:
+	POP R3
+	POP R2
+	RTS
+code.DoubleLinkedListEvents.getTail:
+	TSTO #1
+	BOV stackOverflowError
+	ADDSP #1
+	PUSH R2
+	LOAD -2(LB), R2
+	LOAD 2(R2), R2
+	LOAD R2, R0
+	BRA end.DoubleLinkedListEvents.getTail
+	WSTR "Error: Exiting function DoubleLinkedListEvents.getTail() without return"
+	WNL
+	ERROR
+end.DoubleLinkedListEvents.getTail:
+	POP R2
+	RTS
+code.DoubleLinkedListEvents.getHead:
+	TSTO #1
+	BOV stackOverflowError
+	ADDSP #1
+	PUSH R2
+	LOAD -2(LB), R2
+	LOAD 1(R2), R2
+	LOAD R2, R0
+	BRA end.DoubleLinkedListEvents.getHead
+	WSTR "Error: Exiting function DoubleLinkedListEvents.getHead() without return"
+	WNL
+	ERROR
+end.DoubleLinkedListEvents.getHead:
+	POP R2
+	RTS
+code.DoubleLinkedListEvents.popLast:
+	TSTO #2
+	BOV stackOverflowError
+	ADDSP #2
+	PUSH R2
+	LOAD -2(LB), R2
+	LOAD 2(R2), R2
+	STORE R2, 1(LB)
+	ADDSP #2
+	LOAD -2(LB), R2
+	STORE R2, 0(SP)
+	LOAD -2(LB), R2
+	LOAD 2(R2), R2
+	STORE R2, -1(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 3(R2)
+	SUBSP #2
+	LOAD 1(LB), R2
+	LOAD R2, R0
+	BRA end.DoubleLinkedListEvents.popLast
+	WSTR "Error: Exiting function DoubleLinkedListEvents.popLast() without return"
+	WNL
+	ERROR
+end.DoubleLinkedListEvents.popLast:
+	POP R2
+	RTS
+code.DoubleLinkedListEvents.popFirst:
+	TSTO #1
+	BOV stackOverflowError
+	ADDSP #1
+	PUSH R2
+	LOAD -2(LB), R2
+	LOAD 1(R2), R2
+	LOAD R2, R0
+	BRA end.DoubleLinkedListEvents.popFirst
+	ADDSP #2
+	LOAD -2(LB), R2
+	STORE R2, 0(SP)
+	LOAD -2(LB), R2
+	LOAD 1(R2), R2
+	STORE R2, -1(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 3(R2)
+	SUBSP #2
+	WSTR "Error: Exiting function DoubleLinkedListEvents.popFirst() without return"
+	WNL
+	ERROR
+end.DoubleLinkedListEvents.popFirst:
+	POP R2
+	RTS
+code.DoubleLinkedListEvents.displayEvents:
+	TSTO #3
+	BOV stackOverflowError
+	ADDSP #3
+	PUSH R2
+	LOAD -2(LB), R2
+	LOAD 2(R2), R2
+	STORE R2, 1(LB)
+	LOAD 1(LB), R2
+	CMP #null, R2
+	SNE R2
+	STORE R2, 2(LB)
+	BRA L7
+L6:
+	LOAD 1(LB), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 3(R2), R2
+	LOAD R2, R1
+	WINT
+	WNL
+	ADDSP #1
+	LOAD 1(LB), R2
+	STORE R2, 0(SP)
+	LOAD 0(SP), R2
+	CMP #null, R2
+	BEQ nullPointerError
+	LOAD 0(R2), R2
+	BSR 3(R2)
+	SUBSP #1
+	LOAD R0, R2
+	STORE R2, 1(LB)
+L7:
+	LOAD 1(LB), R2
+	CMP #null, R2
+	BNE L6
+end.DoubleLinkedListEvents.displayEvents:
+	POP R2
+	RTS
+; 
+; Start of Error Labels
+stackOverflowError:
+	WSTR "Error: Stack Overflow"
+	WNL
+	ERROR
+nullPointerError:
+	WSTR "Error: Dereferencing Null Pointer"
+	WNL
+	ERROR
+heapOverflowError:
+	WSTR "Error: Heap Overflow"
+	WNL
+	ERROR
+; End of Error Labels

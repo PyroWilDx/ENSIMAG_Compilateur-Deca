@@ -72,7 +72,8 @@ public class DeclVar extends AbstractDeclVar {
         if (GameBoyManager.doCp) {
             GameBoyManager gbM = compiler.getGameBoyManager();
             compiler.addInstruction(new PUSH(gpReg));
-            gbM.addGlobalVar(varName.getName().getName(), varAddr.getOffset());
+            gbM.addGlobalVar(varName.getName().getName(),
+                    varAddr.getOffset() - 1);
         } else {
             compiler.addInstruction(new STORE(gpReg, varAddr));
         }

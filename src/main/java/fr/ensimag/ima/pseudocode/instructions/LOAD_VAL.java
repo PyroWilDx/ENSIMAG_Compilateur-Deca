@@ -17,7 +17,7 @@ public class LOAD_VAL extends BinaryInstructionDValToReg {
         s.print(getOperand2());
         s.print(", [");
         s.print(getOperand1());
-        s.println("]");
+        s.print("]");
     }
 
     @Override
