@@ -1,0 +1,66 @@
+// Description :
+//    Test des opérations arithmétiques
+//
+// Resultats :
+//
+
+
+{
+    int x = 12;
+    int y = 3;
+    int z = 5;
+
+    if ((10 + 2) != 12) {
+        println();
+    }
+
+    if ((10 - 2) != 8) {
+        println();
+    }
+
+    if ((10 * 6) != 60) {
+        println();
+    }
+
+    if ((6 * 1) != 6) {
+        println();
+    }
+
+    if ((10 * 20) != 200) {
+        println();
+    }
+
+    if ((x * y) != 36) {
+        println();
+    }
+
+    if ((y * z) != 15) {
+        println();
+    }
+
+    if ((6 * z) != 30) {
+        println();
+    }
+
+    if ((x * 5) != 60) {
+        println();
+    }
+
+/*
+    if ((10 / 3) != 3) {
+        println();
+    }
+
+    if ((0 / 1) != 0) {
+        println();
+    }
+
+    if ((10 % 3) != 1) {
+        println();
+    }
+
+    if ((10 % 2) != 0) {
+        println();
+    }
+    */
+}

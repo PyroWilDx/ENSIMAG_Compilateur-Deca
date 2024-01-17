@@ -12,6 +12,10 @@ public class LineGb extends AbstractLine {
 
     @Override
     void display(PrintStream s) {
-        s.println("\t" + gbAsm);
+        if (!gbAsm.isEmpty() && !(gbAsm.contains("INCLUDE") || gbAsm.contains("SECTION"))) {
+            s.print("\t");
+        }
+        s.print(gbAsm);
+        s.println();
     }
 }

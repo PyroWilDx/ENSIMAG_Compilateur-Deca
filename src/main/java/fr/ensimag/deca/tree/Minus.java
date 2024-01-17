@@ -23,6 +23,12 @@ public class Minus extends AbstractOpArith {
     }
 
     @Override
+    protected void codeGenOpArithGb(DecacCompiler compiler,
+                                    DVal valReg, GPRegister saveReg) {
+        compiler.addInstruction(new SUB(valReg, saveReg.getLowReg()));
+    }
+
+    @Override
     protected String getOperatorName() {
         return "-";
     }

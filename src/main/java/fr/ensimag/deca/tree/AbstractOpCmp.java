@@ -67,7 +67,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
                 }
             } else {
                 GPRegister gpReg = (GPRegister) valReg;
-                compiler.addInstruction(new ADD(1, gpReg));
+                compiler.addInstruction(new ADD(1, gpReg.getLowReg()));
             }
         }
 
@@ -79,8 +79,8 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
             if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
             else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));
         } else {
-            if (isInTrue) compiler.addInstruction(getOpCmpInst(saveReg));
-            else compiler.addInstruction(getInvOpCmpInst(saveReg));
+            if (isInTrue) compiler.addInstruction(getOpCmpInst(saveReg.getLowReg()));
+            else compiler.addInstruction(getInvOpCmpInst(saveReg.getLowReg()));
         }
     }
 

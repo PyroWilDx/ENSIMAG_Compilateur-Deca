@@ -22,12 +22,18 @@ public class GameBoyManager {
         return Addr0 - varOffset;
     }
 
+    private int printId;
     private final HashMap<String, Integer> globalVars;
     public LinkedList<AbstractIdentifier> currClassVarStack;
 
     public GameBoyManager() {
+        this.printId = 0;
         this.globalVars = new HashMap<>();
         this.currClassVarStack = new LinkedList<>();
+    }
+
+    public int getAndIncrPrintId()  {
+        return printId++;
     }
 
     public void addGlobalVar(String varName) {

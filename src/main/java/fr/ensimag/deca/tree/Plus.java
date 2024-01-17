@@ -22,6 +22,12 @@ public class Plus extends AbstractOpArith {
     }
 
     @Override
+    protected void codeGenOpArithGb(DecacCompiler compiler,
+                                    DVal valReg, GPRegister saveReg) {
+        compiler.addInstruction(new ADD(valReg, saveReg));
+    }
+
+    @Override
     protected String getOperatorName() {
         return "+";
     }

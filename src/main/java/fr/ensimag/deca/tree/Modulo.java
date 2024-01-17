@@ -1,11 +1,13 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.ErrorManager;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.instructions.BOV;
-import fr.ensimag.ima.pseudocode.instructions.REM;
+import fr.ensimag.ima.pseudocode.Label;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * @author gl47
@@ -27,6 +29,28 @@ public class Modulo extends AbstractOpArith {
             compiler.addInstruction(new BOV(eM.getDivBy0Label()));
         }
         // Done
+    }
+
+    @Override
+    protected void codeGenOpArithGb(DecacCompiler compiler,
+                                    DVal valReg, GPRegister saveReg) {
+        CondManager cM = compiler.getCondManager();
+
+        Label startLabel = new Label("ModuloStart" + cM.getUniqueId());
+        Label endLabel = new Label("ModuloEnd" + cM.getUniqueId());
+
+        compiler.addInstruction(new LOAD(valReg, Register.A));
+        compiler.addInstruction(new CMP(0, Register.A));
+        compiler.addInstruction(new BEQ(endLabel));
+
+        compiler.addLabel(startLabel);
+        compiler.addInstruction(new CMP(valReg, saveReg));
+        compiler.addInstruction(new BLT(endLabel));
+        compiler.addInstruction(new SUB(valReg, saveReg));
+
+        compiler.addInstruction(new BRA(startLabel));
+        compiler.addLabel(endLabel);
+        compiler.addInstruction(new LOAD(Register.A, saveReg));
     }
 
     @Override

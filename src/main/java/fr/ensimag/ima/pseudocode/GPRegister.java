@@ -27,12 +27,12 @@ public class GPRegister extends Register {
         this.number = number;
     }
 
-    private static final GPRegister B = new GPRegister("b", 42);
-    private static final GPRegister C = new GPRegister("c", 42);
-    private static final GPRegister D = new GPRegister("d", 42);
-    private static final GPRegister E = new GPRegister("e", 42);
-    private static final GPRegister H = new GPRegister("h", 42);
-    private static final GPRegister L = new GPRegister("l", 42);
+    public static final GPRegister B = new GPRegister("b", 42);
+    public static final GPRegister C = new GPRegister("c", 42);
+    public static final GPRegister D = new GPRegister("d", 42);
+    public static final GPRegister E = new GPRegister("e", 42);
+    public static final GPRegister H = new GPRegister("h", 42);
+    public static final GPRegister L = new GPRegister("l", 42);
     private static final HashMap<String, GPRegister> reg8BitMap = initReg8BitMap();
 
     private static HashMap<String, GPRegister> initReg8BitMap() {

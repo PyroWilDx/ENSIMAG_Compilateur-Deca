@@ -291,13 +291,13 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
 
         if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
-            compiler.addInstruction(new CMP(0, gpReg));
+            compiler.addInstruction(new CMP(0, gpReg.getLowReg()));
             if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
             else compiler.addInstruction(new BEQ(branchLabel));
         } else {
             if (getType().isBoolean() && !isInTrue) {
-                compiler.addInstruction(new CMP(0, gpReg));
-                compiler.addInstruction(new SEQ(gpReg));
+                compiler.addInstruction(new CMP(0, gpReg.getLowReg()));
+                compiler.addInstruction(new SEQ(gpReg.getLowReg()));
             }
         }
 

@@ -2,8 +2,7 @@
 //    Test de plusieurs déclarations de variables
 //
 // Resultats :
-//    x = 1
-//    y = 42 | z = 3.14160e+00
+//
 
 {
     int x = 1;
@@ -18,7 +17,13 @@
     if (y != 42) {
         println();
     }
-    if (z != 3.1416) {
+    if (z != 3) {
+        println();
+    }
+    if (!b0) {
+        println();
+    }
+    if (b1) {
         println();
     }
 }

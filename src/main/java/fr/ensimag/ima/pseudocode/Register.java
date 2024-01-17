@@ -70,7 +70,7 @@ public class Register extends DVal {
     public static final GPRegister R1 = R[1];
 
     public static final GPRegister HL = R[0]; // 16 Bits
-    
+
     public static final GPRegister A = R[1]; // 8 Bits
 
     static private GPRegister[] initRegisters() {
