@@ -17,7 +17,7 @@ public class DeclMethodAsm extends AbstractDeclMethod {
 
     public DeclMethodAsm(String code, AbstractIdentifier type, AbstractIdentifier name,
                          ListDeclParam params) {
-        this.code = code;
+        this.code = code.replace("\\\"", "\"");
         this.type = type;
         this.name = name;
         this.params = params;

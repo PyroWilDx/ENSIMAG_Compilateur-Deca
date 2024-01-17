@@ -81,7 +81,7 @@ INCLUDE : '#include' (' ')* ' "'(LETTER | DIGIT | '.' | '-' | '_')+ '"'{doInclud
 IDENT : (LETTER | '$' | '_')(LETTER | DIGIT |'_')*;
 
 
-MULTI_LINE_STRING : '"'(STRING_CAR | '\\' | '\\\\' | '\n')*'"';
+MULTI_LINE_STRING : '"'(STRING_CAR | '\\' | '\\\\' | '\n' | '\\"')*'"';
 
 fragment POSITIVE_DIGIT : '1'..'9';
 fragment DIGIT : '0'..'9';
