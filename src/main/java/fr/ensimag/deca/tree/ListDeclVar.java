@@ -25,6 +25,16 @@ public class ListDeclVar extends TreeList<AbstractDeclVar> {
         sM.finishDoingDeclrations();
     }
 
+    public void codeGenListDeclVarGb(DecacCompiler compiler) {
+        StackManager sM = compiler.getStackManager();
+
+        sM.doDeclarations();
+        for (AbstractDeclVar declVar : getList()) {
+            declVar.codeGenDeclVarGb(compiler);
+        }
+        sM.finishDoingDeclrations();
+    }
+
     @Override
     public void decompile(IndentPrintStream s) {
         for (AbstractDeclVar declVar : getList()) {

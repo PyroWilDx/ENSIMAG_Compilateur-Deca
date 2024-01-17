@@ -42,11 +42,14 @@ public class NullLiteral extends AbstractLiteral {
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
 
-        if (GameBoyManager.doCp) {
-            rM.setLastImm(new ImmediateInteger(0));
-        } else {
-            rM.setLastImm(new NullOperand());
-        }
+        rM.setLastImm(new NullOperand());
+    }
+
+    @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+
+        rM.setLastImm(new ImmediateInteger(0));
     }
 
     @Override

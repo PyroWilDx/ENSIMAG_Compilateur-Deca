@@ -105,8 +105,6 @@ def doTests():
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (VALIDE)")
 
-    doVerify("gameboy/test.deca")
-
     doVerify("gameboy/valid/iostreams/printString.deca",
              expectedResult=b"Hello World ! Second Argument\n"
                             b"Second Println\n"

@@ -36,4 +36,6 @@ public abstract class AbstractDeclClass extends Tree {
 
     public abstract void codeGenDeclClass(DecacCompiler compiler);
 
+    public abstract void codeGenDeclClassGb(DecacCompiler compiler);
+
 }

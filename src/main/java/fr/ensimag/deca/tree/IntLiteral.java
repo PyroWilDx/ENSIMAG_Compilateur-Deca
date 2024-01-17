@@ -51,6 +51,13 @@ public class IntLiteral extends AbstractLiteral {
     }
 
     @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+
+        rM.setLastImm(new ImmediateInteger(value));
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(Integer.toString(value));
     }

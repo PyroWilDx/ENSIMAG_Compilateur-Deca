@@ -69,6 +69,28 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        CondManager cM = compiler.getCondManager();
+
+        Label startElseLabel = cM.getUniqueLabel();
+        Label endIfThenElseLabel = cM.getUniqueLabel();
+
+        condition.isInTrue = false;
+        condition.branchLabel = startElseLabel;
+        cM.doCond();
+        condition.codeGenInstGb(compiler);
+        cM.exitCond();
+
+        thenBranch.codeGenListInstGb(compiler);
+        compiler.addInstruction(new BRA(endIfThenElseLabel));
+
+        compiler.addLabel(startElseLabel);
+        elseBranch.codeGenListInstGb(compiler);
+
+        compiler.addLabel(endIfThenElseLabel);
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print("if (");
         condition.decompile(s);

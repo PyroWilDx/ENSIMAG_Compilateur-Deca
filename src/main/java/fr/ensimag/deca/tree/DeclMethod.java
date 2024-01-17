@@ -123,7 +123,12 @@ public class DeclMethod extends AbstractDeclMethod {
         // Done
     }
 
-//    // TODO (à déplacer)
+    @Override
+    public void codeGenDeclMethodGb(DecacCompiler compiler) {
+        // TODO (GB)
+    }
+
+    //    // TODO (à déplacer)
 //    public void codeGenInstanceOf(DecacCompiler compiler) {
 //        RegManager rM = compiler.getRegManager();
 //        CondManager cM = compiler.getCondManager();

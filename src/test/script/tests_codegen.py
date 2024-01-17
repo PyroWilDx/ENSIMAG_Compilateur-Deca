@@ -102,8 +102,6 @@ def doTests():
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (VALIDE)")
 
-    doVerify("codegen/valid/classes/extends/test.deca", doAssert=False)
-
     doVerify("codegen/valid/iostreams/printString.deca",
              expectedResult=b"Hello World ! Second Argument\n"
                             b"Second Println\n"
@@ -268,9 +266,14 @@ def doTests():
     doVerify("codegen/valid/classes/miscellaneous/asmSimple.deca",
              expectedResult=b"10 180 2 4\n")
 
+    doVerify("codegen/valid/classes/miscellaneous/linkedList.deca",
+             expectedResult=b"3\n"
+                            b"2\n"
+                            b"1\n")
+
     doVerify("codegen/valid/registers/opRegOverflow.deca",
-             expectedResult=b"52 52\n",
-             decacOptions="-r 4")
+                 expectedResult=b"52 52\n",
+                 decacOptions="-r 4")
 
     doVerify("codegen/valid/registers/methodRegOverflow.deca",
              expectedResult=b"600\n"

@@ -252,9 +252,12 @@ public class DecacCompiler {
         }
 
         LOG.info("Compiling " + sourceName + "...");
-        prog.codeGenProgram(this);
-
-
+        if (GameBoyManager.doCp) {
+            prog.codeGenProgramGb(this);
+        } else {
+            prog.codeGenProgram(this);
+        }
+        
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 

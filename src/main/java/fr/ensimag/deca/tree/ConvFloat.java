@@ -34,6 +34,11 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     @Override
+    protected void codeGenOpUnaryGb(DecacCompiler compiler, GPRegister gpReg) {
+        // Non
+    }
+
+    @Override
     protected String getOperatorName() {
         return "/* convFloat */";
     }

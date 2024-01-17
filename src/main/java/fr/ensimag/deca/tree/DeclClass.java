@@ -178,6 +178,49 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
+    public void codeGenDeclClassGb(DecacCompiler compiler) {
+        // TODO (GB)
+        RegManager rM = compiler.getRegManager();
+        StackManager sM = new StackManager(true);
+        compiler.setStackManager(sM);
+        VTableManager vTM = compiler.getVTableManager();
+
+        String className = name.getName().getName();
+        vTM.enterClass(className);
+
+        String superClassName = superClass.getName().getName();
+
+        compiler.addComment("Class " + className);
+
+        compiler.addLabel(LabelUtils.getClassInitLabel(className));
+        int iTSTO = compiler.getProgramLineCount();
+
+        compiler.addInstruction(
+                new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
+        fields.codeGenSetFieldsTo0Gb(compiler);
+        if (!superClassName.equals(LabelUtils.OBJECT_CLASS_NAME)) {
+            compiler.addInstruction(new PUSH(Register.R1));
+            compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(superClassName)));
+            compiler.addInstruction(new SUBSP(1));
+        }
+
+        rM.saveUsedRegs();
+        rM.freeAllRegs();
+
+        fields.codeGenListDeclFieldGb(compiler);
+
+        boolean[] usedRegs = rM.popUsedRegs();
+        RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
+        RegManager.addRestoreRegsInsts(compiler, usedRegs);
+
+        compiler.addInstruction(new RTS());
+
+        methods.codeGenListDeclMethodGb(compiler);
+
+        vTM.exitClass();
+    }
+
+    @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
         name.prettyPrint(s, prefix, false);
         superClass.prettyPrint(s, prefix, false);

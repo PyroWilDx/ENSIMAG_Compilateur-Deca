@@ -51,6 +51,11 @@ public abstract class AbstractPrint extends AbstractInst {
         // Done
     }
 
+    @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        // Non
+    }
+
     private boolean getPrintHex() {
         return printHex;
     }

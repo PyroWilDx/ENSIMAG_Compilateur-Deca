@@ -57,6 +57,7 @@ public class FieldSelection extends AbstractLValue {
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
         CondManager cM = compiler.getCondManager();
+
         if (cM.isDoingCond()) {
             fieldIdent.isInTrue = isInTrue;
             fieldIdent.branchLabel = branchLabel;
@@ -65,22 +66,36 @@ public class FieldSelection extends AbstractLValue {
         DAddr fAddr = getAddrOfField(compiler);
         fieldIdent.getExpDefinition().setOperand(fAddr);
 
-        if (GameBoyManager.doCp) {
-            GameBoyManager gbM = compiler.getGameBoyManager();
-            if (expr instanceof AbstractIdentifier) {
-                gbM.currClassVarStack.addFirst((AbstractIdentifier) expr);
-            }
+        fieldIdent.codeGenInst(compiler);
+
+        fieldIdent.getExpDefinition().setOperand(null);
+        // Done
+    }
+
+    @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        // TODO (GB)
+        CondManager cM = compiler.getCondManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
+
+        if (cM.isDoingCond()) {
+            fieldIdent.isInTrue = isInTrue;
+            fieldIdent.branchLabel = branchLabel;
+        }
+
+        DAddr fAddr = getAddrOfField(compiler);
+        fieldIdent.getExpDefinition().setOperand(fAddr);
+
+        if (expr instanceof AbstractIdentifier) {
+            gbM.currClassVarStack.addFirst((AbstractIdentifier) expr);
         }
 
         fieldIdent.codeGenInst(compiler);
 
         fieldIdent.getExpDefinition().setOperand(null);
 
-        if (GameBoyManager.doCp) {
-            GameBoyManager gbM = compiler.getGameBoyManager();
-            if (expr instanceof AbstractIdentifier) {
-                gbM.currClassVarStack.removeFirst();
-            }
+        if (expr instanceof AbstractIdentifier) {
+            gbM.currClassVarStack.removeFirst();
         }
         // Done
     }

@@ -13,9 +13,10 @@ public abstract class AbstractMain extends Tree {
 
     protected abstract void codeGenMain(DecacCompiler compiler);
 
+    protected abstract void codeGenMainGb(DecacCompiler compiler);
 
     /**
-     * Implements non-terminal "main" of [SyntaxeContextuelle] in pass 3 
+     * Implements non-terminal "main" of [SyntaxeContextuelle] in pass 3
      */
     protected abstract void verifyMain(DecacCompiler compiler) throws ContextualError;
 }

@@ -22,8 +22,20 @@ public class Not extends AbstractUnaryExpr {
     }
 
     @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        getOperand().isInTrue = !isInTrue;
+        getOperand().branchLabel = branchLabel;
+        getOperand().codeGenInstGb(compiler);
+    }
+
+    @Override
     protected void codeGenOpUnary(DecacCompiler compiler, GPRegister gpReg) {
         // Not Used
+    }
+
+    @Override
+    protected void codeGenOpUnaryGb(DecacCompiler compiler, GPRegister gpReg) {
+
     }
 
     @Override

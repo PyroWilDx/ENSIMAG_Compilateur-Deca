@@ -53,6 +53,13 @@ public class FloatLiteral extends AbstractLiteral {
     }
 
     @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+
+        rM.setLastImm(new ImmediateFloat(value));
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(java.lang.Float.toHexString(value));
     }

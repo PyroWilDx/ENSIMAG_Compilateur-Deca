@@ -47,6 +47,12 @@ public class Assign extends AbstractBinaryExpr {
     }
 
     @Override
+    protected void codeGenOpGb(DecacCompiler compiler,
+                               DVal valReg, GPRegister saveReg) {
+
+    }
+
+    @Override
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         StackManager sM = compiler.getStackManager();
@@ -103,6 +109,65 @@ public class Assign extends AbstractBinaryExpr {
         rM.freeReg(regRight);
         rM.freeReg(savedReg);
         // Done
+    }
+
+    @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        // TODO (GB)
+        RegManager rM = compiler.getRegManager();
+        StackManager sM = compiler.getStackManager();
+        CondManager cM = compiler.getCondManager();
+        VTableManager vTM = compiler.getVTableManager();
+
+        boolean saveReg = false;
+        DAddr iAddr;
+        if (getLeftOperand() instanceof AbstractIdentifier) {
+            AbstractIdentifier lIdent = (AbstractIdentifier) getLeftOperand();
+            if (lIdent.getExpDefinition().getOperand() == null) {
+                saveReg = true;
+            }
+            iAddr = CodeGenUtils.extractAddrFromIdent(compiler, lIdent);
+            if (iAddr == null) return;
+        } else { // Should be a FieldSelection
+            FieldSelection lFieldSelect = (FieldSelection) getLeftOperand();
+            saveReg = true;
+            iAddr = lFieldSelect.getAddrOfField(compiler);
+        }
+
+        GPRegister savedReg = null;
+        boolean pushed = false;
+        if (saveReg) {
+            savedReg = rM.getLastReg();
+            if (rM.isUsingAllRegs()) {
+                if (!(getRightOperand() instanceof AbstractLiteral)) {
+                    compiler.addInstruction(new PUSH(savedReg));
+                    rM.freeReg(savedReg);
+                    sM.incrTmpVar();
+                    pushed = true;
+                }
+            }
+        }
+
+        getRightOperand().codeGenInstGb(compiler);
+        GPRegister regRight = rM.getLastRegOrImm(compiler);
+        if (regRight == Register.R0) {
+            if (pushed || cM.isDoingCond() || vTM.isInMethod()) {
+                regRight = rM.getFreeReg();
+                compiler.addInstruction(new LOAD(Register.R0, regRight));
+            }
+        }
+
+        if (pushed) {
+            compiler.addInstruction(new LOAD(regRight, Register.R0));
+            savedReg = regRight;
+            regRight = Register.R0;
+            compiler.addInstruction(new POP(savedReg));
+            sM.decrTmpVar();
+        }
+
+        compiler.addInstruction(new STORE(regRight, iAddr));
+        rM.freeReg(regRight);
+        rM.freeReg(savedReg);
     }
 
     @Override
