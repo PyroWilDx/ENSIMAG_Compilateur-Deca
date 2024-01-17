@@ -64,6 +64,11 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
+    public void codeGenSetFieldTo0Gb(DecacCompiler compiler, boolean doLoad) {
+        // TODO (GB)
+    }
+
+    @Override
     public TypeCode codeGenDeclField(DecacCompiler compiler, TypeCode lastTypeCode) {
         if (init instanceof NoInitialization) return null;
 
@@ -103,6 +108,12 @@ public class DeclField extends AbstractDeclField {
 
         return returnValue;
         // Done
+    }
+
+    @Override
+    public TypeCode codeGenDeclFieldGb(DecacCompiler compiler, TypeCode lastTypeCode) {
+        // TODO (GB)
+        return null;
     }
 
     @Override

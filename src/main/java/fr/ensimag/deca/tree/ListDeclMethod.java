@@ -132,4 +132,10 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
     }
 
+    public void codeGenListDeclMethodGb(DecacCompiler compiler) {
+        for (AbstractDeclMethod method : getListOrdered()) {
+            method.codeGenDeclMethodGb(compiler);
+        }
+    }
+
 }

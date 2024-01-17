@@ -52,6 +52,14 @@ public class Main extends AbstractMain {
     }
 
     @Override
+    protected void codeGenMainGb(DecacCompiler compiler) {
+        compiler.addComment("Beginning of Main Declarations:");
+        declVariables.codeGenListDeclVarGb(compiler);
+        compiler.addComment("Beginning of Main Instructions:");
+        insts.codeGenListInstGb(compiler);
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.println("{");
         s.indent();

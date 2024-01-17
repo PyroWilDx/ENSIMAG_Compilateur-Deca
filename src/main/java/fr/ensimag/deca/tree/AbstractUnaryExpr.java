@@ -61,7 +61,19 @@ public abstract class AbstractUnaryExpr extends AbstractExpr {
         // Done
     }
 
+    @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+
+        getOperand().codeGenInstGb(compiler);
+        GPRegister gpReg = rM.getLastRegOrImm(compiler);
+        codeGenOpUnaryGb(compiler, gpReg);
+        rM.freeReg(gpReg);
+    }
+
     protected abstract void codeGenOpUnary(DecacCompiler compiler, GPRegister gpReg);
+
+    protected abstract void codeGenOpUnaryGb(DecacCompiler compiler, GPRegister gpReg);
 
     @Override
     public void decompile(IndentPrintStream s) {

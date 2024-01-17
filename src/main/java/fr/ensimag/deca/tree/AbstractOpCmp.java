@@ -28,28 +28,53 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
     }
 
     @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        CondManager cM = compiler.getCondManager();
+
+        cM.doOpCmp();
+        super.codeGenInstGb(compiler);
+        cM.exitOpCmp();
+    }
+
+    @Override
     protected void codeGenOp(DecacCompiler compiler,
                              DVal valReg, GPRegister saveReg) {
         CondManager cM = compiler.getCondManager();
 
-        if (GameBoyManager.doCp) {
-            if (doAdd()) {
-                if (!(valReg instanceof GPRegister)) {
-                    if (valReg instanceof ImmediateInteger) {
-                        ImmediateInteger valRegImmInt = (ImmediateInteger) valReg;
-                        valRegImmInt.addValue(1);
-                    } else if (valReg instanceof ImmediateFloat) {
-                        ImmediateFloat valRegImmFloat = (ImmediateFloat) valReg;
-                        valRegImmFloat.addValue(1);
-                    }
-                } else {
-                    GPRegister gpReg = (GPRegister) valReg;
-                    compiler.addInstruction(new ADD(1, gpReg));
+        compiler.addInstruction(new CMP(valReg, saveReg));
+        if (cM.isDoingCond()) {
+            if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
+            else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));
+        } else {
+            if (isInTrue) compiler.addInstruction(getOpCmpInst(saveReg));
+            else compiler.addInstruction(getInvOpCmpInst(saveReg));
+        }
+    }
+
+    @Override
+    protected void codeGenOpGb(DecacCompiler compiler,
+                               DVal valReg, GPRegister saveReg) {
+        CondManager cM = compiler.getCondManager();
+
+        if (doAdd()) {
+            if (!(valReg instanceof GPRegister)) {
+                if (valReg instanceof ImmediateInteger) {
+                    ImmediateInteger valRegImmInt = (ImmediateInteger) valReg;
+                    valRegImmInt.addValue(1);
+                } else if (valReg instanceof ImmediateFloat) {
+                    ImmediateFloat valRegImmFloat = (ImmediateFloat) valReg;
+                    valRegImmFloat.addValue(1);
                 }
+            } else {
+                GPRegister gpReg = (GPRegister) valReg;
+                compiler.addInstruction(new ADD(1, gpReg));
             }
         }
 
-        compiler.addInstruction(new CMP(valReg, saveReg));
+        if (valReg instanceof GPRegister) {
+            valReg = ((GPRegister) valReg).getLowReg();
+        }
+        compiler.addInstruction(new CMP(valReg, saveReg.getLowReg()));
         if (cM.isDoingCond()) {
             if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
             else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));

@@ -53,14 +53,9 @@ public class Program extends AbstractProgram {
     @Override
     public void codeGenProgram(DecacCompiler compiler) {
         ErrorManager eM = compiler.getErrorManager();
-        CondManager cM = compiler.getCondManager();
         StackManager sM = new StackManager(false);
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
-
-        if (GameBoyManager.doCp) {
-            compiler.add(new LineGb("ld SP, " + GameBoyManager.Addr0));
-        }
 
         boolean generateObjectClass = !classes.getList().isEmpty();
 
@@ -88,19 +83,19 @@ public class Program extends AbstractProgram {
 
         compiler.addComment("Start of Main Program");
         compiler.addComment("Main Program");
+
         main.codeGenMain(compiler);
         compiler.addInstruction(new HALT());
+
         compiler.addComment("End of Main Program");
 
-        if (!GameBoyManager.doCp) {
-            if (sM.getMaxStackSize() > 0) {
-                if (sM.getAddSp() > 0) {
-                    compiler.addInstruction(0, new ADDSP(sM.getAddSp()));
-                }
-                if (compiler.getCompilerOptions().doCheck()) {
-                    compiler.addInstruction(0, new BOV(eM.getStackOverflowLabel()));
-                    compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
-                }
+        if (sM.getMaxStackSize() > 0) {
+            if (sM.getAddSp() > 0) {
+                compiler.addInstruction(0, new ADDSP(sM.getAddSp()));
+            }
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(0, new BOV(eM.getStackOverflowLabel()));
+                compiler.addInstruction(0, new TSTO(sM.getMaxStackSize()));
             }
         }
 
@@ -108,39 +103,12 @@ public class Program extends AbstractProgram {
             compiler.addComment("");
             compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
             compiler.addLabel(eLabel);
-            if (GameBoyManager.doCp) {
-                Label falseLabel = cM.getUniqueLabel();
-                compiler.addInstruction(
-                        new LOAD_INT(GameBoyManager.getArgAddr(-2) + 8, Register.HL));
-                compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-                compiler.addInstruction(
-                        new LOAD_INT(GameBoyManager.getArgAddr(-3) + 8, Register.HL));
-                compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
-
-                compiler.addInstruction(new CMP(Register.A, Register.HL.getLowReg()));
-                compiler.addInstruction(new BNE(falseLabel));
-
-                compiler.addInstruction(
-                        new LOAD_INT(GameBoyManager.getArgAddr(-2), Register.HL));
-                compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-                compiler.addInstruction(
-                        new LOAD_INT(GameBoyManager.getArgAddr(-3), Register.HL));
-                compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
-                compiler.addInstruction(new BNE(falseLabel));
-
-                compiler.addInstruction(new LOAD_INT(1, Register.HL.getLowReg()));
-
-                compiler.addLabel(falseLabel);
-                compiler.addInstruction(new LOAD_INT(0, Register.HL.getLowReg()));
-                compiler.addInstruction(new RTS());
-            } else {
-                compiler.addInstruction(
-                        new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
-                compiler.addInstruction(
-                        new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
-                compiler.addInstruction(new SEQ(Register.R0));
-                compiler.addInstruction(new RTS());
-            }
+            compiler.addInstruction(
+                    new LOAD(new RegisterOffset(-2, Register.LB), Register.R0));
+            compiler.addInstruction(
+                    new CMP(new RegisterOffset(-3, Register.LB), Register.R0));
+            compiler.addInstruction(new SEQ(Register.R0));
+            compiler.addInstruction(new RTS());
         }
 
         classes.codeGenListDeclClass(compiler);
@@ -151,6 +119,82 @@ public class Program extends AbstractProgram {
         eM.codeGenAllErrors(compiler);
         compiler.addComment("End of Error Labels");
         // Done
+    }
+
+    @Override
+    public void codeGenProgramGb(DecacCompiler compiler) {
+        CondManager cM = compiler.getCondManager();
+        StackManager sM = new StackManager(false);
+        compiler.setStackManager(sM);
+        VTableManager vTM = compiler.getVTableManager();
+
+        compiler.add(new LineGb("ld SP, " + GameBoyManager.Addr0));
+
+        boolean generateObjectClass = !classes.getList().isEmpty();
+
+        Label eLabel = null;
+        if (generateObjectClass) {
+            compiler.addComment("VTable of " + LabelUtils.OBJECT_CLASS_NAME);
+            DAddr nAddr = sM.getOffsetAddr();
+            LabelUtils.setObjectClassSymbol(compiler.environmentType.OBJECT.getName());
+            VTable vT = new VTable(null, LabelUtils.OBJECT_CLASS_SYMBOL, nAddr);
+            vTM.addVTable(LabelUtils.OBJECT_CLASS_NAME, vT);
+            compiler.addInstruction(new LOAD(new NullOperand(), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, nAddr));
+            sM.incrVTableCpt();
+
+            DAddr eAddr = sM.getOffsetAddr();
+            vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, 1);
+            eLabel = LabelUtils.getMethodLabel(
+                    LabelUtils.OBJECT_CLASS_NAME, LabelUtils.EQUALS_METHOD_NAME);
+            compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
+            compiler.addInstruction(new STORE(Register.R0, eAddr));
+            sM.incrVTableCpt();
+        }
+
+        classes.codeGenVTable(compiler); // Pas besoin de changer normalement
+
+        compiler.addComment("Start of Main Program");
+        compiler.addComment("Main Program");
+
+        main.codeGenMainGb(compiler);
+        compiler.addInstruction(new HALT());
+
+        compiler.addComment("End of Main Program");
+
+        if (generateObjectClass) {
+            compiler.addComment("");
+            compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
+            compiler.addLabel(eLabel);
+            Label falseLabel = cM.getUniqueLabel();
+            compiler.addInstruction(
+                    new LOAD_INT(GameBoyManager.getArgAddr(-2) + 8, Register.HL));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+            compiler.addInstruction(
+                    new LOAD_INT(GameBoyManager.getArgAddr(-3) + 8, Register.HL));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
+
+            compiler.addInstruction(new CMP(Register.A, Register.HL.getLowReg()));
+            compiler.addInstruction(new BNE(falseLabel));
+
+            compiler.addInstruction(
+                    new LOAD_INT(GameBoyManager.getArgAddr(-2), Register.HL));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+            compiler.addInstruction(
+                    new LOAD_INT(GameBoyManager.getArgAddr(-3), Register.HL));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
+            compiler.addInstruction(new BNE(falseLabel));
+
+            compiler.addInstruction(new LOAD_INT(1, Register.HL.getLowReg()));
+
+            compiler.addLabel(falseLabel);
+            compiler.addInstruction(new LOAD_INT(0, Register.HL.getLowReg()));
+            compiler.addInstruction(new RTS());
+        }
+
+        classes.codeGenListDeclClassGb(compiler);
+
+        compiler.addComment("");
     }
 
     @Override

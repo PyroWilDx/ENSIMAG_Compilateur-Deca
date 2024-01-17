@@ -48,23 +48,39 @@ public class Return extends AbstractInst {
             DVal dVal = rM.getLastImm();
             if (dVal == null) {
                 GPRegister gpReg = rM.getLastReg();
-                if (GameBoyManager.doCp) {
-                    if (expr.getType().isClass()) {
-                        compiler.addInstruction(new LOAD_REG(gpReg.getHighReg(), Register.HL.getHighReg()));
-                        compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
-                    } else {
-                        compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
-                    }
+                compiler.addInstruction(new LOAD(gpReg, Register.R0));
+                rM.freeReg(gpReg);
+            } else {
+                compiler.addInstruction(new LOAD(dVal, Register.R0));
+            }
+        }
+
+        Label mEndLabel =
+                LabelUtils.getMethodEndLabel(vTM.getCurrClassName(), vTM.getCurrMethodName());
+        compiler.addInstruction(new BRA(mEndLabel));
+    }
+
+    @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        // TODO (GB)
+        RegManager rM = compiler.getRegManager();
+        VTableManager vTM = compiler.getVTableManager();
+
+        expr.codeGenInst(compiler);
+
+        if (!expr.getType().isNull()) {
+            DVal dVal = rM.getLastImm();
+            if (dVal == null) {
+                GPRegister gpReg = rM.getLastReg();
+                if (expr.getType().isClass()) {
+                    compiler.addInstruction(new LOAD_REG(gpReg.getHighReg(), Register.HL.getHighReg()));
+                    compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
                 } else {
-                    compiler.addInstruction(new LOAD(gpReg, Register.R0));
+                    compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
                 }
                 rM.freeReg(gpReg);
             } else {
-                if (GameBoyManager.doCp) {
-                    compiler.addInstruction(new LOAD_INT(dVal, Register.HL));
-                } else {
-                    compiler.addInstruction(new LOAD(dVal, Register.R0));
-                }
+                compiler.addInstruction(new LOAD_INT(dVal, Register.HL));
             }
         }
 

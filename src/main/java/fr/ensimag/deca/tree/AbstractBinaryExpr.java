@@ -90,33 +90,27 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         ErrorManager eM = compiler.getErrorManager();
         StackManager sM = compiler.getStackManager();
 
-        if (!GameBoyManager.doCp) {
-            if ((getLeftOperand() instanceof FloatLiteral) && // Juste pour test rapide haha
-                    getRightOperand() instanceof FloatLiteral) {
-                if (this instanceof Divide) {
-                    FloatLiteral fLL = (FloatLiteral) getLeftOperand();
-                    FloatLiteral fLR = (FloatLiteral) getRightOperand();
-                    if (fLR.getValue() != 0.f) {
-                        GPRegister gpReg = rM.getFreeReg();
-                        compiler.addInstruction(new LOAD(fLL.getValue() / fLR.getValue(), gpReg));
-                        rM.freeReg(gpReg);
-                        return;
-                    }
+        if ((getLeftOperand() instanceof FloatLiteral) && // Juste pour test rapide haha
+                getRightOperand() instanceof FloatLiteral) {
+            if (this instanceof Divide) {
+                FloatLiteral fLL = (FloatLiteral) getLeftOperand();
+                FloatLiteral fLR = (FloatLiteral) getRightOperand();
+                if (fLR.getValue() != 0.f) {
+                    GPRegister gpReg = rM.getFreeReg();
+                    compiler.addInstruction(new LOAD(fLL.getValue() / fLR.getValue(), gpReg));
+                    rM.freeReg(gpReg);
+                    return;
                 }
             }
         }
 
         getLeftOperand().codeGenInst(compiler);
         GPRegister regLeft = rM.getLastRegOrImm(compiler);
-        if (regLeft == Register.getR0HL()) { // On vient de faire un return
+        if (regLeft == Register.R0) { // On vient de faire un return
             regLeft = rM.getFreeReg();
-            if (GameBoyManager.doCp) {
-                compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regLeft.getLowReg()));
-            } else {
-                // L'opérande de droite peut aussi utiliser R0
-                // Donc on fait un LOAD, nécessaire pour sauvegarder la valeur
-                compiler.addInstruction(new LOAD(Register.R0, regLeft));
-            }
+            // L'opérande de droite peut aussi utiliser R0
+            // Donc on fait un LOAD, nécessaire pour sauvegarder la valeur
+            compiler.addInstruction(new LOAD(Register.R0, regLeft));
         }
 
         boolean pushed = false;
@@ -134,45 +128,29 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         GPRegister regRight = null;
         if (lastImmRight == null) {
             regRight = rM.getLastReg();
-            if (regRight == Register.getR0HL() && pushed) { // On vient de faire un return et on a PUSH
+            if (regRight == Register.R0 && pushed) { // On vient de faire un return et on a PUSH
                 regRight = rM.getFreeReg();
-                if (GameBoyManager.doCp) {
-                    compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
-                } else {
-                    // Si on avait PUSH, alors on va utiliser R0 juste après
-                    // Donc on doit sauvegarder la valeur
-                    compiler.addInstruction(new LOAD(Register.R0, regLeft));
-                }
+                // Si on avait PUSH, alors on va utiliser R0 juste après
+                // Donc on doit sauvegarder la valeur
+                compiler.addInstruction(new LOAD(Register.R0, regLeft));
             }
         }
 
         if (pushed) {
-            if (GameBoyManager.doCp) {
-                // Non ce n'est pas null IDEA
-                compiler.addInstruction(new LOAD_REG(regRight.getLowReg(), Register.HL.getLowReg()));
-            } else {
-                compiler.addInstruction(new LOAD(regRight, Register.R0));
-            }
+            compiler.addInstruction(new LOAD(regRight, Register.R0));
             regLeft = regRight;
-            regRight = Register.getR0HL();
+            regRight = Register.R0;
             compiler.addInstruction(new POP(regLeft));
             sM.decrTmpVar();
         }
 
-        if (GameBoyManager.doCp) {
-            DVal dVal = (lastImmRight == null) ? regRight.getLowReg() : lastImmRight;
-            // Non ce n'est toujours pas null IDEA
-            codeGenOp(compiler, dVal, regLeft.getLowReg());
-        } else {
-            DVal dVal = (lastImmRight == null) ? regRight : lastImmRight;
-            codeGenOp(compiler, dVal, regLeft);
-        }
 
-        if (!GameBoyManager.doCp) {
-            if (getType().isFloat()) {
-                if (compiler.getCompilerOptions().doCheck()) {
-                    compiler.addInstruction(new BOV(eM.getFloatOverflowLabel()));
-                }
+        DVal dVal = (lastImmRight == null) ? regRight : lastImmRight;
+        codeGenOp(compiler, dVal, regLeft);
+
+        if (getType().isFloat()) {
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(new BOV(eM.getFloatOverflowLabel()));
             }
         }
 
@@ -181,8 +159,64 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         // Done
     }
 
+    @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+        StackManager sM = compiler.getStackManager();
+
+        getLeftOperand().codeGenInstGb(compiler);
+        GPRegister regLeft = rM.getLastRegOrImm(compiler);
+        if (regLeft == Register.HL) { // On vient de faire un return
+            regLeft = rM.getFreeReg();
+            compiler.addInstruction(
+                    new LOAD_REG(Register.HL.getLowReg(), regLeft.getLowReg()));
+        }
+
+        boolean pushed = false;
+        if (rM.isUsingAllRegs()) {
+            if (!(getRightOperand() instanceof AbstractLiteral)) {
+                compiler.addInstruction(new PUSH(regLeft));
+                rM.freeReg(regLeft);
+                sM.incrTmpVar();
+                pushed = true;
+            } // Else, don't need to PUSH because Literal don't need Registers.
+        }
+
+        getRightOperand().codeGenInstGb(compiler);
+        DVal lastImmRight = rM.getLastImm();
+        GPRegister regRight = null;
+        if (lastImmRight == null) {
+            regRight = rM.getLastReg();
+            if (regRight == Register.HL && pushed) { // On vient de faire un return et on a PUSH
+                regRight = rM.getFreeReg();
+                compiler.addInstruction(
+                        new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
+            }
+        }
+
+        if (pushed) {
+            // Non ce n'est pas null IDEA
+            compiler.addInstruction(
+                    new LOAD_REG(regRight.getLowReg(), Register.HL.getLowReg()));
+            regLeft = regRight;
+            regRight = Register.HL;
+            compiler.addInstruction(new POP(regLeft));
+            sM.decrTmpVar();
+        }
+
+        DVal dVal = (lastImmRight == null) ? regRight.getLowReg() : lastImmRight;
+        codeGenOpGb(compiler, dVal, regLeft.getLowReg());
+
+        rM.freeReg(regRight);
+        rM.freeReg(regLeft);
+        // Done
+    }
+
     protected abstract void codeGenOp(DecacCompiler compiler,
                                       DVal valReg, GPRegister saveReg);
+
+    protected abstract void codeGenOpGb(DecacCompiler compiler,
+                                        DVal valReg, GPRegister saveReg);
 
     @Override
     public void decompile(IndentPrintStream s) {

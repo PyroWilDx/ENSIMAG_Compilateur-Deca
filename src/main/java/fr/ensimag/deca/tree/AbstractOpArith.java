@@ -22,6 +22,12 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
         codeGenOpArith(compiler, valReg, saveReg);
     }
 
+    @Override
+    protected void codeGenOpGb(DecacCompiler compiler,
+                               DVal valReg, GPRegister saveReg) {
+        codeGenOpArith(compiler, valReg, saveReg);
+    }
+
     protected abstract void codeGenOpArith(DecacCompiler compiler,
                                            DVal valReg, GPRegister saveReg);
 

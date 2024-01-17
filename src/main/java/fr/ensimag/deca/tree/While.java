@@ -58,6 +58,25 @@ public class While extends AbstractInst {
     }
 
     @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        CondManager cM = compiler.getCondManager();
+
+        Label startBodyLabel = cM.getUniqueLabel();
+        Label condLabel = cM.getUniqueLabel();
+
+        compiler.addInstruction(new BRA(condLabel));
+
+        compiler.addLabel(startBodyLabel);
+        body.codeGenListInstGb(compiler);
+
+        compiler.addLabel(condLabel);
+        condition.branchLabel = startBodyLabel;
+        cM.doCond();
+        condition.codeGenInstGb(compiler);
+        cM.exitCond();
+    }
+
+    @Override
     protected void verifyInst(DecacCompiler compiler, EnvironmentExp localEnv,
                               ClassDefinition currentClass, Type returnType)
             throws ContextualError {

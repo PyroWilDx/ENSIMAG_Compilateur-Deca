@@ -286,6 +286,38 @@ public class Identifier extends AbstractIdentifier {
     }
 
     @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        // TODO (GB)
+        RegManager rM = compiler.getRegManager();
+        CondManager cM = compiler.getCondManager();
+
+        GPRegister gpReg;
+
+        GameBoyManager gbM = compiler.getGameBoyManager();
+        Integer varAddr = gbM.extractAddrFromIdent(compiler, this);
+        if (varAddr == null) return;
+        compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
+        gpReg = rM.getFreeReg();
+        compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
+        compiler.addInstruction(new LOAD_INT(varAddr - 8, Register.HL));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
+
+        if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+            compiler.addInstruction(new CMP(0, gpReg));
+            if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
+            else compiler.addInstruction(new BEQ(branchLabel));
+        } else {
+            if (getType().isBoolean() && !isInTrue) {
+                compiler.addInstruction(new CMP(0, gpReg));
+                compiler.addInstruction(new SEQ(gpReg));
+            }
+        }
+
+        rM.freeReg(gpReg);
+        // Done
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(name.toString());
     }

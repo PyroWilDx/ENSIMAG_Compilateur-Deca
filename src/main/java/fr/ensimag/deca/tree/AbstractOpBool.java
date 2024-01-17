@@ -8,6 +8,7 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.instructions.BRA;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.LOAD_INT;
 
 /**
  * @author gl47
@@ -58,6 +59,45 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         cM.exitCond();
     }
 
+    @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+        CondManager cM = compiler.getCondManager();
+
+        cM.doCond();
+
+        boolean firstCond = false;
+        if (branchLabel == null) {
+            firstCond = true;
+            branchLabel = cM.getUniqueLabel();
+        }
+
+        Label fastEndLabel = setOperandCondVals(cM);
+
+        getLeftOperand().codeGenInstGb(compiler);
+        getRightOperand().codeGenInstGb(compiler);
+
+        if (fastEndLabel != null) compiler.addLabel(fastEndLabel);
+
+        if (firstCond){
+            Label endLabel = cM.getUniqueLabel();
+
+            GPRegister gpReg = rM.getFreeReg();
+
+            compiler.addInstruction(new LOAD_INT(0, gpReg));
+            compiler.addInstruction(new BRA(endLabel));
+
+            compiler.addLabel(branchLabel);
+            compiler.addInstruction(new LOAD_INT(1, gpReg));
+
+            rM.freeReg(gpReg);
+
+            compiler.addLabel(endLabel);
+        }
+
+        cM.exitCond();
+    }
+
     public abstract Label setOperandCondVals(CondManager cM);
 
     @Override
@@ -66,4 +106,9 @@ public abstract class AbstractOpBool extends AbstractBinaryExpr {
         // Not Used
     }
 
+    @Override
+    protected void codeGenOpGb(DecacCompiler compiler,
+                               DVal valReg, GPRegister saveReg) {
+        // Not Used
+    }
 }

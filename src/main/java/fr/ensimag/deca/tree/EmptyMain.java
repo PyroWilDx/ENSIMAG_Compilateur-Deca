@@ -23,6 +23,11 @@ public class EmptyMain extends AbstractMain {
         // Done
     }
 
+    @Override
+    protected void codeGenMainGb(DecacCompiler compiler) {
+
+    }
+
     /**
      * Contains no real information => nothing to check.
      */

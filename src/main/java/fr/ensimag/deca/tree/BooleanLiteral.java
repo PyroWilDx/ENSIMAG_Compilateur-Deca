@@ -53,6 +53,20 @@ public class BooleanLiteral extends AbstractLiteral {
     }
 
     @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+        CondManager cM = compiler.getCondManager();
+
+        if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+            if ((value && isInTrue) || (!value && !isInTrue)) {
+                compiler.addInstruction(new BRA(branchLabel));
+            }
+        } else {
+            rM.setLastImm(new ImmediateInteger((value) ? 1 : 0));
+        }
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(Boolean.toString(value));
     }

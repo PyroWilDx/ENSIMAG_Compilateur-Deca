@@ -80,8 +80,4 @@ public class Register extends DVal {
         }
         return res;
     }
-
-    public static GPRegister getR0HL() {
-        return (GameBoyManager.doCp) ? HL : R0;
-    }
 }

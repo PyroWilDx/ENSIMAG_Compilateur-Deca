@@ -35,5 +35,10 @@ public abstract class AbstractReadExpr extends AbstractExpr {
         // Done
     }
 
+    @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        // Pas de read
+    }
+
     protected abstract void codeGenOpRead(DecacCompiler compiler);
 }

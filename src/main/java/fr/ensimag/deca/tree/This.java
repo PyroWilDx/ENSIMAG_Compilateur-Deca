@@ -37,6 +37,17 @@ public class This extends AbstractExpr {
     }
 
     @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        // TODO (GB)
+        RegManager rM = compiler.getRegManager();
+
+        GPRegister gpReg = rM.getFreeReg();
+        compiler.addInstruction(
+                new LOAD(new RegisterOffset(-2, Register.LB), gpReg));
+        rM.freeReg(gpReg);
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print("this");
     }

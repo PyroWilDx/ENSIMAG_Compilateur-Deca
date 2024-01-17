@@ -24,6 +24,11 @@ public class Println extends AbstractPrint {
     }
 
     @Override
+    protected void codeGenInstGb(DecacCompiler compiler) {
+        // Non
+    }
+
+    @Override
     String getSuffix() {
         return "ln";
     }
