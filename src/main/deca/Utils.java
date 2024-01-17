@@ -1,3 +1,19 @@
+class DoubleLinkedListEvents {
+    Event head = null;
+    Event tail = null;
+
+    void addEvent(Event event) {
+        if (head == null) {
+            head = event;
+            tail = event;
+        } else {
+            tail.setNext(event);
+            event.setPrevious(tail);
+            tail = event;
+        }
+    }
+}
+
 class Utils {
     int pow(int x, int exposant) {
         int resultat = 1;

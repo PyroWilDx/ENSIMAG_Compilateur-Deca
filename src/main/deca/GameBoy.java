@@ -1,61 +1,63 @@
 #include "Utils.java"
 
-class Tile {
-    protected int index;
-    protected int firstTileAdress = 36864;
-    protected Utils utils = new Utils();
-    void placeForeGround(){
 
-    }
-    void place(boolean foreground, int x, int y) {
-        int mapOffset = (y * 32) + x;
 
-        // TODO
-    }
-    void setTilePixel(int x, int y, Color color) {
-        int tileAddr = this.firstTileAdress + this.index * 16; // une tile c'est 16 octets
-        int addr1 = tileAddr + 2*y;
-        int addr2 = addr1 + 1;
-        int oct1 = utils.get(addr1);
-        int oct2 = utils.get(addr2);
-        int newValue1 = oct1;
-        int newValue2 = oct2;
-        int powerOfTwo = this.utils.pow(2, 7 - x);
-        boolean bit1 = ((oct1 / powerOfTwo) % 2) == 1;
-        boolean bit2 = ((oct2 / powerOfTwo) % 2) == 1;
-        if (bit1 != color.bit1) {
-            if (color.bit1) {
-                newValue1 = newValue1 + powerOfTwo;
-            }
-            else {
-                newValue1 = newValue1 - powerOfTwo;
-            }
-        }
-        if (bit2 != color.bit2) {
-            if (color.bit2) {
-                newValue2 = newValue2 + powerOfTwo;
-            }
-            else {
-                newValue2 = newValue2 - powerOfTwo;
-            }
-        }
-        utils.push(addr1, newValue1);
-        utils.push(addr2, newValue2);
-    }
-    void setBlack() {
-        this.index = 0;
-    }
-    void setDark() {
-        this.index = 1;
-    }
-    void setLight() {
-        this.index = 2;
-    }
-    void setWhite() {
-        this.index = 3;
-    }
-
-}
+//class Tile {
+//    protected int index;
+//    protected int firstTileAdress = 36864;
+//    protected Utils utils = new Utils();
+//    void placeForeGround(){
+//
+//    }
+//    void place(boolean foreground, int x, int y) {
+//        int mapOffset = (y * 32) + x;
+//
+//        // TODO
+//    }
+//    void setTilePixel(int x, int y, Color color) {
+//        int tileAddr = this.firstTileAdress + this.index * 16; // une tile c'est 16 octets
+//        int addr1 = tileAddr + 2*y;
+//        int addr2 = addr1 + 1;
+//        int oct1 = utils.get(addr1);
+//        int oct2 = utils.get(addr2);
+//        int newValue1 = oct1;
+//        int newValue2 = oct2;
+//        int powerOfTwo = this.utils.pow(2, 7 - x);
+//        boolean bit1 = ((oct1 / powerOfTwo) % 2) == 1;
+//        boolean bit2 = ((oct2 / powerOfTwo) % 2) == 1;
+//        if (bit1 != color.bit1) {
+//            if (color.bit1) {
+//                newValue1 = newValue1 + powerOfTwo;
+//            }
+//            else {
+//                newValue1 = newValue1 - powerOfTwo;
+//            }
+//        }
+//        if (bit2 != color.bit2) {
+//            if (color.bit2) {
+//                newValue2 = newValue2 + powerOfTwo;
+//            }
+//            else {
+//                newValue2 = newValue2 - powerOfTwo;
+//            }
+//        }
+//        utils.push(addr1, newValue1);
+//        utils.push(addr2, newValue2);
+//    }
+//    void setBlack() {
+//        this.index = 0;
+//    }
+//    void setDark() {
+//        this.index = 1;
+//    }
+//    void setLight() {
+//        this.index = 2;
+//    }
+//    void setWhite() {
+//        this.index = 3;
+//    }
+//
+//}
 class Color {
     boolean bit1 = false;
     boolean bit2 = false;
@@ -85,6 +87,7 @@ class Color {
 }
 
 class GameBoy {
+    protected DoubleLinkedListEvents drawEvents = new DoubleLinkedListEvents();
     protected int width = 160;
     protected int height = 144;
     protected Utils utils = new Utils();
@@ -119,12 +122,29 @@ class GameBoy {
     db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
     ElementaryTilesEnd :
 
+    ElementaryTiles :
+    db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
+    db $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff
+    db $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00
+    db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
+    ElementaryTilesEnd :
+
+    WhiteTile :
+    db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
+    WhiteTileEnd :
+
+    BlackTile :
+    db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
+    BlackTileEnd :
+
+
+
 
     ; On met les tiles elementaires dans la mémoire
     jp
-    ld de, ElementaryTiles
+    ld de, WhiteTile
     ld hl, $9000
-    ld bc, ElementaryTiles - ElementaryTilesEnd
+    ld bc, WhiteTile - WhiteTile
     call Memcopy
 
     ; Label menant à une map toute blanche
@@ -207,6 +227,11 @@ class GameBoy {
         call ClearBackground
         "
     );
+    void set(int indice, int x, int y) {
+        this.clearBackGround();
+        int mapOffset = 0x9800 + (y * 32) + x;
+        this.utils.push(mapOffset, indice);
+    }
     void setTileMapWhite(Color color) asm(
         "
         ld de, WhiteTilemap
@@ -215,6 +240,7 @@ class GameBoy {
         call Memcopy
         "
         );
+    void
     void setTileMapBlack(Color color) asm(
     "
     ld de, BlackTilemap
@@ -258,5 +284,11 @@ class GameBoy {
     void includeHardware() asm (
         #include "hardware_inc"
     );
-
+    void endGame() asm (
+        "
+        Done:
+        halt
+        jp Done
+        "
+    );
 }
