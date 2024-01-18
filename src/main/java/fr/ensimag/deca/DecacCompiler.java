@@ -14,11 +14,7 @@ import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
+import java.io.*;
 import java.util.Collection;
 
 import org.antlr.v4.runtime.CharStreams;
@@ -210,6 +206,8 @@ public class DecacCompiler {
     private final CondManager condManager;
     private final VTableManager vTableManager;
     private final GameBoyManager gameBoyManager;
+    private final StringBuilder tileIncludes = new StringBuilder();
+    private final StringBuilder tilemapIncludes = new StringBuilder();
 
     /**
      * Internal function that does the job of compiling (i.e. calling lexer,
@@ -257,7 +255,7 @@ public class DecacCompiler {
         } else {
             prog.codeGenProgram(this);
         }
-        
+
         LOG.debug("Generated assembly code:" + nl + program.display());
         LOG.info("Output file assembly file is: " + destName);
 
@@ -269,8 +267,22 @@ public class DecacCompiler {
         }
 
         LOG.info("Writing assembler file...");
-
-        program.display(new PrintStream(fstream));
+        PrintStream printStream = new PrintStream(fstream);
+        program.display(printStream);
+        if (GameBoyManager.doCp) {
+            if (tileIncludes.length() > 0) {
+                printStream.println("SECTION \"Tiles\", ROM0");
+                printStream.println("Tiles:");
+                printStream.print(tileIncludes);
+                printStream.println("TilesEnd:");
+            }
+            if (tilemapIncludes.length() > 0) {
+                printStream.println("SECTION \"Tilemaps\", ROM0");
+                printStream.println("Tilemaps:");
+                printStream.print(tilemapIncludes);
+                printStream.println("TilemapsEnd:");
+            }
+        }
         LOG.info("Compilation of " + sourceName + " successful.");
         return false;
     }
@@ -302,6 +314,15 @@ public class DecacCompiler {
         parser.setDecacCompiler(this);
         return parser.parseProgramAndManageErrors(err);
     }
+
+    public void addTileInclude(StringBuilder tileContent) {
+        tileIncludes.append(tileContent);
+    }
+
+    public void addTilemapInclude(StringBuilder tilemapContent) {
+        tilemapIncludes.append(tilemapContent);
+    }
+
 
     public RegManager getRegManager() {
         return regManager;

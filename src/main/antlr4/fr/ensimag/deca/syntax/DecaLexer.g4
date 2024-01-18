@@ -78,6 +78,8 @@ STRING : '"'(STRING_CAR | '\\' | '\\\\')*'"';
 INT : '0' | (POSITIVE_DIGIT DIGIT*);
 FLOAT : FLOATDEC | FLOATHEX;
 INCLUDE : '#include' (' ')* ' "'(LETTER | DIGIT | '.' | '-' | '_')+ '"'{doInclude(getText());};
+INCLUDE_TILE : '#includeTiles' (' ')* ' "'(LETTER | DIGIT | '.' | '-' | '_')+ '"'{doIncludeTiles(getText());};
+INCLUDE_TILE_MAP : '#includeTilemaps' (' ')* ' "'(LETTER | DIGIT | '.' | '-' | '_')+ '"'{doIncludeTilemaps(getText());};
 IDENT : (LETTER | '$' | '_')(LETTER | DIGIT |'_')*;
 
 
