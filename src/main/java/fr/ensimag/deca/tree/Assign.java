@@ -167,6 +167,7 @@ public class Assign extends AbstractBinaryExpr {
         compiler.addInstruction(new STORE_REG(regRight.getHighReg(), Register.HL));
         compiler.addInstruction(new LOAD_INT(vAddr - 1, Register.HL));
         compiler.addInstruction(new STORE_REG(regRight.getLowReg(), Register.HL));
+
         rM.freeReg(regRight);
         rM.freeReg(savedReg);
     }

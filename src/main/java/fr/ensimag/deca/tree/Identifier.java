@@ -14,6 +14,7 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -252,10 +253,8 @@ public class Identifier extends AbstractIdentifier {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 
-        GPRegister gpReg;
-
         DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
-        gpReg = rM.getFreeReg();
+        GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD(iAddr, gpReg));
 
         if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
@@ -279,13 +278,10 @@ public class Identifier extends AbstractIdentifier {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 
-        GPRegister gpReg;
-
         GameBoyManager gbM = compiler.getGameBoyManager();
         Integer varAddr = gbM.extractAddrFromIdent(compiler, this);
-        if (varAddr == null) return;
         compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
-        gpReg = rM.getFreeReg();
+        GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
         compiler.addInstruction(new LOAD_INT(varAddr - 1, Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
@@ -296,8 +292,19 @@ public class Identifier extends AbstractIdentifier {
             else compiler.addInstruction(new BEQ(branchLabel));
         } else {
             if (getType().isBoolean() && !isInTrue) {
-                compiler.addInstruction(new CMP(0, gpReg.getLowReg()));
-                compiler.addInstruction(new SEQ(gpReg.getLowReg()));
+                long id = cM.getUniqueId();
+                Label falseLabel = new Label("SccFalse" + id);
+                Label trueLabel = new Label("SccTrue" + id);
+                Label endLabel = new Label("SccEnd" + id);
+                compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
+                compiler.addInstruction(new CMP_A(0, Register.A));
+                compiler.addInstruction(new BEQ(trueLabel));
+                compiler.addLabel(falseLabel);
+                compiler.addInstruction(new LOAD_INT(0, gpReg.getLowReg()));
+                compiler.addInstruction(new BRA(endLabel));
+                compiler.addLabel(trueLabel);
+                compiler.addInstruction(new LOAD_INT(1, gpReg.getLowReg()));
+                compiler.addLabel(endLabel);
             }
         }
 

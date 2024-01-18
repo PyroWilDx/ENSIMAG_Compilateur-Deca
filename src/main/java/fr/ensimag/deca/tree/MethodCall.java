@@ -174,8 +174,19 @@ public class MethodCall extends AbstractMethodCall {
             if (getType().isBoolean() && !isInTrue) {
                 rM.getLastReg(); // On enlève R0
                 gpReg = rM.getFreeReg();
-                compiler.addInstruction(new CMP(0, Register.HL));
-                compiler.addInstruction(new SEQ(gpReg));
+                long id = cM.getUniqueId();
+                Label falseLabel = new Label("SccFalse" + id);
+                Label trueLabel = new Label("SccTrue" + id);
+                Label endLabel = new Label("SccEnd" + id);
+                compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
+                compiler.addInstruction(new CMP_A(0, Register.A));
+                compiler.addInstruction(new BEQ(trueLabel));
+                compiler.addLabel(falseLabel);
+                compiler.addInstruction(new LOAD_INT(0, gpReg.getLowReg()));
+                compiler.addInstruction(new BRA(endLabel));
+                compiler.addLabel(trueLabel);
+                compiler.addInstruction(new LOAD_INT(1, gpReg.getLowReg()));
+                compiler.addLabel(endLabel);
                 rM.freeReg(gpReg);
             }
         }

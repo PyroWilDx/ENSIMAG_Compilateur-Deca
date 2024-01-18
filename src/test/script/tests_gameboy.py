@@ -43,7 +43,7 @@ def doTests():
 
     doVerify("gameboy/base/assign.deca")
 
-    # doVerify("gameboy/cond/boolLazyEval.deca")
+    doVerify("gameboy/cond/boolLazyEval.deca")
 
     # doVerify("gameboy/cond/ifThenElseSimple.deca")
     #
@@ -121,6 +121,7 @@ def main():
 
 
 if __name__ == '__main__':
+    os.system("pkill -f Emulicious.jar")
     main()
     print()
     input("Input to Exit...")

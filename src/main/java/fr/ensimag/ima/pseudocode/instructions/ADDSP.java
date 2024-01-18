@@ -18,11 +18,4 @@ public class ADDSP extends UnaryInstructionImmInt {
     public ADDSP(int i) {
         super(i);
     }
-
-    @Override
-    public String getGameBoyAsm() {
-        ImmediateInteger opImmInt = (ImmediateInteger) getOperand();
-        opImmInt.oppValue();
-        return "add SP,";
-    }
 }
