@@ -267,6 +267,12 @@ def doTests():
                             b"36 6\n"
                             b"36 100\n")
 
+    doVerify("codegen/valid/classes/miscellaneous/newNoAssign.deca",
+             expectedResult=b"42\n"
+                            b"60\n"
+                            b"42 60 70\n"
+                            b"1\n")
+
     doVerify("codegen/valid/classes/miscellaneous/asmSimple.deca",
              expectedResult=b"10 180 2 4\n")
 

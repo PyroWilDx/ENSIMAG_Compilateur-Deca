@@ -131,7 +131,6 @@ public class MethodCall extends AbstractMethodCall {
             gbM.currClassVarStack.addFirst((AbstractIdentifier) expr);
         }
 
-
         int addSp = vTM.getCurrParamCountOfMethod() + 1;
 
 //        compiler.add(new LineGb("ld hl, SP"));
