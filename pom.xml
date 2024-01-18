@@ -318,6 +318,16 @@
                             <goal>exec</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>tests_gameboy</id>
+                        <configuration>
+                            <executable>./src/test/script/tests_gameboy.sh</executable>
+                        </configuration>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                    </execution>
                 </executions>
             </plugin>
 
