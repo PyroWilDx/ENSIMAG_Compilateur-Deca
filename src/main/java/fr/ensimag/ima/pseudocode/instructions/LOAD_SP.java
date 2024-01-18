@@ -6,7 +6,7 @@ import java.io.PrintStream;
 
 public class LOAD_SP extends BinaryInstructionDValToReg {
 
-    private int spOffset;
+    private final int spOffset;
 
     public LOAD_SP(DVal op1, GPRegister op2, int spOffset) {
         super(op1, op2);

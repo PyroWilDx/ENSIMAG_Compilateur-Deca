@@ -65,26 +65,23 @@ public class New extends AbstractExpr {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
-        // TODO (GB)
         RegManager rM = compiler.getRegManager();
-        StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
 
         vTM.enterClass(type.getType().getName().getName());
 
         int fieldsCount = vTM.getCurrFieldCountOfClass();
+        for (int i = 0; i < fieldsCount; i++) {
+            gbM.addFieldVar();
+        }
 
         GPRegister gpReg = rM.getFreeReg();
 
-        int objAddr = gbM.getGlobalAddrSP();
-        compiler.addInstruction(new LOAD_INT(objAddr, gpReg));
-        compiler.addInstruction(new PUSH(gpReg));
-        compiler.addInstruction(new LOAD_INT(0, gpReg));
-        for (int i = 0; i < fieldsCount; i++) {
-            compiler.addInstruction(new PUSH(gpReg));
-        }
-        sM.incrStackSizeByValue(fieldsCount + 1);
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 0));
+        compiler.addInstruction(new PUSH(Register.HL));
+        compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(vTM.getCurrClassName())));
+        compiler.addInstruction(new POP(gpReg));
 
         rM.freeReg(gpReg);
 

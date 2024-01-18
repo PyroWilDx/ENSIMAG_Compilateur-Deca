@@ -27,11 +27,13 @@ public class GameBoyManager {
     }
 
     private int printId;
+    private int fieldId;
     private final HashMap<String, Integer> globalVars;
     public LinkedList<AbstractIdentifier> currClassVarStack;
 
     public GameBoyManager() {
         this.printId = 0;
+        this.fieldId = 0;
         this.globalVars = new HashMap<>();
         this.currClassVarStack = new LinkedList<>();
     }
@@ -42,6 +44,11 @@ public class GameBoyManager {
 
     public void addGlobalVar(String varName) {
         globalVars.put(varName, globalVars.size());
+    }
+
+    public void addFieldVar() {
+        globalVars.put(fieldId + "F", globalVars.size());
+        fieldId++;
     }
 
     public Integer getGlobalVarAddr(String varName) {
