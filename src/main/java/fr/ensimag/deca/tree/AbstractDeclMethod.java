@@ -50,6 +50,24 @@ public abstract class AbstractDeclMethod extends Tree {
         // Done
     }
 
+    public void codeGenVTableGb(DecacCompiler compiler, VTable vTable, int methodOffset) {
+        className = vTable.getClassName();
+        String methodName = getName().getName();
+
+        mStartLabel = LabelUtils.getMethodLabel(className, methodName);
+        mEndLabel = LabelUtils.getMethodEndLabel(className, methodName);
+
+        vTable.addMethod(methodName, methodOffset);
+
+        String paramName;
+        int currParamOffset = -3;
+        for (AbstractParam param : getParams().getList()) {
+            paramName = param.getName().getName();
+            vTable.addParamToMethod(methodName, paramName, currParamOffset);
+            currParamOffset--;
+        }
+    }
+
     protected boolean override = false;
     protected int methodIndex;
 

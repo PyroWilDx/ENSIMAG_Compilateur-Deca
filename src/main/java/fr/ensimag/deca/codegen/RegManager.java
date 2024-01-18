@@ -137,4 +137,23 @@ public class RegManager {
         }
     }
 
+    public static void addSaveRegsInstsGb(DecacCompiler compiler, int index,
+                                          boolean[] usedRegs) {
+        LinkedList<AbstractLine> startLines = new LinkedList<>();
+        for (int i = startReg; i < usedRegs.length; i++) {
+            if (usedRegs[i]) {
+                startLines.addLast(new Line(new PUSH(Register.getR(i))));
+            }
+        }
+        compiler.addAllLine(index, startLines);
+    }
+
+    public static void addRestoreRegsInstsGb(DecacCompiler compiler, boolean[] usedRegs) {
+        for (int i = usedRegs.length - 1; i > (startReg - 1); i--) {
+            if (usedRegs[i]) {
+                compiler.addInstruction(new POP(Register.getR(i)));
+            }
+        }
+    }
+
 }

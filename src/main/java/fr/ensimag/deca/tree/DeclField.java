@@ -44,6 +44,11 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
+    public void codeGenVTableGb(DecacCompiler compiler, VTable vTable, int fieldOffset) {
+        vTable.addField(getName().getName(), fieldOffset);
+    }
+
+    @Override
     public void codeGenSetFieldTo0(DecacCompiler compiler, boolean doLoad) {
         VTableManager vTM = compiler.getVTableManager();
 

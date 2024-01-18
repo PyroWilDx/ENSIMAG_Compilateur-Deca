@@ -54,6 +54,19 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         }
     }
 
+    public void codeGenVTableGb(DecacCompiler compiler, VTable vTable) {
+        VTableManager vTM = compiler.getVTableManager();
+
+        VTable superClassVTable = vTable.getVTableOfSuperClass(vTM);
+        vTable.addAllFields(superClassVTable);
+
+        int fieldOffset = superClassVTable.getFieldsCount() + 1;
+        for (AbstractDeclField declField : getList()) {
+            declField.codeGenVTableGb(compiler, vTable, fieldOffset);
+            fieldOffset++;
+        }
+    }
+
     public void codeGenSetFieldsTo0(DecacCompiler compiler) {
         AbstractDeclField.TypeCode lastTypeCode = null;
         for (AbstractDeclField declField : getList()) {

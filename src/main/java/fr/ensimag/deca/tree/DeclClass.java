@@ -135,6 +135,23 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
+    public void codeGenVTableGb(DecacCompiler compiler) {
+        VTableManager vTM = compiler.getVTableManager();
+
+        SymbolTable.Symbol classSymbol = name.getName();
+        String className = classSymbol.getName();
+        SymbolTable.Symbol superClassSymbol = superClass.getName();
+
+        compiler.addComment("VTable of " + className);
+
+        VTable vT = new VTable(superClassSymbol, classSymbol, null);
+        vTM.addVTable(className, vT);
+
+        methods.codeGenVTableGb(compiler, vT);
+        fields.codeGenVTableGb(compiler, vT);
+    }
+
+    @Override
     public void codeGenDeclClass(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(true);
@@ -179,11 +196,9 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void codeGenDeclClassGb(DecacCompiler compiler) {
-        // TODO (GB)
         RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(true);
         compiler.setStackManager(sM);
-        CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
 
         String className = name.getName().getName();
@@ -215,8 +230,8 @@ public class DeclClass extends AbstractDeclClass {
         fields.codeGenListDeclFieldGb(compiler);
 
         boolean[] usedRegs = rM.popUsedRegs();
-        RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
-        RegManager.addRestoreRegsInsts(compiler, usedRegs);
+        RegManager.addSaveRegsInstsGb(compiler, iTSTO, usedRegs);
+        RegManager.addRestoreRegsInstsGb(compiler, usedRegs);
 
         compiler.addInstruction(new RTS());
 

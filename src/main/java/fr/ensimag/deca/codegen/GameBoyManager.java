@@ -18,6 +18,10 @@ public class GameBoyManager {
         return (doCp) ? "" : "#";
     }
 
+    public static String getLabelSeparator() {
+        return (doCp) ? "_" : ".";
+    }
+
     public static int getVarAddr(int varOffset) {
         return Addr0 - varOffset;
     }

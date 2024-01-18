@@ -17,6 +17,8 @@ public abstract class AbstractDeclField extends Tree {
 
     public abstract void codeGenVTable(DecacCompiler compiler, VTable vTable, int fieldOffset);
 
+    public abstract void codeGenVTableGb(DecacCompiler compiler, VTable vTable, int fieldOffset);
+
     public abstract void codeGenSetFieldTo0(DecacCompiler compiler, boolean doLoad);
 
     public abstract void codeGenSetFieldTo0Gb(DecacCompiler compiler);
