@@ -41,6 +41,8 @@ def doTests():
 
     doVerify("gameboy/base/opArith.deca")
 
+    doVerify("gameboy/base/opRegOverflow.deca")
+
     doVerify("gameboy/base/assign.deca")
 
     doVerify("gameboy/cond/boolLazyEval.deca")
@@ -105,9 +107,7 @@ def doTests():
     #
     # doVerify("gameboy/object/miscellaneous/asmSimple.deca")
 
-    doVerify("gameboy/regs/opRegOverflow.deca")
-
-    # doVerify("gameboy/regs/methodRegOverflow.deca")
+    # doVerify("gameboy/object/miscellaneous/methodRegOverflow.deca")
 
     return 0
 

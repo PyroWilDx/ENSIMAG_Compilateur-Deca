@@ -159,7 +159,7 @@ public class MethodCall extends AbstractMethodCall {
 
         rM.freeReg(gpReg);
 
-        compiler.addInstruction(new LOAD_SP(gbM.getGlobalAddrSP(), Register.SP));
+//        compiler.addInstruction(new LOAD_SP(gbM.getGlobalAddrSP(), Register.SP));
 
         if (!getType().isVoid()) {
             rM.freeRegForce(Register.HL);

@@ -3,6 +3,8 @@ package fr.ensimag.ima.pseudocode.instructions;
 import fr.ensimag.ima.pseudocode.ImmediateInteger;
 import fr.ensimag.ima.pseudocode.UnaryInstructionImmInt;
 
+import java.io.PrintStream;
+
 /**
  *
  * @author Ensimag
@@ -19,7 +21,13 @@ public class SUBSP extends UnaryInstructionImmInt {
     }
 
     @Override
+    public void displayOperandsGameBoy(PrintStream s) {
+        s.print(" SP, -");
+        s.print(getOperand());
+    }
+
+    @Override
     public String getGameBoyAsm() {
-        return "add SP,";
+        return "add";
     }
 }

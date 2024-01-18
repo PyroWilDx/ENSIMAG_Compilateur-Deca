@@ -64,11 +64,8 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     }
 
     public void codeGenSetFieldsTo0Gb(DecacCompiler compiler) {
-        AbstractDeclField.TypeCode lastTypeCode = null;
         for (AbstractDeclField declField : getList()) {
-            AbstractDeclField.TypeCode currTypeCode = declField.getInitTypeCode();
-            declField.codeGenSetFieldTo0Gb(compiler, currTypeCode != lastTypeCode);
-            lastTypeCode = currTypeCode;
+            declField.codeGenSetFieldTo0Gb(compiler);
         }
     }
 
@@ -80,9 +77,8 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     }
 
     public void codeGenListDeclFieldGb(DecacCompiler compiler) {
-        AbstractDeclField.TypeCode lastTypeCode = null;
         for (AbstractDeclField declField : getList()) {
-            lastTypeCode = declField.codeGenDeclFieldGb(compiler, lastTypeCode);
+            declField.codeGenDeclFieldGb(compiler);
         }
     }
 }

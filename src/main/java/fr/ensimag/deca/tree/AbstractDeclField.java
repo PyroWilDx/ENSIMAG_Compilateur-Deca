@@ -19,11 +19,11 @@ public abstract class AbstractDeclField extends Tree {
 
     public abstract void codeGenSetFieldTo0(DecacCompiler compiler, boolean doLoad);
 
-    public abstract void codeGenSetFieldTo0Gb(DecacCompiler compiler, boolean doLoad);
+    public abstract void codeGenSetFieldTo0Gb(DecacCompiler compiler);
 
     public abstract TypeCode codeGenDeclField(DecacCompiler compiler, TypeCode lastTypeCode);
 
-    public abstract TypeCode codeGenDeclFieldGb(DecacCompiler compiler, TypeCode lastTypeCode);
+    public abstract void codeGenDeclFieldGb(DecacCompiler compiler);
 
     public abstract TypeCode getInitTypeCode();
 
