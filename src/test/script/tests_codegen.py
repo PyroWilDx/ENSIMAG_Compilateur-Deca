@@ -151,6 +151,9 @@ def doTests():
                             b"4.0 / 3 = 1.33333e+00\n"
                             b"4 / 3.0 = 1.33333e+00\n")
 
+    doVerify("codegen/valid/operations/opShift.deca",
+             expectedResult=b"14 14 112 112 1792 896 224 832 104 0 0 14336\n")
+
     doVerify("codegen/valid/conditions/boolLazyEval.deca",
              expectedResult=b"")
 
@@ -228,6 +231,10 @@ def doTests():
                             b"80 70 60\n"
                             b"180 170 160\n")
 
+    doVerify("codegen/valid/classes/methods/callOtherClassMethod.deca",
+             expectedResult=b"1 2 3 42\n"
+                            b"42 3 0 0\n")
+
     doVerify("codegen/valid/classes/extends/extendsFieldSimple.deca",
              expectedResult=b"1 2\n"
                             b"1 2 0\n")
@@ -262,6 +269,12 @@ def doTests():
                             b"OK\n"
                             b"36 6\n"
                             b"36 100\n")
+
+    doVerify("codegen/valid/classes/miscellaneous/newNoAssign.deca",
+             expectedResult=b"42\n"
+                            b"60\n"
+                            b"42 60 70\n"
+                            b"1\n")
 
     doVerify("codegen/valid/classes/miscellaneous/asmSimple.deca",
              expectedResult=b"10 180 2 4\n")

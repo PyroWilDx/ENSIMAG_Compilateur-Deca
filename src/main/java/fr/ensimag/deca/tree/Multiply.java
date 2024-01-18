@@ -16,6 +16,16 @@ public class Multiply extends AbstractOpArith {
     }
 
     @Override
+    protected int doOpInt(int a, int b) {
+        return a * b;
+    }
+
+    @Override
+    protected float doOpFloat(float a, float b) {
+        return a * b;
+    }
+
+    @Override
     protected void codeGenOpArith(DecacCompiler compiler,
                                   DVal valReg, GPRegister saveReg) {
         compiler.addInstruction(new MUL(valReg, saveReg));

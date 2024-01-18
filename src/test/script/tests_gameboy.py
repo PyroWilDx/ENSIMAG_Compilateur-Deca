@@ -4,13 +4,7 @@ import os
 import subprocess
 
 
-def doVerify(decaFilePath,
-             expectedResult=b"", decacExpected="",
-             decacOptions="", decacFail=False,
-             execError=False, execFail=False,
-             input="",
-             imaOptions="",
-             doAssert=True):
+def doVerify(decaFilePath):
     extIndex = decaFilePath.rfind(".")
     decaFilePathNoExt = decaFilePath[:extIndex]
     lastSlashIndex = decaFilePathNoExt.rfind("/")
@@ -30,6 +24,8 @@ def doVerify(decaFilePath,
     os.system(f"rgbasm -L -o {dl}/{decaFileNameNoExt}.o {dl}/{decaFileNameNoExt}.asm")
     os.system(f"rgblink -o {dl}/{decaFileNameNoExt}.gb {dl}/{decaFileNameNoExt}.o")
     os.system(f"rgbfix -v -p 0xFF {dl}/{decaFileNameNoExt}.gb")
+
+    os.system(f"Emulicious.jar {dl}/{decaFileNameNoExt}.gb &")
 
     os.chdir(lastDir)
 
@@ -125,3 +121,5 @@ def main():
 if __name__ == '__main__':
     main()
     print()
+    input("Input to Exit...")
+    os.system("pkill -f Emulicious.jar")

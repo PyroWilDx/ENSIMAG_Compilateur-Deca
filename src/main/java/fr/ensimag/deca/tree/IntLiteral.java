@@ -18,11 +18,30 @@ import java.io.PrintStream;
  * @date 01/01/2024
  */
 public class IntLiteral extends AbstractLiteral {
+
+    public void setValue(int value) {
+        this.value = value;
+    }
+
     public int getValue() {
         return value;
     }
 
-    private final int value;
+    public boolean isPowerOf2() {
+        return (value != 0) && ((value & (value - 1)) == 0);
+    }
+
+    public int getExponentOf2() {
+        int n = value;
+        int power = 0;
+        while ((n & 1) == 0) {
+            n >>= 1;
+            power++;
+        }
+        return power;
+    }
+
+    private int value;
 
     public IntLiteral(int value) {
         this.value = value;
