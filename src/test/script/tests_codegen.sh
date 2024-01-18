@@ -1,1 +1,1 @@
-python3 tests_codegen.py
+python3 src/test/script/tests_codegen.py

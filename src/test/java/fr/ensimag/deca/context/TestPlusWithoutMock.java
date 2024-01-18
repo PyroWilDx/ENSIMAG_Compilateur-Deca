@@ -35,7 +35,9 @@ public class TestPlusWithoutMock {
         public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                 ClassDefinition currentClass) throws ContextualError {
             hasBeenVerified = true;
-            return INT;
+            Type exprType = compiler.environmentType.INT;
+            setType(exprType);
+            return exprType;
         }
 
         @Override
