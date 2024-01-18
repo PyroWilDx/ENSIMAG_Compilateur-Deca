@@ -35,12 +35,17 @@ public class Multiply extends AbstractOpArith {
                 ImmediateFloat valImmFloat = (ImmediateFloat) valReg;
                 value = valImmFloat.getIntValue();
             }
-            compiler.addInstruction(new LOAD_REG(saveReg, Register.A));
-            for (int i = 0; i < value - 1; i++) {
-                compiler.addInstruction(new ADD_A(saveReg, Register.A));
+            if (value != 0) {
+                compiler.addInstruction(new LOAD_REG(saveReg, Register.A));
+                for (int i = 0; i < value - 1; i++) {
+                    compiler.addInstruction(new ADD_A(saveReg, Register.A));
+                }
+                compiler.addInstruction(new LOAD_REG(Register.A, saveReg));
+            } else {
+                compiler.addInstruction(new LOAD_INT(0, saveReg));
             }
-            compiler.addInstruction(new LOAD_REG(Register.A, saveReg));
         } else {
+            // TODO (PUSH HL)
             long id = cM.getUniqueId();
             Label startLabel = new Label("MulStart" + id);
             Label set0Label = new Label("MulByZero" + id);
@@ -50,7 +55,12 @@ public class Multiply extends AbstractOpArith {
             GPRegister valGpReg = (GPRegister) valReg;
             valGpReg = valGpReg.getLowReg();
 
-            compiler.addInstruction(new CMP(0, valGpReg));
+            compiler.addInstruction(new LOAD_REG(valGpReg, Register.A));
+            compiler.addInstruction(new CMP_A(0, Register.A));
+            compiler.addInstruction(new BEQ(set0Label));
+
+            compiler.addInstruction(new LOAD_REG(saveReg, Register.A));
+            compiler.addInstruction(new CMP_A(0, Register.A));
             compiler.addInstruction(new BEQ(set0Label));
 
             compiler.addInstruction(new LOAD_REG(saveReg, Register.A));

@@ -39,18 +39,20 @@ public class Modulo extends AbstractOpArith {
         Label startLabel = new Label("ModuloStart" + cM.getUniqueId());
         Label endLabel = new Label("ModuloEnd" + cM.getUniqueId());
 
-        compiler.addInstruction(new LOAD(valReg, Register.A));
-        compiler.addInstruction(new CMP(0, Register.A));
+        compiler.addInstruction(new LOAD_GEN(valReg, Register.A));
+        compiler.addInstruction(new CMP_A(0, Register.A));
         compiler.addInstruction(new BEQ(endLabel));
 
+        compiler.addInstruction(new LOAD_REG(saveReg, Register.A));
+
         compiler.addLabel(startLabel);
-        compiler.addInstruction(new CMP(valReg, saveReg));
+        compiler.addInstruction(new CMP_A(valReg, Register.A));
         compiler.addInstruction(new BLT(endLabel));
-        compiler.addInstruction(new SUB(valReg, saveReg));
+        compiler.addInstruction(new SUB_A(valReg, Register.A));
 
         compiler.addInstruction(new BRA(startLabel));
         compiler.addLabel(endLabel);
-        compiler.addInstruction(new LOAD(Register.A, saveReg));
+        compiler.addInstruction(new LOAD_REG(Register.A, saveReg));
     }
 
     @Override

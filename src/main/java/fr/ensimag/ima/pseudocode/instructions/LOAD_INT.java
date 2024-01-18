@@ -10,6 +10,7 @@ public class LOAD_INT extends BinaryInstructionDValToReg {
     public LOAD_INT(DVal dVal, GPRegister r) {
         super(dVal, r);
     }
+
     public LOAD_INT(int i, GPRegister r) {
         this(new ImmediateInteger(i), r);
     }
