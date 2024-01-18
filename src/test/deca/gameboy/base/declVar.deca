@@ -1,9 +1,3 @@
-// Description :
-//    Test de plusieurs déclarations de variables
-//
-// Resultats :
-//
-
 {
     int x = 1;
     int y = 42;

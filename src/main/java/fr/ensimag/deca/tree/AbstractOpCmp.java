@@ -5,8 +5,7 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.ADD;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * @author gl47
@@ -79,8 +78,20 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
             if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
             else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));
         } else {
-            if (isInTrue) compiler.addInstruction(getOpCmpInst(saveReg.getLowReg()));
-            else compiler.addInstruction(getInvOpCmpInst(saveReg.getLowReg()));
+            long id = cM.getUniqueId();
+            Label trueLabel = new Label("SccTrue" + id);
+            Label falseLabel = new Label("SccFalse" + id);
+            Label endLabel = new Label("SccEnd" + id);
+            compiler.addInstruction(new LOAD_REG(saveReg.getLowReg(), Register.A));
+            compiler.addInstruction(new CMP_A(0, Register.A));
+            if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(trueLabel));
+            else compiler.addInstruction(getBranchInvOpCmpInst(trueLabel));
+            compiler.addLabel(falseLabel);
+            compiler.addInstruction(new LOAD_INT(0, saveReg.getLowReg()));
+            compiler.addInstruction(new BRA(endLabel));
+            compiler.addLabel(trueLabel);
+            compiler.addInstruction(new LOAD_INT(1, saveReg.getLowReg()));
+            compiler.addLabel(endLabel);
         }
     }
 

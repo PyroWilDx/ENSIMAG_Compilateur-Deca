@@ -235,6 +235,9 @@ def doTests():
              expectedResult=b"1 2 3 42\n"
                             b"42 3 0 0\n")
 
+    doVerify("codegen/valid/classes/methods/callInsideCall.deca",
+             expectedResult=b"200 30 0 30\n")
+
     doVerify("codegen/valid/classes/extends/extendsFieldSimple.deca",
              expectedResult=b"1 2\n"
                             b"1 2 0\n")

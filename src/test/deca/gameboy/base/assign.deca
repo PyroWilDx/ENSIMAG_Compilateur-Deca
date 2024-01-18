@@ -1,0 +1,25 @@
+{
+    int x;
+    int y = 2;
+    boolean z = true;
+
+    x = 4;
+    z = false;
+
+    if (x != 4) {
+        println();
+    }
+
+    if (y != 2) {
+        println();
+    }
+
+    if (z) {
+        println();
+    }
+
+    z = true;
+    if (!z) {
+        println();
+    }
+}
