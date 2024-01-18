@@ -1,11 +1,11 @@
 package fr.ensimag.deca.syntax;
 
-import java.io.File;
-import java.io.InputStreamReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.Stack;
+import java.util.stream.Stream;
 
+import fr.ensimag.deca.codegen.GameBoyManager;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -23,15 +23,17 @@ import fr.ensimag.deca.tree.LocationException;
 /**
  * This is the super class for the lexer. It is extended by the lexer class
  * generated from DecaLexer.g.
- * 
+ *
  * @author gl47, Based on template by Jim Idle - Temporal Wave LLC
- *         (jimi@idle.ws)
+ * (jimi@idle.ws)
  * @date 01/01/2024
  */
 public abstract class AbstractDecaLexer extends Lexer {
     private static final Logger LOG = Logger.getLogger(AbstractDecaLexer.class);
 
     private DecacCompiler decacCompiler;
+    private final StringBuilder includeTiles = new StringBuilder();
+    private final StringBuilder includeTilemaps = new StringBuilder();
     private File source;
 
     public void setSource(File source) {
@@ -44,6 +46,16 @@ public abstract class AbstractDecaLexer extends Lexer {
 
     public void setDecacCompiler(DecacCompiler decacCompiler) {
         this.decacCompiler = decacCompiler;
+        if (includeTiles.length() > 0) {
+            if (!GameBoyManager.doCp)
+                throw new NonAuthorizedIncludeTiles(this, this.getInputStream());
+            this.decacCompiler.addTileInclude(this.includeTiles);
+        }
+        if (includeTilemaps.length() > 0) {
+            if (!GameBoyManager.doCp)
+                throw new NonAuthorizedIncludeTilemaps(this, this.getInputStream());
+            this.decacCompiler.addTilemapInclude(this.includeTilemaps);
+        }
     }
 
     /**
@@ -62,10 +74,10 @@ public abstract class AbstractDecaLexer extends Lexer {
 
     /**
      * Display the list of tokens for the lexer in semi-human-readable form.
-     * 
+     * <p>
      * This consumes the stream of tokens, hence should never be called if the
      * parser has to read these tokens afterwards.
-     * 
+     *
      * @return true if the lexer raised an error.
      */
     public boolean debugTokenStream() {
@@ -78,7 +90,7 @@ public abstract class AbstractDecaLexer extends Lexer {
             }
         } catch (ParseCancellationException e) {
             if (e.getCause() instanceof LocationException) {
-                ((LocationException)e.getCause()).display(System.err);
+                ((LocationException) e.getCause()).display(System.err);
             }
             return true;
         } catch (DecaRecognitionException e) {
@@ -100,10 +112,9 @@ public abstract class AbstractDecaLexer extends Lexer {
     /**
      * Helper for test drivers, that creates a lexer from command-line
      * arguments.
-     * 
-     * @param args
-     *            Either empty (read from stdin), or 1-element array (the file
-     *            to read from)
+     *
+     * @param args Either empty (read from stdin), or 1-element array (the file
+     *             to read from)
      * @return The lexer built from args
      * @throws IOException
      */
@@ -131,7 +142,7 @@ public abstract class AbstractDecaLexer extends Lexer {
     }
 
     // Code needed to implement the #include directive.
-    // Adapted from https://theantlrguy.atlassian.net/wiki/pages/viewpage.action?pageId=2686987
+// Adapted from https://theantlrguy.atlassian.net/wiki/pages/viewpage.action?pageId=2686987
     private static class IncludeSaveStruct {
         IncludeSaveStruct(CharStream input, int line, int charPositionInline) {
             this.input = input;
@@ -139,9 +150,13 @@ public abstract class AbstractDecaLexer extends Lexer {
             this.charPositionInLine = charPositionInline;
         }
 
-        /** Which stream to read from */
+        /**
+         * Which stream to read from
+         */
         public CharStream input;
-        /** Where in the stream was the <code>#include</code> */
+        /**
+         * Where in the stream was the <code>#include</code>
+         */
         public int line, charPositionInLine;
     }
 
@@ -150,15 +165,12 @@ public abstract class AbstractDecaLexer extends Lexer {
     /**
      * Look up the file to include in the current directory, or in the
      * $CLASSPATH (either a file or the content of a .jar file).
-     * 
+     *
      * @return An ANTLR stream to read from
-     * @throws IOException
-     *             when the file was found but could not be opened
-     * @throws IncludeFileNotFound
-     *             when the file was not found.
+     * @throws IOException         when the file was found but could not be opened
+     * @throws IncludeFileNotFound when the file was not found.
      */
-    CharStream findFile(String name) throws IOException,
-            IncludeFileNotFound {
+    CharStream findFile(String name) throws IOException, IncludeFileNotFound {
         // Look in the directory containing the source file ...
         String dir = "."; // default value used e.g. when reading from stdin
         File src = getSource();
@@ -183,17 +195,40 @@ public abstract class AbstractDecaLexer extends Lexer {
         throw new IncludeFileNotFound(name, this, getInputStream()); // TODO: check this
     }
 
+    InputStream getFileInputStream(String name) throws IOException, IncludeFileNotFound {
+        // Look in the directory containing the source file ...
+        String dir = "."; // default value used e.g. when reading from stdin
+        File src = getSource();
+        if (src != null && src.getParent() != null) {
+            dir = src.getParent();
+        }
+        LOG.debug("src: " + src);
+        String full = dir + "/" + name;
+        File f = new File(full);
+        if (f.exists()) {
+            LOG.debug("Using local file " + full);
+            return f.toURI().toURL().openStream();
+        }
+
+        // ... and fall back to the standard library path if not found.
+        final URL url = ClassLoader.getSystemResource("include/" + name); // TODO: if needed, Modify tiles library here later
+        if (url != null) {
+            LOG.debug("Using library " + url);
+            return url.openStream();
+        }
+
+        throw new IncludeFileNotFound(name, this, getInputStream()); // TODO: check this
+    }
+
     /**
      * Apply a <code>#include</code> directive.
-     * 
+     * <p>
      * Look up the file "name" using {@link #findFile(String)}, and set the
      * input stream of the lexer to this object. The previous input stream is
      * saved an {@link #includes} and will be restored by {@link #nextToken()}.
-     * 
-     * @throws IncludeFileNotFound
-     *             When the file could not be found or opened.
-     * @throws CircularInclude
-     *             When an attempt to perform a circular inclusion is done
+     *
+     * @throws IncludeFileNotFound When the file could not be found or opened.
+     * @throws CircularInclude     When an attempt to perform a circular inclusion is done
      */
     void doInclude(String includeDirective) throws IncludeFileNotFound, CircularInclude {
         String name = includeDirective.substring(includeDirective.indexOf('"') + 1,
@@ -219,20 +254,90 @@ public abstract class AbstractDecaLexer extends Lexer {
         throw new SkipANTLRPostAction();
     }
 
+    private StringBuilder readIncludeFile(String filename) throws IncludeFileNotFound {
+        Validate.notNull(filename);
+        InputStream input;
+        try {
+            input = getFileInputStream(filename);
+        } catch (IOException e1) {
+            // The file is probably there but not readable.
+            throw new IncludeFileNotFound(filename, this, getInputStream());
+        }
+        BufferedReader reader = new BufferedReader(new InputStreamReader(input));
+        StringBuilder fileContent = new StringBuilder();
+        try {
+            reader.lines().map(line -> line + "\n").forEach(fileContent::append);
+            return fileContent;
+        } catch (UncheckedIOException e2) {
+            // The file is probably there but not readable.
+            throw new IncludeFileNotFound(filename, this, getInputStream());
+        }
+    }
+
+    /**
+     * Apply a <code>#includeTile</code> directive.
+     * <p>
+     * Look up the tile file "name" using {@link #getFileInputStream(String)}, and add the included file to the compiler's
+     * list of tiles.
+     *
+     * @throws IncludeFileNotFound When the file could not be found or opened.
+     * @throws CircularInclude     When an attempt to perform a circular inclusion is done
+     */
+    void doIncludeTiles(String includeDirective) throws IncludeFileNotFound {
+        String name = includeDirective.substring(includeDirective.indexOf('"') + 1,
+                includeDirective.lastIndexOf('"'));
+        Validate.notNull(name);
+        Validate.notEmpty(name);
+        StringBuilder tileContent = readIncludeFile(name);
+        // TODO: Verify that the tile is valid with a regexp
+        if (this.decacCompiler != null) {
+            if (!GameBoyManager.doCp)
+                throw new NonAuthorizedIncludeTiles(this, this.getInputStream());
+            this.decacCompiler.addTileInclude(tileContent);
+        } else
+            this.includeTiles.append(tileContent);
+        throw new SkipANTLRPostAction();
+    }
+
+    /**
+     * Apply a <code>#includeTileMap</code> directive.
+     * <p>
+     * Look up the tilemap file "name" using {@link #getFileInputStream(String)}, and add the included file to the compiler's
+     * list of tilemaps.
+     *
+     * @throws IncludeFileNotFound When the file could not be found or opened.
+     * @throws CircularInclude     When an attempt to perform a circular inclusion is done
+     */
+    void doIncludeTilemaps(String includeDirective) throws IncludeFileNotFound {
+        String name = includeDirective.substring(includeDirective.indexOf('"') + 1,
+                includeDirective.lastIndexOf('"'));
+        Validate.notNull(name);
+        Validate.notEmpty(name);
+        StringBuilder tilemapContent = readIncludeFile(name);
+        // TODO: Verify that the tilemap is valid with a regexp
+        if (this.decacCompiler != null) {
+            if (!GameBoyManager.doCp)
+                throw new NonAuthorizedIncludeTiles(this, this.getInputStream());
+            this.decacCompiler.addTilemapInclude(tilemapContent);
+        } else
+            this.includeTilemaps.append(tilemapContent);
+        throw new SkipANTLRPostAction();
+    }
+
     /**
      * Exception used to skip ANTLR code from doInclude to nextToken().
-     *
+     * <p>
      * The normal call stack looks like:
      * <code>
      * nextToken()
-     *  `-> FailOrAccept
-     *      +-> LexerActionExecute
-     *      |   `-> doInclude()
-     *      |        `-> setInputStream() -> reset()
-     *      `-> return return prevAccept.dfaState.prediction
+     * `-> FailOrAccept
+     * +-> LexerActionExecute
+     * |   `-> doInclude()
+     * |        `-> setInputStream() -> reset()
+     * `-> return return prevAccept.dfaState.prediction
      * </code>
      * Unfortunately, reset() sets dfaState to null hence this crashes.
-     *
+     * <p>
      * Instead, use this exception to skip the "return" call, and catch the
      * control back in nextToken().
      */
@@ -242,8 +347,9 @@ public abstract class AbstractDecaLexer extends Lexer {
 
     /**
      * Override method nextToken for <code>#include</code> management.
+     *
      * @return the next Token which is read in an included files on
-     *    a <code>#include</code>
+     * a <code>#include</code>
      */
     @Override
     @SuppressWarnings("InfiniteRecursion")
