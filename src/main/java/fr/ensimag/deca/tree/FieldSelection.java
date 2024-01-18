@@ -83,7 +83,7 @@ public class FieldSelection extends AbstractLValue {
             fieldIdent.branchLabel = branchLabel;
         }
 
-        DAddr fAddr = getAddrOfField(compiler);
+        DAddr fAddr = getAddrOfFieldGb(compiler);
         fieldIdent.getExpDefinition().setOperand(fAddr);
 
         if (expr instanceof AbstractIdentifier) {
@@ -101,6 +101,34 @@ public class FieldSelection extends AbstractLValue {
     }
 
     public DAddr getAddrOfField(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+        ErrorManager eM = compiler.getErrorManager();
+        VTableManager vTM = compiler.getVTableManager();
+
+        vTM.enterClass(expr.getType().getName().getName());
+
+        String fieldName = fieldIdent.getName().getName();
+
+        expr.codeGenInst(compiler);
+
+        GPRegister gpReg = rM.getLastReg();
+        if (!(expr instanceof This)) {
+            if (compiler.getCompilerOptions().doCheck()) {
+                compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
+            }
+        } // Else, pas besoin vu qu'on est déjà dans une instance de la classe
+
+        int fieldOffset = vTM.getCurrFieldOffset(fieldName);
+        DAddr fAddr = new RegisterOffset(fieldOffset, gpReg);
+        rM.freeReg(gpReg);
+
+        vTM.exitClass();
+
+        return fAddr;
+    }
+
+    public DAddr getAddrOfFieldGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         ErrorManager eM = compiler.getErrorManager();
         VTableManager vTM = compiler.getVTableManager();

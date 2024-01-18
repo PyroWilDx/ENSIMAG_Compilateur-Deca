@@ -116,8 +116,10 @@ public class RegManager {
         }
         int maxStackSize = sM.getMaxStackSize() + usedCount;
         if (maxStackSize > 0) {
-            if (sM.getAddSp() + usedCount > 0) {
-                startLines.addFirst(new Line(new ADDSP(sM.getAddSp() + usedCount)));
+//            if (sM.getAddSp() + usedCount > 0) {
+            if (sM.getAddSp() > 0) {
+//                startLines.addFirst(new Line(new ADDSP(sM.getAddSp() + usedCount)));
+                startLines.addFirst(new Line(new ADDSP(sM.getAddSp())));
             }
             if (compiler.getCompilerOptions().doCheck()) {
                 startLines.addFirst(new Line(new BOV(eM.getStackOverflowLabel())));

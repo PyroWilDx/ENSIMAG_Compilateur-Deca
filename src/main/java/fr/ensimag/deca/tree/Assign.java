@@ -7,10 +7,7 @@ import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.POP;
-import fr.ensimag.ima.pseudocode.instructions.PUSH;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * Assignment, i.e. lvalue = expr.
@@ -112,24 +109,27 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
-        // TODO (GB)
+        // TODO (PUSH HL)
         RegManager rM = compiler.getRegManager();
         StackManager sM = compiler.getStackManager();
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         boolean saveReg = false;
-        DAddr iAddr;
+        Integer vAddr;
         if (getLeftOperand() instanceof AbstractIdentifier) {
             AbstractIdentifier lIdent = (AbstractIdentifier) getLeftOperand();
-            if (lIdent.getExpDefinition().getOperand() == null) {
+            if (gbM.getGlobalVarAddr(lIdent.getName().getName()) == null) {
                 saveReg = true;
             }
-            iAddr = CodeGenUtils.extractAddrFromIdent(compiler, lIdent);
+            vAddr = gbM.extractAddrFromIdent(compiler, lIdent);
         } else { // Should be a FieldSelection
+            // TODO (GB)
             FieldSelection lFieldSelect = (FieldSelection) getLeftOperand();
             saveReg = true;
-            iAddr = lFieldSelect.getAddrOfField(compiler);
+            vAddr = 0;
+//            iAddr = lFieldSelect.getAddrOfFieldGb(compiler);
         }
 
         GPRegister savedReg = null;
@@ -148,22 +148,25 @@ public class Assign extends AbstractBinaryExpr {
 
         getRightOperand().codeGenInstGb(compiler);
         GPRegister regRight = rM.getLastRegOrImm(compiler);
-        if (regRight == Register.R0) {
+        if (regRight == Register.HL) {
             if (pushed || cM.isDoingCond() || vTM.isInMethod()) {
                 regRight = rM.getFreeReg();
-                compiler.addInstruction(new LOAD(Register.R0, regRight));
+                compiler.addInstruction(new LOAD(Register.HL, regRight));
             }
         }
 
         if (pushed) {
-            compiler.addInstruction(new LOAD(regRight, Register.R0));
+            compiler.addInstruction(new LOAD(regRight, Register.HL));
             savedReg = regRight;
-            regRight = Register.R0;
+            regRight = Register.HL;
             compiler.addInstruction(new POP(savedReg));
             sM.decrTmpVar();
         }
 
-        compiler.addInstruction(new STORE(regRight, iAddr));
+        compiler.addInstruction(new LOAD_INT(vAddr, Register.HL));
+        compiler.addInstruction(new STORE_REG(regRight.getHighReg(), Register.HL));
+        compiler.addInstruction(new LOAD_INT(vAddr - 1, Register.HL));
+        compiler.addInstruction(new STORE_REG(regRight.getLowReg(), Register.HL));
         rM.freeReg(regRight);
         rM.freeReg(savedReg);
     }

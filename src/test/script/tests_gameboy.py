@@ -41,8 +41,10 @@ def doTests():
 
     doVerify("gameboy/base/opArith.deca")
 
+    doVerify("gameboy/base/assign.deca")
+
     # doVerify("gameboy/cond/boolLazyEval.deca")
-    #
+
     # doVerify("gameboy/cond/ifThenElseSimple.deca")
     #
     # doVerify("gameboy/cond/ifThenElseComplex.deca")
