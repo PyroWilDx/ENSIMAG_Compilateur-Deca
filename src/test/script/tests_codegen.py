@@ -151,6 +151,9 @@ def doTests():
                             b"4.0 / 3 = 1.33333e+00\n"
                             b"4 / 3.0 = 1.33333e+00\n")
 
+    doVerify("codegen/valid/operations/opShift.deca",
+             expectedResult=b"14 14 112 112 1792 896 224 832 104 0 0 14336\n")
+
     doVerify("codegen/valid/conditions/boolLazyEval.deca",
              expectedResult=b"")
 

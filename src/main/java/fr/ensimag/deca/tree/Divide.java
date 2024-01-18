@@ -4,7 +4,6 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.deca.codegen.ErrorManager;
-import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
@@ -15,6 +14,16 @@ import fr.ensimag.ima.pseudocode.instructions.*;
 public class Divide extends AbstractOpArith {
     public Divide(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
+    }
+
+    @Override
+    protected int doOpInt(int a, int b) {
+        return a / b;
+    }
+
+    @Override
+    protected float doOpFloat(float a, float b) {
+        return a / b;
     }
 
     @Override
