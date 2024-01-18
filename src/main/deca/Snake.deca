@@ -1,0 +1,180 @@
+class SnakeCell{
+    SnakeCell nextSnakeCell = null;
+    SnakeCell previousSnakeCell = null;
+    int x ;
+    int y ;
+    void initSnakeCase(SnakeCell nextSnakeCell, SnakeCell previousSnakeCell, int x ,int y){
+        this.nextSnakeCell = nextSnakeCell;
+        this.previousSnakeCell = previousSnakeCell;
+        this.x = x;
+        this.y = y;
+    }
+    int getX(){
+        return this.x;
+    }
+    int getY(){
+        return this.y;
+    }
+    void setX(int x){
+        this.x=x;
+    }
+    void setY(int y){
+        this.y=y;
+    }
+    SnakeCell getNext(){
+        return this.nextSnakeCell;
+    }
+
+    SnakeCell getPrevious(){
+        return this.previousSnakeCell;
+    }
+
+    void setNext(SnakeCell snakeCell){
+        this.nextSnakeCell = snakeCell;
+    }
+
+    void setPrevious(SnakeCell snakeCell){
+        this.previousSnakeCell=snakeCell;
+    }
+}
+class Snake{
+    protected SnakeCell head;
+    protected SnakeCell tail;
+    protected int xPositionHead;
+    protected int yPositionHead;
+    protected int maxX;
+    protected int maxY;
+    protected Reward reward;
+
+    void initSnake(int xH,int yH,int xMax,int yMax, int xR,int yR){
+        this.head = new SnakeCell();
+        this.tail = new SnakeCell();
+        this.xPositionHead=xH;
+        this.yPositionHead=yH;
+        this.maxX=xMax;
+        this.maxY=yMax;
+        this.head.initSnakeCase(null,this.tail,xH,yH);
+        this.tail.initSnakeCase(this.head,null,xH-1,yH);
+        this.reward=new Reward();
+        this.reward.initReward(xR, yR,xMax,yMax);
+    }
+
+    int getHeadX(){
+        return xPositionHead;
+    }
+
+    int getHeadY(){
+        return yPositionHead;
+    }
+
+
+    boolean move(int i){
+            boolean a;
+            SnakeCell newHead;
+            if(i==0){
+                goUp();
+            }
+            else if (i==1){
+                goDown();
+            }
+            else if(i==2){
+                goRight();
+            }
+            else if(i==3){
+                goLeft();
+                }
+            a = this.collusion();
+            //si la position du head est celle de la reward
+            if(xPositionHead==this.reward.x && yPositionHead==this.reward.y){
+                newHead=new SnakeCell();
+                newHead.initSnakeCase(null, null,xPositionHead,yPositionHead);
+                this.head.setNext(newHead);
+                newHead.setPrevious(this.head);
+                this.head=newHead;
+                this.head.setNext(null);
+                this.reward.changeParams();
+            }
+            else{
+                newHead = this.tail;
+                this.tail = this.tail.getNext();
+                this.head.setNext(newHead);
+                newHead.setPrevious(this.head);
+                this.head = newHead ;
+                this.head.setNext(null);
+                this.tail.setPrevious(null);
+                this.head.setX(this.xPositionHead);
+                this.head.setY(this.yPositionHead);
+            }
+            return a;
+    }
+    void goUp(){
+        this.yPositionHead = (this.yPositionHead - 1 + maxY)% maxY;
+    }
+    void goDown(){
+        this.yPositionHead = (this.yPositionHead + 1) %maxY;
+    }
+     void goRight(){
+        this.xPositionHead = (this.xPositionHead +1 ) % maxX;
+     }
+     void goLeft(){
+        this.xPositionHead = (this.xPositionHead -1 + maxX) %maxX;
+     }
+     boolean collusion(){
+        SnakeCell current = this.tail;
+        while(current != null){
+            if(current.getX() == this.xPositionHead && current.getY() == this.yPositionHead){
+                return false;
+            }
+            current = current.getNext();
+        }
+        return true ;
+     }
+
+     void printSnake(){
+        SnakeCell current = this.head;
+        while (current != null) {
+            print(current.getX());
+            println(current.getY());
+            current = current.getPrevious();
+        }
+     }
+}
+class Reward {
+    int x ;
+    int y ;
+    int maxX;
+    int maxY;
+    // ces params pour la fonction random
+    int s = 5;
+    int a = 166;
+    int c = 51 ;
+    int m = 532 ;
+
+    void initReward(int x,int y, int maxX , int maxY){
+        this.x = x;
+        this.y = y;
+        this.maxX = maxX;
+        this.maxY = maxY;
+    }
+    void changeParams(){
+        this.x = ((this.a* this.x +this.c)% m)%100 % this.maxX;
+        this.y = (((this.a*s+ this.y + this.c)% this.m)%100 -10) % this.maxY ;
+        print("reward :");
+        print(this.x);
+        print("-");
+        println(this.y);
+    }
+}
+
+{
+Snake snake = new Snake();
+boolean a = true;
+int i=0;
+snake.initSnake(6,6,10,10,5,5);
+while(a == true){
+             println("n:");
+             i = readInt();
+             a = snake.move(i);
+             snake.printSnake();
+             }
+}

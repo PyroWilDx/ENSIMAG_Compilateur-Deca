@@ -167,33 +167,49 @@ class Snake{
     void Snake(int x,int y){
         this.head = new SnakeCell(null,null,x,y);
         this.tail = this.head;
+        this.xPositionHead=x;
+        this.yPositionHead=y;
     }
     //TODO c'est mouvement depends de l'orientation du repaire
 
-    void move(boolean running){//   À refaire car y a pad de pointeur dans deca
+    boolean move(int i){//   il manque l'input comme argument
         //j'ai besoin de l'input pour decider dans quel if dans le else je vais entrer
         //depends on the input i chose where to go and update the new xPositionHead and the yPositionHead
         if(collusion(this.x,this.y)){
-            running = false;
-            Println("FIN DU JEU")
+            Println("FIN DU JEU");
+            return false;
         }
         else{
-            if(gouUp){
+            if(i==0){
                 goUp();
+                print(this.xPositionHead);
+                println(this.yPositionHead);
             }
-            else if (goDown){
+            else if (i==1){
                 goDown();
+                print(this.xPositionHead);
+                println(this.yPositionHead);
             }
-            else if(goRight){
+            else if(i==2){
                 goRight();
+                print(this.xPositionHead);
+                println(this.yPositionHead);
             }
-            else(goLeft){
+            elseif(i==3){
                 goLeft();
+                print(this.xPositionHead);
+                println(this.yPositionHead);
                 }
-            SnakeCell newHead = new SnakeCell(null,this.head,this.xPositionHead,this.yPositionHead);
+            /*SnakeCell newHead = new SnakeCell(null,this.head,this.xPositionHead,this.yPositionHead);
             this.head.setNext(newHead);
             this.head = newHead;
-            this.tail = this.tail.nextSnakeCell;
+            this.tail = this.tail.nextSnakeCell;*/
+            SnakeCell newHead = this.tail;
+            this.tail = this.tail.getNext();//it get null if only one
+            this.head.setNext(newHead);
+            newHead.setPrevious(this.head);
+            this.head = newHead ;
+            this.head.setNext(null);
             //ici je dois ajouter si la position du head est une reward je met le tail en tail.previous sinon
             // son previous devient null;
         }
@@ -245,7 +261,7 @@ class Reward{
     }
     void changeParams(){
         this.x = ((this.a* this.x +this.c)% m)%100 % this.maxX;
-        this.y = ((this.a*s+ this.y + this.c)% this.m)%100 -10 % this.maxY ;
+        this.y = (((this.a*s+ this.y + this.c)% this.m)%100 -10) % this.maxY ;
     }
 }
 //----------------------------------------------------
