@@ -53,11 +53,14 @@ public class MethodCall extends AbstractMethodCall {
         VTableManager vTM = compiler.getVTableManager();
 
         vTM.enterClass(expr.getType().getName().getName());
-
-        String methodName = methodIdent.getName().getName();
-        vTM.enterMethod(methodName);
+        vTM.enterMethod(methodIdent.getName().getName());
 
         int addSp = vTM.getCurrParamCountOfMethod() + 1;
+        int methodOffset = vTM.getCurrMethodOffset();
+
+        vTM.exitMethod();
+        vTM.exitClass();
+
         compiler.addInstruction(new ADDSP(addSp));
 
         expr.codeGenInst(compiler);
@@ -85,7 +88,7 @@ public class MethodCall extends AbstractMethodCall {
         compiler.addInstruction(new LOAD(new RegisterOffset(0, gpReg), gpReg));
 
         compiler.addInstruction(
-                new BSR(new RegisterOffset(vTM.getCurrMethodOffset(), gpReg)));
+                new BSR(new RegisterOffset(methodOffset, gpReg)));
 
         rM.freeReg(gpReg);
 
@@ -109,9 +112,6 @@ public class MethodCall extends AbstractMethodCall {
                 rM.freeReg(gpReg);
             }
         }
-
-        vTM.exitMethod();
-        vTM.exitClass();
     }
 
     @Override
