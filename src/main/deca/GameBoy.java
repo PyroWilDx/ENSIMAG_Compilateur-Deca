@@ -68,10 +68,10 @@ class GameBoy {
     protected int pixelHeight = 144;
     protected Utils utils = new Utils();
     protected BackgroundMapMod map = new BackgroundMapMod();
-    protected Color WHITE = new Color();
-    protected Color LIGHT = new Color();
-    protected Color DARK = new Color();
-    protected Color BLACK = new Color();
+    Color WHITE = new Color();
+    Color LIGHT = new Color();
+    Color DARK = new Color();
+    Color BLACK = new Color();
     protected boolean firstUpdate = true;
     int getWidth() {
         return this.width;
@@ -112,7 +112,7 @@ class GameBoy {
     call CopyDEintoMemoryAtHL
 
     ret; comme ça on essaie pas d executer la suite
-    
+
     ; Les tiles élémentaire
     ElementaryTiles :
     db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
