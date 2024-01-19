@@ -144,7 +144,7 @@ class Utils {
             dec bc
             ld a, b
             or a, c
-            jp nz, setBackGroundInTileMapLoop: ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
+            jp nz, setBackGroundInTileMapLoop ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
         ret
         "
     );
