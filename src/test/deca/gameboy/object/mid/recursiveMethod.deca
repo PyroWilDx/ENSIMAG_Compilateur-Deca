@@ -13,39 +13,25 @@ class A {
         //      )))))
         //      )))))
         //      ))))); // Ca fait 40 si tout se passe bien
+        // int v = (2 * y + (this.z + y));
+        int v = y + (z + z);
 
-        int v = 40;
-
-        x = x + v;
-
-        // if (i == 0) {
-        //     if (x != 40) {
-        //         println();
-        //     }
-        // }
-        
-        // if (i == 1) {
-            // println();
-        // }
-
-        // if (i == 1) {
-        //     if (x != 80) {
-        //         println();
-        //     }
-        // }
-
-        // if (i == 2) {
-            // println();
-        // }
-
-        // this.i = this.i + 1;
-
-        if (i == 0) {
-            recMethod(i + 1);
+        if (v != 5) {
+            println();
         }
-        // if (i == 0) {
-            // println();
+
+        // int v = 40;
+
+        // x = x + v;
+
+        // if (x != (i + 1) * 40) {
+        //     println();
         // }
+
+        // if (x < 200) {
+        //     recMethod(i + 1);
+        // }
+        // this.i = this.i + 1;
     }
 }
 
@@ -53,16 +39,16 @@ class A {
     A a = new A();
     a.recMethod(0);
 
-    // if (a.x != 80) {
-        // println();
+    // if (a.x != 200) {
+    //     println();
     // }
-    if (a.y != 1) {
-        println();
-    }
-    if (a.z != 2) {
-        println();
-    }
-    // if (a.i != 1) {
-        // println();
+    // if (a.y != 1) {
+    //     println();
+    // }
+    // if (a.z != 2) {
+    //     println();
+    // }
+    // if (a.i != 5) {
+    //     println();
     // }
 }

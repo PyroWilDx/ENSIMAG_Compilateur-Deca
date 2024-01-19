@@ -127,7 +127,7 @@ public class Assign extends AbstractBinaryExpr {
 
         compiler.addInstruction(new PUSH(Register.HL));
         if (vTM.isInMethod()) {
-            compiler.addInstruction(new ADDSP(2));
+            compiler.addInstruction(new ADDSP(2)); // Possible de mettre un spOffset à la place
         }
 
         getRightOperand().codeGenInstGb(compiler);

@@ -71,11 +71,12 @@ def doTests():
     # doVerify("gameboy/object/easy/fieldAssign.deca")
     # doVerify("gameboy/object/easy/fieldInitFieldSimple.deca")
     #
+    # doVerify("gameboy/object/mid/objReassign.deca")
     # doVerify("gameboy/object/mid/fieldInitMethod.deca")
     # doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
     # doVerify("gameboy/object/mid/varInMethod.deca")
-    doVerify("gameboy/object/mid/methodCallMethod.deca")
-    # doVerify("gameboy/object/mid/recursiveMethod.deca")
+    # doVerify("gameboy/object/mid/methodCallMethod.deca")
+    doVerify("gameboy/object/mid/recursiveMethod.deca")
 
     # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
     # doVerify("gameboy/object/extends/extendsFields.deca")
