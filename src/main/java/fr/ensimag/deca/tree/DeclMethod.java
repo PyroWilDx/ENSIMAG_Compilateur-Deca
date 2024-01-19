@@ -154,47 +154,6 @@ public class DeclMethod extends AbstractDeclMethod {
         vTM.exitMethod();
     }
 
-    //    // TODO (à déplacer)
-//    public void codeGenInstanceOf(DecacCompiler compiler) {
-//        RegManager rM = compiler.getRegManager();
-//        CondManager cM = compiler.getCondManager();
-//        VTableManager vTM = compiler.getVTableManager();
-//
-//        compiler.addInstruction(
-//                new LOAD(vTM.getAddrOfClass(targetClassName), Register.R0));
-//        GPRegister gpReg = rM.getFreeReg();
-//        compiler.addInstruction(
-//                new LOAD(identifier.getExpDefinition().getOperand(), gpReg));
-//        int idCpt = cM.getAndIncrIdCpt();
-//        Label startLabel = new Label("startInstanceOf" + idCpt);
-//        Label endTrueLabel = new Label("endTrueInstanceOf" + idCpt);
-//        Label endFalseLabel = new Label("endFalseInstanceOf" + idCpt);
-//        Label endLabel = new Label("endInstanceOf" + idCpt);
-//
-//        compiler.addLabel(startLabel);
-//
-//        compiler.addInstruction(
-//                new LOAD(new RegisterOffset(0, gpReg), gpReg));
-//
-//        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-//        compiler.addInstruction(new BEQ(endFalseLabel));
-//
-//        compiler.addInstruction(new CMP(Register.R0, gpReg));
-//        compiler.addInstruction(new BEQ(endTrueLabel));
-//
-//        compiler.addInstruction(new BRA(startLabel));
-//
-//        compiler.addLabel(endTrueLabel);
-//        compiler.addInstruction(new LOAD(1, gpReg));
-//        compiler.addInstruction(new BRA(endLabel));
-//
-//        compiler.addLabel(endFalseLabel);
-//        compiler.addInstruction(new LOAD(0, gpReg));
-//
-//        compiler.addLabel(endLabel);
-//        rM.freeReg(gpReg);
-//    }
-
     @Override
     public void decompile(IndentPrintStream s) {
         type.decompile(s);
