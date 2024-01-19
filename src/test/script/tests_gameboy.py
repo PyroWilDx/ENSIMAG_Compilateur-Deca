@@ -61,8 +61,8 @@ def doTests():
 
     doVerify("gameboy/object/fields/fieldSelection.deca")
 
-    # doVerify("gameboy/object/fields/fieldInitReg.deca")
-    #
+    doVerify("gameboy/object/fields/fieldInitReg.deca")
+
     # doVerify("gameboy/object/fields/fieldInitFieldSimple.deca")
     #
     # doVerify("gameboy/object/fields/fieldInitMethod.deca")
@@ -75,11 +75,11 @@ def doTests():
     #
     # doVerify("gameboy/object/methods/methodSimple.deca")
     #
-    # doVerify("gameboy/object/methods/methodCallSimple.deca")
+    # doVerify("gameboy/object/methods/callSimple.deca")
     #
-    # doVerify("gameboy/object/methods/methodCallParams.deca")
+    # doVerify("gameboy/object/methods/callParams.deca")
     #
-    # doVerify("gameboy/object/methods/methodCallReturn.deca")
+    # doVerify("gameboy/object/methods/callReturn.deca")
     #
     # doVerify("gameboy/object/methods/earlyReturn.deca")
     #
