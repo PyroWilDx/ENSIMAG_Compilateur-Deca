@@ -85,17 +85,17 @@ class GameBoy {
         BLACK.setBlack();
         DARK.setDark();
         LIGHT.setLight();
-        this.setbackGroundWhite();
+        this.setbackGround(WHITE);
 
         // TODO faudra en fait mettre tous ces trucs au début du fichier avec le compilateur
         //this.includeHardware();
-        this.includeTextMacro();
-        this.includeTextUtils();
-        this.includeMemoryUtils();
-        this.includeInputUtils();
-        this.includeBackGroundUtils();
-        this.includeMath_asm();
-        this.includeVBlankUtils();
+        //this.includeTextMacro();
+        //this.includeTextUtils();
+        //this.includeMemoryUtils();
+        //this.includeInputUtils();
+        //this.includeBackGroundUtils();
+        //this.includeMath_asm();
+        //this.includeVBlankUtils();
     }
     void Owninit () asm (
     "
@@ -156,63 +156,4 @@ class GameBoy {
         int index = color.getTileIndex();
         this.utils.setBackGroundInTileMap(index);
     }
-    void copyBlackMapIntoMemory() asm (
-            "
-    ld de, BlackTilemap
-    ld hl, $9800
-    ld bc, WhiteTilemap - WhiteTilemapEnd
-    call CopyDEintoMemoryAtHL
-        "
-                );
-    void
-    void setTileMapBlack(Color color) asm(
-    "
-    ld de, BlackTilemap
-    ld hl, $9800
-    ld bc, BlackTilemapEnd - BlackTilemap
-    call CopyDEintoMemoryAtHL
-    "
-    );
-
-    void includeVBlankUtils() asm (
-        #include "vblank_utils_asm"
-    );
-    void includeMemoryUtils() asm (
-        #include "memory_utils_asm"
-    );
-    void includeInputUtils() asm (
-        #include "input_utils_asm"
-    );
-
-    void includeBackGroundUtils() asm (
-        #include "background_utils_asm"
-    );
-
-    void includeMath_asm() asm(
-        #include "math_asm"
-    );
-
-    /////////////////////////////////////////////////////////////////////
-    // TEXT
-    /////////////////////////////////////////////////////////////////////
-    void includeTextUtils() asm (
-        #include "text_utils_asm"
-    );
-    void includeTextMacro() asm (
-        #include "text_macro_inc"
-    );
-
-    /////////////////////////////////////////////////////////////////////////////////////
-    // HARDWARE
-    //////////////////////////////////////////////////////////////////////////////////////
-    //void includeHardware() asm (
-      //  #include "hardware_inc"
-    //);
-    void endGame() asm (
-        "
-        Done:
-        halt
-        jp Done
-        "
-    );
 }

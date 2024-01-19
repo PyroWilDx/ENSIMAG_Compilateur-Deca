@@ -40,6 +40,8 @@ class BackGroundMapMod {
     protected Color color = new Color();
     protected boolean user = false;
     protected boolean changed = false;
+    int WIDTH = 32;
+    int HEIGHT = 32;
 
     public void setColor(Color c) {
         if (!this.color.isSameColor(c)) {
