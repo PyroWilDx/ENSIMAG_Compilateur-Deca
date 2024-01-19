@@ -66,14 +66,7 @@ class GameBoy {
     protected int pixelWidth = 160;
     protected int height = 18;
     protected int pixelHeight = 144;
-    protected Keys unhandledKeys = new Keys();
 
-//    protected boolean aKeyTouched = false;
-//    protected boolean bKeyTouched = false;
-//    protected boolean upKeyTouched = false;
-//    protected boolean downKeyTouched = false;
-//    protected boolean leftKeyTouched = false;
-//    protected boolean rightKeyTouched = false;
 
     int UP_KEY = 64;
     int DOWN_KEY = 128;
@@ -83,7 +76,6 @@ class GameBoy {
     int B_KEY = 2;
     int SELECT_KEY = 4;
     int START_KEY = 8;
-    protected Game game;
     protected Utils utils = new Utils();
     protected BackgroundMapMod map = new BackgroundMapMod();
     Color WHITE = new Color();
@@ -99,12 +91,11 @@ class GameBoy {
         return this.height;
     }
 
-    void init(Game g) {
+    void init() {
         WHITE.setWhite();
         BLACK.setBlack();
         DARK.setDark();
         LIGHT.setLight();
-        game = g;
         this.setBackgroundColor(WHITE);
         this.asmInit();
 
@@ -118,7 +109,7 @@ class GameBoy {
         //this.includeMath_asm();
         //this.includeVBlankUtils();
     }
-    is
+
 
     boolean updateScreen() {
         DrawEvent event = this.drawEvents.getFirst();
@@ -186,7 +177,6 @@ class GameBoy {
     }
     void asmInit () asm (
         "
-
         ; On met les tiles elementaires dans la mémoire
         ld de, ElementaryTiles
         ld hl, $97c0; Ce seront les quatres dernières tiles
