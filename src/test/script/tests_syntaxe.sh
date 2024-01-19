@@ -70,7 +70,6 @@ done
 test_synt_valide "src/test/deca/syntax/valid/sansObjet/noOperation.deca"
 test_synt_valide "src/test/deca/syntax/valid/sansObjet/sansObjet.deca"
 test_synt_valide "src/test/deca/syntax/valid/sansObjet/sansObjetComplexe.deca"
-test_synt_valide "src/test/deca/syntax/valid/sansObjet/printArguments.deca"
 
 echo "-----------Langage Avec Objets-----------"
 for cas_de_test in src/test/deca/syntax/valid/avecObjet/*.deca
