@@ -279,11 +279,10 @@ public class Identifier extends AbstractIdentifier {
         CondManager cM = compiler.getCondManager();
 
         GameBoyManager gbM = compiler.getGameBoyManager();
-        Integer varAddr = gbM.extractAddrFromIdent(compiler, this);
-        compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
+        gbM.loadIdentAddrIntoHL(compiler, this);
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
-        compiler.addInstruction(new LOAD_INT(varAddr - 1, Register.HL));
+        compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
 
         if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {

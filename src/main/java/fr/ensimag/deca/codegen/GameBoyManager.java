@@ -2,9 +2,11 @@ package fr.ensimag.deca.codegen;
 
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tree.AbstractIdentifier;
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class GameBoyManager {
 
@@ -39,7 +41,7 @@ public class GameBoyManager {
         this.globalVars = new HashMap<>();
     }
 
-    public int getAndIncrPrintId()  {
+    public int getAndIncrPrintId() {
         return printId++;
     }
 
@@ -71,28 +73,29 @@ public class GameBoyManager {
         return (Addr0 - 1) - (globalVars.get(varName) * 2);
     }
 
-    public int getGlobalAddrSP() {
-        return Addr0 - globalVars.size();
-    }
-
-    public Integer extractAddrFromIdent(DecacCompiler compiler, AbstractIdentifier ident) {
+    public void loadIdentAddrIntoHL(DecacCompiler compiler, AbstractIdentifier ident) {
         VTableManager vTM = compiler.getVTableManager();
 
         String identName = ident.getName().getName();
 
         Integer varAddr = getGlobalVarAddr(identName);
-        if (varAddr == null) { // It's a Method Param or Class Field
+        if (varAddr != null) {
+            compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
+        } else { // It's a Method Param or Class Field
             Integer paramOffset = vTM.getCurrParamOffsetOfMethod(identName);
             if (paramOffset != null) { // It's a Method Param
-//                varAddr = getArgAddr(paramOffset);
-                varAddr = 42; // TODO (GB)
+                compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + (-paramOffset - 2) * 2));
             } else { // It's a Class Field
-//                vTM.enterClass(getCurrClassVarClassName());
+                compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+                compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+                compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+                compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
+                compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
                 int fieldOffset = vTM.getCurrFieldOffset(identName);
-                vTM.exitClass();
-//                varAddr = getCurrClassFieldAddr(fieldOffset);
+                for (int i = 0; i < fieldOffset * 2; i++) {
+                    compiler.addInstruction(new DEC_REG(Register.HL));
+                }
             }
         }
-        return varAddr;
     }
 }
