@@ -19,18 +19,4 @@ public class ADD extends BinaryInstructionDValToReg {
     public ADD(int i, GPRegister op2) {
         this(new ImmediateInteger(i), op2);
     }
-
-    @Override
-    public void displayOperandsGameBoy(PrintStream s) {
-        s.print("ld a, " + getOperand2());
-        s.println();
-        s.print("\tadd a, " + getOperand1());
-        s.println();
-        s.print("\tld " + getOperand2() + ", a");
-    }
-
-    @Override
-    public String getGameBoyAsm() {
-        return "";
-    }
 }

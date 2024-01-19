@@ -117,7 +117,6 @@ public class MethodCall extends AbstractMethodCall {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
-        // TODO (GB)
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
@@ -154,7 +153,8 @@ public class MethodCall extends AbstractMethodCall {
 
         if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
             rM.getLastReg(); // On enlève R0
-            compiler.addInstruction(new CMP(0, Register.HL));
+            compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), Register.A));
+            compiler.addInstruction(new CMP_A(0, Register.A));
             if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
             else compiler.addInstruction(new BEQ(branchLabel));
         } else {

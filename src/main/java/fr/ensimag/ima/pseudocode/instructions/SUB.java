@@ -16,18 +16,4 @@ public class SUB extends BinaryInstructionDValToReg {
     public SUB(int i, GPRegister op2) {
         super(new ImmediateInteger(i), op2);
     }
-
-    @Override
-    public void displayOperandsGameBoy(PrintStream s) {
-        s.print("ld a, " + getOperand2());
-        s.println();
-        s.print("\tsub a, " + getOperand1());
-        s.println();
-        s.print("\tld " + getOperand2() + ", a");
-    }
-
-    @Override
-    public String getGameBoyAsm() {
-        return "";
-    }
 }

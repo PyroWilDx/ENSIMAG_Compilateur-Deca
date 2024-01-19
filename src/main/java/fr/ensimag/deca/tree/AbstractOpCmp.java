@@ -66,7 +66,9 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
                 }
             } else {
                 GPRegister gpReg = (GPRegister) valReg;
-                compiler.addInstruction(new ADD(1, gpReg.getLowReg()));
+                compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
+                compiler.addInstruction(new ADD_A(1, Register.A));
+                compiler.addInstruction(new LOAD_REG(Register.A, gpReg.getLowReg()));
             }
         }
 

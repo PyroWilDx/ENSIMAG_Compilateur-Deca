@@ -28,27 +28,27 @@ public class NoInitialization extends AbstractInitialization {
     }
 
     protected void codeGenInit(DecacCompiler compiler) {
-        if (getVarTypeCode() == null) return;
-
-        RegManager rM = compiler.getRegManager();
-
-        if (getVarTypeCode() == AbstractDeclField.TypeCode.INT_OR_BOOL) {
-            rM.setLastImm(new ImmediateInteger(0));
-        } else if (getVarTypeCode() == AbstractDeclField.TypeCode.FLOAT) {
-            rM.setLastImm(new ImmediateFloat(0.f));
-        } else {
-            rM.setLastImm(new NullOperand());
-        }
-        // Done
+//        if (getVarTypeCode() == null) return;
+//
+//        RegManager rM = compiler.getRegManager();
+//
+//        if (getVarTypeCode() == AbstractDeclField.TypeCode.INT_OR_BOOL) {
+//            rM.setLastImm(new ImmediateInteger(0));
+//        } else if (getVarTypeCode() == AbstractDeclField.TypeCode.FLOAT) {
+//            rM.setLastImm(new ImmediateFloat(0.f));
+//        } else {
+//            rM.setLastImm(new NullOperand());
+//        }
+//        // Done
     }
 
     @Override
     protected void codeGenInitGb(DecacCompiler compiler) {
-        if (getVarTypeCode() == null) return;
-
-        RegManager rM = compiler.getRegManager();
-
-        rM.setLastImm(new ImmediateInteger(0));
+//        if (getVarTypeCode() == null) return;
+//
+//        RegManager rM = compiler.getRegManager();
+//
+//        rM.setLastImm(new ImmediateInteger(0));
     }
 
     /**
