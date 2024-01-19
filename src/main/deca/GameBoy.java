@@ -186,12 +186,12 @@ class GameBoy {
         ret; comme ça on essaie pas d executer la suite
 
         ; Les tiles élémentaire
-        ElementaryTiles :
+        ElementaryTiles:
         db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
         db $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff
         db $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00
         db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
-        ElementaryTilesEnd :
+        ElementaryTilesEnd:
         "
     ); //
     boolean KeyPressed(int pad) asm(
