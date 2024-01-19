@@ -151,7 +151,7 @@ class GameBoy {
     void turnScreenOn() asm (
         "
         ; Turn the LCD on
-        ld a, LCDCF_ON | LCDCF_BGON
+        ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
         ld [rLCDC], a
         "
     );
