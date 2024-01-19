@@ -43,18 +43,21 @@
 
 class A {
     int a;
-    void method(int b){
+    float method(int b,float c){
         this.a=b;
+        return c;
     }
+    void methodAsm() asm("CODE ASS");
 }
 {
     A class1 = new A();
     int x = 1;
     float y = 2;
     float z = 1.22000e+00;
-    if(class1 != null){
+    boolean bool = false;
+    if(class1 != null && !bool){
         class1.a = 1;
-        class1.method(x);
+        z = class1.method(x,z);
     }
     ;
     z = x + y - x * (x + y);

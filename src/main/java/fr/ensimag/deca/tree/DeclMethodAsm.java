@@ -80,7 +80,7 @@ public class DeclMethodAsm extends AbstractDeclMethod {
         s.print("(");
         this.params.decompile(s);
         s.println(")");
-        s.println("asm(\"" + code + "\");");
+        s.println("asm(" + code + ");");
     }
 
     @Override
