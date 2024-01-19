@@ -80,11 +80,11 @@ public class New extends AbstractExpr {
         GPRegister gpReg = rM.getFreeReg();
 
         compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, -1));
-        compiler.addInstruction(new SUBSP(fieldsCount * 2 + 2));
+        compiler.addInstruction(new SUBSP(fieldsCount * 2 + 2)); // WTF ??
         compiler.addInstruction(new PUSH(Register.HL));
         compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(vTM.getCurrClassName())));
         compiler.addInstruction(new POP(gpReg));
-        compiler.addInstruction(new ADDSP(fieldsCount * 2 + 2));
+        compiler.addInstruction(new ADDSP(fieldsCount * 2 + 2)); // WTF ??
 
         rM.freeReg(gpReg);
 

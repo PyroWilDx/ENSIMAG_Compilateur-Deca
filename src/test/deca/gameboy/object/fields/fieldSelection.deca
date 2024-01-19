@@ -13,9 +13,23 @@ class B {
     int x = 8;
 }
 
+class C {
+    int x = 1;
+    int y = 2;
+    int z = 3;
+}
+
+class D {
+    int x = 9;
+    int y = 8;
+    int z = 7;
+}
+
 {
     A a = new A();
     B b = new B();
+    C c = new C();
+    D d = new D();
 
     int x = a.x;
     int y = b.y;
@@ -45,6 +59,24 @@ class B {
         println();
     }
     if (b.z != 16) {
+        println();
+    }
+    if (c.x != 1) {
+        println();
+    }
+    if (c.y != 2) {
+        println();
+    }
+    if (c.z != 3) {
+        println();
+    }
+    if (d.x != 9) {
+        println();
+    }
+    if (d.y != 8) {
+        println();
+    }
+    if (d.z != 7) {
         println();
     }
 }
