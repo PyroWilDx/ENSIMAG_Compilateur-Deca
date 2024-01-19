@@ -67,7 +67,7 @@ class GameBoy {
     protected int height = 18;
     protected int pixelHeight = 144;
     protected Utils utils = new Utils();
-    protected BackGroundMapMod map = new backGroundMapMod();
+    protected BackgroundMapMod map = new BackgroundMapMod();
     protected Color WHITE = new Color();
     protected Color LIGHT = new Color();
     protected Color DARK = new Color();
@@ -86,7 +86,7 @@ class GameBoy {
         BLACK.setBlack();
         DARK.setDark();
         LIGHT.setLight();
-        this.setbackGround(WHITE);
+        this.setBackgroundColor(WHITE);
 
         // TODO faudra en fait mettre tous ces trucs au début du fichier avec le compilateur
         //this.includeHardware();
@@ -131,7 +131,7 @@ class GameBoy {
             this.copyColorIntoMap(this.map.getColor());
         }
         while(event.hasNext()) {
-            this.utils.push(event.getX(), event.getY(), event.getTileIndex());
+            this.utils.pushInTileMap(event.getX(), event.getY(), event.getTileIndex());
             event = event.getNext();
         }
         this.turnScreenOn();
@@ -161,7 +161,12 @@ class GameBoy {
     void setTile(int tileIndex, int x, int y) {
         this.drawEvents.add(tileIndex, x, y);
     }
-    void setbackGroundColor(Color color) {
+    void setColor(Color color, int x, int y) {
+        this.setTile(color.getTileIndex(), x, y);
+    }
+
+    //
+    void setBackgroundColor(Color color) {
         this.map.setColor(color);
     }
     void copyColorIntoMap(Color color) {

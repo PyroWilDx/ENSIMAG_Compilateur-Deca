@@ -32,18 +32,18 @@ class Color {
         return index;
     }
     boolean isSameColor(Color color) {
-        return this.bit1 == color.bit1 && this.bit2 = color.bit2;
+        return this.bit1 == color.bit1 && this.bit2 == color.bit2;
     }
 
 }
-class BackGroundMapMod {
+class BackgroundMapMod {
     protected Color color = new Color();
     protected boolean user = false;
     protected boolean changed = false;
     int WIDTH = 32;
     int HEIGHT = 32;
 
-    public void setColor(Color c) {
+    void setColor(Color c) {
         if (!this.color.isSameColor(c)) {
             this.changed = true;
             this.color = c;
@@ -51,15 +51,12 @@ class BackGroundMapMod {
     }
 
 
-    public void setUser() {
+    void setUser() {
         this.changed = true;
-        this.white = false;
-        this.black = false;
         this.user = true;
     }
-
-    public void setChanged(boolean changed) {
-        this.changed = changed;
+    boolean hasChanged() {
+        return changed;
     }
 
     Color getColor() {
@@ -70,7 +67,7 @@ class DrawEvent {
     protected int tileIndex;
     protected int x;
     protected int y;
-    protected int next = null;
+    protected DrawEvent next = null;
 
     int getTileIndex() {
         return tileIndex;
@@ -84,7 +81,7 @@ class DrawEvent {
         return y;
     }
 
-    int getNext() {
+    DrawEvent getNext() {
         return next;
     }
 
@@ -100,7 +97,7 @@ class DrawEvent {
         return this.next != null;
     }
 }
-class DrawEventList() {
+class DrawEventList {
     protected DrawEvent first = null;
     protected DrawEvent last = null;
     void add(int index, int x, int y) {
