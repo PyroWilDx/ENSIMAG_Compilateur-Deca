@@ -142,8 +142,6 @@ public class DeclClass extends AbstractDeclClass {
         String className = classSymbol.getName();
         SymbolTable.Symbol superClassSymbol = superClass.getName();
 
-        compiler.addComment("VTable of " + className);
-
         VTable vT = new VTable(superClassSymbol, classSymbol, null);
         vTM.addVTable(className, vT);
 

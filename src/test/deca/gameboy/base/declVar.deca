@@ -5,6 +5,8 @@
     boolean b0 = true;
     boolean b1 = false;
 
+    print();
+
     if (x != 1) {
         println();
     }

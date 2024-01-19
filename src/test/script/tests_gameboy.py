@@ -4,6 +4,7 @@ import os
 import subprocess
 
 nbTest = 0
+maxTest = 6
 
 def doVerify(decaFilePath):
     global nbTest
@@ -35,7 +36,7 @@ def doVerify(decaFilePath):
 
     nbTest += 1
 
-    if nbTest == 6:
+    if nbTest == maxTest:
         input("Enter to Continue")
         os.system("pkill -f Emulicious.jar")
         nbTest = 0
@@ -48,31 +49,31 @@ def doTests():
 
     # doVerify("gameboy/fastTest.deca")
 
-    # doVerify("gameboy/base/declVar.deca")
-    # doVerify("gameboy/base/opArith.deca")
-    # doVerify("gameboy/base/opRegOverflow.deca")
-    # doVerify("gameboy/base/assign.deca")
+    doVerify("gameboy/base/declVar.deca")
+    doVerify("gameboy/base/opArith.deca")
+    doVerify("gameboy/base/opRegOverflow.deca")
+    doVerify("gameboy/base/assign.deca")
 
-    # doVerify("gameboy/cond/boolLazyEval.deca")
-    # doVerify("gameboy/cond/ifThenElseSimple.deca")
-    # doVerify("gameboy/cond/ifThenElseComplex.deca")
-    # doVerify("gameboy/cond/whileSimple.deca")
-    # doVerify("gameboy/cond/whileComplex.deca")
+    doVerify("gameboy/cond/boolLazyEval.deca")
+    doVerify("gameboy/cond/ifThenElseSimple.deca")
+    doVerify("gameboy/cond/ifThenElseComplex.deca")
+    doVerify("gameboy/cond/whileSimple.deca")
+    doVerify("gameboy/cond/whileComplex.deca")
 
-    # doVerify("gameboy/object/easy/fieldSelection.deca")
-    # doVerify("gameboy/object/easy/fieldInitReg.deca")
-    # doVerify("gameboy/object/easy/callSimple.deca")
-    # doVerify("gameboy/object/easy/callParams.deca")
-    # doVerify("gameboy/object/easy/callReturn.deca")
-    # doVerify("gameboy/object/easy/noThisAccess.deca")
-    # doVerify("gameboy/object/easy/thisSimple.deca")
-    # doVerify("gameboy/object/easy/fieldAssign.deca")
-    # doVerify("gameboy/object/easy/fieldInitFieldSimple.deca")
+    doVerify("gameboy/object/easy/fieldSelection.deca")
+    doVerify("gameboy/object/easy/fieldInitReg.deca")
+    doVerify("gameboy/object/easy/callSimple.deca")
+    doVerify("gameboy/object/easy/callParams.deca")
+    doVerify("gameboy/object/easy/callReturn.deca")
+    doVerify("gameboy/object/easy/noThisAccess.deca")
+    doVerify("gameboy/object/easy/thisSimple.deca")
+    doVerify("gameboy/object/easy/fieldAssign.deca")
+    doVerify("gameboy/object/easy/fieldInitFieldSimple.deca")
 
-    # doVerify("gameboy/object/mid/fieldInitMethod.deca")
-    # doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
+    doVerify("gameboy/object/mid/fieldInitMethod.deca")
+    doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
     doVerify("gameboy/object/mid/varInMethod.deca")
-    # doVerify("gameboy/object/mid/recursiveMethod.deca")
+    doVerify("gameboy/object/mid/recursiveMethod.deca")
     # doVerify("gameboy/object/mid/methodCallMethod.deca")
 
     # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
