@@ -109,7 +109,6 @@ public class Assign extends AbstractBinaryExpr {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
-        // TODO (PUSH HL)
         RegManager rM = compiler.getRegManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
 

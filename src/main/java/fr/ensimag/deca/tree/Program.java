@@ -163,7 +163,7 @@ public class Program extends AbstractProgram {
         main.codeGenMainGb(compiler);
         Label doneLabel = new Label("Done");
         compiler.addLabel(doneLabel);
-//        compiler.addInstruction(new HALT());
+        compiler.addInstruction(new HALT());
         compiler.addInstruction(new BRA(doneLabel));
 
         compiler.addComment("End of Main Program");
