@@ -111,35 +111,21 @@ public class Assign extends AbstractBinaryExpr {
     protected void codeGenInstGb(DecacCompiler compiler) {
         // TODO (PUSH HL)
         RegManager rM = compiler.getRegManager();
-        StackManager sM = compiler.getStackManager();
-        CondManager cM = compiler.getCondManager();
-        VTableManager vTM = compiler.getVTableManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
 
         if (getLeftOperand() instanceof AbstractIdentifier) {
             AbstractIdentifier lIdent = (AbstractIdentifier) getLeftOperand();
             gbM.loadIdentAddrIntoHL(compiler, lIdent);
         } else { // Should be a FieldSelection
-            // TODO (GB)
             FieldSelection lFieldSelect = (FieldSelection) getLeftOperand();
-//            iAddr = lFieldSelect.getAddrOfFieldGb(compiler);
+            lFieldSelect.putAddrOfFieldInRegGb(compiler);
+            GPRegister gpReg = rM.getLastReg();
+            compiler.addInstruction(new LOAD_REG(gpReg.getHighReg(), Register.HL.getHighReg()));
+            compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
+            rM.freeReg(gpReg);
         }
 
         compiler.addInstruction(new PUSH(Register.HL));
-
-//        GPRegister savedReg = null;
-//        boolean pushed = false;
-//        if (saveReg) {
-//            savedReg = rM.getLastReg();
-//            if (rM.isUsingAllRegs()) {
-//                if (!(getRightOperand() instanceof AbstractLiteral)) {
-//                    compiler.addInstruction(new PUSH(savedReg));
-//                    rM.freeReg(savedReg);
-//                    sM.incrTmpVar();
-//                    pushed = true;
-//                }
-//            }
-//        }
 
         getRightOperand().codeGenInstGb(compiler);
         GPRegister regRight = rM.getLastRegOrImm(compiler);
@@ -148,14 +134,6 @@ public class Assign extends AbstractBinaryExpr {
             compiler.addInstruction(new LOAD_REG(Register.HL.getHighReg(), regRight.getHighReg()));
             compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
         }
-
-//        if (pushed) {
-//            compiler.addInstruction(new LOAD(regRight, Register.HL));
-//            savedReg = regRight;
-//            regRight = Register.HL;
-//            compiler.addInstruction(new POP(savedReg));
-//            sM.decrTmpVar();
-//        }
 
         compiler.addInstruction(new POP(Register.HL));
 

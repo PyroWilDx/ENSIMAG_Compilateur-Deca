@@ -78,11 +78,10 @@ def doTests():
     #
     # doVerify("gameboy/object/methods/callReturn.deca")
 
-    # doVerify("gameboy/object/this/thisSimple.deca")
-
     # doVerify("gameboy/object/this/noThisAccess.deca")
 
-    #
+    doVerify("gameboy/object/this/thisSimple.deca")
+
     # doVerify("gameboy/object/fields/fieldInitFieldSimple.deca")
     #
     # doVerify("gameboy/object/fields/fieldInitMethod.deca")

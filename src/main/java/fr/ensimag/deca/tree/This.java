@@ -41,11 +41,14 @@ public class This extends AbstractExpr {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+
+        GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
-        compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
         compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
-        compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
-        compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
+        rM.freeReg(gpReg);
     }
 
     @Override

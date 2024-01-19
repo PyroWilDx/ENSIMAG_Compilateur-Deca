@@ -15,6 +15,7 @@ class A {
         if (x != 60) {
             println();
         }
+        x = 120;
         if (x != 120) {
             println();
         }
