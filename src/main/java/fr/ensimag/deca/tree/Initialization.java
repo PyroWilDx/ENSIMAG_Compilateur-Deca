@@ -46,6 +46,11 @@ public class Initialization extends AbstractInitialization {
     }
 
     @Override
+    protected void codeGenInitGb(DecacCompiler compiler) {
+        expression.codeGenInstGb(compiler);
+    }
+
+    @Override
     public void decompile(IndentPrintStream s) {
         s.print(" = ");
         expression.decompile(s);

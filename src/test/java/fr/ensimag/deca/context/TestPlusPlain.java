@@ -21,13 +21,16 @@ public class TestPlusPlain {
     final Type INT = new IntType(null);
     final Type FLOAT = new FloatType(null);
 
+
     @Test
     public void testType() throws ContextualError {
         DecacCompiler compiler = new DecacCompiler(null, null);
         AbstractExpr left = Mockito.mock(AbstractExpr.class);
-        when(left.verifyExpr(compiler, null, null)).thenReturn(INT);
+        when(left.verifyExpr(compiler, null, null)).thenReturn(compiler.environmentType.INT);
+        left.setType(compiler.environmentType.INT);
         AbstractExpr right = Mockito.mock(AbstractExpr.class);
-        when(right.verifyExpr(compiler, null, null)).thenReturn(INT);
+        when(right.verifyExpr(compiler, null, null)).thenReturn(compiler.environmentType.INT);
+        right.setType(compiler.environmentType.INT);
         Plus t = new Plus(left, right);
         // check the result
         assertTrue(t.verifyExpr(compiler, null, null).isInt());

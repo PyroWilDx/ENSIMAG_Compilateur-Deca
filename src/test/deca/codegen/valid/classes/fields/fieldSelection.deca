@@ -4,6 +4,7 @@
 // Resultats :
 //    1.00000e+00 2 4 0 1.00000e+00
 //    8.00000e+00 3.20000e+01 16 0.00000e+00 1
+//    42 12
 
 class A {
     float x = 1.0;
@@ -30,4 +31,8 @@ class B {
 
     println(a.x, " ", yA, " ", a.z, " ", a.a0, " ", a.a1);
     println(xB, " ", b.y, " ", b.z, " ", b.b0, " ", b.b1);
+
+    a.z = 42;
+    b.x = 12;
+    println(a.z, " ", b.x);
 }

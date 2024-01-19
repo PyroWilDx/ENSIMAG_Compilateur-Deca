@@ -179,7 +179,8 @@ def doTests():
 
     doVerify("codegen/valid/classes/fields/fieldSelection.deca",
              expectedResult=b"1.00000e+00 2 4 0 1.00000e+00\n"
-                            b"8.00000e+00 3.20000e+01 16 0.00000e+00 1\n")
+                            b"8.00000e+00 3.20000e+01 16 0.00000e+00 1\n"
+                            b"42 12\n")
 
     doVerify("codegen/valid/classes/fields/fieldInitReg.deca",
              expectedResult=b"1 20 2\n")

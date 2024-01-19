@@ -135,6 +135,23 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
+    public void codeGenVTableGb(DecacCompiler compiler) {
+        VTableManager vTM = compiler.getVTableManager();
+
+        SymbolTable.Symbol classSymbol = name.getName();
+        String className = classSymbol.getName();
+        SymbolTable.Symbol superClassSymbol = superClass.getName();
+
+        compiler.addComment("VTable of " + className);
+
+        VTable vT = new VTable(superClassSymbol, classSymbol, null);
+        vTM.addVTable(className, vT);
+
+        methods.codeGenVTableGb(compiler, vT);
+        fields.codeGenVTableGb(compiler, vT);
+    }
+
+    @Override
     public void codeGenDeclClass(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(true);
@@ -179,7 +196,6 @@ public class DeclClass extends AbstractDeclClass {
 
     @Override
     public void codeGenDeclClassGb(DecacCompiler compiler) {
-        // TODO (GB)
         RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(true);
         compiler.setStackManager(sM);
@@ -195,13 +211,17 @@ public class DeclClass extends AbstractDeclClass {
         compiler.addLabel(LabelUtils.getClassInitLabel(className));
         int iTSTO = compiler.getProgramLineCount();
 
-        compiler.addInstruction(
-                new LOAD(new RegisterOffset(-2, Register.LB), Register.R1));
         fields.codeGenSetFieldsTo0Gb(compiler);
         if (!superClassName.equals(LabelUtils.OBJECT_CLASS_NAME)) {
-            compiler.addInstruction(new PUSH(Register.R1));
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
+            compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
+            compiler.addInstruction(new PUSH(Register.HL));
+
             compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(superClassName)));
-            compiler.addInstruction(new SUBSP(1));
+            compiler.addInstruction(new INC_SP(Register.SP));
         }
 
         rM.saveUsedRegs();
@@ -210,8 +230,8 @@ public class DeclClass extends AbstractDeclClass {
         fields.codeGenListDeclFieldGb(compiler);
 
         boolean[] usedRegs = rM.popUsedRegs();
-        RegManager.addSaveRegsInsts(compiler, iTSTO, usedRegs);
-        RegManager.addRestoreRegsInsts(compiler, usedRegs);
+        RegManager.addSaveRegsInstsGb(compiler, iTSTO, usedRegs);
+        RegManager.addRestoreRegsInstsGb(compiler, usedRegs);
 
         compiler.addInstruction(new RTS());
 

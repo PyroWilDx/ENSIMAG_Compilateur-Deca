@@ -126,6 +126,43 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         // Done
     }
 
+    public void codeGenVTableGb(DecacCompiler compiler, VTable vTable) {
+        VTableManager vTM = compiler.getVTableManager();
+
+        LinkedList<AbstractDeclMethod> orderedMethods = getListOrdered();
+
+        VTable superClassVTable = vTable.getVTableOfSuperClass(vTM);
+        LinkedList<VMethodInfo> superClassMethods = superClassVTable.getClassMethods();
+
+        int methodOffset = 1;
+
+        for (VMethodInfo methodInfo : superClassMethods) {
+            boolean isPresentInCurrClass = false;
+            AbstractDeclMethod redefinedMethod = null;
+            for (AbstractDeclMethod declMethod : orderedMethods) {
+                if (methodInfo.getMethodName().equals(declMethod.getName().getName())) {
+                    isPresentInCurrClass = true;
+                    redefinedMethod = declMethod;
+                    break;
+                }
+            }
+            if (!isPresentInCurrClass) {
+                vTable.addSuperMethod(methodInfo.getClassName(),
+                        methodInfo.getMethodName(), methodOffset);
+                vTable.copyMethodParams(superClassVTable, methodInfo.getMethodName());
+            } else {
+                redefinedMethod.codeGenVTableGb(compiler, vTable, methodOffset);
+                orderedMethods.remove(redefinedMethod);
+            }
+            methodOffset++;
+        }
+
+        for (AbstractDeclMethod declMethod : orderedMethods) {
+            declMethod.codeGenVTableGb(compiler, vTable, methodOffset);
+            methodOffset++;
+        }
+    }
+
     public void codeGenListDeclMethod(DecacCompiler compiler) {
         for (AbstractDeclMethod method : getListOrdered()) {
             method.codeGenDeclMethod(compiler);

@@ -18,15 +18,17 @@ public class LabelUtils {
     }
 
     public static Label getClassInitLabel(String className) {
-        return new Label("init." + className);
+        return new Label("init" + GameBoyManager.getLabelSeparator() + className);
     }
 
     public static Label getMethodLabel(String className, String methodName) {
-        return new Label("code." + className + "." + methodName);
+        return new Label("code" + GameBoyManager.getLabelSeparator() +
+                className + GameBoyManager.getLabelSeparator() + methodName);
     }
 
     public static Label getMethodEndLabel(String className, String methodName) {
-        return new Label("end." + className + "." + methodName);
+        return new Label("end" + GameBoyManager.getLabelSeparator() +
+                className + GameBoyManager.getLabelSeparator() + methodName);
     }
 
 }

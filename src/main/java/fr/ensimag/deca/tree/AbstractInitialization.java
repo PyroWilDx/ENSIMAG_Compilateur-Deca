@@ -29,6 +29,8 @@ public abstract class AbstractInitialization extends Tree {
 
     protected abstract void codeGenInit(DecacCompiler compiler);
 
+    protected abstract void codeGenInitGb(DecacCompiler compiler);
+
     public void setVarTypeCode(AbstractDeclField.TypeCode value) {
         varTypeCode = value;
     }

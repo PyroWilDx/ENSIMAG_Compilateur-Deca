@@ -1,6 +1,8 @@
 #! /bin/sh
 
-for fichier in ../deca/context/valid/langage_sans_objet/*.deca
+cd "$(dirname "$0")"/../../.. || exit 1
+
+for fichier in src/test/deca/context/valid/langage_sans_objet/*.deca
 do
-  ./launchers/test_context $fichier
+  ./src/test/script/launchers/test_context $fichier
 done

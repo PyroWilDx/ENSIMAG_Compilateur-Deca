@@ -9,8 +9,7 @@ import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 
@@ -45,6 +44,11 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
+    public void codeGenVTableGb(DecacCompiler compiler, VTable vTable, int fieldOffset) {
+        vTable.addField(getName().getName(), fieldOffset);
+    }
+
+    @Override
     public void codeGenSetFieldTo0(DecacCompiler compiler, boolean doLoad) {
         VTableManager vTM = compiler.getVTableManager();
 
@@ -64,8 +68,29 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    public void codeGenSetFieldTo0Gb(DecacCompiler compiler, boolean doLoad) {
-        // TODO (GB)
+    public void codeGenSetFieldTo0Gb(DecacCompiler compiler) {
+        VTableManager vTM = compiler.getVTableManager();
+
+        int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
+
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
+        compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
+
+        compiler.addInstruction(new LOAD_INT(0, Register.A));
+
+        for (int i = 0; i < fieldOffset * 2; i++) {
+            compiler.addInstruction(new DEC_REG(Register.HL));
+        }
+
+        if (getInitTypeCode() == TypeCode.OBJECT) {
+            compiler.addInstruction(new STORE_REG(Register.A, Register.HL));
+        }
+
+        compiler.addInstruction(new DEC_REG(Register.HL));
+        compiler.addInstruction(new STORE_REG(Register.A, Register.HL));
     }
 
     @Override
@@ -111,9 +136,37 @@ public class DeclField extends AbstractDeclField {
     }
 
     @Override
-    public TypeCode codeGenDeclFieldGb(DecacCompiler compiler, TypeCode lastTypeCode) {
-        // TODO (GB)
-        return null;
+    public void codeGenDeclFieldGb(DecacCompiler compiler) {
+        if (init instanceof NoInitialization) return;
+
+        RegManager rM = compiler.getRegManager();
+        VTableManager vTM = compiler.getVTableManager();
+
+        int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
+
+        init.setVarTypeCode(getInitTypeCode());
+        init.codeGenInitGb(compiler);
+
+        GPRegister regValue = rM.getLastRegOrImm(compiler);
+
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
+        compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
+
+        for (int i = 0; i < fieldOffset * 2; i++) {
+            compiler.addInstruction(new DEC_REG(Register.HL));
+        }
+
+        if (getInitTypeCode() == TypeCode.OBJECT) {
+            compiler.addInstruction(new STORE_REG(regValue.getHighReg(), Register.HL));
+        }
+
+        compiler.addInstruction(new DEC_REG(Register.HL));
+        compiler.addInstruction(new STORE_REG(regValue.getLowReg(), Register.HL));
+
+        rM.freeReg(regValue);
     }
 
     @Override

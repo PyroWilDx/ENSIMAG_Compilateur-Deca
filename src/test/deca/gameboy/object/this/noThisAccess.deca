@@ -1,23 +1,23 @@
-// Description :
-//    Test d'accès aux attributs sans utiliser this
-//
-// Resultats :
-//    2 6
-//    60 120
-
 class A {
     protected int x = 2;
 
     void thisX() {
-        print(x, " ");
+        if (x != 2) {
+            println();
+        }
         x = 6;
-        println(x);
+        if (x != 6) {
+            println();
+        }
     }
 
     void thisXParam(int x) {
-        print(x, " ");
-        x = 120;
-        println(x);
+        if (x != 60) {
+            println();
+        }
+        if (x != 120) {
+            println();
+        }
     }
 }
 

@@ -34,8 +34,6 @@ public class Println extends AbstractPrint {
     protected void codeGenInstGb(DecacCompiler compiler) {
         GameBoyManager gbM = compiler.getGameBoyManager();
 
-        compiler.addInstruction(new PUSH(Register.HL));
-
         int printId = gbM.getAndIncrPrintId();
 
         Label waitVBlankLabel = new Label("WaitVBlank" + printId);
@@ -77,8 +75,6 @@ public class Println extends AbstractPrint {
         compiler.add(new LineGb("ld [rBGP], a"));
 
         compiler.addLabel(new Label("endPrint" + printId));
-
-        compiler.addInstruction(new POP(Register.HL));
     }
 
     @Override

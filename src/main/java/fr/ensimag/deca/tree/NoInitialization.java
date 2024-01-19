@@ -42,6 +42,15 @@ public class NoInitialization extends AbstractInitialization {
         // Done
     }
 
+    @Override
+    protected void codeGenInitGb(DecacCompiler compiler) {
+        if (getVarTypeCode() == null) return;
+
+        RegManager rM = compiler.getRegManager();
+
+        rM.setLastImm(new ImmediateInteger(0));
+    }
+
     /**
      * Node contains no real information, nothing to check.
      */

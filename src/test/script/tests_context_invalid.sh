@@ -8,6 +8,8 @@ RED='\033[0;31m';
 GREEN='\033[0;32m';
 NC='\033[0m'; # No Color
 
+cd "$(dirname "$0")"/../../.. || exit 1
+
 compteur=0;
 valids=0
 
@@ -28,7 +30,7 @@ testChemin() {
   for fichier in $chemin
   do
     basename "$fichier" | sed 's/\.deca//g' | sed 's/_/\ /' | sed 's/_/\./';
-    ./launchers/test_context "$fichier"  1>debug 2>error;
+    ./src/test/script/launchers/test_context "$fichier"  1>debug 2>error;
     real_error=$(sed -r 's/.*regle.*:([0-9]*):([0-9]*):/Ligne \1:/g' error);
     echo $real_error;
     echo =============== REPONSE ATTENDUE ===============;
@@ -43,14 +45,13 @@ testChemin() {
 echo ==========================================================;
 echo "                   LANGUAGE SANS OBJET"
 echo ==========================================================;
-chemin="../deca/context/invalid/langage_sans_objet/*/*.deca";
+chemin="src/test/deca/context/invalid/langage_sans_objet/*/*.deca";
 testChemin;
-
 echo;echo;
 echo ==========================================================;
 echo "                   LANGUAGE AVEC OBJET"
 echo ==========================================================;
-chemin="../deca/context/invalid/langage_essentiel/*/*.deca"
+chemin="src/test/deca/context/invalid/langage_essentiel/*/*.deca"
 testChemin;
 
 rm error debug;

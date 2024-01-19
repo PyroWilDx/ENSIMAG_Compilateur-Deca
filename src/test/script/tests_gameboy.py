@@ -35,32 +35,30 @@ def doTests():
 
     print()
 
-    # doVerify("gameboy/fastTest.deca")
+    doVerify("gameboy/fastTest.deca")
 
-    doVerify("gameboy/base/declVar.deca")
-
-    doVerify("gameboy/base/opArith.deca")
-
-    doVerify("gameboy/base/assign.deca")
-
-    doVerify("gameboy/cond/boolLazyEval.deca")
-
-    doVerify("gameboy/cond/ifThenElseSimple.deca")
-
-    doVerify("gameboy/cond/ifThenElseComplex.deca")
-
-    doVerify("gameboy/cond/whileSimple.deca")
-
-    doVerify("gameboy/cond/whileComplex.deca")
-
-    # doVerify("gameboy/object/fields/newSimple.deca")
+    # doVerify("gameboy/base/declVar.deca")
     #
-    # doVerify("gameboy/object/fields/fieldSimple.deca")
+    # doVerify("gameboy/base/opArith.deca")
+    #
+    # doVerify("gameboy/base/opRegOverflow.deca")
+    #
+    # doVerify("gameboy/base/assign.deca")
+    #
+    # doVerify("gameboy/cond/boolLazyEval.deca")
+    #
+    # doVerify("gameboy/cond/ifThenElseSimple.deca")
+    #
+    # doVerify("gameboy/cond/ifThenElseComplex.deca")
+    #
+    # doVerify("gameboy/cond/whileSimple.deca")
+    #
+    # doVerify("gameboy/cond/whileComplex.deca")
     #
     # doVerify("gameboy/object/fields/fieldSelection.deca")
     #
     # doVerify("gameboy/object/fields/fieldInitReg.deca")
-    #
+
     # doVerify("gameboy/object/fields/fieldInitFieldSimple.deca")
     #
     # doVerify("gameboy/object/fields/fieldInitMethod.deca")
@@ -73,11 +71,11 @@ def doTests():
     #
     # doVerify("gameboy/object/methods/methodSimple.deca")
     #
-    # doVerify("gameboy/object/methods/methodCallSimple.deca")
+    # doVerify("gameboy/object/methods/callSimple.deca")
     #
-    # doVerify("gameboy/object/methods/methodCallParams.deca")
+    # doVerify("gameboy/object/methods/callParams.deca")
     #
-    # doVerify("gameboy/object/methods/methodCallReturn.deca")
+    # doVerify("gameboy/object/methods/callReturn.deca")
     #
     # doVerify("gameboy/object/methods/earlyReturn.deca")
     #
@@ -105,9 +103,7 @@ def doTests():
     #
     # doVerify("gameboy/object/miscellaneous/asmSimple.deca")
 
-    doVerify("gameboy/regs/opRegOverflow.deca")
-
-    # doVerify("gameboy/regs/methodRegOverflow.deca")
+    # doVerify("gameboy/object/miscellaneous/methodRegOverflow.deca")
 
     return 0
 

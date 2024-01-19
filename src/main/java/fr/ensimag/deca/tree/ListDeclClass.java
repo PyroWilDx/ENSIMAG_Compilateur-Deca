@@ -60,6 +60,12 @@ public class ListDeclClass extends TreeList<AbstractDeclClass> {
         }
     }
 
+    public void codeGenVTableGb(DecacCompiler compiler) {
+        for (AbstractDeclClass declClass : getList()) {
+            declClass.codeGenVTableGb(compiler);
+        }
+    }
+
     public void codeGenListDeclClass(DecacCompiler compiler) {
         for (AbstractDeclClass declClass: getList()) {
             declClass.codeGenDeclClass(compiler);
