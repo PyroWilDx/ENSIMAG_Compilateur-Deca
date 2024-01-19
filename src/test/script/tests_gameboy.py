@@ -3,8 +3,11 @@
 import os
 import subprocess
 
+nbTest = 0
 
 def doVerify(decaFilePath):
+    global nbTest
+
     extIndex = decaFilePath.rfind(".")
     decaFilePathNoExt = decaFilePath[:extIndex]
     lastSlashIndex = decaFilePathNoExt.rfind("/")
@@ -29,6 +32,13 @@ def doVerify(decaFilePath):
     os.system(f"Emulicious.jar {dl}/{decaFileNameNoExt}.gb &")
 
     os.chdir(lastDir)
+
+    nbTest += 1
+
+    if nbTest == 6:
+        input("Enter to Continue")
+        os.system("pkill -f Emulicious.jar")
+        nbTest = 0
 
 
 def doTests():
@@ -60,26 +70,25 @@ def doTests():
     #
     # doVerify("gameboy/object/fields/fieldInitReg.deca")
     #
-    # doVerify("gameboy/object/fields/fieldInitFieldSimple.deca")
-    #
-    # doVerify("gameboy/object/fields/fieldInitMethod.deca")
-    #
-    # doVerify("gameboy/object/fields/fieldInitFieldComplex.deca")
-    #
-    # doVerify("gameboy/object/this/thisSimple.deca")
-    #
-    # doVerify("gameboy/object/this/noThisAccess.deca")
-    #
     # doVerify("gameboy/object/methods/methodSimple.deca")
     #
     # doVerify("gameboy/object/methods/callSimple.deca")
     #
     # doVerify("gameboy/object/methods/callParams.deca")
-
-    doVerify("gameboy/object/methods/callReturn.deca")
-
-    # doVerify("gameboy/object/methods/earlyReturn.deca")
     #
+    # doVerify("gameboy/object/methods/callReturn.deca")
+
+    # doVerify("gameboy/object/this/thisSimple.deca")
+
+    # doVerify("gameboy/object/this/noThisAccess.deca")
+
+    #
+    # doVerify("gameboy/object/fields/fieldInitFieldSimple.deca")
+    #
+    # doVerify("gameboy/object/fields/fieldInitMethod.deca")
+
+    # doVerify("gameboy/object/fields/fieldInitFieldComplex.deca")
+
     # doVerify("gameboy/object/methods/varInMethod.deca")
     #
     # doVerify("gameboy/object/methods/recursiveMethod.deca")

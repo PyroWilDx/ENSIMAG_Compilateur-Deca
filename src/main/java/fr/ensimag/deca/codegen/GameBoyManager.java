@@ -81,7 +81,7 @@ public class GameBoyManager {
         Integer varAddr = getGlobalVarAddr(identName);
         if (varAddr != null) {
             compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
-        } else { // It's a Method Param or Class Field
+        } else {
             Integer paramOffset = vTM.getCurrParamOffsetOfMethod(identName);
             if (paramOffset != null) { // It's a Method Param
                 compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + (-paramOffset - 2) * 2));
