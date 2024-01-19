@@ -87,6 +87,7 @@ class GameBoy {
         DARK.setDark();
         LIGHT.setLight();
         this.setBackgroundColor(WHITE);
+        this.asmInit();
 
         // TODO faudra en fait mettre tous ces trucs au début du fichier avec le compilateur
         //this.includeHardware();
@@ -110,6 +111,8 @@ class GameBoy {
     ld bc, ElementaryTiles - ElementaryTilesEnd
     call CopyDEintoMemoryAtHL
 
+    ret; comme ça on essaie pas d executer la suite
+    
     ; Les tiles élémentaire
     ElementaryTiles :
     db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
