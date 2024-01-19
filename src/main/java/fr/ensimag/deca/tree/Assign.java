@@ -111,65 +111,37 @@ public class Assign extends AbstractBinaryExpr {
     protected void codeGenInstGb(DecacCompiler compiler) {
         // TODO (PUSH HL)
         RegManager rM = compiler.getRegManager();
-        StackManager sM = compiler.getStackManager();
-        CondManager cM = compiler.getCondManager();
-        VTableManager vTM = compiler.getVTableManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
 
-        boolean saveReg = false;
-        Integer vAddr;
         if (getLeftOperand() instanceof AbstractIdentifier) {
             AbstractIdentifier lIdent = (AbstractIdentifier) getLeftOperand();
-            if (gbM.getGlobalVarAddr(lIdent.getName().getName()) == null) {
-                saveReg = true;
-            }
-            vAddr = gbM.extractAddrFromIdent(compiler, lIdent);
+            gbM.loadIdentAddrIntoHL(compiler, lIdent);
         } else { // Should be a FieldSelection
-            // TODO (GB)
             FieldSelection lFieldSelect = (FieldSelection) getLeftOperand();
-            saveReg = true;
-            vAddr = 0;
-//            iAddr = lFieldSelect.getAddrOfFieldGb(compiler);
+            lFieldSelect.putAddrOfFieldInRegGb(compiler);
+            GPRegister gpReg = rM.getLastReg();
+            compiler.addInstruction(new LOAD_REG(gpReg.getHighReg(), Register.HL.getHighReg()));
+            compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
+            rM.freeReg(gpReg);
         }
 
-        GPRegister savedReg = null;
-        boolean pushed = false;
-        if (saveReg) {
-            savedReg = rM.getLastReg();
-            if (rM.isUsingAllRegs()) {
-                if (!(getRightOperand() instanceof AbstractLiteral)) {
-                    compiler.addInstruction(new PUSH(savedReg));
-                    rM.freeReg(savedReg);
-                    sM.incrTmpVar();
-                    pushed = true;
-                }
-            }
-        }
+        compiler.addInstruction(new PUSH(Register.HL));
 
         getRightOperand().codeGenInstGb(compiler);
         GPRegister regRight = rM.getLastRegOrImm(compiler);
         if (regRight == Register.HL) {
-            if (pushed || cM.isDoingCond() || vTM.isInMethod()) {
-                regRight = rM.getFreeReg();
-                compiler.addInstruction(new LOAD(Register.HL, regRight));
-            }
+            regRight = rM.getFreeReg();
+            compiler.addInstruction(new LOAD_REG(Register.HL.getHighReg(), regRight.getHighReg()));
+            compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
         }
 
-        if (pushed) {
-            compiler.addInstruction(new LOAD(regRight, Register.HL));
-            savedReg = regRight;
-            regRight = Register.HL;
-            compiler.addInstruction(new POP(savedReg));
-            sM.decrTmpVar();
-        }
+        compiler.addInstruction(new POP(Register.HL));
 
-        compiler.addInstruction(new LOAD_INT(vAddr, Register.HL));
         compiler.addInstruction(new STORE_REG(regRight.getHighReg(), Register.HL));
-        compiler.addInstruction(new LOAD_INT(vAddr - 1, Register.HL));
+        compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new STORE_REG(regRight.getLowReg(), Register.HL));
 
         rM.freeReg(regRight);
-        rM.freeReg(savedReg);
     }
 
     @Override

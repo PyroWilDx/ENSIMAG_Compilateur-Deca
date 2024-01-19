@@ -8,6 +8,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
+import javax.management.loading.MLet;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -122,9 +123,13 @@ public class MethodCall extends AbstractMethodCall {
         VTableManager vTM = compiler.getVTableManager();
 
         vTM.enterClass(expr.getType().getName().getName());
+        vTM.enterMethod(methodIdent.getName().getName());
 
-        String methodName = methodIdent.getName().getName();
-        vTM.enterMethod(methodName);
+        int addSp = vTM.getCurrParamCountOfMethod() * 2 + 2;
+        Label mLabel = vTM.getCurrMethodLabel();
+
+        vTM.exitMethod();
+        vTM.exitClass();
 
         List<AbstractExpr> args = rValueStar.getList();
         for (int i = args.size() - 1; i >= 0; i--) {
@@ -139,9 +144,9 @@ public class MethodCall extends AbstractMethodCall {
         compiler.addInstruction(new PUSH(gpReg));
         rM.freeReg(gpReg);
 
-        compiler.addInstruction(new BSR(vTM.getCurrMethodLabel()));
+        compiler.addInstruction(new BSR(mLabel));
 
-        compiler.addInstruction(new ADDSP(vTM.getCurrParamCountOfMethod() * 2 + 2));
+        compiler.addInstruction(new ADDSP(addSp));
 
         if (!getType().isVoid()) {
             rM.freeRegForce(Register.HL);
@@ -172,9 +177,6 @@ public class MethodCall extends AbstractMethodCall {
                 rM.freeReg(gpReg);
             }
         }
-
-        vTM.exitMethod();
-        vTM.exitClass();
     }
 
     @Override

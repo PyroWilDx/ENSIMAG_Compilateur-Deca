@@ -13,9 +13,6 @@ import static org.junit.jupiter.api.Assertions.*;
  * Test for the Plus node in a manual way. The same test would be much easier to
  * write using a mock-up framework like Mockito.
  *
- * @see TestPlusPlain to see how the Mockito library can help writing this kind
- * of tests.
- *
  * @author Ensimag
  * @date 01/01/2024
  */

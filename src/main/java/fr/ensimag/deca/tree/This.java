@@ -11,6 +11,9 @@ import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
+import fr.ensimag.ima.pseudocode.instructions.LOAD_REG;
+import fr.ensimag.ima.pseudocode.instructions.LOAD_SP;
+import fr.ensimag.ima.pseudocode.instructions.LOAD_VAL;
 
 import java.io.PrintStream;
 
@@ -38,12 +41,13 @@ public class This extends AbstractExpr {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
-        // TODO (GB)
         RegManager rM = compiler.getRegManager();
 
         GPRegister gpReg = rM.getFreeReg();
-        compiler.addInstruction(
-                new LOAD(new RegisterOffset(-2, Register.LB), gpReg));
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
         rM.freeReg(gpReg);
     }
 

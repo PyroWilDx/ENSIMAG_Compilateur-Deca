@@ -62,26 +62,19 @@ public class Return extends AbstractInst {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
-        // TODO (GB)
         RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        expr.codeGenInst(compiler);
+        expr.codeGenInstGb(compiler);
 
-        if (!expr.getType().isNull()) {
-            DVal dVal = rM.getLastImm();
-            if (dVal == null) {
-                GPRegister gpReg = rM.getLastReg();
-                if (expr.getType().isClass()) {
-                    compiler.addInstruction(new LOAD_REG(gpReg.getHighReg(), Register.HL.getHighReg()));
-                    compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
-                } else {
-                    compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
-                }
-                rM.freeReg(gpReg);
-            } else {
-                compiler.addInstruction(new LOAD_INT(dVal, Register.HL));
-            }
+        DVal dVal = rM.getLastImm();
+        if (dVal == null) {
+            GPRegister gpReg = rM.getLastReg();
+            compiler.addInstruction(new LOAD_REG(gpReg.getHighReg(), Register.HL.getHighReg()));
+            compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
+            rM.freeReg(gpReg);
+        } else {
+            compiler.addInstruction(new LOAD_INT(dVal, Register.HL));
         }
 
         Label mEndLabel =

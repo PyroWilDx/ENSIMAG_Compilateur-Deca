@@ -107,6 +107,8 @@ class Snake{
             }
             return a;
     }
+
+    // Le modulo c'est pour que si on sort d'un coté (exp le coté droit) on sort depuis l'autre coté ( coté gauche)
     void goUp(){
         this.yPositionHead = (this.yPositionHead - 1 + maxY)% maxY;
     }

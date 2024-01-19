@@ -5,6 +5,12 @@ class A {
         if (this.x != 2) {
             println();
         }
+        if (this.x != 2) {
+            println();
+        }
+        if (this.x != 2) {
+            println();
+        }
         this.x = 6;
         if (this.x != 6) {
             println();
