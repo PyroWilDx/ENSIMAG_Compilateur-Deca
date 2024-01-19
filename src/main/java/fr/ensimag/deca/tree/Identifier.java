@@ -274,7 +274,6 @@ public class Identifier extends AbstractIdentifier {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
-        // TODO (GB)
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 

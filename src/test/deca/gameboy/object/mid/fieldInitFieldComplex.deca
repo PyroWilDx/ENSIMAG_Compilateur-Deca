@@ -14,12 +14,30 @@ class A {
         return this.c;
     }
 
-    void displayVars() {
-        println(a, " ", b, " ", c);
+    void check() {
+        if (a != 0) {
+            println();
+        }
+        if (b != 0) {
+            println();
+        }
+        if (c != 20) {
+            println();
+        }
     }
 }
 
 {
     A a = new A();
-    a.displayVars();
+    a.check();
+
+    if (a.a != 0) {
+        println();
+    }
+    if (a.b != 0) {
+        println();
+    }
+    if (a.c != 20) {
+        println();
+    }
 }
