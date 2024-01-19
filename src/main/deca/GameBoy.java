@@ -66,6 +66,16 @@ class GameBoy {
     protected int pixelWidth = 160;
     protected int height = 18;
     protected int pixelHeight = 144;
+
+
+    int UP_KEY = 64;
+    int DOWN_KEY = 128;
+    int LEFT_KEY = 32;
+    int RIGHT_KEY = 16;
+    int A_KEY = 1;
+    int B_KEY = 2;
+    int SELECT_KEY = 4;
+    int START_KEY = 8;
     protected Utils utils = new Utils();
     protected BackgroundMapMod map = new BackgroundMapMod();
     Color WHITE = new Color();
@@ -99,47 +109,35 @@ class GameBoy {
         //this.includeMath_asm();
         //this.includeVBlankUtils();
     }
-    void asmInit () asm (
-    "
-    ; Shut down audio circuitry
-    ld a, 0
-    ld [rNR52], a
 
-    ; On met les tiles elementaires dans la mémoire
-    ld de, ElementaryTiles
-    ld hl, $97c0; Ce seront les quatres dernières tiles
-    ld bc, ElementaryTiles - ElementaryTilesEnd
-    call CopyDEintoMemoryAtHL
 
-    ret; comme ça on essaie pas d executer la suite
-
-    ; Les tiles élémentaire
-    ElementaryTiles :
-    db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
-    db $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff
-    db $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00
-    db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
-    ElementaryTilesEnd :
-
-    " // TODO commencer la gameloop
-    ); // TODO pour faire les trucs assembleurs de bases genre main loop et tout jsp
-
-    void updateScreen() {
+    boolean updateScreen() {
         DrawEvent event = this.drawEvents.getFirst();
-        if (this.firstUpdate) {
-            this.initDisplayRegisters();
-            this.firstUpdate = false;
+        if (this.isInVBlank()) {
+            if (this.firstUpdate) {
+                this.initDisplayRegisters();
+                this.firstUpdate = false;
+            }
+            this.turnScreenOff();
+            if (this.map.hasChanged()) {
+                this.copyColorIntoMap(this.map.getColor());
+            }
+            while (event.hasNext()) {
+                this.utils.pushInTileMap(event.getX(), event.getY(), event.getTileIndex());
+                event = event.getNext();
+            }
+            this.turnScreenOn();
+            return true;
         }
-        this.turnScreenOff();
-        if (this.map.hasChanged()) {
-            this.copyColorIntoMap(this.map.getColor());
-        }
-        while(event.hasNext()) {
-            this.utils.pushInTileMap(event.getX(), event.getY(), event.getTileIndex());
-            event = event.getNext();
-        }
-        this.turnScreenOn();
+        return false;
     }
+    boolean isInVBlank() asm (
+        "
+        ld h, 0
+
+        ret
+        "
+    );
     void turnScreenOff() asm (
         "
         call WaitForOneVBlank
@@ -177,4 +175,39 @@ class GameBoy {
         int index = color.getTileIndex();
         this.utils.setBackGroundInTileMap(index);
     }
+    void asmInit () asm (
+        "
+        ; On met les tiles elementaires dans la mémoire
+        ld de, ElementaryTiles
+        ld hl, $97c0; Ce seront les quatres dernières tiles
+        ld bc, ElementaryTiles - ElementaryTilesEnd
+        call CopyDEintoMemoryAtHL
+
+        ret; comme ça on essaie pas d executer la suite
+
+        ; Les tiles élémentaire
+        ElementaryTiles:
+        db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
+        db $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff
+        db $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00
+        db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
+        ElementaryTilesEnd:
+        "
+    ); //
+    boolean KeyPressed(int pad) asm(
+        "
+        ld a, [wNewKeys]
+        ld b, a
+        ld hl, sp + 4
+        ld a, [hl]
+        and a, b
+        ld h, 0
+        jp nz ,notPressed
+        ld l, 1
+        ret
+        notPressed:
+        ld l, 0
+        ret
+        "
+    );
 }
