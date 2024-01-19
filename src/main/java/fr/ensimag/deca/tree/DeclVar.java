@@ -99,6 +99,7 @@ public class DeclVar extends AbstractDeclVar {
             compiler.addInstruction(new SUBSP((gbM.getCurrMethodVarCount(vTM) - 1) * 2));
             compiler.addInstruction(new PUSH(gpReg));
             compiler.addInstruction(new ADDSP((gbM.getCurrMethodVarCount(vTM) - 1) * 2 + 2));
+
             gbM.setCurrDeclaringIdentName(null);
         } else {
             compiler.addInstruction(new PUSH(gpReg));
