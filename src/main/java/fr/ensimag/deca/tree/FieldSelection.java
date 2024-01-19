@@ -6,8 +6,7 @@ import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.CMP;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 
@@ -74,30 +73,23 @@ public class FieldSelection extends AbstractLValue {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
-        // TODO (GB)
+        RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
-        GameBoyManager gbM = compiler.getGameBoyManager();
 
         if (cM.isDoingCond()) {
             fieldIdent.isInTrue = isInTrue;
             fieldIdent.branchLabel = branchLabel;
         }
 
-        DAddr fAddr = getAddrOfFieldGb(compiler);
-        fieldIdent.getExpDefinition().setOperand(fAddr);
+        putAddrOfFieldInRegGb(compiler);
 
-        if (expr instanceof AbstractIdentifier) {
-            gbM.currClassVarStack.addFirst((AbstractIdentifier) expr);
-        }
-
-        fieldIdent.codeGenInst(compiler);
-
-        fieldIdent.getExpDefinition().setOperand(null);
-
-        if (expr instanceof AbstractIdentifier) {
-            gbM.currClassVarStack.removeFirst();
-        }
-        // Done
+        GPRegister gpReg = rM.getLastReg();
+        compiler.addInstruction(new LOAD_REG(gpReg.getHighReg(), Register.HL.getHighReg()));
+        compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
+        compiler.addInstruction(new DEC_REG(Register.HL));
+        compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
+        rM.freeReg(gpReg);
     }
 
     public DAddr getAddrOfField(DecacCompiler compiler) {
@@ -128,32 +120,24 @@ public class FieldSelection extends AbstractLValue {
         return fAddr;
     }
 
-    public DAddr getAddrOfFieldGb(DecacCompiler compiler) {
+    public void putAddrOfFieldInRegGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
-        ErrorManager eM = compiler.getErrorManager();
         VTableManager vTM = compiler.getVTableManager();
 
         vTM.enterClass(expr.getType().getName().getName());
 
         String fieldName = fieldIdent.getName().getName();
 
-        expr.codeGenInst(compiler);
+        expr.codeGenInstGb(compiler);
 
         GPRegister gpReg = rM.getLastReg();
-        if (!(expr instanceof This)) {
-            if (compiler.getCompilerOptions().doCheck()) {
-                compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-                compiler.addInstruction(new BEQ(eM.getNullPointerLabel()));
-            }
-        } // Else, pas besoin vu qu'on est déjà dans une instance de la classe
-
         int fieldOffset = vTM.getCurrFieldOffset(fieldName);
-        DAddr fAddr = new RegisterOffset(fieldOffset, gpReg);
+        for (int i = 0; i < fieldOffset * 2; i++) {
+            compiler.addInstruction(new DEC_REG(gpReg));
+        }
         rM.freeReg(gpReg);
 
         vTM.exitClass();
-
-        return fAddr;
     }
 
     @Override

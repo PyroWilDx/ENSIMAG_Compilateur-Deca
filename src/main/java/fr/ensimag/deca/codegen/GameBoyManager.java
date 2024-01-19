@@ -28,18 +28,35 @@ public class GameBoyManager {
 
     private int printId;
     private int fieldId;
+    private boolean isDeclaring;
+    private Integer currNewFieldCount;
     private final HashMap<String, Integer> globalVars;
     public LinkedList<AbstractIdentifier> currClassVarStack;
 
     public GameBoyManager() {
         this.printId = 0;
         this.fieldId = 0;
+        this.currNewFieldCount = null;
         this.globalVars = new HashMap<>();
         this.currClassVarStack = new LinkedList<>();
     }
 
     public int getAndIncrPrintId()  {
         return printId++;
+    }
+
+    public void setCurrNewFieldCount(int value) {
+        currNewFieldCount = value;
+    }
+
+    public boolean didNew() {
+        return currNewFieldCount != null;
+    }
+
+    public int getAndResetNewFieldCount() {
+        int fieldCount = currNewFieldCount;
+        currNewFieldCount = null;
+        return fieldCount;
     }
 
     public void addGlobalVar(String varName) {

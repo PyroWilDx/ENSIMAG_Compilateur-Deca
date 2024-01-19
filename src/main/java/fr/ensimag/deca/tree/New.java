@@ -75,13 +75,16 @@ public class New extends AbstractExpr {
         for (int i = 0; i < fieldsCount; i++) {
             gbM.addFieldVar();
         }
+        gbM.setCurrNewFieldCount(fieldsCount);
 
         GPRegister gpReg = rM.getFreeReg();
 
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 0));
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, -1));
+        compiler.addInstruction(new SUBSP(fieldsCount * 2 + 2));
         compiler.addInstruction(new PUSH(Register.HL));
         compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(vTM.getCurrClassName())));
         compiler.addInstruction(new POP(gpReg));
+        compiler.addInstruction(new ADDSP(fieldsCount * 2 + 2));
 
         rM.freeReg(gpReg);
 

@@ -36,31 +36,31 @@ def doTests():
     print()
 
     # doVerify("gameboy/fastTest.deca")
-
+    #
     # doVerify("gameboy/base/declVar.deca")
-
+    #
     # doVerify("gameboy/base/opArith.deca")
-
+    #
     # doVerify("gameboy/base/opRegOverflow.deca")
-
+    #
     # doVerify("gameboy/base/assign.deca")
-
+    #
     # doVerify("gameboy/cond/boolLazyEval.deca")
-
+    #
     # doVerify("gameboy/cond/ifThenElseSimple.deca")
-
+    #
     # doVerify("gameboy/cond/ifThenElseComplex.deca")
-
+    #
     # doVerify("gameboy/cond/whileSimple.deca")
-
+    #
     # doVerify("gameboy/cond/whileComplex.deca")
 
-    # doVerify("gameboy/object/fields/newSimple.deca")
+    doVerify("gameboy/object/fields/newSimple.deca")
 
     doVerify("gameboy/object/fields/fieldSimple.deca")
 
-    # doVerify("gameboy/object/fields/fieldSelection.deca")
-    #
+    doVerify("gameboy/object/fields/fieldSelection.deca")
+
     # doVerify("gameboy/object/fields/fieldInitReg.deca")
     #
     # doVerify("gameboy/object/fields/fieldInitFieldSimple.deca")

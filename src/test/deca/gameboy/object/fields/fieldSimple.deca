@@ -1,9 +1,3 @@
-// Description :
-//    Test d'une classe avec des attributs à initialisation simple
-//
-// Resultats :
-//    Ne doit rien afficher
-
 class A {
     int v1;
     int v2 = 1;

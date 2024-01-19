@@ -13,6 +13,7 @@ import java.io.PrintStream;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
+import fr.ensimag.ima.pseudocode.instructions.SUBSP;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -78,15 +79,20 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     protected void codeGenDeclVarGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
+        gbM.addGlobalVar(varName.getName().getName());
 //        initialization.setVarType(type.getType()); // No Init
-        initialization.codeGenInit(compiler);
+        initialization.codeGenInitGb(compiler);
 
         GPRegister gpReg = rM.getLastRegOrImm(compiler);
-        GameBoyManager gbM = compiler.getGameBoyManager();
         compiler.addInstruction(new PUSH(gpReg));
-        gbM.addGlobalVar(varName.getName().getName());
         rM.freeReg(gpReg);
+
+        if (gbM.didNew()) {
+            int fieldCount = gbM.getAndResetNewFieldCount();
+            compiler.addInstruction(new SUBSP(fieldCount * 2));
+        }
         // Done
     }
 

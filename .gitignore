@@ -25,5 +25,6 @@ docker/ima_sources/
 !*resultatCorrect.res
 
 src/test/script/allTestsOutput.txt
+failed_files
 src/test/script/failed_files
 src/test/deca/gameboy/hardware.inc

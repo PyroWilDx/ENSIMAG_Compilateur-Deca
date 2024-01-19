@@ -73,17 +73,17 @@ public class DeclField extends AbstractDeclField {
 
         int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
 
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +5));
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
         compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +4));
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
         compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
         compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
+
+        compiler.addInstruction(new LOAD_INT(0, Register.A));
 
         for (int i = 0; i < fieldOffset * 2; i++) {
             compiler.addInstruction(new DEC_REG(Register.HL));
         }
-
-        compiler.addInstruction(new LOAD_INT(0, Register.A));
 
         if (getInitTypeCode() == TypeCode.OBJECT) {
             compiler.addInstruction(new STORE_REG(Register.A, Register.HL));
@@ -145,13 +145,13 @@ public class DeclField extends AbstractDeclField {
         int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
 
         init.setVarTypeCode(getInitTypeCode());
-        init.codeGenInit(compiler);
+        init.codeGenInitGb(compiler);
 
         GPRegister regValue = rM.getLastRegOrImm(compiler);
 
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +5));
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
         compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +4));
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
         compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
         compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
 

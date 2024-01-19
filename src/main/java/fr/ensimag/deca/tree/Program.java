@@ -169,11 +169,11 @@ public class Program extends AbstractProgram {
         compiler.addComment("End of Main Program");
 
         if (generateObjectClass) {
-            compiler.addComment("");
-            compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
-            compiler.addLabel(LabelUtils.getMethodLabel(
-                    LabelUtils.OBJECT_CLASS_NAME, LabelUtils.EQUALS_METHOD_NAME));
-            Label falseLabel = cM.getUniqueLabel();
+//            compiler.addComment("");
+//            compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
+//            compiler.addLabel(LabelUtils.getMethodLabel(
+//                    LabelUtils.OBJECT_CLASS_NAME, LabelUtils.EQUALS_METHOD_NAME));
+//            Label falseLabel = cM.getUniqueLabel();
             // TODO (GB)
 //            compiler.addInstruction(
 //                    new LOAD_INT(GameBoyManager.getArgAddr(-2) + 8, Register.HL));
@@ -182,22 +182,22 @@ public class Program extends AbstractProgram {
 //                    new LOAD_INT(GameBoyManager.getArgAddr(-3) + 8, Register.HL));
 //            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
 
-            compiler.addInstruction(new CMP(Register.A, Register.HL.getLowReg()));
-            compiler.addInstruction(new BNE(falseLabel));
+//            compiler.addInstruction(new CMP(Register.A, Register.HL.getLowReg()));
+//            compiler.addInstruction(new BNE(falseLabel));
 
 //            compiler.addInstruction(
 //                    new LOAD_INT(GameBoyManager.getArgAddr(-2), Register.HL));
 //            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
 //            compiler.addInstruction(
 //                    new LOAD_INT(GameBoyManager.getArgAddr(-3), Register.HL));
-            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
-            compiler.addInstruction(new BNE(falseLabel));
-
-            compiler.addInstruction(new LOAD_INT(1, Register.HL.getLowReg()));
-
-            compiler.addLabel(falseLabel);
-            compiler.addInstruction(new LOAD_INT(0, Register.HL.getLowReg()));
-            compiler.addInstruction(new RTS());
+//            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
+//            compiler.addInstruction(new BNE(falseLabel));
+//
+//            compiler.addInstruction(new LOAD_INT(1, Register.HL.getLowReg()));
+//
+//            compiler.addLabel(falseLabel);
+//            compiler.addInstruction(new LOAD_INT(0, Register.HL.getLowReg()));
+//            compiler.addInstruction(new RTS());
         }
 
         classes.codeGenListDeclClassGb(compiler);
