@@ -10,6 +10,6 @@ public class HALT extends NullaryInstruction {
 
     @Override
     public String getGameBoyAsm() {
-        return "halt"; // TODO (STOP ou HALT ?)
+        return "halt";
     }
 }

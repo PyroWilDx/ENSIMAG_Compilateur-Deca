@@ -20,11 +20,9 @@ public abstract class Instruction {
         displayOperands(s);
     }
 
-    public String getGameBoyAsm() { // TODO (a enlever et mettre en abstract)
+    public String getGameBoyAsm() {
         return getName();
     }
-
-//    public abstract String getGameBoyAsm();
 
     public abstract void displayOperandsGameBoy(PrintStream s);
 
