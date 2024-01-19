@@ -18,5 +18,6 @@
     println("Hello World !", " Second Argument");
     println("Second Println");
     print("Print Normal 1, ");
+    print();
     println("Println Normal 2");
 }

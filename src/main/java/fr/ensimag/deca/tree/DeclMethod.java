@@ -163,11 +163,10 @@ public class DeclMethod extends AbstractDeclMethod {
         name.decompile(s);
         s.print("(");
         params.decompile(s);
-        s.print(") {");
+        s.println(") {");
         s.indent();
         listDeclVar.decompile(s);
         listInst.decompile(s);
-        s.println("");
         s.unindent();
         s.println("}");
     }

@@ -38,7 +38,8 @@ public class EmptyMain extends AbstractMain {
     
     @Override
     public void decompile(IndentPrintStream s) {
-        // no main program => nothing
+        s.println("{");
+        s.print("}");
     }
 
     @Override

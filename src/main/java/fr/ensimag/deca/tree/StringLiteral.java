@@ -58,7 +58,7 @@ public class StringLiteral extends AbstractStringLiteral {
     
     @Override
     String prettyPrintNode() {
-        return "StringLiteral (" + value + ")";
+        return "StringLiteral (" + getValue() + ")";
     }
 
 }
