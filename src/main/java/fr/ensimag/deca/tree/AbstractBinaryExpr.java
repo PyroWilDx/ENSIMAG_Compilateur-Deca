@@ -1,10 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
-import fr.ensimag.deca.codegen.ErrorManager;
-import fr.ensimag.deca.codegen.GameBoyManager;
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.deca.codegen.StackManager;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.tools.IndentPrintStream;
 
@@ -90,20 +87,6 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         ErrorManager eM = compiler.getErrorManager();
         StackManager sM = compiler.getStackManager();
 
-        if ((getLeftOperand() instanceof FloatLiteral) && // Juste pour test rapide haha
-                getRightOperand() instanceof FloatLiteral) {
-            if (this instanceof Divide) {
-                FloatLiteral fLL = (FloatLiteral) getLeftOperand();
-                FloatLiteral fLR = (FloatLiteral) getRightOperand();
-                if (fLR.getValue() != 0.f) {
-                    GPRegister gpReg = rM.getFreeReg();
-                    compiler.addInstruction(new LOAD(fLL.getValue() / fLR.getValue(), gpReg));
-                    rM.freeReg(gpReg);
-                    return;
-                }
-            }
-        }
-
         getLeftOperand().codeGenInst(compiler);
         GPRegister regLeft = rM.getLastRegOrImm(compiler);
         if (regLeft == Register.R0) { // On vient de faire un return
@@ -163,6 +146,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
     protected void codeGenInstGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         StackManager sM = compiler.getStackManager();
+        VTableManager vTM = compiler.getVTableManager();
 
         getLeftOperand().codeGenInstGb(compiler);
         GPRegister regLeft = rM.getLastRegOrImm(compiler);
@@ -176,6 +160,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         if (rM.isUsingAllRegs()) {
             if (!(getRightOperand() instanceof AbstractLiteral)) {
                 compiler.addInstruction(new PUSH(regLeft));
+                if (vTM.isInMethod()) {
+                    compiler.addInstruction(new ADDSP(2)); // TODO (Possible de mettre un spOffset à la place)
+                }
                 rM.freeReg(regLeft);
                 sM.incrTmpVar();
                 pushed = true;
@@ -200,6 +187,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                     new LOAD_REG(regRight.getLowReg(), Register.HL.getLowReg()));
             regLeft = regRight;
             regRight = Register.HL;
+            if (vTM.isInMethod()) {
+                compiler.addInstruction(new SUBSP(2));
+            }
             compiler.addInstruction(new POP(regLeft));
             sM.decrTmpVar();
         }
