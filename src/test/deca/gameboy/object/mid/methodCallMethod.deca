@@ -14,39 +14,58 @@ class A {
     int y;
     int z;
 
-    void displayParams(int x, int y, int z) {
-        println(x, " ", y, " ", z);
+    int method1(int a, int b, int c) {
+        x = 1;
+        y = 2;
+        z = 3;
+
+        return method2(b, a, c); // 5 4 6
     }
 
-    int method1() {
-        int x = 10;
-        int y = 20;
-        int z = 30;
-        this.displayParams(x, y, z);
-        this.method2();
-        x = 110;
-        y = 120;
-        z = 130;
-        this.displayParams(x, y, z);
-        return this.method2();
-    }
-
-    int method2() {
-        int z = 60;
-        int y = 70;
-        int x = 80;
-        this.displayParams(x, y, z);
-        z = 160;
-        y = 170;
-        x = 180;
-        this.displayParams(x, y, z);
-        return x;
+    int method2(int c, int b, int a) { // 5 4 6
+        int x = (a * 2) + (b * 4) + (c * 6); // 6*2 + 4*4 + 5*6 = 12 + 16 + 30 = 58
+        if (c != 5) {
+            println();
+        }
+        if (b != 4) {
+            println();
+        }
+        if (a != 6) {
+            println();
+        }
+        if (this.x != 1) {
+            println();
+        }
+        if (y != 2) {
+            println();
+        }
+        if (z != 3) {
+            println();
+        }
+        this.x = 10;
+        y = 11;
+        z = 12;
+        if (x != 58) {
+            println();
+        }
+        return x; // 58
     }
 }
 
 {
     A a = new A();
-    if (a.method1() != 180) {
-        println("FAIL");
+    int x = a.method1(4, 5, 6);
+
+    if (x != 58) {
+        println();
+    }
+    if (a.x != 10) {
+        println();
+    }
+    if (a.y != 11) {
+        println();
+    }
+    if (a.z != 12) {
+        println();
     }
 }
