@@ -78,7 +78,11 @@ public class GameBoyManager {
 
         String identName = ident.getName().getName();
 
-        Integer varAddr = getGlobalVarAddr(identName);
+        Integer varAddr = null;
+        if (!vTM.isInMethod()) {
+
+            varAddr = getGlobalVarAddr(identName);
+        }
         if (varAddr != null) {
             compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
         } else {
@@ -86,6 +90,7 @@ public class GameBoyManager {
             if (paramOffset != null) { // It's a Method Param
                 compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + (-paramOffset - 2) * 2));
             } else { // It's a Class Field
+                System.out.println("CLASS FIELD");
                 compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
                 compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
                 compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
