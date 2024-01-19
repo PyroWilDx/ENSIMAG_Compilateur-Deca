@@ -16,6 +16,7 @@ def doVerify(decaFilePath):
     os.system(decacCmd)
 
     dl = "~/Downloads/GameBoy"
+    os.system(f"mkdir -p {dl}")
     os.system(f"cp ./src/test/deca/{decaFilePathNoExt}.asm {dl}")
 
     lastDir = os.getcwd()
