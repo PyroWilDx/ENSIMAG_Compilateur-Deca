@@ -329,8 +329,12 @@ def doTests():
              decacOptions="-b")
 
     doVerify("codegen/valid/options/optionParse.deca",
-             decacExpected=b"{\n\tint x = 1;\n\tfloat y = 2;\n\tfloat z;\n\t(z = ((x + y) - (x * (x + y))));\n\tprint(x, y, z);\n\tprintln(\"z = \", z);\n\tprintln(y, z);\n\tif ((y == z)) {\n\t\t(y = z);\n\t} else {\n\t\t(y = (z - 1));\n\t}\n\twhile (false) {\n\t\tif ((y != z)) {\n\t\t\tif ((y < z)) {\n\t\t\t\tif ((y > z)) {\n\t\t\t\t\t(x = 2);\n\t\t\t\t} else {\n\t\t\t\t\t(y = 4);\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t}\n\t\t} else {\n\t\t\twhile (false) {\n\t\t\t\tprint(40);\n\t\t\t}\n\t\t}\n\t\t(x = 10);\n\t}\n\tx;\n\ty;\n\tz;\n}\n",
+             decacExpected=b"class A extends Object {\n\tint a;\n\tfloat method(int b, float c) {\n\t\t(this.a = b);\n\t\treturn c;\n\t}\n\tvoid methodAsm()\n\tasm(\"CODE ASS\");\n}\n{\n\tA class1 = new A();\n\tint x = 1;\n\tfloat y = 2;\n\tfloat z = 0x1.3851ecp0;\n\tboolean bool = false;\n\tif (((class1 != null) && (!bool))) {\n\t\t(class1.a = 1);\n\t\t(z = class1.method(x, z));\n\t} else {\n\t}\n\t;\n\t(z = ((x + y) - (x * (x + y))));\n\tprint(x, y, z);\n\tprintln(\"z = \", z);\n\tprintln(y, z);\n\tif ((y == z)) {\n\t\t(y = z);\n\t} else {\n\t\t(y = (z - 1));\n\t}\n\twhile (false) {\n\t\tif ((y != z)) {\n\t\t\tif ((y < z)) {\n\t\t\t\tif ((y > z)) {\n\t\t\t\t\t(x = readInt());\n\t\t\t\t} else {\n\t\t\t\t\t(y = 4);\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t}\n\t\t} else {\n\t\t\twhile (false) {\n\t\t\t\tprint();\n\t\t\t}\n\t\t}\n\t\t(y = readFloat());\n\t}\n\tx;\n\ty;\n\tz;\n}\n",
              decacOptions="-p")
+
+    doVerify("codegen/valid/options/optionParseEmptyMain.deca",
+                 decacExpected=b"{\n}\n",
+                 decacOptions="-p")
 
     doVerify("codegen/valid/options/optionVerification.deca",
              decacOptions="-v")

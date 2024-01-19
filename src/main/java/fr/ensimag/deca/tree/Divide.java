@@ -44,7 +44,6 @@ public class Divide extends AbstractOpArith {
 
     @Override
     protected void codeGenOpArithGb(DecacCompiler compiler, DVal valReg, GPRegister saveReg) {
-        // TODO (PUSH HL)
         CondManager cM = compiler.getCondManager();
 
         long id = cM.getUniqueId();

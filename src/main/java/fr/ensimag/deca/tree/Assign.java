@@ -110,6 +110,7 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        VTableManager vTM = compiler.getVTableManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
 
         if (getLeftOperand() instanceof AbstractIdentifier) {
@@ -125,6 +126,9 @@ public class Assign extends AbstractBinaryExpr {
         }
 
         compiler.addInstruction(new PUSH(Register.HL));
+        if (vTM.isInMethod()) {
+            compiler.addInstruction(new ADDSP(2));
+        }
 
         getRightOperand().codeGenInstGb(compiler);
         GPRegister regRight = rM.getLastRegOrImm(compiler);
@@ -134,6 +138,9 @@ public class Assign extends AbstractBinaryExpr {
             compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
         }
 
+        if (vTM.isInMethod()) {
+            compiler.addInstruction(new SUBSP(2));
+        }
         compiler.addInstruction(new POP(Register.HL));
 
         compiler.addInstruction(new STORE_REG(regRight.getHighReg(), Register.HL));

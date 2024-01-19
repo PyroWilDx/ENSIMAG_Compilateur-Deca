@@ -22,8 +22,6 @@ public class DeclParam extends AbstractParam {
         type.decompile(s);
         s.print(" ");
         name.decompile(s);
-        throw new DecacInternalError("not implemented yet");
-
     }
 
     @Override

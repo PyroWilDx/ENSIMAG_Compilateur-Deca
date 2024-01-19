@@ -55,7 +55,6 @@ public class Multiply extends AbstractOpArith {
                 compiler.addInstruction(new LOAD_INT(0, saveReg));
             }
         } else {
-            // TODO (PUSH HL)
             long id = cM.getUniqueId();
             Label startLabel = new Label("MulStart" + id);
             Label set0Label = new Label("MulByZero" + id);
