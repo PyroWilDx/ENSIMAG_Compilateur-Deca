@@ -129,6 +129,7 @@ public class DeclMethod extends AbstractDeclMethod {
         StackManager sM = new StackManager(true);
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         String methodName = name.getName().getName();
         vTM.enterMethod(methodName);
@@ -139,7 +140,8 @@ public class DeclMethod extends AbstractDeclMethod {
         rM.saveUsedRegs();
         rM.freeAllRegs();
 
-        listDeclVar.codeGenListDeclVarGb(compiler); // TODO (FAIRE UNE CODEGENLISTDECLVAR POUR METHOD)
+        gbM.createCurrMethodVarsMap(vTM);
+        listDeclVar.codeGenListDeclVarGb(compiler);
 
         listInst.codeGenListInstGb(compiler);
 

@@ -1,27 +1,155 @@
-// Description :
-//    Test de la fonction asm
-//
-// Resultats :
-//    10 180
-
 class A {
-    void testAsm()
-        asm("LOAD #80, R14
-           LOAD #100, R12
-           ADD R14, R12
-           LOAD R12, R0
-           LOAD R0, R1
-           PUSH R1
-           LOAD #10, R1
-           WINT
-           POP R1
-           WINT
-           WNL
-           ");
+    int x = 1;
 
+    int testAsm(int y, int z)
+        asm("   push bc
+        add SP, 2
+        ld hl, SP+3
+        ld a, [hl]
+        ld hl, SP+2
+        ld l, [hl]
+        ld h, a
+        dec hl
+        dec hl
+        ld b, [hl]
+        dec hl
+        ld c, [hl]
+        ld a, c
+        cp a, 1
+        jp Z, L220
+    WaitVBlank42:
+        ld a, [rLY]
+        cp 144
+        jp c, WaitVBlank42
+        ld a, 0
+        ld [rLCDC], a
+        ld de, Tiles
+        ld hl, $9000
+        ld bc, TilesEnd - Tiles
+    CopyTiles42:
+        ld a, [de]
+        ld [hli], a
+        inc de
+        dec bc
+        ld a, b
+        or a, c
+        jp nz, CopyTiles42
+        ld de, Tilemap
+        ld hl, $9800
+        ld bc, TilemapEnd - Tilemap
+    CopyTilemap42:
+        ld a, [de]
+        ld [hli], a
+        inc de
+        dec bc
+        ld a, b
+        or a, c
+        jp nz, CopyTilemap42
+        ld a, LCDCF_ON | LCDCF_BGON
+        ld [rLCDC], a
+        ld a, %11100100
+        ld [rBGP], a
+    endPrint42:
+        jp L221
+    L220:
+    L221:
+        ld hl, SP+5
+        ld b, [hl]
+        dec hl
+        ld c, [hl]
+        ld a, c
+        cp a, 2
+        jp Z, L222
+    WaitVBlank43:
+        ld a, [rLY]
+        cp 144
+        jp c, WaitVBlank43
+        ld a, 0
+        ld [rLCDC], a
+        ld de, Tiles
+        ld hl, $9000
+        ld bc, TilesEnd - Tiles
+    CopyTiles43:
+        ld a, [de]
+        ld [hli], a
+        inc de
+        dec bc
+        ld a, b
+        or a, c
+        jp nz, CopyTiles43
+        ld de, Tilemap
+        ld hl, $9800
+        ld bc, TilemapEnd - Tilemap
+    CopyTilemap43:
+        ld a, [de]
+        ld [hli], a
+        inc de
+        dec bc
+        ld a, b
+        or a, c
+        jp nz, CopyTilemap43
+        ld a, LCDCF_ON | LCDCF_BGON
+        ld [rLCDC], a
+        ld a, %11100100
+        ld [rBGP], a
+    endPrint43:
+        jp L223
+    L222:
+    L223:
+        ld hl, SP+7
+        ld b, [hl]
+        dec hl
+        ld c, [hl]
+        ld a, c
+        cp a, 3
+        jp Z, L224
+    WaitVBlank44:
+        ld a, [rLY]
+        cp 144
+        jp c, WaitVBlank44
+        ld a, 0
+        ld [rLCDC], a
+        ld de, Tiles
+        ld hl, $9000
+        ld bc, TilesEnd - Tiles
+    CopyTiles44:
+        ld a, [de]
+        ld [hli], a
+        inc de
+        dec bc
+        ld a, b
+        or a, c
+        jp nz, CopyTiles44
+        ld de, Tilemap
+        ld hl, $9800
+        ld bc, TilemapEnd - Tilemap
+    CopyTilemap44:
+        ld a, [de]
+        ld [hli], a
+        inc de
+        dec bc
+        ld a, b
+        or a, c
+        jp nz, CopyTilemap44
+        ld a, LCDCF_ON | LCDCF_BGON
+        ld [rLCDC], a
+        ld a, %11100100
+        ld [rBGP], a
+    endPrint44:
+        jp L225
+    L224:
+    L225:
+    end_A_methodAsm:
+        add SP, -2
+        pop bc
+        ld hl, 42
+        ret");
 }
 
 {
     A a = new A();
-    a.testAsm();
+    int z = a.testAsm(2, 3);
+    if (z != 42) {
+        println();
+    }
 }

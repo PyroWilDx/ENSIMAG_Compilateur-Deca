@@ -7,8 +7,8 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
 import fr.ensimag.ima.pseudocode.instructions.*;
@@ -70,10 +70,16 @@ public class New extends AbstractExpr {
         GameBoyManager gbM = compiler.getGameBoyManager();
 
         vTM.enterClass(type.getType().getName().getName());
-
         int fieldsCount = vTM.getCurrFieldCountOfClass();
+        Label initMethodLabel = LabelUtils.getClassInitLabel(vTM.getCurrClassName());
+        vTM.exitClass();
+
         for (int i = 0; i < fieldsCount; i++) {
-            gbM.addFieldVar();
+            if (vTM.isInMethod()) {
+                gbM.addCurrMethodFieldVar(vTM);
+            } else {
+                gbM.addGlobalFieldVar();
+            }
         }
         gbM.setCurrNewFieldCount(fieldsCount);
 
@@ -82,13 +88,11 @@ public class New extends AbstractExpr {
         compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, -1));
         compiler.addInstruction(new SUBSP(fieldsCount * 2 + 2)); // WTF ??
         compiler.addInstruction(new PUSH(Register.HL));
-        compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(vTM.getCurrClassName())));
+        compiler.addInstruction(new BSR(initMethodLabel));
         compiler.addInstruction(new POP(gpReg));
         compiler.addInstruction(new ADDSP(fieldsCount * 2 + 2)); // WTF ??
 
         rM.freeReg(gpReg);
-
-        vTM.exitClass();
     }
 
     @Override

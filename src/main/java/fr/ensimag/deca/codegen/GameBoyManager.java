@@ -24,21 +24,21 @@ public class GameBoyManager {
         return (doCp) ? "_" : ".";
     }
 
-    public static int getVarAddr(int varOffset) {
-        return Addr0 - varOffset;
-    }
-
     private int printId;
     private int fieldId;
-    private boolean isDeclaring;
     private Integer currNewFieldCount;
     private final HashMap<String, Integer> globalVars;
+    private final HashMap<String, HashMap<String, Integer>> methodsVars;
+    // HashMap<ClassName.MethodName, HashMap<VarName, VarOffset>
+    private String currDeclaringIdentName;
 
     public GameBoyManager() {
         this.printId = 0;
         this.fieldId = 0;
         this.currNewFieldCount = null;
         this.globalVars = new HashMap<>();
+        this.methodsVars = new HashMap<>();
+        this.currDeclaringIdentName = null;
     }
 
     public int getAndIncrPrintId() {
@@ -63,8 +63,8 @@ public class GameBoyManager {
         globalVars.put(varName, globalVars.size());
     }
 
-    public void addFieldVar() {
-        globalVars.put(fieldId + "F", globalVars.size());
+    public void addGlobalFieldVar() {
+        addGlobalVar(fieldId + "F");
         fieldId++;
     }
 
@@ -73,31 +73,78 @@ public class GameBoyManager {
         return (Addr0 - 1) - (globalVars.get(varName) * 2);
     }
 
+    public String getCurrMethodKey(VTableManager vTM) {
+        return vTM.getCurrClassName() + "." + vTM.getCurrMethodName();
+    }
+
+    public void createCurrMethodVarsMap(VTableManager vTM) {
+        methodsVars.put(getCurrMethodKey(vTM), new HashMap<>());
+        addCurrMethodFieldVar(vTM); // Pour les push de BC et DE dans la méthode
+        addCurrMethodFieldVar(vTM);
+    }
+
+    public void addCurrMethodVar(VTableManager vTM, String varName) {
+        HashMap<String, Integer> methodVars = methodsVars.get(getCurrMethodKey(vTM));
+        methodVars.put(varName, getCurrMethodVarCount(vTM));
+    }
+
+    public void addCurrMethodFieldVar(VTableManager vTM) {
+        addCurrMethodVar(vTM, fieldId + "F");
+        fieldId++;
+    }
+
+    public int getCurrMethodVarCount(VTableManager vTM) {
+        return methodsVars.get(getCurrMethodKey(vTM)).size();
+    }
+
+    public Integer getCurrMethodVarOffset(VTableManager vTM, String varName) {
+        return methodsVars.get(getCurrMethodKey(vTM)).get(varName);
+    }
+
+    public void setCurrDeclaringIdentName(String value) {
+        currDeclaringIdentName = value;
+    }
+
+    public String getCurrDeclaringIdentName() {
+        return currDeclaringIdentName;
+    }
+
     public void loadIdentAddrIntoHL(DecacCompiler compiler, AbstractIdentifier ident) {
         VTableManager vTM = compiler.getVTableManager();
 
         String identName = ident.getName().getName();
 
-        Integer varAddr = null;
+        Integer varAddr;
         if (!vTM.isInMethod()) {
             varAddr = getGlobalVarAddr(identName);
-        }
-        if (varAddr != null) {
-            compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
+            if (varAddr != null) {
+                compiler.addInstruction(new LOAD_INT(varAddr, Register.HL));
+            }
         } else {
-            Integer paramOffset = vTM.getCurrParamOffsetOfMethod(identName);
-            if (paramOffset != null) { // It's a Method Param
-                compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + (-paramOffset - 2) * 2));
-            } else { // It's a Class Field
-                compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
-                compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-                compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
-                compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
-                compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
-                int fieldOffset = vTM.getCurrFieldOffset(identName);
-                for (int i = 0; i < fieldOffset * 2; i++) {
-                    compiler.addInstruction(new DEC_REG(Register.HL));
+            if (identName.equals(currDeclaringIdentName)) {
+                varAddr = null;
+            } else {
+                varAddr = getCurrMethodVarOffset(vTM, identName);
+                if (varAddr != null) {
+                    compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, -varAddr * 2 - 1));
                 }
+            }
+        }
+
+        if (varAddr != null) return;
+
+        Integer paramOffset = vTM.getCurrParamOffsetOfMethod(identName);
+        if (paramOffset != null) { // It's a Method Param
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + (-paramOffset - 2) * 2));
+        } else { // It's a Class Field
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
+            compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
+            int fieldOffset = vTM.getCurrFieldOffset(identName);
+            for (int i = 0; i < fieldOffset * 2; i++) {
+                compiler.addInstruction(new DEC_REG(Register.HL));
             }
         }
     }

@@ -3,6 +3,7 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.StackManager;
+import fr.ensimag.deca.codegen.VTableManager;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -11,6 +12,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.*;
+import fr.ensimag.ima.pseudocode.instructions.ADDSP;
 import fr.ensimag.ima.pseudocode.instructions.PUSH;
 import fr.ensimag.ima.pseudocode.instructions.STORE;
 import fr.ensimag.ima.pseudocode.instructions.SUBSP;
@@ -79,21 +81,35 @@ public class DeclVar extends AbstractDeclVar {
     @Override
     protected void codeGenDeclVarGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        VTableManager vTM = compiler.getVTableManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
 
-        gbM.addGlobalVar(varName.getName().getName());
-//        initialization.setVarType(type.getType()); // No Init
+        if (vTM.isInMethod()) {
+            gbM.addCurrMethodVar(vTM, varName.getName().getName());
+            gbM.setCurrDeclaringIdentName(varName.getName().getName());
+        } else {
+            gbM.addGlobalVar(varName.getName().getName());
+        }
+
         initialization.codeGenInitGb(compiler);
 
         GPRegister gpReg = rM.getLastRegOrImm(compiler);
-        compiler.addInstruction(new PUSH(gpReg));
+
+        if (vTM.isInMethod()) {
+            compiler.addInstruction(new SUBSP((gbM.getCurrMethodVarCount(vTM) - 1) * 2));
+            compiler.addInstruction(new PUSH(gpReg));
+            compiler.addInstruction(new ADDSP((gbM.getCurrMethodVarCount(vTM) - 1) * 2 + 2));
+            gbM.setCurrDeclaringIdentName(null);
+        } else {
+            compiler.addInstruction(new PUSH(gpReg));
+        }
+
         rM.freeReg(gpReg);
 
         if (gbM.didNew()) {
             int fieldCount = gbM.getAndResetNewFieldCount();
             compiler.addInstruction(new SUBSP(fieldCount * 2));
         }
-        // Done
     }
 
     @Override
