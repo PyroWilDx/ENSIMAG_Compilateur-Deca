@@ -1,55 +1,73 @@
+class Color {
+    boolean bit1 = true;
+    boolean bit2 = true;
+    int index = 124;
+    void setBlack() {
+        this.bit1 = false;
+        this.bit2 = false;
+        this.index = 124;
+    }
+    void setDark() {
+        this.bit1 = false;
+        this.bit2 = true;
+        this.index = 125;
+    }
+    void setLight() {
+        this.bit1 = true;
+        this.bit2 = false;
+        this.index = 126;
+    }
+    void setWhite() {
+        this.bit1 = true;
+        this.bit2 = true;
+        this.index = 127;
+    }
+    boolean isWhite() {
+        return this.bit1 && this.bit2;
+    }
+    boolean isBlack() {
+        return !this.bit1 && !this.bit1;
+    }
+    int getTileIndex() {
+        return index;
+    }
+    boolean isSameColor(Color color) {
+        return this.bit1 == color.bit1 && this.bit2 == color.bit2;
+    }
 
-class BackGroundMapMod {
-    protected boolean white = true;
-    protected boolean black = false;
+}
+class BackgroundMapMod {
+    protected Color color = new Color();
     protected boolean user = false;
     protected boolean changed = false;
+    int WIDTH = 32;
+    int HEIGHT = 32;
 
-    public void setWhite() {
-        this.changed = true;
-        this.white = true;
-        this.black = false;
-        this.user = false;
+    void setColor(Color c) {
+        if (!this.color.isSameColor(c)) {
+            this.changed = true;
+            this.color = c;
+        }
     }
 
-    public void setBlack() {
-        this.changed = true;
-        this.white = false;
-        this.black = true;
-        this.user = false;
-    }
 
-    public void setUser() {
+    void setUser() {
         this.changed = true;
-        this.white = false;
-        this.black = false;
         this.user = true;
-    }
-
-    public void setChanged(boolean changed) {
-        this.changed = changed;
-    }
-
-    boolean isWhite() {
-        return white;
-    }
-
-    boolean isBlack() {
-        return black;
-    }
-
-    boolean isUser() {
-        return user;
     }
     boolean hasChanged() {
         return changed;
+    }
+
+    Color getColor() {
+        return this.color;
     }
 }
 class DrawEvent {
     protected int tileIndex;
     protected int x;
     protected int y;
-    protected int next = null;
+    protected DrawEvent next = null;
 
     int getTileIndex() {
         return tileIndex;
@@ -63,7 +81,7 @@ class DrawEvent {
         return y;
     }
 
-    int getNext() {
+    DrawEvent getNext() {
         return next;
     }
 
@@ -79,7 +97,7 @@ class DrawEvent {
         return this.next != null;
     }
 }
-class DrawEventList() {
+class DrawEventList {
     protected DrawEvent first = null;
     protected DrawEvent last = null;
     void add(int index, int x, int y) {
@@ -118,6 +136,20 @@ class Utils {
             ld [bc], bc
             "
             ); // TODO VRAIMENT PAS SUR.
+    void setBackGroundInTileMap(int index) asm (
+        "
+        ld hl, sp + 6
+        ld a, [hl]
+        ld hl, $9800
+        ld bc, $400
+        setBackGroundInTileMapLoop:
+            ld [hli], a
+            dec bc
+            ld a, b
+            or a, c
+            jp nz, setBackGroundInTileMapLoop: ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
+        "
+    );
     void pushInTileMap(int x, int y, int tileIndex) asm(
             "
             ; a = y

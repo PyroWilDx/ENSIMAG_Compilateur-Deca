@@ -58,38 +58,7 @@
 //    }
 //
 //}
-class Color {
-    boolean bit1 = false;
-    boolean bit2 = false;
-    int index = 124;
-    void setBlack() {
-        this.bit1 = false;
-        this.bit2 = false;
-        this.index = 124;
-    }
-    void setDark() {
-        this.bit1 = false;
-        this.bit2 = true;
-        this.index = 125;
-    }
-    void setLight() {
-        this.bit1 = true;
-        this.bit2 = false;
-        this.index = 126;
-    }
-    void setWhite() {
-        this.bit1 = true;
-        this.bit2 = true;
-        this.index = 127;
-    }
-    boolean isWhite() {
-        return this.bit1 && this.bit2;
-    }
-    boolean isBlack() {
-        return !this.bit1 && !this.bit1;
-    }
 
-}
 
 class GameBoy {
     protected DrawEventList drawEvents = new DrawEventList();
@@ -98,11 +67,12 @@ class GameBoy {
     protected int height = 18;
     protected int pixelHeight = 144;
     protected Utils utils = new Utils();
-    protected BackGroundMapMod map = new backGroundMapMod();
+    protected BackgroundMapMod map = new BackgroundMapMod();
     protected Color WHITE = new Color();
     protected Color LIGHT = new Color();
     protected Color DARK = new Color();
     protected Color BLACK = new Color();
+    protected boolean firstUpdate = true;
     int getWidth() {
         return this.width;
     }
@@ -116,16 +86,20 @@ class GameBoy {
         BLACK.setBlack();
         DARK.setDark();
         LIGHT.setLight();
+        this.setBackgroundColor(WHITE);
+        this.asmInit();
+
+        // TODO faudra en fait mettre tous ces trucs au début du fichier avec le compilateur
         //this.includeHardware();
-        this.includeTextMacro();
-        this.includeTextUtils();
-        this.includeMemoryUtils();
-        this.includeInputUtils();
-        this.includeBackGroundUtils();
-        this.includeMath_asm();
-        this.includeVBlankUtils();
+        //this.includeTextMacro();
+        //this.includeTextUtils();
+        //this.includeMemoryUtils();
+        //this.includeInputUtils();
+        //this.includeBackGroundUtils();
+        //this.includeMath_asm();
+        //this.includeVBlankUtils();
     }
-    void Owninit () asm (
+    void asmInit () asm (
     "
     ; Shut down audio circuitry
     ld a, 0
@@ -137,13 +111,8 @@ class GameBoy {
     ld bc, ElementaryTiles - ElementaryTilesEnd
     call CopyDEintoMemoryAtHL
 
-    ; On met la map toute blanche
-    ld de, WhiteTilemap
-    ld hl, $9800
-    ld bc, WhiteTilemap - WhiteTilemapEnd
-    call CopyDEintoMemoryAtHL
-
-
+    ret; comme ça on essaie pas d executer la suite
+    
     ; Les tiles élémentaire
     ElementaryTiles :
     db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
@@ -151,63 +120,21 @@ class GameBoy {
     db $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00
     db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
     ElementaryTilesEnd :
-
-    ; Label menant à une map toute blanche
-    WhiteTilemap:
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, $01, 0,0,0,0,0,0,0,0,0,0,0,0
-    WhiteTilemapEnd:
-
-    ; Label menant à une map toute blanche
-    BlackTilemap:
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, 0,0,0,0,0,0,0,0,0,0,0,0
-    BlackTilemapEnd:
     " // TODO commencer la gameloop
     ); // TODO pour faire les trucs assembleurs de bases genre main loop et tout jsp
 
     void updateScreen() {
         DrawEvent event = this.drawEvents.getFirst();
+        if (this.firstUpdate) {
+            this.initDisplayRegisters();
+            this.firstUpdate = false;
+        }
         this.turnScreenOff();
         if (this.map.hasChanged()) {
-            if (this.map.isWhite) {
-                this.copyWhiteMapIntoMemory();
-            }
+            this.copyColorIntoMap(this.map.getColor());
         }
         while(event.hasNext()) {
-            this.utils.push(event.getX(), event.getY(), event.getTileIndex());
+            this.utils.pushInTileMap(event.getX(), event.getY(), event.getTileIndex());
             event = event.getNext();
         }
         this.turnScreenOn();
@@ -227,79 +154,26 @@ class GameBoy {
         ld [rLCDC], a
         "
     );
+    void initDisplayRegisters() asm (
+        "
+        ; During the first (blank) frame, initialize display registers
+        ld a, %11100100
+        ld [rBGP], a
+        "
+    );
     void setTile(int tileIndex, int x, int y) {
         this.drawEvents.add(tileIndex, x, y);
     }
-    void setbackGroundWhite() {
-        if (!this.map.isWhite) {
-            this.map.setWhite();
-        }
+    void setColor(Color color, int x, int y) {
+        this.setTile(color.getTileIndex(), x, y);
     }
-    void copyWhiteMapIntoMemory() asm (
-        "
-        ld de, WhiteTilemap
-        ld hl, $9800
-        ld bc, WhiteTilemap - WhiteTilemapEnd
-        call CopyDEintoMemoryAtHL
-        "
-    );
-    void copyBlackMapIntoMemory() asm (
-            "
-    ld de, BlackTilemap
-    ld hl, $9800
-    ld bc, WhiteTilemap - WhiteTilemapEnd
-    call CopyDEintoMemoryAtHL
-        "
-                );
-    void
-    void setTileMapBlack(Color color) asm(
-    "
-    ld de, BlackTilemap
-    ld hl, $9800
-    ld bc, BlackTilemapEnd - BlackTilemap
-    call CopyDEintoMemoryAtHL
-    "
-    );
 
-    void includeVBlankUtils() asm (
-        #include "vblank_utils_asm"
-    );
-    void includeMemoryUtils() asm (
-        #include "memory_utils_asm"
-    );
-    void includeInputUtils() asm (
-        #include "input_utils_asm"
-    );
-
-    void includeBackGroundUtils() asm (
-        #include "background_utils_asm"
-    );
-
-    void includeMath_asm() asm(
-        #include "math_asm"
-    );
-
-    /////////////////////////////////////////////////////////////////////
-    // TEXT
-    /////////////////////////////////////////////////////////////////////
-    void includeTextUtils() asm (
-        #include "text_utils_asm"
-    );
-    void includeTextMacro() asm (
-        #include "text_macro_inc"
-    );
-
-    /////////////////////////////////////////////////////////////////////////////////////
-    // HARDWARE
-    //////////////////////////////////////////////////////////////////////////////////////
-    //void includeHardware() asm (
-      //  #include "hardware_inc"
-    //);
-    void endGame() asm (
-        "
-        Done:
-        halt
-        jp Done
-        "
-    );
+    //
+    void setBackgroundColor(Color color) {
+        this.map.setColor(color);
+    }
+    void copyColorIntoMap(Color color) {
+        int index = color.getTileIndex();
+        this.utils.setBackGroundInTileMap(index);
+    }
 }
