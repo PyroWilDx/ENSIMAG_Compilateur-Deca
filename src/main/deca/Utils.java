@@ -130,15 +130,9 @@ class Utils {
             exposant = exposant / 2;
         }
     }
-    int get(int addr) asm(
-            "
-            ld bc, 49664
-            ld [bc], bc
-            "
-            ); // TODO VRAIMENT PAS SUR.
     void setBackGroundInTileMap(int index) asm (
         "
-        ld hl, sp + 6
+        ld hl, sp + 4
         ld a, [hl]
         ld hl, $9800
         ld bc, $400
@@ -148,16 +142,17 @@ class Utils {
             ld a, b
             or a, c
             jp nz, setBackGroundInTileMapLoop: ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
+        ret
         "
     );
     void pushInTileMap(int x, int y, int tileIndex) asm(
             "
             ; a = y
-            ld hl, sp + 7
+            ld hl, sp + 6
             ld a, [hl]
 
             ; b = x
-            ld hl, sp + 6
+            ld hl, sp + 4
             ld b, [hl]
 
             ; c = value
@@ -183,6 +178,7 @@ class Utils {
             ld e, b
             add hl, de ;hl += x;
             ld [hl], c
+            ret
             "
             ); // TODO VRAIMENT PAS SÛR
 }

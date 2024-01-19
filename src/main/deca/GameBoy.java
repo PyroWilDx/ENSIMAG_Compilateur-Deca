@@ -120,6 +120,7 @@ class GameBoy {
     db $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00
     db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
     ElementaryTilesEnd :
+
     " // TODO commencer la gameloop
     ); // TODO pour faire les trucs assembleurs de bases genre main loop et tout jsp
 
