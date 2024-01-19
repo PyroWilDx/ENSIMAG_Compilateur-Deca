@@ -1,5 +1,6 @@
 package fr.ensimag.deca.tree;
 
+import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.context.ClassDefinition;
@@ -8,6 +9,9 @@ import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import java.io.PrintStream;
 
+import fr.ensimag.ima.pseudocode.GPRegister;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.LOAD_REG;
 import org.apache.commons.lang.Validate;
 
 /**
@@ -47,7 +51,17 @@ public class Initialization extends AbstractInitialization {
 
     @Override
     protected void codeGenInitGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
+
         expression.codeGenInstGb(compiler);
+        GPRegister gpReg = rM.getLastReg();
+        if (gpReg == Register.HL) {
+            gpReg = rM.getFreeReg();
+            compiler.addInstruction(new LOAD_REG(Register.HL.getHighReg(), gpReg.getHighReg()));
+            compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), gpReg.getLowReg()));
+        }
+        rM.freeReg(gpReg);
+
     }
 
     @Override

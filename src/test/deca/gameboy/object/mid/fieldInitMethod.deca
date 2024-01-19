@@ -1,17 +1,18 @@
 class A {
     int a = 20;
-    int b = this.initB();
+    int b = initB();
     int c = 10;
 
     int initB() {
-        return 30;
+        a = 40;
+        return a;
     }
 
     void check() {
-        if (a != 20) {
+        if (a != 40) {
             println();
         }
-        if (b != 30) {
+        if (b != 40) {
             println();
         }
         if (c != 10) {
@@ -24,10 +25,10 @@ class A {
     A a = new A();
     a.check();
 
-    if (a.a != 60) {
+    if (a.a != 40) {
         println();
     }
-    if (a.b != 60) {
+    if (a.b != 40) {
         println();
     }
     if (a.c != 10) {
