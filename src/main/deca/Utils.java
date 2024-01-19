@@ -1,7 +1,7 @@
 class Color {
     boolean bit1 = true;
     boolean bit2 = true;
-    int index = 124;
+    int index = 127;
     void setBlack() {
         this.bit1 = false;
         this.bit2 = false;
@@ -56,6 +56,9 @@ class BackgroundMapMod {
         this.user = true;
     }
     boolean hasChanged() {
+        if (changed) {
+            changed = false;
+        }
         return changed;
     }
 
@@ -181,4 +184,7 @@ class Utils {
             ret
             "
             ); // TODO VRAIMENT PAS SÛR
+
+
+
 }
