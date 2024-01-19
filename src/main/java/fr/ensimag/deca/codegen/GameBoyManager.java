@@ -31,14 +31,12 @@ public class GameBoyManager {
     private boolean isDeclaring;
     private Integer currNewFieldCount;
     private final HashMap<String, Integer> globalVars;
-    public LinkedList<AbstractIdentifier> currClassVarStack;
 
     public GameBoyManager() {
         this.printId = 0;
         this.fieldId = 0;
         this.currNewFieldCount = null;
         this.globalVars = new HashMap<>();
-        this.currClassVarStack = new LinkedList<>();
     }
 
     public int getAndIncrPrintId()  {
@@ -73,20 +71,8 @@ public class GameBoyManager {
         return (Addr0 - 1) - (globalVars.get(varName) * 2);
     }
 
-    public String getCurrClassVarName() {
-        return currClassVarStack.peekFirst().getName().getName();
-    }
-
-    public String getCurrClassVarClassName() {
-        return currClassVarStack.peekFirst().getType().getName().getName();
-    }
-
     public int getGlobalAddrSP() {
         return Addr0 - globalVars.size();
-    }
-
-    public int getCurrClassFieldAddr(int fieldOffset) {
-        return Addr0 - (globalVars.get(getCurrClassVarName()) - fieldOffset);
     }
 
     public Integer extractAddrFromIdent(DecacCompiler compiler, AbstractIdentifier ident) {
@@ -101,10 +87,10 @@ public class GameBoyManager {
 //                varAddr = getArgAddr(paramOffset);
                 varAddr = 42; // TODO (GB)
             } else { // It's a Class Field
-                vTM.enterClass(getCurrClassVarClassName());
+//                vTM.enterClass(getCurrClassVarClassName());
                 int fieldOffset = vTM.getCurrFieldOffset(identName);
                 vTM.exitClass();
-                varAddr = getCurrClassFieldAddr(fieldOffset);
+//                varAddr = getCurrClassFieldAddr(fieldOffset);
             }
         }
         return varAddr;

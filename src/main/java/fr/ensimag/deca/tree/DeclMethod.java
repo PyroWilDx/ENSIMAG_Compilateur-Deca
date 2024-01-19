@@ -125,7 +125,33 @@ public class DeclMethod extends AbstractDeclMethod {
 
     @Override
     public void codeGenDeclMethodGb(DecacCompiler compiler) {
-        // TODO (GB)
+        RegManager rM = compiler.getRegManager();
+        StackManager sM = new StackManager(true);
+        compiler.setStackManager(sM);
+        VTableManager vTM = compiler.getVTableManager();
+
+        String methodName = name.getName().getName();
+        vTM.enterMethod(methodName);
+
+        compiler.addLabel(mStartLabel);
+        int iTSTO = compiler.getProgramLineCount();
+
+        rM.saveUsedRegs();
+        rM.freeAllRegs();
+
+        listDeclVar.codeGenListDeclVarGb(compiler); // TODO (FAIRE UNE CODEGENLISTDECLVAR POUR METHOD)
+
+        listInst.codeGenListInstGb(compiler);
+
+        boolean[] usedRegs = rM.popUsedRegs();
+        RegManager.addSaveRegsInstsGb(compiler, iTSTO, usedRegs);
+
+        compiler.addLabel(mEndLabel);
+        RegManager.addRestoreRegsInstsGb(compiler, usedRegs);
+
+        compiler.addInstruction(new RTS());
+
+        vTM.exitMethod();
     }
 
     //    // TODO (à déplacer)
@@ -168,7 +194,6 @@ public class DeclMethod extends AbstractDeclMethod {
 //        compiler.addLabel(endLabel);
 //        rM.freeReg(gpReg);
 //    }
-
 
     @Override
     public void decompile(IndentPrintStream s) {

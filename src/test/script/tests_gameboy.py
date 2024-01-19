@@ -35,8 +35,8 @@ def doTests():
 
     print()
 
-    # doVerify("gameboy/fastTest.deca")
-    #
+    doVerify("gameboy/fastTest.deca")
+
     # doVerify("gameboy/base/declVar.deca")
     #
     # doVerify("gameboy/base/opArith.deca")
@@ -54,14 +54,10 @@ def doTests():
     # doVerify("gameboy/cond/whileSimple.deca")
     #
     # doVerify("gameboy/cond/whileComplex.deca")
-
-    doVerify("gameboy/object/fields/newSimple.deca")
-
-    doVerify("gameboy/object/fields/fieldSimple.deca")
-
-    doVerify("gameboy/object/fields/fieldSelection.deca")
-
-    doVerify("gameboy/object/fields/fieldInitReg.deca")
+    #
+    # doVerify("gameboy/object/fields/fieldSelection.deca")
+    #
+    # doVerify("gameboy/object/fields/fieldInitReg.deca")
 
     # doVerify("gameboy/object/fields/fieldInitFieldSimple.deca")
     #

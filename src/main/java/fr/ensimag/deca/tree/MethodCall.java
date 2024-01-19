@@ -120,46 +120,28 @@ public class MethodCall extends AbstractMethodCall {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
-        GameBoyManager gbM = compiler.getGameBoyManager();
 
         vTM.enterClass(expr.getType().getName().getName());
 
         String methodName = methodIdent.getName().getName();
         vTM.enterMethod(methodName);
 
-        if (!(expr instanceof This)) {
-            gbM.currClassVarStack.addFirst((AbstractIdentifier) expr);
-        }
-
-        int addSp = vTM.getCurrParamCountOfMethod() + 1;
-
-//        compiler.add(new LineGb("ld hl, SP"));
-//        compiler.addInstruction(new PUSH(Register.HL));
-//        compiler.addInstruction(
-//                new LOAD_SP(GameBoyManager.getMethodLastParamAddr(addSp), Register.SP));
-
         List<AbstractExpr> args = rValueStar.getList();
         for (int i = args.size() - 1; i >= 0; i--) {
-            AbstractExpr arg = args.get(i);
-            arg.codeGenInst(compiler);
+            args.get(i).codeGenInstGb(compiler);
             GPRegister gpReg = rM.getLastRegOrImm(compiler);
             compiler.addInstruction(new PUSH(gpReg));
             rM.freeReg(gpReg);
         }
 
-        expr.codeGenInst(compiler);
+        expr.codeGenInstGb(compiler);
         GPRegister gpReg = rM.getLastReg();
         compiler.addInstruction(new PUSH(gpReg));
         rM.freeReg(gpReg);
 
-        gpReg = rM.getFreeReg();
-
-        // TODO (cf BSR page 109 pour polymorphisme)
         compiler.addInstruction(new BSR(vTM.getCurrMethodLabel()));
 
-        rM.freeReg(gpReg);
-
-//        compiler.addInstruction(new LOAD_SP(gbM.getGlobalAddrSP(), Register.SP));
+        compiler.addInstruction(new ADDSP(vTM.getCurrParamCountOfMethod() * 2 + 2));
 
         if (!getType().isVoid()) {
             rM.freeRegForce(Register.HL);
@@ -189,10 +171,6 @@ public class MethodCall extends AbstractMethodCall {
                 compiler.addLabel(endLabel);
                 rM.freeReg(gpReg);
             }
-        }
-
-        if (!(expr instanceof This)) {
-            gbM.currClassVarStack.removeFirst();
         }
 
         vTM.exitMethod();

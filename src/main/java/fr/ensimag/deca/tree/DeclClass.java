@@ -212,7 +212,6 @@ public class DeclClass extends AbstractDeclClass {
         int iTSTO = compiler.getProgramLineCount();
 
         fields.codeGenSetFieldsTo0Gb(compiler);
-//        fields.codeGenSetFieldsTo0Gb(compiler); // WTF ??
         if (!superClassName.equals(LabelUtils.OBJECT_CLASS_NAME)) {
             compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
             compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
