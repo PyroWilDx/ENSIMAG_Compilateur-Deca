@@ -72,6 +72,7 @@ class GameBoy {
     protected Color LIGHT = new Color();
     protected Color DARK = new Color();
     protected Color BLACK = new Color();
+    protected boolean firstUpdate = true;
     int getWidth() {
         return this.width;
     }
@@ -97,7 +98,7 @@ class GameBoy {
         //this.includeMath_asm();
         //this.includeVBlankUtils();
     }
-    void Owninit () asm (
+    void asmInit () asm (
     "
     ; Shut down audio circuitry
     ld a, 0
@@ -121,6 +122,10 @@ class GameBoy {
 
     void updateScreen() {
         DrawEvent event = this.drawEvents.getFirst();
+        if (this.firstUpdate) {
+            this.initDisplayRegisters();
+            this.firstUpdate = false;
+        }
         this.turnScreenOff();
         if (this.map.hasChanged()) {
             this.copyColorIntoMap(this.map.getColor());
@@ -144,6 +149,13 @@ class GameBoy {
         ; Turn the LCD on
         ld a, LCDCF_ON | LCDCF_BGON
         ld [rLCDC], a
+        "
+    );
+    void initDisplayRegisters() asm (
+        "
+        ; During the first (blank) frame, initialize display registers
+        ld a, %11100100
+        ld [rBGP], a
         "
     );
     void setTile(int tileIndex, int x, int y) {
