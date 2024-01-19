@@ -3,5 +3,5 @@
 {
     GameBoy gb = new GameBoy();
     gb.init();
-    gb.setBackgroundColor(gb.WHITE);
+    gb.updateScreen();
 }
