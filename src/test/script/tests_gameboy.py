@@ -20,21 +20,7 @@ def doVerify(decaFilePath):
     decacCmd = f"decac -g ./src/test/deca/{decaFilePath}"
     os.system(decacCmd)
 
-    dl = "~/Downloads/GameBoy"
-    os.system(f"mkdir -p {dl}")
-    os.system(f"cp ./src/test/deca/{decaFilePathNoExt}.asm {dl}")
-
-    lastDir = os.getcwd()
-    os.chdir(os.path.join(os.path.expanduser("~"), "Downloads/GameBoy"))
-
-    os.system(f"rgbasm -L -o {dl}/{decaFileNameNoExt}.o {dl}/{decaFileNameNoExt}.asm")
-    os.system(f"rgblink -o {dl}/{decaFileNameNoExt}.gb {dl}/{decaFileNameNoExt}.o")
-    os.system(f"rgbfix -v -p 0xFF {dl}/{decaFileNameNoExt}.gb")
-
-    os.system(f"Emulicious.jar {dl}/{decaFileNameNoExt}.gb > /dev/null 2>&1 &")
-
-    os.chdir(lastDir)
-
+    os.system(f"Emulicious.jar '{os.getcwd()}/src/test/deca/{decaFilePathNoExt}.gb' > /dev/null 2>&1 &")
     nbTest += 1
 
     if nbTest == maxTest:
