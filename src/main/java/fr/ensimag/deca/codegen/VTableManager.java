@@ -95,6 +95,10 @@ public class VTableManager {
         return currMethodNameStack.peekFirst();
     }
 
+    public LinkedList<String> getCurrClassNameStack() {
+        return currClassNameStack;
+    }
+
     public boolean isInMethod() {
         return getCurrMethodName() != null;
     }

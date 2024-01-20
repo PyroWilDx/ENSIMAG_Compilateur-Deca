@@ -1,18 +1,3 @@
-// Description :
-//    Test de création d'un arbre binaire
-//
-// Resultats :
-//    false
-//    true
-//    true
-//    true
-//    true
-//    false
-//    true
-//    true
-//    true
-//    false
-
 class Cell {
     Cell rightSon = null;
     Cell leftSon = null;
@@ -54,13 +39,9 @@ class BinaryTree {
         return head;
     }
 
-    void valueIn(int value) {
+    boolean valueIn(int value) {
         boolean a = valueInRec(this.head, value);
-        if (a == true) {
-            println("true");
-        } else {
-            println("false");
-        }
+        return a;
     }
 
     boolean valueInRec(Cell head, int value) {
@@ -90,15 +71,15 @@ class BinaryTree {
     tree.addCell(1);
     tree.addCell(20);
 
-    tree.valueIn(15);
-    tree.valueIn(5);
-    tree.valueIn(2);
-    tree.valueIn(9);
-    tree.valueIn(3);
-    tree.valueIn(1000);
-    tree.valueIn(7);
-    tree.valueIn(1);
-    tree.valueIn(20);
-    tree.valueIn(-3);
+    if (tree.valueIn(15)) { println(); }
+    if (!tree.valueIn(5)) { println(); }
+    if (!tree.valueIn(2)) { println(); }
+    if (!tree.valueIn(9)) { println(); }
+    if (!tree.valueIn(3)) { println(); }
+    if (tree.valueIn(100)) { println(); }
+    if (!tree.valueIn(7)) { println(); }
+    if (!tree.valueIn(1)) { println(); }
+    if (!tree.valueIn(20)) { println(); }
+    if (tree.valueIn(42)) { println(); }
 }
 

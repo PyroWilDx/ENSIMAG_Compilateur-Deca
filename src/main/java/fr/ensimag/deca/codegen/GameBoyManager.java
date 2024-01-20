@@ -15,6 +15,8 @@ public class GameBoyManager {
     public static final int AddrMax = 49152;
 
     public static boolean doCp = false;
+    public static boolean doCpRgbds = false;
+    public static boolean debugMode = false;
 
     public static String getImmToken() {
         return (doCp) ? "" : "#";
@@ -75,8 +77,12 @@ public class GameBoyManager {
         return (Addr0 - 1) - (globalVars.get(varName) * 2);
     }
 
+    public String getMethodKey(String className, String methodName) {
+        return className + "." + methodName;
+    }
+
     public String getCurrMethodKey(VTableManager vTM) {
-        return vTM.getCurrClassName() + "." + vTM.getCurrMethodName();
+        return getMethodKey(vTM.getCurrClassName(), vTM.getCurrMethodName());
     }
 
     public void createCurrMethodVarsMap(VTableManager vTM) {
@@ -100,7 +106,12 @@ public class GameBoyManager {
     }
 
     public Integer getCurrMethodVarOffset(VTableManager vTM, String varName) {
-        return methodsVars.get(getCurrMethodKey(vTM)).get(varName);
+        for (String className : vTM.getCurrClassNameStack()) {
+            String mKey = getMethodKey(className, vTM.getCurrMethodName());
+            if (!methodsVars.containsKey(mKey)) continue;;
+            return methodsVars.get(mKey).get(varName);
+        }
+        return null;
     }
 
     public void setCurrDeclaringIdentName(String value) {

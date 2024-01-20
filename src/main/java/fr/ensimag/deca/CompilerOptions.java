@@ -111,9 +111,14 @@ public class CompilerOptions {
                     case 'g':
                         if (nOfRegs > GameBoyManager.nRegs) nOfRegs = GameBoyManager.nRegs;
                         GameBoyManager.doCp = true;
+                        if (arg.substring(2).equals("b")) {
+                            GameBoyManager.doCpRgbds = true;
+                        } else if (arg.substring(2).equals("debug")) {
+                            GameBoyManager.debugMode = true;
+                        }
                         break;
                     default:
-                        throwError("-" + arg.charAt(1) + " is not a valid option.");
+                        throwError(arg + " is not a valid option.");
                 }
             }
         }
