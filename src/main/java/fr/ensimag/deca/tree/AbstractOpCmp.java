@@ -72,28 +72,35 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
             }
         }
 
-        if (valReg instanceof GPRegister) {
-            valReg = ((GPRegister) valReg).getLowReg();
-        }
-        compiler.addInstruction(new CMP(valReg, saveReg.getLowReg()));
-        if (cM.isDoingCond()) {
-            if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
-            else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));
-        } else {
-            long id = cM.getUniqueId();
-            Label trueLabel = new Label("SccTrue" + id);
-            Label falseLabel = new Label("SccFalse" + id);
-            Label endLabel = new Label("SccEnd" + id);
+        if (!(getRightOperand() instanceof NullLiteral)) {
             compiler.addInstruction(new LOAD_REG(saveReg.getLowReg(), Register.A));
-            compiler.addInstruction(new CMP_A(0, Register.A));
-            if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(trueLabel));
-            else compiler.addInstruction(getBranchInvOpCmpInst(trueLabel));
-            compiler.addLabel(falseLabel);
-            compiler.addInstruction(new LOAD_INT(0, saveReg.getLowReg()));
-            compiler.addInstruction(new BRA(endLabel));
-            compiler.addLabel(trueLabel);
-            compiler.addInstruction(new LOAD_INT(1, saveReg.getLowReg()));
-            compiler.addLabel(endLabel);
+            compiler.addInstruction(new CMP_A(valReg, Register.A));
+            if (cM.isDoingCond()) {
+                if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
+                else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));
+            } else {
+                long id = cM.getUniqueId();
+                Label trueLabel = new Label("SccTrue" + id);
+                Label falseLabel = new Label("SccFalse" + id);
+                Label endLabel = new Label("SccEnd" + id);
+                if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(trueLabel));
+                else compiler.addInstruction(getBranchInvOpCmpInst(trueLabel));
+
+                compiler.addLabel(falseLabel);
+                compiler.addInstruction(new LOAD_INT(0, saveReg.getLowReg()));
+                compiler.addInstruction(new BRA(endLabel));
+                compiler.addLabel(trueLabel);
+                compiler.addInstruction(new LOAD_INT(1, saveReg.getLowReg()));
+                compiler.addLabel(endLabel);
+            }
+        } else {
+            if (this instanceof Equals) {
+                Equals eq = (Equals) this;
+                eq.codeGenCmpNullGb(compiler, saveReg);
+            } else if (this instanceof NotEquals) {
+                NotEquals nEq = (NotEquals) this;
+                nEq.codeGenCmpNullGb(compiler, saveReg);
+            }
         }
     }
 

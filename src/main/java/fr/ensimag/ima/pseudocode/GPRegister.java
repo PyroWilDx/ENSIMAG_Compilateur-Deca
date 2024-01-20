@@ -57,4 +57,13 @@ public class GPRegister extends Register {
         if (lStr == null) return this;
         return reg8BitMap.get(lStr);
     }
+
+    public GPRegister getHighRegOfLow() {
+        if (name.equals("c")) {
+            return reg8BitMap.get("b");
+        } else if (name.equals("e")) {
+            return reg8BitMap.get("d");
+        }
+        return null;
+    }
 }
