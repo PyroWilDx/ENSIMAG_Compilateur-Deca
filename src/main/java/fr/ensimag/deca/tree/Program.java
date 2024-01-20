@@ -129,11 +129,13 @@ public class Program extends AbstractProgram {
         VTableManager vTM = compiler.getVTableManager();
 
         compiler.add(new LineGb("INCLUDE \"hardware.inc\""));
+        compiler.add(new LineGb("INCLUDE \"variables.asm\""));
 
         compiler.add(new LineGb(""));
         compiler.add(new LineGb("SECTION \"Header\", ROM0[$100]"));
         compiler.add(new LineGb(""));
-
+        compiler.add(new LineGb("INCLUDE \"utils.asm\""));
+        compiler.add(new LineGb("call initVariables"));
         compiler.add(new LineGb("jp EntryPoint"));
         compiler.add(new LineGb("ds $150 - @, 0"));
 
@@ -201,7 +203,6 @@ public class Program extends AbstractProgram {
         }
 
         classes.codeGenListDeclClassGb(compiler);
-
         GameBoyUtils.putHelloWorld(compiler);
     }
 
