@@ -23,22 +23,8 @@ public class LOAD extends BinaryInstructionDValToReg {
         this(new ImmediateFloat(f), r);
     }
 
-//    @Override
-//    public void displayOperandsGameBoy(PrintStream s) {
-//        if (!(getOperand1() instanceof RegisterOffset)) {
-//            super.displayOperandsGameBoy(s);
-//        }
-//    }
-
     @Override
     public String getGameBoyAsm() {
-//        if (getOperand1() instanceof RegisterOffset) {
-//            String gbAsm = "ld hl, SP";
-//            gbAsm += "\n\tadd hl, " + GameBoyManager.getImmToken() +
-//                    ((RegisterOffset) getOperand1()).getOffset();
-//            gbAsm += "\n\tld " + getOperand2() + ", [hl]";
-//            return gbAsm;
-//        }
         return "ld";
     }
 }

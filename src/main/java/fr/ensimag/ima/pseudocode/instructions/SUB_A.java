@@ -5,8 +5,6 @@ import fr.ensimag.ima.pseudocode.*;
 public class SUB_A extends BinaryInstructionDValToReg {
     public SUB_A(DVal op1, GPRegister op2) {
         super(op1, op2);
-
-        assert (op2 == Register.A);
     }
 
     public SUB_A(int i, GPRegister op2) {

@@ -12,9 +12,4 @@ public class DEL extends UnaryInstructionToReg {
     public DEL(GPRegister op) {
         super(op);
     }
-
-    @Override
-    public String getGameBoyAsm() {
-        return null;
-    }
 }

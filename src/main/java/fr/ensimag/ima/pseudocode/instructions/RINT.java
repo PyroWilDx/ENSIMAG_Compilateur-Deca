@@ -8,8 +8,4 @@ import fr.ensimag.ima.pseudocode.NullaryInstruction;
  */
 public class RINT extends NullaryInstruction {
 
-    @Override
-    public String getGameBoyAsm() {
-        return null; // Pas de lecture
-    }
 }

@@ -17,7 +17,7 @@ public class SUBSP extends UnaryInstructionImmInt {
     }
 
     public SUBSP(int i) {
-        super(i);
+        this(new ImmediateInteger(i));
     }
 
     @Override

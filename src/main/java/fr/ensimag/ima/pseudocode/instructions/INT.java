@@ -14,9 +14,4 @@ public class INT extends BinaryInstructionDValToReg {
     public INT(DVal op1, GPRegister op2) {
         super(op1, op2);
     }
-
-    @Override
-    public String getGameBoyAsm() {
-        return null; // Tout est déjà en int
-    }
 }

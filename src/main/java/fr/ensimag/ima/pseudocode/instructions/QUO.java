@@ -13,9 +13,4 @@ public class QUO extends BinaryInstructionDValToReg {
     public QUO(DVal op1, GPRegister op2) {
         super(op1, op2);
     }
-
-    @Override
-    public String getGameBoyAsm() {
-        return null; // Pas de division entière
-    }
 }

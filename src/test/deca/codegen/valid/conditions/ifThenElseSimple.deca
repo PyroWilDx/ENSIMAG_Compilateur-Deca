@@ -5,6 +5,8 @@
 //    12345678910111213141516
 
 {
+    boolean b;
+
     if (1 == 1) {
         print(1);
     } else {
@@ -110,6 +112,80 @@
     }
 
     if ((1 == 1) == (2 == 1)) {
+        println("FAIL");
+    }
+
+    if (!((1 == 1) == (4 == 4))) {
+        println("FAIL");
+    }
+
+    b = true;
+    if (b == true) {
+
+    } else {
+        println("FAIL");
+    }
+    if (b != true) {
+        println("FAIL");
+    }
+    if (b == false) {
+        println("FAIL");
+    }
+    if (b != false) {
+
+    } else {
+        println("FAIL");
+    }
+
+    if (true == b) {
+
+    } else {
+        println("FAIL");
+    }
+    if (true != b) {
+        println("FAIL");
+    }
+    if (false == b) {
+        println("FAIL");
+    }
+    if (false != b) {
+
+    } else {
+        println("FAIL");
+    }
+
+    b = false;
+    if (b == false) {
+
+    } else {
+        println("FAIL");
+    }
+    if (b != false) {
+        println("FAIL");
+    }
+    if (b == true) {
+        println("FAIL");
+    }
+    if (b != true) {
+
+    } else {
+        println("FAIL");
+    }
+
+    if (false == b) {
+
+    } else {
+        println("FAIL");
+    }
+    if (false != b) {
+        println("FAIL");
+    }
+    if (true == b) {
+        println("FAIL");
+    }
+    if (true != b) {
+
+    } else {
         println("FAIL");
     }
 }

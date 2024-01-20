@@ -16,18 +16,4 @@ public class STORE extends BinaryInstruction {
     public STORE(Register op1, DAddr op2) {
         super(op1, op2);
     }
-
-    @Override
-    public void displayOperandsGameBoy(PrintStream s) {
-
-    }
-
-    @Override
-    public String getGameBoyAsm() {
-        String gbAsm = "ld hl, SP";
-        gbAsm += "\n\tadd hl, " + GameBoyManager.getImmToken() +
-                ((RegisterOffset) getOperand2()).getOffset();
-        gbAsm += "\n\tld [hl], " + getOperand1();
-        return gbAsm;
-    }
 }

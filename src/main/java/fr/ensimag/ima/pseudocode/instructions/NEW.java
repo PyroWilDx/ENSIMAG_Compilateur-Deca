@@ -16,11 +16,6 @@ public class NEW extends BinaryInstructionDValToReg {
     }
 
     public NEW(int size, GPRegister op2) {
-        super(new ImmediateInteger(size), op2);
-    }
-
-    @Override
-    public String getGameBoyAsm() {
-        return null; // Pas de heap
+        this(new ImmediateInteger(size), op2);
     }
 }

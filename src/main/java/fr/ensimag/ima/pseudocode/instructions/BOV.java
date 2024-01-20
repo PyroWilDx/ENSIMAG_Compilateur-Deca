@@ -13,9 +13,4 @@ public class BOV extends BranchInstruction {
     public BOV(Label op) {
         super(op);
     }
-
-    @Override
-    public String getGameBoyAsm() {
-        return "jp C,";
-    }
 }
