@@ -102,6 +102,10 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             if ((this instanceof Multiply) || (this instanceof Divide)) {
                 if ((getLeftOperand() instanceof IntLiteral) &&
                         ((IntLiteral) getLeftOperand()).isPowerOf2()) {
+                    if (this instanceof Divide) {
+                        super.codeGenInst(compiler);
+                        return;
+                    }
                     IntLiteral iLL = (IntLiteral) getLeftOperand();
                     int twoExp = iLL.getExponentOf2();
                     if (twoExp >= 10) {
@@ -117,8 +121,6 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
                     for (int i = 0; i < twoExp; i++) {
                         if (this instanceof Multiply) {
                             compiler.addInstruction(new SHL(gpReg));
-                        } else { // Divide
-                            compiler.addInstruction(new SHR(gpReg));
                         }
                     }
                     rM.freeReg(gpReg);
