@@ -11,11 +11,13 @@ public class VTableManager {
     private final HashMap<String, VTable> vTables;
     private final LinkedList<String> currClassNameStack;
     private final LinkedList<String> currMethodNameStack;
+    private int callingMethodCount;
 
     public VTableManager() {
         this.vTables = new HashMap<>();
         this.currClassNameStack = new LinkedList<>();
         this.currMethodNameStack = new LinkedList<>();
+        this.callingMethodCount = 0;
     }
 
     public void addVTable(String className, VTable vTable) {
@@ -126,4 +128,15 @@ public class VTableManager {
         return getParamCountOfMethod(getCurrClassName(), getCurrMethodName());
     }
 
+    public void enterMethodCall() {
+        callingMethodCount++;
+    }
+
+    public void exitMethodCall() {
+        callingMethodCount--;
+    }
+
+    public boolean isMethodCalling() {
+        return callingMethodCount > 0;
+    }
 }

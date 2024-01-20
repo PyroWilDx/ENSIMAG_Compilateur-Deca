@@ -12,7 +12,6 @@
 //    true
 //    true
 //    false
-
 class Cell {
     Cell rightSon = null;
     Cell leftSon = null;
@@ -54,7 +53,15 @@ class BinaryTree {
         return head;
     }
 
-    void valueIn(int value) {
+    void valueInV1(int value) {
+        if (!valueInRec(this.head, value)) {
+            println("false");
+        } else {
+            println("true");
+        }
+    }
+
+    void valueInV2(int value) {
         boolean a = valueInRec(this.head, value);
         if (a == true) {
             println("true");
@@ -90,14 +97,14 @@ class BinaryTree {
     tree.addCell(1);
     tree.addCell(20);
 
-    tree.valueIn(15);
-    tree.valueIn(5);
-    tree.valueIn(2);
-    tree.valueIn(9);
-    tree.valueIn(3);
-    tree.valueIn(1000);
-    tree.valueIn(7);
-    tree.valueIn(1);
-    tree.valueIn(20);
-    tree.valueIn(-3);
+    tree.valueInV1(15);
+    tree.valueInV1(5);
+    tree.valueInV2(2);
+    tree.valueInV1(9);
+    tree.valueInV2(3);
+    tree.valueInV2(1000);
+    tree.valueInV2(7);
+    tree.valueInV1(1);
+    tree.valueInV1(20);
+    tree.valueInV2(-3);
 }

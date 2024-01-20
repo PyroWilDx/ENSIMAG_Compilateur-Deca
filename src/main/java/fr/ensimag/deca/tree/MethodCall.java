@@ -53,6 +53,8 @@ public class MethodCall extends AbstractMethodCall {
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
 
+        vTM.enterMethodCall();
+
         vTM.enterClass(expr.getType().getName().getName());
         vTM.enterMethod(methodIdent.getName().getName());
 
@@ -113,6 +115,8 @@ public class MethodCall extends AbstractMethodCall {
                 rM.freeReg(gpReg);
             }
         }
+
+        vTM.exitMethodCall();
     }
 
     @Override
@@ -121,6 +125,8 @@ public class MethodCall extends AbstractMethodCall {
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
+
+        vTM.enterMethodCall();
 
         vTM.enterClass(expr.getType().getName().getName());
         vTM.enterMethod(methodIdent.getName().getName());
@@ -196,6 +202,8 @@ public class MethodCall extends AbstractMethodCall {
                 rM.freeReg(gpReg);
             }
         }
+
+        vTM.exitMethodCall();
     }
 
     @Override
