@@ -317,5 +317,45 @@
     if (!b0) {
         println("KO_42");
     }
+
+    b0 = x <= 4;
+    if (!b0) {
+        println("KO_43");
+    }
+
+    b0 = !(x <= 4);
+    if (b0) {
+        println("KO_44");
+    }
+
+    b0 = x >= 4;
+    if (!b0) {
+        println("KO_45");
+    }
+
+    b0 = !(x >= 4);
+    if (b0) {
+        println("KO_46");
+    }
+
+    b0 = x < 4;
+    if (b0) {
+        println("KO_47");
+    }
+
+    b0 = !(x < 4);
+    if (!b0) {
+        println("KO_48");
+    }
+
+    b0 = x > 4;
+    if (b0) {
+        println("KO_49");
+    }
+
+    b0 = !(x > 4);
+    if (!b0) {
+        println("KO_50");
+    }
 }
 
