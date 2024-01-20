@@ -49,13 +49,14 @@ def doTests():
     print()
 
     # doVerify("gameboy/bin/fastTest.deca")
-
+    #
     # doVerify("gameboy/base/declVar.deca")
     # doVerify("gameboy/base/opArith.deca")
     # doVerify("gameboy/base/opRegOverflow.deca")
     # doVerify("gameboy/base/assign.deca")
     #
     # doVerify("gameboy/cond/boolLazyEval.deca")
+    # doVerify("gameboy/cond/elseOpCmp.deca")
     # doVerify("gameboy/cond/ifThenElseSimple.deca")
     # doVerify("gameboy/cond/ifThenElseComplex.deca")
     # doVerify("gameboy/cond/whileSimple.deca")
@@ -77,12 +78,13 @@ def doTests():
     # doVerify("gameboy/object/mid/varInMethod.deca")
     # doVerify("gameboy/object/mid/methodCallMethod.deca")
     # doVerify("gameboy/object/mid/recursiveMethod.deca")
-
+    #
     # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
     # doVerify("gameboy/object/extends/extendsFields.deca")
     # doVerify("gameboy/object/extends/extendsMethods.deca")
-
-    doVerify("gameboy/object/others/equalsSimple.deca")
+    #
+    # doVerify("gameboy/object/others/equalsSimple.deca")
+    # doVerify("gameboy/object/others/elseOpCmp.deca")
     # doVerify("gameboy/object/others/assignInside.deca")
     # doVerify("gameboy/object/others/asmSimple.deca")
     # doVerify("gameboy/object/others/methodRegOverflow.deca")

@@ -25,7 +25,7 @@ class BinaryTree {
 
     Cell addCellRec(Cell head, int data) {
         Cell a;
-        if (head == null) {
+        if (head.equals(null)) {
             a = new Cell();
             a.init(data);
             return a;
@@ -54,7 +54,7 @@ class BinaryTree {
     }
 
     boolean valueInRec(Cell head, int value) {
-        if (head == null) {
+        if (head.equals(null)) {
             return false;
         } else {
             if (value == head.value) {

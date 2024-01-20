@@ -285,7 +285,8 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
 
         if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
-            compiler.addInstruction(new CMP(0, gpReg.getLowReg()));
+            compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
+            compiler.addInstruction(new CMP_A(0, Register.A));
             if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
             else compiler.addInstruction(new BEQ(branchLabel));
         } else {
@@ -294,9 +295,11 @@ public class Identifier extends AbstractIdentifier {
                 Label falseLabel = new Label("SccFalse" + id);
                 Label trueLabel = new Label("SccTrue" + id);
                 Label endLabel = new Label("SccEnd" + id);
+
                 compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
                 compiler.addInstruction(new CMP_A(0, Register.A));
                 compiler.addInstruction(new BEQ(trueLabel));
+                
                 compiler.addLabel(falseLabel);
                 compiler.addInstruction(new LOAD_INT(0, gpReg.getLowReg()));
                 compiler.addInstruction(new BRA(endLabel));

@@ -1,13 +1,13 @@
 package fr.ensimag.deca.tree;
 
 
+import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.CondManager;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
-import fr.ensimag.ima.pseudocode.instructions.BEQ;
-import fr.ensimag.ima.pseudocode.instructions.BNE;
-import fr.ensimag.ima.pseudocode.instructions.SEQ;
-import fr.ensimag.ima.pseudocode.instructions.SNE;
+import fr.ensimag.ima.pseudocode.Register;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 /**
  * @author gl47
@@ -42,6 +42,44 @@ public class NotEquals extends AbstractOpExactCmp {
     @Override
     protected Instruction getInvOpCmpInst(GPRegister gpReg) {
         return new SEQ(gpReg);
+    }
+
+    public void codeGenCmpNullGb(DecacCompiler compiler, GPRegister gpReg) {
+        CondManager cM = compiler.getCondManager();
+
+        if (cM.isDoingCond()) {
+            compiler.addInstruction(new LOAD_REG(gpReg.getHighRegOfLow(), Register.A));
+            compiler.addInstruction(new CMP_A(0, Register.A));
+            if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
+            else compiler.addInstruction(new BEQ(branchLabel));
+
+            compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
+            compiler.addInstruction(new CMP_A(0, Register.A));
+            if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
+            else compiler.addInstruction(new BEQ(branchLabel));
+        } else {
+            long id = cM.getUniqueId();
+            Label trueLabel = new Label("SccTrue" + id);
+            Label falseLabel = new Label("SccFalse" + id);
+            Label endLabel = new Label("SccEnd" + id);
+
+            compiler.addInstruction(new LOAD_REG(gpReg.getHighRegOfLow(), Register.A));
+            compiler.addInstruction(new CMP_A(0, Register.A));
+            if (isInTrue) compiler.addInstruction(new BNE(trueLabel));
+            else compiler.addInstruction(new BEQ(trueLabel));
+
+            compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
+            compiler.addInstruction(new CMP_A(0, Register.A));
+            if (isInTrue) compiler.addInstruction(new BNE(trueLabel));
+            else compiler.addInstruction(new BEQ(trueLabel));
+
+            compiler.addLabel(falseLabel);
+            compiler.addInstruction(new LOAD_INT(0, gpReg.getLowReg()));
+            compiler.addInstruction(new BRA(endLabel));
+            compiler.addLabel(trueLabel);
+            compiler.addInstruction(new LOAD_INT(1, gpReg.getLowReg()));
+            compiler.addLabel(endLabel);
+        }
     }
 
     @Override
