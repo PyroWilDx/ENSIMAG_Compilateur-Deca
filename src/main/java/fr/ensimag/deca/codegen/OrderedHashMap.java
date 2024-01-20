@@ -15,13 +15,13 @@ public class OrderedHashMap<K, V> extends HashMap<K, V> {
         this.valuesList = new LinkedList<>();
     }
 
-    public void addFirst(K key, V value) {
-        if (!containsKey(key)) {
-            put(key, value);
-            keysList.addFirst(key);
-            valuesList.addFirst(value);
-        }
-    }
+//    public void addFirst(K key, V value) {
+//        if (!containsKey(key)) {
+//            put(key, value);
+//            keysList.addFirst(key);
+//            valuesList.addFirst(value);
+//        }
+//    }
 
     public void addLast(K key, V value) {
         if (!containsKey(key)) {

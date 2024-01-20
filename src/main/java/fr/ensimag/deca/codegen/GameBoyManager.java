@@ -12,7 +12,7 @@ public class GameBoyManager {
 
     public static final int nRegs = 4;
     public static final int Addr0 = 57344;
-    public static final int AddrMax = 49152;
+//    public static final int AddrMax = 49152;
 
     public static boolean doCp = false;
     public static boolean doCpRgbds = false;

@@ -39,8 +39,8 @@ class Event {
 }
 
 class DoubleLinkedListEvents {
-    Event head=null;
-    Event tail=null;
+    Event head = null;
+    Event tail = null;
 
     void addEvent(Event event) {
         if (head == null) {

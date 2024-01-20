@@ -15,6 +15,7 @@ class B extends A {
 {
     A a = new A();
     B b = new B();
+    B b2;
 
     boolean x = a.equals(b);
 
@@ -24,6 +25,14 @@ class B extends A {
 
     x = a.equals(a);
     if (!x) {
+        println("FAIL");
+    }
+
+    if (a.equals(null)) {
+        println("FAIL");
+    }
+
+    if (b.equals(null)) {
         println("FAIL");
     }
 
@@ -64,8 +73,18 @@ class B extends A {
         println("FAIL");
     }
 
+    b2 = b;
     b = new B();
+
     if (a.equals(b)) {
+        println("FAIL");
+    }
+
+    if (b2.equals(b)) {
+        println("FAIL");
+    }
+
+    if (b.equals(b2)) {
         println("FAIL");
     }
 }

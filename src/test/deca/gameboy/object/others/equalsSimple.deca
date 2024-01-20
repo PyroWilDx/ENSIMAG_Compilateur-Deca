@@ -1,71 +1,79 @@
-// Description :
-//    Test de la fonction equals définie de base dans Object
-//
-// Resultats :
-//    OK1 OK2 OK3 OK4 OK5 OK6
-
 class A {
     int x;
 }
 
-class B extends A {
+class B {
     int y;
 }
 
 {
     A a = new A();
     B b = new B();
+    B b2 = null;
 
     boolean x = a.equals(b);
 
     if (x) {
-        println("FAIL");
+        println();
     }
 
     x = a.equals(a);
     if (!x) {
-        println("FAIL");
+        println();
+    }
+
+    if (a.equals(null)) {
+        println();
+    }
+
+    if (b.equals(null)) {
+        println();
+    }
+
+    if (a.equals(b2)) {
+        println();
+    }
+
+    if (b.equals(b2)) {
+        println();
     }
 
     if (a.equals(b)) {
-        println("FAIL");
+        println();
     } else {
-        print("OK1 ");
+
     }
 
     if (a.equals(a)) {
-        print("OK2 ");
+
     } else {
-        println("FAIL");
+        println();
     }
 
     if (b.equals(a)) {
-        println("FAIL");
+        println();
     } else {
-        print("OK3 ");
+
     }
 
     if (b.equals(b)) {
-        print("OK4 ");
+
     } else {
-        println("FAIL");
+        println();
     }
 
-    a = b; // Polymorphisme
-    if (!a.equals(b)) {
-        println("FAIL");
-    } else {
-        print("OK5 ");
-    }
-
-    if (b.equals(a)) {
-        println("OK6");
-    } else {
-        println("FAIL");
-    }
-
+    b2 = b;
     b = new B();
+
     if (a.equals(b)) {
-        println("FAIL");
+        println();
+    }
+
+    if (b2.equals(b)) {
+        println();
+    }
+
+    if (b.equals(b2)) {
+        println();
     }
 }

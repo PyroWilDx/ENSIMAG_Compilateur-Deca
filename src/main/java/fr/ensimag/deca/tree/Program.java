@@ -72,8 +72,8 @@ public class Program extends AbstractProgram {
 
             DAddr eAddr = sM.getOffsetAddr();
             vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, 1);
-            eLabel = LabelUtils.getMethodLabel(
-                    LabelUtils.OBJECT_CLASS_NAME, LabelUtils.EQUALS_METHOD_NAME);
+            vT.addParamToMethod(LabelUtils.EQUALS_METHOD_NAME, "obj", -3);
+            eLabel = LabelUtils.getMethodLabel(LabelUtils.OBJECT_CLASS_NAME, LabelUtils.EQUALS_METHOD_NAME);
             compiler.addInstruction(new LOAD(new LabelOperand(eLabel), Register.R0));
             compiler.addInstruction(new STORE(Register.R0, eAddr));
             sM.incrVTableCpt();
@@ -123,7 +123,6 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgramGb(DecacCompiler compiler) {
-        CondManager cM = compiler.getCondManager();
         StackManager sM = new StackManager(false);
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
@@ -162,6 +161,7 @@ public class Program extends AbstractProgram {
             VTable vT = new VTable(null, LabelUtils.OBJECT_CLASS_SYMBOL, null);
             vTM.addVTable(LabelUtils.OBJECT_CLASS_NAME, vT);
             vT.addMethod(LabelUtils.EQUALS_METHOD_NAME, 1);
+            vT.addParamToMethod(LabelUtils.EQUALS_METHOD_NAME, "obj", -3);
         }
 
         classes.codeGenVTableGb(compiler);
@@ -178,35 +178,39 @@ public class Program extends AbstractProgram {
         compiler.addComment("End of Main Program");
 
         if (generateObjectClass) {
-//            compiler.addComment("");
-//            compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
-//            compiler.addLabel(LabelUtils.getMethodLabel(
-//                    LabelUtils.OBJECT_CLASS_NAME, LabelUtils.EQUALS_METHOD_NAME));
-//            Label falseLabel = cM.getUniqueLabel();
-            // TODO (GB)
-//            compiler.addInstruction(
-//                    new LOAD_INT(GameBoyManager.getArgAddr(-2) + 8, Register.HL));
-//            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-//            compiler.addInstruction(
-//                    new LOAD_INT(GameBoyManager.getArgAddr(-3) + 8, Register.HL));
-//            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
+            compiler.addComment("");
+            compiler.addComment("Class " + LabelUtils.OBJECT_CLASS_NAME);
 
-//            compiler.addInstruction(new CMP(Register.A, Register.HL.getLowReg()));
-//            compiler.addInstruction(new BNE(falseLabel));
+            String objClassName = LabelUtils.OBJECT_CLASS_NAME;
+            String eqMethodName = LabelUtils.EQUALS_METHOD_NAME;
+            Label eLabel = LabelUtils.getMethodLabel(objClassName, eqMethodName);
+            Label falseLabel = new Label("equalsFalse");
+            Label endLabel = LabelUtils.getMethodEndLabel(objClassName, eqMethodName);
 
-//            compiler.addInstruction(
-//                    new LOAD_INT(GameBoyManager.getArgAddr(-2), Register.HL));
-//            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-//            compiler.addInstruction(
-//                    new LOAD_INT(GameBoyManager.getArgAddr(-3), Register.HL));
-//            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.HL.getLowReg()));
-//            compiler.addInstruction(new BNE(falseLabel));
-//
-//            compiler.addInstruction(new LOAD_INT(1, Register.HL.getLowReg()));
-//
-//            compiler.addLabel(falseLabel);
-//            compiler.addInstruction(new LOAD_INT(0, Register.HL.getLowReg()));
-//            compiler.addInstruction(new RTS());
+            compiler.addLabel(eLabel);
+
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A)); // High Addr of Instance
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 5));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));  // High Addr of Arg
+            compiler.addInstruction(new CMP_A(GPRegister.L, Register.A));
+            compiler.addInstruction(new BNE(falseLabel));
+
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 2));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A)); // Low Addr of Instance
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 4));
+            compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));  // Low Addr of Arg
+            compiler.addInstruction(new CMP_A(GPRegister.L, Register.A));
+            compiler.addInstruction(new BNE(falseLabel));
+
+            compiler.addInstruction(new LOAD_INT(1, Register.HL));
+            compiler.addInstruction(new BRA(endLabel));
+
+            compiler.addLabel(falseLabel);
+            compiler.addInstruction(new LOAD_INT(0, Register.HL));
+
+            compiler.addLabel(endLabel);
+            compiler.addInstruction(new RTS());
         }
 
         classes.codeGenListDeclClassGb(compiler);
