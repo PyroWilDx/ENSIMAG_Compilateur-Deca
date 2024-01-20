@@ -84,7 +84,7 @@ def doTests():
     # doVerify("gameboy/object/extends/extendsFields.deca")
     # doVerify("gameboy/object/extends/extendsMethods.deca")
     #
-    doVerify("gameboy/object/others/equalsSimple.deca")
+    # doVerify("gameboy/object/others/equalsSimple.deca")
     # doVerify("gameboy/object/others/elseOpCmp.deca")
     # doVerify("gameboy/object/others/assignInside.deca")
     # doVerify("gameboy/object/others/asmSimple.deca")

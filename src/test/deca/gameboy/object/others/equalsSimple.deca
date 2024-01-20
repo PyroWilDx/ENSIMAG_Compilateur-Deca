@@ -18,12 +18,17 @@ class B {
     }
 
     x = !a.equals(b);
-    if (x) {
+    if (!x) {
         println();
     }
 
     x = a.equals(a);
     if (!x) {
+        println();
+    }
+
+    x = !a.equals(a);
+    if (x) {
         println();
     }
 
