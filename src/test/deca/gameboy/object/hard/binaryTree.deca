@@ -25,7 +25,7 @@ class BinaryTree {
 
     Cell addCellRec(Cell head, int data) {
         Cell a;
-        if (head.equals(null)) {
+        if (head == null) {
             a = new Cell();
             a.init(data);
             return a;
@@ -39,22 +39,22 @@ class BinaryTree {
         return head;
     }
 
-    boolean checkIn(int value) {
+    void checkIn(int value) {
         boolean a = valueInRec(this.head, value);
-        if (!a) {
-            println();
-        }
+        // if (!a) {
+            // println();
+        // }
     }
 
     void checkNotIn(int value) {
         boolean a = valueInRec(this.head, value);
-        if (a) {
-            println();
-        }
+        // if (a) {
+        //     println();
+        // }
     }
 
     boolean valueInRec(Cell head, int value) {
-        if (head.equals(null)) {
+        if (head == null) {
             return false;
         } else {
             if (value == head.value) {
@@ -67,28 +67,30 @@ class BinaryTree {
                 }
             }
         }
+        println();
     }
 }
 
 {
     BinaryTree tree = new BinaryTree();
     tree.addCell(5);
-    tree.addCell(2);
-    tree.addCell(9);
-    tree.addCell(3);
-    tree.addCell(7);
-    tree.addCell(1);
-    tree.addCell(20);
+    // tree.addCell(2);
+    // tree.addCell(9);
+    // tree.addCell(3);
+    // tree.addCell(7);
+    // tree.addCell(1);
+    // tree.addCell(20);
 
-    tree.checkNotIn(15);
+    // tree.checkNotIn(15);
     tree.checkIn(5);
-    tree.checkIn(2);
-    tree.checkIn(9);
-    tree.checkIn(3);
-    tree.checkNotIn(100);
-    tree.checkIn(7);
-    tree.checkIn(1);
-    tree.checkIn(20);
-    tree.checkNotIn(42);
+    println();
+    // tree.checkIn(2);
+    // tree.checkIn(9);
+    // tree.checkIn(3);
+    // tree.checkNotIn(100);
+    // tree.checkIn(7);
+    // tree.checkIn(1);
+    // tree.checkIn(20);
+    // tree.checkNotIn(42);
 }
 
