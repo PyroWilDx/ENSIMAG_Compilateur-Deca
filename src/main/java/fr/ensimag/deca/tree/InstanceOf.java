@@ -30,7 +30,7 @@ public class InstanceOf extends AbstractExpr {
         this.expr.verifyExpr(compiler, localEnv, currentClass);
         this.type.verifyType(compiler);
         if ((!this.expr.getType().isClass() && !this.expr.getType().isNull()) || !this.type.getType().isClass()) {
-            throw new ContextualError("InstanceOf can only be used on class", this.getLocation());
+            throw new ContextualError("InstanceOf can only be used on class types.", this.getLocation());
         }
         this.setType(compiler.environmentType.BOOLEAN);
         return compiler.environmentType.BOOLEAN;
