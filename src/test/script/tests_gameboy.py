@@ -94,7 +94,7 @@ def doTests():
 
 
 def main():
-    os.chdir(os.getcwd().split("src")[0]+"/src")
+    os.chdir(os.getcwd().split("src")[0])
 
     print()
 
