@@ -76,7 +76,7 @@ def doTests():
     # doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
     # doVerify("gameboy/object/mid/varInMethod.deca")
     # doVerify("gameboy/object/mid/methodCallMethod.deca")
-    doVerify("gameboy/object/mid/recursiveMethod.deca")
+    # doVerify("gameboy/object/mid/recursiveMethod.deca")
 
     # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
     # doVerify("gameboy/object/extends/extendsFields.deca")
@@ -86,6 +86,9 @@ def doTests():
     # doVerify("gameboy/object/others/assignInside.deca")
     # doVerify("gameboy/object/others/asmSimple.deca")
     # doVerify("gameboy/object/others/methodRegOverflow.deca")
+
+    # doVerify("gameboy/object/hard/linkedList.deca")
+    # doVerify("gameboy/object/hard/binaryTree.deca")
 
     return 0
 

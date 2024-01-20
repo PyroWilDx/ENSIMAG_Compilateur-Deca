@@ -147,6 +147,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         RegManager rM = compiler.getRegManager();
         StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         getLeftOperand().codeGenInstGb(compiler);
         GPRegister regLeft = rM.getLastRegOrImm(compiler);
@@ -159,9 +160,13 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         boolean pushed = false;
         if (rM.isUsingAllRegs()) {
             if (!(getRightOperand() instanceof AbstractLiteral)) {
-                compiler.addInstruction(new PUSH(regLeft));
-                if (vTM.isInMethod()) {
-                    compiler.addInstruction(new ADDSP(2)); // TODO (Possible de mettre un spOffset à la place)
+                if (!vTM.isInMethod()) {
+                    compiler.addInstruction(new PUSH(regLeft));
+                } else {
+                    int methodVarOffset = gbM.getCurrMethodVarCount(vTM);
+                    compiler.addInstruction(new SUBSP(methodVarOffset * 2));
+                    compiler.addInstruction(new PUSH(regLeft));
+                    compiler.addInstruction(new ADDSP(methodVarOffset * 2 + 2));
                 }
                 rM.freeReg(regLeft);
                 sM.incrTmpVar();
@@ -174,7 +179,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
         GPRegister regRight = null;
         if (lastImmRight == null) {
             regRight = rM.getLastReg();
-            if (regRight == Register.HL && pushed) { // On vient de faire un return et on a PUSH
+            if (regRight == Register.HL) {
                 regRight = rM.getFreeReg();
                 compiler.addInstruction(
                         new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
@@ -187,10 +192,14 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                     new LOAD_REG(regRight.getLowReg(), Register.HL.getLowReg()));
             regLeft = regRight;
             regRight = Register.HL;
-            if (vTM.isInMethod()) {
-                compiler.addInstruction(new SUBSP(2));
+            if (!vTM.isInMethod()) {
+                compiler.addInstruction(new POP(regLeft));
+            } else {
+                int methodVarOffset = gbM.getCurrMethodVarCount(vTM);
+                compiler.addInstruction(new SUBSP(methodVarOffset * 2 + 2));
+                compiler.addInstruction(new POP(regLeft));
+                compiler.addInstruction(new ADDSP(methodVarOffset * 2));
             }
-            compiler.addInstruction(new POP(regLeft));
             sM.decrTmpVar();
         }
 

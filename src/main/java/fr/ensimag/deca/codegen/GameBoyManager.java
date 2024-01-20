@@ -32,6 +32,7 @@ public class GameBoyManager {
     // HashMap<ClassName.MethodName, HashMap<VarName, VarOffset>
     private String currDeclaringIdentName;
     private int currMethodSpOffset; // OH LA PURGE PUTAIN
+    private int methodTmpPushOffset; // OMG LA PURGE V2 PTN
 
     public GameBoyManager() {
         this.printId = 0;
@@ -41,6 +42,7 @@ public class GameBoyManager {
         this.methodsVars = new HashMap<>();
         this.currDeclaringIdentName = null;
         this.currMethodSpOffset = 0;
+        this.methodTmpPushOffset = 0;
     }
 
     public int getAndIncrPrintId() {
@@ -119,6 +121,13 @@ public class GameBoyManager {
         return currMethodSpOffset;
     }
 
+    public void incrMethodTmpPushOffset() {
+        methodTmpPushOffset++;
+        if (methodTmpPushOffset > 32) {
+            throw new ArrayIndexOutOfBoundsException("Number of temporary registers used in method exceeded !! Please simplify your expressions...");
+        }
+    }
+
     public void loadIdentAddrIntoHL(DecacCompiler compiler, AbstractIdentifier ident) {
         VTableManager vTM = compiler.getVTableManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
@@ -145,12 +154,11 @@ public class GameBoyManager {
         if (varAddr != null) return;
 
         Integer paramOffset = vTM.getCurrParamOffsetOfMethod(identName);
+        int spOffset = gbM.getCurrMethodSpOffset();
         if (paramOffset != null) { // It's a Method Param
-            int spOffset = gbM.getCurrMethodSpOffset();
             compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL,
                     3 + spOffset + (-paramOffset - 2) * 2));
         } else { // It's a Class Field
-            int spOffset = gbM.getCurrMethodSpOffset();
             compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + spOffset));
             compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
             compiler.addInstruction(new DEC_REG(Register.HL));

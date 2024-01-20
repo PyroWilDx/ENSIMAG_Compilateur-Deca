@@ -55,7 +55,7 @@ def doVerify(decaFilePath,
 
     if not doParallel:
         decacCmd = f"decac {decacOptions} ./src/test/deca/{decaFilePath}"
-        if decacFail: # Ne doit plus être utilisé
+        if decacFail:  # Ne doit plus être utilisé
             decacCmd += " > /dev/null 2>&1"
             out = os.system(decacCmd)
             assert (os.WEXITSTATUS(out) != 0)
@@ -102,19 +102,19 @@ def doTests():
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (VALIDE)")
 
-    doVerify("codegen/valid/iostreams/printString.deca",
+    doVerify("codegen/valid/iostream/printString.deca",
              expectedResult=b"Hello World ! Second Argument\n"
                             b"Second Println\n"
                             b"Print Normal 1, Println Normal 2\n")
 
-    doVerify("codegen/valid/iostreams/printIntFloat.deca",
+    doVerify("codegen/valid/iostream/printIntFloat.deca",
              expectedResult=b"Chaine de Int : 1 2 42 -1 0 -42\n"
                             b"Chaine de Float : 1.22000e+00 -4.24242e+01 0.00000e+003.1416 -2.78000e+00\n")
 
-    doVerify("codegen/valid/iostreams/printFloatHexa.deca",
+    doVerify("codegen/valid/iostream/printFloatHexa.deca",
              expectedResult=b"0x1.3851ecp+0 -0x1.5364d8p+5 0x0p+03.1416 -0x1.63d70ap+1\n")
 
-    doVerify("codegen/valid/iostreams/includeSimple.deca",
+    doVerify("codegen/valid/iostream/includeSimple.deca",
              expectedResult=b"Hello World\n")
 
     doVerify("codegen/valid/declarations/declVarSimple.deca",
@@ -173,58 +173,58 @@ def doTests():
     doVerify("codegen/valid/conditions/whileIfThenElse.deca",
              expectedResult=b"4321\n")
 
-    doVerify("codegen/valid/classes/fields/newSimple.deca")
+    doVerify("codegen/valid/objects/fields/newSimple.deca")
 
-    doVerify("codegen/valid/classes/fields/fieldSimple.deca")
+    doVerify("codegen/valid/objects/fields/fieldSimple.deca")
 
-    doVerify("codegen/valid/classes/fields/fieldSelection.deca",
+    doVerify("codegen/valid/objects/fields/fieldSelection.deca",
              expectedResult=b"1.00000e+00 2 4 0 1.00000e+00\n"
                             b"8.00000e+00 3.20000e+01 16 0.00000e+00 1\n"
                             b"42 12\n")
 
-    doVerify("codegen/valid/classes/fields/fieldInitReg.deca",
+    doVerify("codegen/valid/objects/fields/fieldInitReg.deca",
              expectedResult=b"1 20 2\n")
 
-    doVerify("codegen/valid/classes/fields/fieldInitFieldSimple.deca",
+    doVerify("codegen/valid/objects/fields/fieldInitFieldSimple.deca",
              expectedResult=b"10\n")
 
-    doVerify("codegen/valid/classes/fields/fieldInitMethod.deca",
+    doVerify("codegen/valid/objects/fields/fieldInitMethod.deca",
              expectedResult=b"30 60 10\n")
 
-    doVerify("codegen/valid/classes/fields/fieldInitFieldComplex.deca",
+    doVerify("codegen/valid/objects/fields/fieldInitFieldComplex.deca",
              expectedResult=b"0 0 20\n")
 
-    doVerify("codegen/valid/classes/this/thisSimple.deca",
+    doVerify("codegen/valid/objects/instance/thisSimple.deca",
              expectedResult=b"2 2\n"
                             b"6 6\n")
 
-    doVerify("codegen/valid/classes/this/noThisAccess.deca",
+    doVerify("codegen/valid/objects/instance/noThisAccess.deca",
              expectedResult=b"2 6\n"
                             b"60 120\n")
 
-    doVerify("codegen/valid/classes/methods/methodSimple.deca")
+    doVerify("codegen/valid/objects/methods/methodSimple.deca")
 
-    doVerify("codegen/valid/classes/methods/methodCallSimple.deca",
+    doVerify("codegen/valid/objects/methods/methodCallSimple.deca",
              expectedResult=b"Method Called\n")
 
-    doVerify("codegen/valid/classes/methods/methodCallParams.deca",
+    doVerify("codegen/valid/objects/methods/methodCallParams.deca",
              expectedResult=b"x + y + z = 10 + 20 + 30 = 60\n"
                             b"x * y * z = 2 * 6 * 10 = 120\n")
 
-    doVerify("codegen/valid/classes/methods/methodCallReturn.deca",
+    doVerify("codegen/valid/objects/methods/methodCallReturn.deca",
              b"0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20\n")
 
-    doVerify("codegen/valid/classes/methods/earlyReturn.deca",
+    doVerify("codegen/valid/objects/methods/earlyReturn.deca",
              expectedResult=b"10\n")
 
-    doVerify("codegen/valid/classes/methods/varInMethod.deca",
+    doVerify("codegen/valid/objects/methods/varInMethod.deca",
              expectedResult=b"2 4 16 22 44\n")
 
-    doVerify("codegen/valid/classes/methods/recursiveMethod.deca",
+    doVerify("codegen/valid/objects/methods/recursiveMethod.deca",
              expectedResult=b"40 80 120 160 200 240 280 320 360 400\n"
                             b"400 1 2\n")
 
-    doVerify("codegen/valid/classes/methods/methodCallMethod.deca",
+    doVerify("codegen/valid/objects/methods/methodCallMethod.deca",
              expectedResult=b"10 20 30\n"
                             b"80 70 60\n"
                             b"180 170 160\n"
@@ -232,63 +232,72 @@ def doTests():
                             b"80 70 60\n"
                             b"180 170 160\n")
 
-    doVerify("codegen/valid/classes/methods/callOtherClassMethod.deca",
+    doVerify("codegen/valid/objects/methods/callOtherClassMethod.deca",
              expectedResult=b"1 2 3 42\n"
                             b"42 3 0 0\n")
 
-    doVerify("codegen/valid/classes/methods/callInsideCall.deca",
+    doVerify("codegen/valid/objects/methods/callInsideCall.deca",
              expectedResult=b"200 30 0 30\n")
 
-    doVerify("codegen/valid/classes/extends/extendsFieldSimple.deca",
+    doVerify("codegen/valid/objects/extends/extendsFieldSimple.deca",
              expectedResult=b"1 2\n"
                             b"1 2 0\n")
 
-    doVerify("codegen/valid/classes/extends/extendsFields.deca",
+    doVerify("codegen/valid/objects/extends/extendsFields.deca",
              expectedResult=b"1 2\n"
                             b"4 2 0\n")
 
-    doVerify("codegen/valid/classes/extends/extendsMethods.deca",
+    doVerify("codegen/valid/objects/extends/extendsMethods.deca",
              expectedResult=b"1 2 4 2 0\n")
 
-    doVerify("codegen/valid/classes/polymorphisms/redefinedMethodOrder.deca",
+    doVerify("codegen/valid/objects/polymorphism/redefinedMethodOrder.deca",
              expectedResult=b"A0 A10 A20 A30 A40\n"
                             b"A0 B10 B20 B30 A40 B50 B60\n"
                             b"A0 C10 B20 B30 C40 B50 C60 C70 C80\n")
 
-    doVerify("codegen/valid/classes/polymorphisms/fieldRedef.deca",
+    doVerify("codegen/valid/objects/polymorphism/fieldRedef.deca",
              expectedResult=b"1 2 1\n")
 
-    doVerify("codegen/valid/classes/polymorphisms/ex_Video5_Page11.deca",
+    doVerify("codegen/valid/objects/polymorphism/ex_Video5_Page11.deca",
              expectedResult=b"p1 : Point 2d : (1, 1)\n"
                             b"p3 before p2.diag(3) : Point 3d : (2, 2, 2)\n"
                             b"p3 after p2.diag(3) : Point 3d : (5, 5, 5)\n"
                             b"p2 : Point 3d : (5, 5, 5)\n")
 
-    doVerify("codegen/valid/classes/miscellaneous/equalsSimple.deca",
+    doVerify("codegen/valid/objects/others/equalsSimple.deca",
              expectedResult=b"OK1 OK2 OK3 OK4 OK5 OK6\n")
 
-    doVerify("codegen/valid/classes/miscellaneous/assignInside.deca",
+    doVerify("codegen/valid/objects/others/assignInside.deca",
              expectedResult=b"0 0\n"
                             b"10 0\n"
                             b"OK\n"
                             b"36 6\n"
                             b"36 100\n")
 
-    doVerify("codegen/valid/classes/miscellaneous/newNoAssign.deca",
+    doVerify("codegen/valid/objects/others/newNoAssign.deca",
              expectedResult=b"42\n"
                             b"60\n"
                             b"42 60 70\n"
                             b"1\n")
 
-    doVerify("codegen/valid/classes/miscellaneous/asmSimple.deca",
+    doVerify("codegen/valid/objects/others/asmSimple.deca",
              expectedResult=b"10 180 2 4\n")
 
-    doVerify("codegen/valid/classes/hard/linkedList.deca",
+    doVerify("codegen/valid/registers/opRegOverflow.deca",
+             expectedResult=b"52 52\n",
+             decacOptions="-r 4")
+
+    doVerify("codegen/valid/registers/methodRegOverflow.deca",
+             expectedResult=b"600\n"
+                            b"OK\n",
+             decacOptions="-r 4")
+
+    doVerify("codegen/valid/programs/linkedList.deca",
              expectedResult=b"3\n"
                             b"2\n"
                             b"1\n")
 
-    doVerify("codegen/valid/classes/hard/binaryTree.deca",
+    doVerify("codegen/valid/programs/binaryTree.deca",
              expectedResult=b"false\n"
                             b"true\n"
                             b"true\n"
@@ -299,15 +308,6 @@ def doTests():
                             b"true\n"
                             b"true\n"
                             b"false\n")
-
-    doVerify("codegen/valid/registers/opRegOverflow.deca",
-                 expectedResult=b"52 52\n",
-                 decacOptions="-r 4")
-
-    doVerify("codegen/valid/registers/methodRegOverflow.deca",
-             expectedResult=b"600\n"
-                            b"OK\n",
-             decacOptions="-r 4")
 
     doVerify("codegen/valid/provided/ecrit0.deca",
              expectedResult=b"ok\n"
@@ -333,13 +333,13 @@ def doTests():
              decacOptions="-p")
 
     doVerify("codegen/valid/options/optionParseEmptyMain.deca",
-                 decacExpected=b"{\n}\n",
-                 decacOptions="-p")
+             decacExpected=b"{\n}\n",
+             decacOptions="-p")
 
     doVerify("codegen/valid/options/optionVerification.deca",
              decacOptions="-v")
 
-    doVerify("codegen/invalid/errors/optionNoCheck.deca",
+    doVerify("codegen/valid/options/optionNoCheck.deca",
              expectedResult=b"1\n",
              decacOptions="-n")
 
@@ -355,7 +355,7 @@ def doTests():
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (INTERACTIVE)")
 
-    doVerify("codegen/interactive/iostreams/readIntFloat.deca",
+    doVerify("codegen/interactive/iostream/readIntFloat.deca",
              expectedResult=b"3.20000e+00\n",
              input=b"1\n2.2")
 
