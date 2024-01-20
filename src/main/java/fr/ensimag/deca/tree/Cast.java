@@ -28,7 +28,16 @@ public class Cast extends AbstractExpr {
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
         this.type.verifyType(compiler);
         this.expr.verifyExpr(compiler, localEnv, currentClass);
-        if (!compiler.environmentType.subtype(this.expr.getType(), this.type.getType())) {
+        if(this.expr.getType().isInt() || this.expr.getType().isFloat()){
+            if(this.type.getType().isInt() || this.type.getType().isFloat()){
+                this.setType(this.type.getType());
+                return this.type.getType();
+            }
+        }
+        if (this.expr.getType().isVoid() || (
+                !compiler.environmentType.subtype(this.expr.getType(), this.type.getType()) &&
+                !compiler.environmentType.subtype(this.type.getType(), this.expr.getType())
+        )) {
             throw new ContextualError("Illegal cast.", this.getLocation());
         }
         this.setType(this.type.getType());
