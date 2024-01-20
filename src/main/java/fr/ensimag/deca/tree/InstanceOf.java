@@ -20,15 +20,20 @@ public class InstanceOf extends AbstractExpr {
     private final AbstractExpr expr;
     private final AbstractIdentifier type;
 
-    public InstanceOf(AbstractExpr expr,AbstractIdentifier type) {
-        this.expr=expr;
+    public InstanceOf(AbstractExpr expr, AbstractIdentifier type) {
+        this.expr = expr;
         this.type = type;
     }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        //to do
-        return null;
+        this.expr.verifyExpr(compiler, localEnv, currentClass);
+        this.type.verifyType(compiler);
+        if ((!this.expr.getType().isClass() && !this.expr.getType().isNull()) || !this.type.getType().isClass()) {
+            throw new ContextualError("InstanceOf can only be used on class", this.getLocation());
+        }
+        this.setType(compiler.environmentType.BOOLEAN);
+        return compiler.environmentType.BOOLEAN;
     }
 
     @Override
