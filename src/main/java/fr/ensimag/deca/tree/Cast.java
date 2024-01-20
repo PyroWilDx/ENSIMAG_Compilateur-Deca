@@ -19,15 +19,20 @@ public class Cast extends AbstractExpr {
     private final AbstractIdentifier type;
     private final AbstractExpr expr;
 
-    public Cast(AbstractIdentifier type,AbstractExpr expr) {
+    public Cast(AbstractIdentifier type, AbstractExpr expr) {
         this.type = type;
-        this.expr=expr;
+        this.expr = expr;
     }
 
     @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv, ClassDefinition currentClass) throws ContextualError {
-        //to do
-        return null;
+        this.type.verifyType(compiler);
+        this.expr.verifyExpr(compiler, localEnv, currentClass);
+        if (!compiler.environmentType.subtype(this.expr.getType(), this.type.getType())) {
+            throw new ContextualError("Illegal cast.", this.getLocation());
+        }
+        this.setType(this.type.getType());
+        return this.type.getType();
     }
 
     @Override
