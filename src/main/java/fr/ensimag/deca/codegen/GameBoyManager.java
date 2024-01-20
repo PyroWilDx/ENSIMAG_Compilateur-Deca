@@ -32,7 +32,6 @@ public class GameBoyManager {
     // HashMap<ClassName.MethodName, HashMap<VarName, VarOffset>
     private String currDeclaringIdentName;
     private int currMethodSpOffset; // OH LA PURGE PUTAIN
-    private int methodTmpPushOffset; // OMG LA PURGE V2 PTN
 
     public GameBoyManager() {
         this.printId = 0;
@@ -42,7 +41,6 @@ public class GameBoyManager {
         this.methodsVars = new HashMap<>();
         this.currDeclaringIdentName = null;
         this.currMethodSpOffset = 0;
-        this.methodTmpPushOffset = 0;
     }
 
     public int getAndIncrPrintId() {
@@ -119,13 +117,6 @@ public class GameBoyManager {
 
     public int getCurrMethodSpOffset() {
         return currMethodSpOffset;
-    }
-
-    public void incrMethodTmpPushOffset() {
-        methodTmpPushOffset++;
-        if (methodTmpPushOffset > 32) {
-            throw new ArrayIndexOutOfBoundsException("Number of temporary registers used in method exceeded !! Please simplify your expressions...");
-        }
     }
 
     public void loadIdentAddrIntoHL(DecacCompiler compiler, AbstractIdentifier ident) {
