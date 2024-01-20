@@ -17,10 +17,10 @@ def doVerify(decaFilePath):
 
     print(f"\033[32m=========== {'/'.join(decaFilePath.split('/')[1:])} ===========\033[0m")
 
-    decacCmd = f"decac -g ./src/test/deca/{decaFilePath}"
+    decacCmd = f"decac -g test/deca/{decaFilePath}"
     os.system(decacCmd)
 
-    os.system(f"Emulicious.jar '{os.getcwd()}/src/test/deca/{decaFilePathNoExt}.gb' > /dev/null 2>&1 &")
+    os.system(f"Emulicious.jar '{os.getcwd()}/test/deca/{decaFilePathNoExt}.gb' > /dev/null 2>&1 &")
     nbTest += 1
 
     if nbTest == maxTest:
@@ -35,11 +35,11 @@ def doTests():
     print()
 
     # doVerify("gameboy/fastTest.deca")
-    #
-    # doVerify("gameboy/base/declVar.deca")
-    # doVerify("gameboy/base/opArith.deca")
-    # doVerify("gameboy/base/opRegOverflow.deca")
-    # doVerify("gameboy/base/assign.deca")
+
+    doVerify("gameboy/base/declVar.deca")
+    doVerify("gameboy/base/opArith.deca")
+    doVerify("gameboy/base/opRegOverflow.deca")
+    doVerify("gameboy/base/assign.deca")
     #
     # doVerify("gameboy/cond/boolLazyEval.deca")
     # doVerify("gameboy/cond/ifThenElseSimple.deca")
@@ -80,7 +80,7 @@ def doTests():
 
 
 def main():
-    os.chdir(os.getcwd().split("src")[0])
+    os.chdir(os.getcwd().split("src")[0]+"/src")
 
     doTests()
 
