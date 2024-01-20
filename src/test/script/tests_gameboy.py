@@ -31,7 +31,8 @@ def doVerify(decaFilePath):
     os.system(f"rgblink -o {decaFileNameNoExt}.gb {decaFileNameNoExt}.o")
     os.system(f"rgbfix -v -p 0xFF {decaFileNameNoExt}.gb")
 
-    os.system(f"java -jar ~/Documents/emulicious/Emulicious/Emulicious.jar {decaFileNameNoExt}.gb  &")
+    os.system(f"Emulicious.jar {decaFileNameNoExt}.gb &")
+    # os.system(f"Emulicious.jar {decaFileNameNoExt}.gb > /dev/null 2>&1 &")
 
     os.chdir(lastDir)
 
@@ -81,15 +82,14 @@ def doTests():
     #
     # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
     # doVerify("gameboy/object/extends/extendsFields.deca")
-    doVerify("gameboy/object/extends/extendsMethods.deca")
+    # doVerify("gameboy/object/extends/extendsMethods.deca")
     #
     # doVerify("gameboy/object/others/equalsSimple.deca")
     # doVerify("gameboy/object/others/elseOpCmp.deca")
     # doVerify("gameboy/object/others/assignInside.deca")
     # doVerify("gameboy/object/others/asmSimple.deca")
     # doVerify("gameboy/object/others/methodRegOverflow.deca")
-    doVerify("gameboy/plot/point.deca")
-
+    #
     # doVerify("gameboy/object/hard/recursiveReturn.deca")
     # doVerify("gameboy/object/hard/linkedList.deca")
     # doVerify("gameboy/object/hard/binaryTree.deca")

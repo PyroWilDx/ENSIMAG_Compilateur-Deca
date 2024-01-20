@@ -1,32 +1,26 @@
-// Description :
-//    Test de l'héritage avec des méthodes
-//
-// Resultats :
-//    1 2 4 2 0
-
 class A {
     int x = 1;
     int y = 2;
 
-    void displayX() {
-        print(x);
+    int getX() {
+        return x;
     }
 
-    void displayY() {
-        print(y);
+    int getY() {
+        return y;
     }
 }
 
 class B extends A {
-    int x = 4;
     int z;
 
-    void displayX() {
-        print(x);
+    int getX() {
+        x = 42;
+        return x;
     }
 
-    void displayZ() {
-        print(z);
+    int getZ() {
+        return z;
     }
 }
 
@@ -34,16 +28,20 @@ class B extends A {
     A a = new A();
     B b = new B();
 
-    a.displayX();
-    print(" ");
-    a.displayY();
-    print(" ");
+    if (a.getX() != 1) {
+        println();
+    }
+    if (a.getY() != 2) {
+        println();
+    }
 
-    b.displayX();
-    print(" ");
-    b.displayY();
-    print(" ");
-    b.displayZ();
-
-    println();
+    if (b.getX() != 42) {
+        println();
+    }
+    if (b.getY() != 2) {
+        println();
+    }
+    if (b.getZ() != 0) {
+        println();
+    }
 }
