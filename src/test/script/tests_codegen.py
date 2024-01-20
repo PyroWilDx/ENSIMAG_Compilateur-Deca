@@ -471,15 +471,15 @@ def doTests():
              expectedResult=b"1\n",
              decacOptions="-n")
 
-    doVerify("codegen/invalid/errors/floatOverflowConstIntFloat.deca",
+    doVerify("codegen/options/floatOverflowConstIntFloat.deca",
              expectedResult=b"",
              decacOptions="-n")
 
-    doVerify("codegen/invalid/errors/floatOverflowConstFloatInt.deca",
+    doVerify("codegen/options/floatOverflowConstFloatInt.deca",
              expectedResult=b"",
              decacOptions="-n")
 
-    doVerify("codegen/invalid/errors/floatOverflowConstFloatFloat.deca",
+    doVerify("codegen/options/floatOverflowConstFloatFloat.deca",
              expectedResult=b"",
              decacOptions="-n")
 

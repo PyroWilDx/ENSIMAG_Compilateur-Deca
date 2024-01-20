@@ -23,8 +23,18 @@ class B extends A {
         println("FAIL");
     }
 
+    x = !a.equals(b);
+    if (!x) {
+        println("FAIL");
+    }
+
     x = a.equals(a);
     if (!x) {
+        println("FAIL");
+    }
+
+    x = !a.equals(a);
+    if (x) {
         println("FAIL");
     }
 

@@ -17,6 +17,11 @@ class B {
         println();
     }
 
+    x = !a.equals(b);
+    if (x) {
+        println();
+    }
+
     x = a.equals(a);
     if (!x) {
         println();
@@ -40,13 +45,15 @@ class B {
 
     if (a.equals(b)) {
         println();
-    } else {
-
     }
 
     if (a.equals(a)) {
 
     } else {
+        println();
+    }
+
+    if (!a.equals(a)) {
         println();
     }
 
@@ -59,6 +66,10 @@ class B {
     if (b.equals(b)) {
 
     } else {
+        println();
+    }
+
+    if (!b.equals(b)) {
         println();
     }
 
