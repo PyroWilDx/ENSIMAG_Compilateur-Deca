@@ -495,6 +495,12 @@ def decacParallel():
 def main():
     os.chdir(os.getcwd().split("src")[0])
 
+    print()
+
+    print("\033[1mRemoving .ass files...\033[0m")
+    os.system("find ./src/test/deca/codegen/ -name \"*.ass\" -type f -delete")
+    print("\033[1mRemove Successful\033[0m")
+
     doTests()
 
     # With -P

@@ -1,9 +1,6 @@
 package fr.ensimag.deca.tree;
 
-import fr.ensimag.deca.codegen.CondManager;
-import fr.ensimag.deca.codegen.GameBoyManager;
-import fr.ensimag.deca.codegen.RegManager;
-import fr.ensimag.deca.codegen.CodeGenUtils;
+import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.*;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.tools.DecacInternalError;
@@ -252,19 +249,22 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGenInst(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
+        VTableManager vTM = compiler.getVTableManager();
 
         DAddr iAddr = CodeGenUtils.extractAddrFromIdent(compiler, this);
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD(iAddr, gpReg));
 
-        if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
-            compiler.addInstruction(new CMP(0, gpReg));
-            if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
-            else compiler.addInstruction(new BEQ(branchLabel));
-        } else {
-            if (getType().isBoolean() && !isInTrue) {
+        if (!vTM.isMethodCalling()) {
+            if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
                 compiler.addInstruction(new CMP(0, gpReg));
-                compiler.addInstruction(new SEQ(gpReg));
+                if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
+                else compiler.addInstruction(new BEQ(branchLabel));
+            } else {
+                if (getType().isBoolean() && !isInTrue) {
+                    compiler.addInstruction(new CMP(0, gpReg));
+                    compiler.addInstruction(new SEQ(gpReg));
+                }
             }
         }
 
@@ -276,6 +276,7 @@ public class Identifier extends AbstractIdentifier {
     protected void codeGenInstGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
+        VTableManager vTM = compiler.getVTableManager();
 
         GameBoyManager gbM = compiler.getGameBoyManager();
         gbM.loadIdentAddrIntoHL(compiler, this);
@@ -284,28 +285,30 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
 
-        if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
-            compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
-            compiler.addInstruction(new CMP_A(0, Register.A));
-            if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
-            else compiler.addInstruction(new BEQ(branchLabel));
-        } else {
-            if (getType().isBoolean() && !isInTrue) {
-                long id = cM.getUniqueId();
-                Label falseLabel = new Label("SccFalse" + id);
-                Label trueLabel = new Label("SccTrue" + id);
-                Label endLabel = new Label("SccEnd" + id);
-
+        if (!vTM.isMethodCalling()) {
+            if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
                 compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
                 compiler.addInstruction(new CMP_A(0, Register.A));
-                compiler.addInstruction(new BEQ(trueLabel));
-                
-                compiler.addLabel(falseLabel);
-                compiler.addInstruction(new LOAD_INT(0, gpReg.getLowReg()));
-                compiler.addInstruction(new BRA(endLabel));
-                compiler.addLabel(trueLabel);
-                compiler.addInstruction(new LOAD_INT(1, gpReg.getLowReg()));
-                compiler.addLabel(endLabel);
+                if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
+                else compiler.addInstruction(new BEQ(branchLabel));
+            } else {
+                if (getType().isBoolean() && !isInTrue) {
+                    long id = cM.getUniqueId();
+                    Label falseLabel = new Label("SccFalse" + id);
+                    Label trueLabel = new Label("SccTrue" + id);
+                    Label endLabel = new Label("SccEnd" + id);
+
+                    compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
+                    compiler.addInstruction(new CMP_A(0, Register.A));
+                    compiler.addInstruction(new BEQ(trueLabel));
+
+                    compiler.addLabel(falseLabel);
+                    compiler.addInstruction(new LOAD_INT(0, gpReg.getLowReg()));
+                    compiler.addInstruction(new BRA(endLabel));
+                    compiler.addLabel(trueLabel);
+                    compiler.addInstruction(new LOAD_INT(1, gpReg.getLowReg()));
+                    compiler.addLabel(endLabel);
+                }
             }
         }
 
