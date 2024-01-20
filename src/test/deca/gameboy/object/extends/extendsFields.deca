@@ -1,10 +1,3 @@
-// Description :
-//    Test de l'héritage avec un attribut redéfini
-//
-// Resultats :
-//    1 2
-//    4 2 0
-
 class A {
     int x = 1;
     int y = 2;
@@ -19,6 +12,32 @@ class B extends A {
     A a = new A();
     B b = new B();
 
-    println(a.x, " ", a.y);
-    println(b.x, " ", b.y, " ", b.z);
+    if (a.x != 1) {
+        println();
+    }
+    if (a.y != 2) {
+        println();
+    }
+    if (b.x != 4) {
+        println();
+    }
+    if (b.z != 0) {
+        println();
+    }
+
+    a.x = 10;
+    if (a.x != 10) {
+        println();
+    }
+    if (b.x != 4) {
+        println();
+    }
+
+    b.x = 42;
+    if (a.x != 10) {
+        println();
+    }
+    if (b.x != 42) {
+        println();
+    }
 }

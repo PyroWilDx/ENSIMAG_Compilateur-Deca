@@ -101,7 +101,8 @@ public class MethodCall extends AbstractMethodCall {
             rM.freeRegForce(Register.R0);
         }
 
-        if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+        if (!getType().isClass() && cM.isDoingCond() &&
+                branchLabel != null && cM.isNotDoingOpCmp()) {
             rM.getLastReg(); // On enlève R0
             compiler.addInstruction(new CMP(0, Register.R0));
             if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
@@ -174,7 +175,8 @@ public class MethodCall extends AbstractMethodCall {
             rM.freeRegForce(Register.HL);
         }
 
-        if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+        if (!getType().isClass() && cM.isDoingCond() &&
+                branchLabel != null && cM.isNotDoingOpCmp()) {
             rM.getLastReg(); // On enlève R0
             compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), Register.A));
             compiler.addInstruction(new CMP_A(0, Register.A));

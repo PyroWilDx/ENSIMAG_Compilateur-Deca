@@ -42,7 +42,7 @@ public class BooleanLiteral extends AbstractLiteral {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 
-        if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+        if (cM.isDoingCond() && branchLabel != null && cM.isNotDoingOpCmp()) {
             if ((value && isInTrue) || (!value && !isInTrue)) {
                 compiler.addInstruction(new BRA(branchLabel));
             }
@@ -57,7 +57,7 @@ public class BooleanLiteral extends AbstractLiteral {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
 
-        if (cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+        if (cM.isDoingCond() && branchLabel != null && cM.isNotDoingOpCmp()) {
             if ((value && isInTrue) || (!value && !isInTrue)) {
                 compiler.addInstruction(new BRA(branchLabel));
             }

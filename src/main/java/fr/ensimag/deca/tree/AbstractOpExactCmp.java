@@ -78,7 +78,7 @@ public abstract class AbstractOpExactCmp extends AbstractOpCmp {
             boolean caseTrue2 = (doEq() && lOperand.getValue() != rOperand.getValue() && !isInTrue) ||
                     (!doEq() && lOperand.getValue() == rOperand.getValue() && !isInTrue);
             if (caseTrue1 || caseTrue2) {
-                if (cM.isDoingCond()) {
+                if (cM.isDoingCond() && branchLabel != null) {
                     compiler.addInstruction(new BRA(branchLabel));
                 } else {
                     rM.setLastImm(new ImmediateInteger(1));

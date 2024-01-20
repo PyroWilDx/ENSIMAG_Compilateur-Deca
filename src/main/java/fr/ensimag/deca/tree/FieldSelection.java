@@ -86,10 +86,11 @@ public class FieldSelection extends AbstractLValue {
         GPRegister gpReg = rM.getLastReg();
         compiler.addInstruction(new LOAD_REG(gpReg.getHighReg(), Register.HL.getHighReg()));
         compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
-        compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
-        compiler.addInstruction(new DEC_REG(Register.HL));
-        compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
         rM.freeReg(gpReg);
+
+        fieldIdent.isField = true;
+        fieldIdent.codeGenInstGb(compiler);
+        fieldIdent.isField = false;
     }
 
     public DAddr getAddrOfField(DecacCompiler compiler) {

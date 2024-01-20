@@ -1,33 +1,49 @@
-// Description :
-//    Test de l'héritage avec seulement des attributs
-//
-// Resultats :
-//    1 2
-//    1 2 0
-
 class A {
     int x = 1;
     int y = 2;
 }
 
 class B extends A {
-    boolean b;
-    int z;
+    boolean c;
+    int z = 42;
 }
 
 {
     A a = new A();
     B b = new B();
 
-    println(a.x, " ", a.y);
-    println(b.x, " ", b.y, " ", b.z);
-    if (b.b) {
-        println("FAIL");
+    if (a.x != 1) {
+        println();
     }
-    b.b = true;
-    if (b.b) {
+    if (a.y != 2) {
+        println();
+    }
+
+    if (b.x != 1) {
+        println();
+    }
+    if (b.y != 2) {
+        println();
+    }
+
+    b.x = 4;
+    if (a.x != 1) {
+        println();
+    }
+    if (b.x != 4) {
+        println();
+    }
+    if (b.c) {
+        println();
+    }
+    b.c = true;
+    if (b.c) {
 
     } else {
-        println("FAIL");
+        println();
+    }
+
+    if (b.z != 42) {
+        println();
     }
 }

@@ -11,6 +11,8 @@ import fr.ensimag.deca.tools.SymbolTable;
  */
 public abstract class AbstractIdentifier extends AbstractLValue {
 
+    public boolean isField = false;
+
     /**
      * Like {@link #getDefinition()}, but works only if the definition is a
      * ClassDefinition.

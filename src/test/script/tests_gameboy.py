@@ -81,7 +81,7 @@ def doTests():
     #
     # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
     # doVerify("gameboy/object/extends/extendsFields.deca")
-    # doVerify("gameboy/object/extends/extendsMethods.deca")
+    doVerify("gameboy/object/extends/extendsMethods.deca")
     #
     # doVerify("gameboy/object/others/equalsSimple.deca")
     # doVerify("gameboy/object/others/elseOpCmp.deca")
@@ -91,7 +91,7 @@ def doTests():
 
     # doVerify("gameboy/object/hard/recursiveReturn.deca")
     # doVerify("gameboy/object/hard/linkedList.deca")
-    doVerify("gameboy/object/hard/binaryTree.deca")
+    # doVerify("gameboy/object/hard/binaryTree.deca")
 
     return 0
 

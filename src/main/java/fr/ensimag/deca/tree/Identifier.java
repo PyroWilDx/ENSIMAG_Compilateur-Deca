@@ -256,7 +256,8 @@ public class Identifier extends AbstractIdentifier {
         compiler.addInstruction(new LOAD(iAddr, gpReg));
 
         if (!vTM.isMethodCalling()) {
-            if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+            if (!getType().isClass() && cM.isDoingCond() &&
+                    branchLabel != null && cM.isNotDoingOpCmp()) {
                 compiler.addInstruction(new CMP(0, gpReg));
                 if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
                 else compiler.addInstruction(new BEQ(branchLabel));
@@ -277,16 +278,19 @@ public class Identifier extends AbstractIdentifier {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
-
         GameBoyManager gbM = compiler.getGameBoyManager();
-        gbM.loadIdentAddrIntoHL(compiler, this);
+
+        if (!isField) {
+            gbM.loadIdentAddrIntoHL(compiler, this);
+        }
         GPRegister gpReg = rM.getFreeReg();
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
         compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
 
         if (!vTM.isMethodCalling()) {
-            if (!getType().isClass() && cM.isDoingCond() && cM.isNotDoingOpCmp()) {
+            if (!getType().isClass() && cM.isDoingCond() &&
+                    branchLabel != null && cM.isNotDoingOpCmp()) {
                 compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
                 compiler.addInstruction(new CMP_A(0, Register.A));
                 if (isInTrue) compiler.addInstruction(new BNE(branchLabel));

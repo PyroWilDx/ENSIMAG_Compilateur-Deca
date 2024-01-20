@@ -41,7 +41,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         CondManager cM = compiler.getCondManager();
 
         compiler.addInstruction(new CMP(valReg, saveReg));
-        if (cM.isDoingCond()) {
+        if (cM.isDoingCond() && branchLabel != null) {
             if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
             else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));
         } else {
@@ -75,7 +75,7 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
         if (!(getRightOperand() instanceof NullLiteral)) {
             compiler.addInstruction(new LOAD_REG(saveReg.getLowReg(), Register.A));
             compiler.addInstruction(new CMP_A(valReg, Register.A));
-            if (cM.isDoingCond()) {
+            if (cM.isDoingCond() && branchLabel != null) {
                 if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
                 else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));
             } else {

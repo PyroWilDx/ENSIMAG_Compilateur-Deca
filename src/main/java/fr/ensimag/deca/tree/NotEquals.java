@@ -47,7 +47,7 @@ public class NotEquals extends AbstractOpExactCmp {
     public void codeGenCmpNullGb(DecacCompiler compiler, GPRegister gpReg) {
         CondManager cM = compiler.getCondManager();
 
-        if (cM.isDoingCond()) {
+        if (cM.isDoingCond() && branchLabel != null) {
             compiler.addInstruction(new LOAD_REG(gpReg.getHighRegOfLow(), Register.A));
             compiler.addInstruction(new CMP_A(0, Register.A));
             if (isInTrue) compiler.addInstruction(new BNE(branchLabel));

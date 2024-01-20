@@ -42,7 +42,7 @@ public class Cast extends AbstractExpr {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
-        //to do
+        // J'pense y aura pas de cast en GameBoy xd
     }
 
     @Override

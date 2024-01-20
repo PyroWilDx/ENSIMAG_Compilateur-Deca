@@ -222,6 +222,7 @@ public class DeclClass extends AbstractDeclClass {
 
             compiler.addInstruction(new BSR(LabelUtils.getClassInitLabel(superClassName)));
             compiler.addInstruction(new INC_SP(Register.SP));
+            compiler.addInstruction(new INC_SP(Register.SP));
         }
 
         rM.saveUsedRegs();
