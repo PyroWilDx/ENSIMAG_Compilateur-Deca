@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.context.ClassDefinition;
 import fr.ensimag.deca.context.ContextualError;
@@ -10,10 +11,7 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.RegisterOffset;
-import fr.ensimag.ima.pseudocode.instructions.LOAD;
-import fr.ensimag.ima.pseudocode.instructions.LOAD_REG;
-import fr.ensimag.ima.pseudocode.instructions.LOAD_SP;
-import fr.ensimag.ima.pseudocode.instructions.LOAD_VAL;
+import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
 
@@ -42,11 +40,13 @@ public class This extends AbstractExpr {
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         GPRegister gpReg = rM.getFreeReg();
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+        int spOffset = gbM.getCurrMethodSpOffset();
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + spOffset));
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getHighReg()));
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+        compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, gpReg.getLowReg()));
         rM.freeReg(gpReg);
     }

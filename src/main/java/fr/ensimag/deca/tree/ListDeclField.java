@@ -83,9 +83,8 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
     }
 
     public void codeGenListDeclField(DecacCompiler compiler) {
-        AbstractDeclField.TypeCode lastTypeCode = null;
         for (AbstractDeclField declField : getList()) {
-            lastTypeCode = declField.codeGenDeclField(compiler, lastTypeCode);
+            declField.codeGenDeclField(compiler);
         }
     }
 

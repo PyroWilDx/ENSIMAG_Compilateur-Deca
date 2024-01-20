@@ -1,6 +1,7 @@
 package fr.ensimag.deca.tree;
 
 import fr.ensimag.deca.DecacCompiler;
+import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.deca.codegen.RegManager;
 import fr.ensimag.deca.codegen.VTable;
 import fr.ensimag.deca.codegen.VTableManager;
@@ -70,12 +71,14 @@ public class DeclField extends AbstractDeclField {
     @Override
     public void codeGenSetFieldTo0Gb(DecacCompiler compiler) {
         VTableManager vTM = compiler.getVTableManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
 
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+        int spOffset = gbM.getCurrMethodSpOffset(); // Devrait toujours être 0 mais on sait jamais
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + spOffset));
         compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+        compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
         compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
 
@@ -85,22 +88,19 @@ public class DeclField extends AbstractDeclField {
             compiler.addInstruction(new DEC_REG(Register.HL));
         }
 
-        if (getInitTypeCode() == TypeCode.OBJECT) {
-            compiler.addInstruction(new STORE_REG(Register.A, Register.HL));
-        }
-
+        compiler.addInstruction(new STORE_REG(Register.A, Register.HL));
         compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new STORE_REG(Register.A, Register.HL));
     }
 
     @Override
-    public TypeCode codeGenDeclField(DecacCompiler compiler, TypeCode lastTypeCode) {
-        if (init instanceof NoInitialization) return null;
+    public void codeGenDeclField(DecacCompiler compiler) {
+        if (init instanceof NoInitialization) return;
 
         RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
 
-        TypeCode returnValue = null;
+//        TypeCode returnValue = null;
 
         init.setVarTypeCode(getInitTypeCode());
         init.codeGenInit(compiler);
@@ -111,7 +111,7 @@ public class DeclField extends AbstractDeclField {
             regValue = rM.getLastReg();
         } else {
             regValue = Register.R0;
-            // Utile dans le cas où on fait pas l'init à 0
+            // Utile dans le cas où on fait pas l'init à 0 mais on le fait là
 //            if (init instanceof NoInitialization) {
 //                returnValue = getInitTypeCode();
 //                if (lastTypeCode == null || lastTypeCode != getInitTypeCode()) {
@@ -131,7 +131,7 @@ public class DeclField extends AbstractDeclField {
             rM.freeReg(regValue);
         }
 
-        return returnValue;
+//        return returnValue;
         // Done
     }
 
@@ -141,6 +141,7 @@ public class DeclField extends AbstractDeclField {
 
         RegManager rM = compiler.getRegManager();
         VTableManager vTM = compiler.getVTableManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
 
@@ -149,9 +150,10 @@ public class DeclField extends AbstractDeclField {
 
         GPRegister regValue = rM.getLastRegOrImm(compiler);
 
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+        int spOffset = gbM.getCurrMethodSpOffset();
+        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + spOffset));
         compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+        compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
         compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
 
@@ -159,10 +161,7 @@ public class DeclField extends AbstractDeclField {
             compiler.addInstruction(new DEC_REG(Register.HL));
         }
 
-        if (getInitTypeCode() == TypeCode.OBJECT) {
-            compiler.addInstruction(new STORE_REG(regValue.getHighReg(), Register.HL));
-        }
-
+        compiler.addInstruction(new STORE_REG(regValue.getHighReg(), Register.HL));
         compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new STORE_REG(regValue.getLowReg(), Register.HL));
 

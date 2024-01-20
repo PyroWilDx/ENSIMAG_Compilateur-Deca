@@ -103,9 +103,9 @@ class DoubleLinkedListEvents {
     Event firstEvent = new Event();
     Event secondEvent = new Event();
     Event thirdEvent = new Event();
-    firstEvent.initEvent(null,null,1);
-    secondEvent.initEvent(null,null,2);
-    thirdEvent.initEvent(null,null,3);
+    firstEvent.initEvent(null, null, 1);
+    secondEvent.initEvent(null, null, 2);
+    thirdEvent.initEvent(null, null, 3);
     events.addEvent(firstEvent);
     events.addEvent(secondEvent);
     events.addEvent(thirdEvent);

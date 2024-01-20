@@ -120,6 +120,7 @@ public class MethodCall extends AbstractMethodCall {
         RegManager rM = compiler.getRegManager();
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         vTM.enterClass(expr.getType().getName().getName());
         vTM.enterMethod(methodIdent.getName().getName());
@@ -130,11 +131,22 @@ public class MethodCall extends AbstractMethodCall {
         vTM.exitMethod();
         vTM.exitClass();
 
+        int currMethodVarOffset = 0;
+        if (vTM.isInMethod()) {
+            currMethodVarOffset = gbM.getCurrMethodVarCount(vTM);
+            compiler.addInstruction(new SUBSP(currMethodVarOffset * 2));
+            gbM.setCurrMethodSpOffset(currMethodVarOffset * 2);
+            // Normalement, après ça c'est pas possible d'avoir "ld hl, SP+e8" avec e8 négatif
+        }
+
         List<AbstractExpr> args = rValueStar.getList();
         for (int i = args.size() - 1; i >= 0; i--) {
             args.get(i).codeGenInstGb(compiler);
             GPRegister gpReg = rM.getLastRegOrImm(compiler);
             compiler.addInstruction(new PUSH(gpReg));
+            if (vTM.isInMethod()) {
+                gbM.incr2CurrMethodSpOffset();
+            }
             rM.freeReg(gpReg);
         }
 
@@ -144,6 +156,11 @@ public class MethodCall extends AbstractMethodCall {
         rM.freeReg(gpReg);
 
         compiler.addInstruction(new BSR(mLabel));
+
+        if (vTM.isInMethod()) {
+            compiler.addInstruction(new ADDSP(currMethodVarOffset * 2));
+            gbM.setCurrMethodSpOffset(0);
+        }
 
         compiler.addInstruction(new ADDSP(addSp));
 

@@ -31,6 +31,7 @@ public class GameBoyManager {
     private final HashMap<String, HashMap<String, Integer>> methodsVars;
     // HashMap<ClassName.MethodName, HashMap<VarName, VarOffset>
     private String currDeclaringIdentName;
+    private int currMethodSpOffset; // OH LA PURGE PUTAIN
 
     public GameBoyManager() {
         this.printId = 0;
@@ -39,6 +40,7 @@ public class GameBoyManager {
         this.globalVars = new HashMap<>();
         this.methodsVars = new HashMap<>();
         this.currDeclaringIdentName = null;
+        this.currMethodSpOffset = 0;
     }
 
     public int getAndIncrPrintId() {
@@ -105,12 +107,21 @@ public class GameBoyManager {
         currDeclaringIdentName = value;
     }
 
-    public String getCurrDeclaringIdentName() {
-        return currDeclaringIdentName;
+    public void setCurrMethodSpOffset(int value) {
+        currMethodSpOffset = value;
+    }
+
+    public void incr2CurrMethodSpOffset() {
+        currMethodSpOffset += 2;
+    }
+
+    public int getCurrMethodSpOffset() {
+        return currMethodSpOffset;
     }
 
     public void loadIdentAddrIntoHL(DecacCompiler compiler, AbstractIdentifier ident) {
         VTableManager vTM = compiler.getVTableManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         String identName = ident.getName().getName();
 
@@ -134,12 +145,14 @@ public class GameBoyManager {
         if (varAddr != null) return;
 
         Integer paramOffset = vTM.getCurrParamOffsetOfMethod(identName);
+        int spOffset = gbM.getCurrMethodSpOffset();
         if (paramOffset != null) { // It's a Method Param
-            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + (-paramOffset - 2) * 2));
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL,
+                    3 + spOffset + (-paramOffset - 2) * 2));
         } else { // It's a Class Field
-            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + spOffset));
             compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+            compiler.addInstruction(new DEC_REG(Register.HL));
             compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
             compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
             int fieldOffset = vTM.getCurrFieldOffset(identName);

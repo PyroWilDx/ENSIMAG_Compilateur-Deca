@@ -198,6 +198,7 @@ public class DeclClass extends AbstractDeclClass {
         StackManager sM = new StackManager(true);
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         String className = name.getName().getName();
         vTM.enterClass(className);
@@ -211,9 +212,10 @@ public class DeclClass extends AbstractDeclClass {
 
         fields.codeGenSetFieldsTo0Gb(compiler);
         if (!superClassName.equals(LabelUtils.OBJECT_CLASS_NAME)) {
-            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +3));
+            int spOffset = gbM.getCurrMethodSpOffset();
+            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, 3 + spOffset));
             compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
-            compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, +2));
+            compiler.addInstruction(new DEC_REG(Register.HL));
             compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
             compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
             compiler.addInstruction(new PUSH(Register.HL));

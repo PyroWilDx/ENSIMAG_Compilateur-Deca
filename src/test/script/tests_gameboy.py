@@ -6,6 +6,7 @@ import subprocess
 nbTest = 0
 maxTest = 6
 
+
 def doVerify(decaFilePath):
     global nbTest
 
@@ -37,7 +38,7 @@ def doVerify(decaFilePath):
     nbTest += 1
 
     if nbTest == maxTest:
-        input("Enter to Continue")
+        input("Enter to Continue...")
         os.system("pkill -f Emulicious.jar")
         nbTest = 0
 
@@ -48,7 +49,7 @@ def doTests():
     print()
 
     # doVerify("gameboy/fastTest.deca")
-
+    #
     # doVerify("gameboy/base/declVar.deca")
     # doVerify("gameboy/base/opArith.deca")
     # doVerify("gameboy/base/opRegOverflow.deca")
@@ -70,11 +71,12 @@ def doTests():
     # doVerify("gameboy/object/easy/fieldAssign.deca")
     # doVerify("gameboy/object/easy/fieldInitFieldSimple.deca")
     #
+    # doVerify("gameboy/object/mid/objReassign.deca")
     # doVerify("gameboy/object/mid/fieldInitMethod.deca")
     # doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
     # doVerify("gameboy/object/mid/varInMethod.deca")
-    doVerify("gameboy/object/mid/recursiveMethod.deca")
     # doVerify("gameboy/object/mid/methodCallMethod.deca")
+    # doVerify("gameboy/object/mid/recursiveMethod.deca")
 
     # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
     # doVerify("gameboy/object/extends/extendsFields.deca")
@@ -84,6 +86,9 @@ def doTests():
     # doVerify("gameboy/object/others/assignInside.deca")
     # doVerify("gameboy/object/others/asmSimple.deca")
     # doVerify("gameboy/object/others/methodRegOverflow.deca")
+
+    # doVerify("gameboy/object/hard/linkedList.deca")
+    # doVerify("gameboy/object/hard/binaryTree.deca")
 
     return 0
 
@@ -98,5 +103,5 @@ if __name__ == '__main__':
     os.system("pkill -f Emulicious.jar")
     main()
     print()
-    input("Input to Exit...")
+    input("Enter to Exit...")
     os.system("pkill -f Emulicious.jar")

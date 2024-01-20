@@ -5,36 +5,26 @@ class A {
     int i = 0;
 
     void recMethod(int i) {
-        // int v = (2 * y + (this.z + (2 * y + (this.z + (2 +
-        //      (2 * 1 + (4 / 2 + (12 / 6 + (z + (2 * z / 2 +
-        //      (8 * y / 4 + (y * this.z + (z * z / 2 + (2 + (z * this.z * this.z * z / 8 +
-        //      (z / 2 * 2 + ((2 * 4 * y * this.y) / (y * this.z * z) + (2 + (2 + (2
-        //      )))))
-        //      )))))
-        //      )))))
-        //      ))))); // Ca fait 40 si tout se passe bien
+        int v = (2 * y + (this.z + (2 * y + (this.z + (2 +
+             (2 * 1 + (4 / 2 + (12 / 6 + (z + (2 * z / 2 +
+             (8 * y / 4 + (y * this.z + (z * z / 2 + (2 + (z * this.z * this.z * z / 8 +
+             (z / 2 * 2 + ((2 * 4 * y * this.y) / (y * this.z * z) + (2 + (2 + (2
+             )))))
+             )))))
+             )))))
+             ))))); // Ca fait 40 si tout se passe bien
 
-        int v = 40;
-
-        x = x + v;
-
-        if (i == 0) {
-            if (x != 40) {
-                println();
-            }
-        }
-
-        // if (i == 1) {
-        //     if (x != 80) {
-        //         println();
-        //     }
-        // }
-
-        if (i == 2) {
+        if (v != 40) {
             println();
         }
 
-        if (i == 0) {
+        x = x + v;
+
+        if (x != (i + 1) * 40) {
+            println();
+        }
+
+        if (x < 200) {
             recMethod(i + 1);
         }
         this.i = this.i + 1;
@@ -45,7 +35,7 @@ class A {
     A a = new A();
     a.recMethod(0);
 
-    if (a.x != 80) {
+    if (a.x != 200) {
         println();
     }
     if (a.y != 1) {
@@ -54,7 +44,7 @@ class A {
     if (a.z != 2) {
         println();
     }
-    // if (a.i != 5) {
-        // println();
-    // }
+    if (a.i != 5) {
+        println();
+    }
 }
