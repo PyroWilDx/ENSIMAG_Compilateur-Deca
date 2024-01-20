@@ -382,7 +382,23 @@ def doTests():
                             b"Error: Division by 0\n",
              execError=True)
 
+    doVerify("codegen/invalid/errors/moduloBy0Const.deca",
+             expectedResult=b"Error: Division by 0\n",
+             execError=True)
+
     doVerify("codegen/invalid/errors/floatOverflow.deca",
+             expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
+    doVerify("codegen/invalid/errors/floatOverflowConstIntFloat.deca",
+             expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
+    doVerify("codegen/invalid/errors/floatOverflowConstFloatInt.deca",
+             expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
+    doVerify("codegen/invalid/errors/floatOverflowConstFloatFloat.deca",
              expectedResult=b"Error: Float Operation Overflow\n",
              execError=True)
 
@@ -453,6 +469,18 @@ def doTests():
 
     doVerify("codegen/options/optionNoCheck.deca",
              expectedResult=b"1\n",
+             decacOptions="-n")
+
+    doVerify("codegen/invalid/errors/floatOverflowConstIntFloat.deca",
+             expectedResult=b"",
+             decacOptions="-n")
+
+    doVerify("codegen/invalid/errors/floatOverflowConstFloatInt.deca",
+             expectedResult=b"",
+             decacOptions="-n")
+
+    doVerify("codegen/invalid/errors/floatOverflowConstFloatFloat.deca",
+             expectedResult=b"",
              decacOptions="-n")
 
     doVerify("codegen/options/optionDebugInfo.deca",

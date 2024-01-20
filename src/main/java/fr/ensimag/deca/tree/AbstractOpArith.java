@@ -47,9 +47,16 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             compiler.addInstruction(new LOAD(value, gpReg));
             rM.freeReg(gpReg);
 
-        } else if ((getLeftOperand() instanceof IntLiteral) &&
+        } else if ((getLeftOperand() instanceof ConvFloat) &&
                 (getRightOperand() instanceof FloatLiteral)) {
-            IntLiteral iLL = (IntLiteral) getLeftOperand();
+            IntLiteral iLL;
+            AbstractExpr lExp = ((ConvFloat) getLeftOperand()).getOperand();
+            if (lExp instanceof IntLiteral) {
+                iLL = (IntLiteral) lExp;
+            } else {
+                super.codeGenInst(compiler);
+                return;
+            }
             FloatLiteral fLR = (FloatLiteral) getRightOperand();
             float value = doOpFloat((float) iLL.getValue(), fLR.getValue());
             if (Float.isInfinite(value)) {
@@ -65,9 +72,16 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
             rM.freeReg(gpReg);
 
         } else if ((getLeftOperand() instanceof FloatLiteral) &&
-                (getRightOperand() instanceof IntLiteral)) {
+                (getRightOperand() instanceof ConvFloat)) {
             FloatLiteral fLL = (FloatLiteral) getLeftOperand();
-            IntLiteral iLR = (IntLiteral) getRightOperand();
+            IntLiteral iLR;
+            AbstractExpr rExp = ((ConvFloat) getRightOperand()).getOperand();
+            if (rExp instanceof IntLiteral) {
+                iLR = (IntLiteral) rExp;
+            } else {
+                super.codeGenInst(compiler);
+                return;
+            }
             float value = doOpFloat(fLL.getValue(), (float) iLR.getValue());
             if (Float.isInfinite(value)) {
                 if (compiler.getCompilerOptions().doCheck()) {
