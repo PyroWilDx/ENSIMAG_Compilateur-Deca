@@ -328,6 +328,8 @@ public class DecacCompiler {
         }
         LOG.info("Compilation of " + sourceName + " successful.");
 
+        LOG.trace("You can now use ima to execute " + destName);
+
         return false;
     }
 

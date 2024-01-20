@@ -48,8 +48,8 @@ def doTests():
 
     print()
 
-    # doVerify("gameboy/fastTest.deca")
-    #
+    # doVerify("gameboy/bin/fastTest.deca")
+
     doVerify("gameboy/base/declVar.deca")
     doVerify("gameboy/base/opArith.deca")
     doVerify("gameboy/base/opRegOverflow.deca")
