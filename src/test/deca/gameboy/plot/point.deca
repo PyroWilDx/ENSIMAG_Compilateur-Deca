@@ -1,0 +1,11 @@
+#include "GameBoy.java"
+
+{
+    boolean updated = false;
+    GameBoy gb = new GameBoy();
+    gb.init();
+    gb.setColor(gb.BLACK, 10, 10);
+    while (!updated) {
+        updated = gb.updateScreen();
+    }
+}
