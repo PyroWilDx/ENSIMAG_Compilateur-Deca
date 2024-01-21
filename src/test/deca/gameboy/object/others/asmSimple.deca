@@ -2,154 +2,206 @@ class A {
     int x = 1;
 
     int testAsm(int y, int z)
-        asm("   push bc
-        add SP, 2
-        ld hl, SP+3
-        ld a, [hl]
-        ld hl, SP+2
-        ld l, [hl]
-        ld h, a
-        dec hl
-        dec hl
-        ld b, [hl]
-        dec hl
-        ld c, [hl]
-        ld a, c
-        cp a, 1
-        jp Z, L220
-    WaitVBlank42:
-        ld a, [rLY]
-        cp 144
-        jp c, WaitVBlank42
-        ld a, 0
-        ld [rLCDC], a
-        ld de, Tiles
-        ld hl, $9000
-        ld bc, TilesEnd - Tiles
-    CopyTiles42:
-        ld a, [de]
-        ld [hli], a
-        inc de
-        dec bc
-        ld a, b
-        or a, c
-        jp nz, CopyTiles42
-        ld de, Tilemap
-        ld hl, $9800
-        ld bc, TilemapEnd - Tilemap
-    CopyTilemap42:
-        ld a, [de]
-        ld [hli], a
-        inc de
-        dec bc
-        ld a, b
-        or a, c
-        jp nz, CopyTilemap42
-        ld a, LCDCF_ON | LCDCF_BGON
-        ld [rLCDC], a
-        ld a, %11100100
-        ld [rBGP], a
-    endPrint42:
-        jp L221
-    L220:
-    L221:
-        ld hl, SP+5
-        ld b, [hl]
-        dec hl
-        ld c, [hl]
-        ld a, c
-        cp a, 2
-        jp Z, L222
-    WaitVBlank43:
-        ld a, [rLY]
-        cp 144
-        jp c, WaitVBlank43
-        ld a, 0
-        ld [rLCDC], a
-        ld de, Tiles
-        ld hl, $9000
-        ld bc, TilesEnd - Tiles
-    CopyTiles43:
-        ld a, [de]
-        ld [hli], a
-        inc de
-        dec bc
-        ld a, b
-        or a, c
-        jp nz, CopyTiles43
-        ld de, Tilemap
-        ld hl, $9800
-        ld bc, TilemapEnd - Tilemap
-    CopyTilemap43:
-        ld a, [de]
-        ld [hli], a
-        inc de
-        dec bc
-        ld a, b
-        or a, c
-        jp nz, CopyTilemap43
-        ld a, LCDCF_ON | LCDCF_BGON
-        ld [rLCDC], a
-        ld a, %11100100
-        ld [rBGP], a
-    endPrint43:
-        jp L223
-    L222:
-    L223:
-        ld hl, SP+7
-        ld b, [hl]
-        dec hl
-        ld c, [hl]
-        ld a, c
-        cp a, 3
-        jp Z, L224
-    WaitVBlank44:
-        ld a, [rLY]
-        cp 144
-        jp c, WaitVBlank44
-        ld a, 0
-        ld [rLCDC], a
-        ld de, Tiles
-        ld hl, $9000
-        ld bc, TilesEnd - Tiles
-    CopyTiles44:
-        ld a, [de]
-        ld [hli], a
-        inc de
-        dec bc
-        ld a, b
-        or a, c
-        jp nz, CopyTiles44
-        ld de, Tilemap
-        ld hl, $9800
-        ld bc, TilemapEnd - Tilemap
-    CopyTilemap44:
-        ld a, [de]
-        ld [hli], a
-        inc de
-        dec bc
-        ld a, b
-        or a, c
-        jp nz, CopyTilemap44
-        ld a, LCDCF_ON | LCDCF_BGON
-        ld [rLCDC], a
-        ld a, %11100100
-        ld [rBGP], a
-    endPrint44:
-        jp L225
-    L224:
-    L225:
-    end_A_methodAsm:
-        add SP, -2
-        pop bc
-        ld hl, 42
-        ret");
+        asm("	push bc
+	add SP, 2
+	ld hl, SP+3
+	ld a, [hl]
+	dec hl
+	ld l, [hl]
+	ld h, a
+	inc hl
+	ld b, [hl]
+	dec hl
+	ld c, [hl]
+	ld a, c
+	cp a, 1
+	jp Z, L4
+WaitVBlank2:
+	ld a, [rLY]
+	cp 144
+	jp c, WaitVBlank2
+	ld a, 0
+	ld [rLCDC], a
+	ld de, Tiles
+	ld hl, $9000
+	ld bc, TilesEnd - Tiles
+CopyTiles2:
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec bc
+	ld a, b
+	or a, c
+	jp nz, CopyTiles2
+	ld de, Tilemap
+	ld hl, $9800
+	ld bc, TilemapEnd - Tilemap
+CopyTilemap2:
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec bc
+	ld a, b
+	or a, c
+	jp nz, CopyTilemap2
+	ld a, LCDCF_ON | LCDCF_BGON
+	ld [rLCDC], a
+	ld a, %11100100
+	ld [rBGP], a
+endPrint2:
+	jp L5
+L4:
+L5:
+	ld hl, SP+3
+	ld b, [hl]
+	dec hl
+	ld c, [hl]
+	inc bc
+	ld h, b
+	ld l, c
+	ld b, [hl]
+	dec hl
+	ld c, [hl]
+	ld a, c
+	cp a, 1
+	jp Z, L6
+WaitVBlank3:
+	ld a, [rLY]
+	cp 144
+	jp c, WaitVBlank3
+	ld a, 0
+	ld [rLCDC], a
+	ld de, Tiles
+	ld hl, $9000
+	ld bc, TilesEnd - Tiles
+CopyTiles3:
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec bc
+	ld a, b
+	or a, c
+	jp nz, CopyTiles3
+	ld de, Tilemap
+	ld hl, $9800
+	ld bc, TilemapEnd - Tilemap
+CopyTilemap3:
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec bc
+	ld a, b
+	or a, c
+	jp nz, CopyTilemap3
+	ld a, LCDCF_ON | LCDCF_BGON
+	ld [rLCDC], a
+	ld a, %11100100
+	ld [rBGP], a
+endPrint3:
+	jp L7
+L6:
+L7:
+	ld hl, SP+5
+	ld b, [hl]
+	dec hl
+	ld c, [hl]
+	ld a, c
+	cp a, 2
+	jp Z, L8
+WaitVBlank4:
+	ld a, [rLY]
+	cp 144
+	jp c, WaitVBlank4
+	ld a, 0
+	ld [rLCDC], a
+	ld de, Tiles
+	ld hl, $9000
+	ld bc, TilesEnd - Tiles
+CopyTiles4:
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec bc
+	ld a, b
+	or a, c
+	jp nz, CopyTiles4
+	ld de, Tilemap
+	ld hl, $9800
+	ld bc, TilemapEnd - Tilemap
+CopyTilemap4:
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec bc
+	ld a, b
+	or a, c
+	jp nz, CopyTilemap4
+	ld a, LCDCF_ON | LCDCF_BGON
+	ld [rLCDC], a
+	ld a, %11100100
+	ld [rBGP], a
+endPrint4:
+	jp L9
+L8:
+L9:
+	ld hl, SP+7
+	ld b, [hl]
+	dec hl
+	ld c, [hl]
+	ld a, c
+	cp a, 3
+	jp Z, L10
+WaitVBlank5:
+	ld a, [rLY]
+	cp 144
+	jp c, WaitVBlank5
+	ld a, 0
+	ld [rLCDC], a
+	ld de, Tiles
+	ld hl, $9000
+	ld bc, TilesEnd - Tiles
+CopyTiles5:
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec bc
+	ld a, b
+	or a, c
+	jp nz, CopyTiles5
+	ld de, Tilemap
+	ld hl, $9800
+	ld bc, TilemapEnd - Tilemap
+CopyTilemap5:
+	ld a, [de]
+	ld [hli], a
+	inc de
+	dec bc
+	ld a, b
+	or a, c
+	jp nz, CopyTilemap5
+	ld a, LCDCF_ON | LCDCF_BGON
+	ld [rLCDC], a
+	ld a, %11100100
+	ld [rBGP], a
+endPrint5:
+	jp L11
+L10:
+L11:
+	ld hl, 42
+	jp end_A_testAsm
+end_A_testAsm:
+	add SP, -2
+	pop bc
+	ret");
 }
 
 {
     A a = new A();
     int z = a.testAsm(2, 3);
     if (z != 42) {
+        println();
+    }
+    if (a.x != 1) {
         println();
     }
 }
