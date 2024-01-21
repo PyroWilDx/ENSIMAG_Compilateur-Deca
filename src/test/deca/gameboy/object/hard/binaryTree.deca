@@ -40,11 +40,7 @@ class BinaryTree {
     }
 
     void checkIn(int value) {
-        // if (!valueInRec(this.head, value)) {
-        //     println();
-        // }
-        boolean a = valueInRec(this.head, value);
-        if (!a) {
+        if (!valueInRec(this.head, value)) {
             println();
         }
     }
@@ -76,21 +72,21 @@ class BinaryTree {
 {
     BinaryTree tree = new BinaryTree();
     tree.addCell(5);
-    // tree.addCell(2);
-    // tree.addCell(9);
-    // tree.addCell(3);
-    // tree.addCell(7);
-    // tree.addCell(1);
-    // tree.addCell(20);
+    tree.addCell(2);
+    tree.addCell(9);
+    tree.addCell(3);
+    tree.addCell(7);
+    tree.addCell(1);
+    tree.addCell(20);
 
     tree.checkNotIn(15);
     tree.checkIn(5);
-    tree.checkIn(98);
-    // tree.checkIn(9);
-    // tree.checkIn(3);
+    tree.checkIn(2);
+    tree.checkIn(9);
+    tree.checkIn(3);
     tree.checkNotIn(100);
-    // tree.checkIn(7);
-    // tree.checkIn(1);
-    // tree.checkIn(20);
+    tree.checkIn(7);
+    tree.checkIn(1);
+    tree.checkIn(20);
     tree.checkNotIn(42);
 }

@@ -14,7 +14,17 @@ class A {
         println();
     }
 
+    if (!(a == null)) {
+
+    } else {
+        println();
+    }
+
     if (a == null) {
+        println();
+    }
+
+    if (!(a != null)) {
         println();
     }
 
@@ -23,7 +33,17 @@ class A {
         println();
     }
 
+    b = !(a == null);
+    if (!b) {
+        println();
+    }
+
     b = a == null;
+    if (b) {
+        println();
+    }
+
+    b = !(a != null);
     if (b) {
         println();
     }
@@ -34,8 +54,18 @@ class A {
     } else {
         println();
     }
+
+    if (!(a != null)) {
+
+    } else {
+        println();
+    }
     
     if (a != null) {
+        println();
+    }
+
+    if (!(a == null)) {
         println();
     }
 
@@ -44,7 +74,17 @@ class A {
         println();
     }
 
+    b = !(a == null);
+    if (b) {
+        println();
+    }
+
     b = a == null;
+    if (!b) {
+        println();
+    }
+
+    b = !(a != null);
     if (!b) {
         println();
     }

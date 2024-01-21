@@ -44,30 +44,40 @@ public class Equals extends AbstractOpExactCmp {
     public void codeGenCmpNullGb(DecacCompiler compiler, GPRegister gpReg) {
         CondManager cM = compiler.getCondManager();
 
+        long id = cM.getUniqueId();
         if (cM.isDoingCond() && branchLabel != null) {
+            Label endLabel = new Label("endCmpEqNull" + id);
+
             compiler.addInstruction(new LOAD_REG(gpReg.getHighRegOfLow(), Register.A));
             compiler.addInstruction(new CMP_A(0, Register.A));
-            if (isInTrue) compiler.addInstruction(new BEQ(branchLabel));
+            if (isInTrue) compiler.addInstruction(new BNE(endLabel));
             else compiler.addInstruction(new BNE(branchLabel));
 
             compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
             compiler.addInstruction(new CMP_A(0, Register.A));
-            if (isInTrue) compiler.addInstruction(new BEQ(branchLabel));
+            if (isInTrue) {
+                compiler.addInstruction(new BNE(endLabel));
+                compiler.addInstruction(new BRA(branchLabel));
+            }
             else compiler.addInstruction(new BNE(branchLabel));
+
+            compiler.addLabel(endLabel);
         } else {
-            long id = cM.getUniqueId();
             Label trueLabel = new Label("SccTrue" + id);
             Label falseLabel = new Label("SccFalse" + id);
             Label endLabel = new Label("SccEnd" + id);
 
             compiler.addInstruction(new LOAD_REG(gpReg.getHighRegOfLow(), Register.A));
             compiler.addInstruction(new CMP_A(0, Register.A));
-            if (isInTrue) compiler.addInstruction(new BEQ(trueLabel));
+            if (isInTrue) compiler.addInstruction(new BNE(falseLabel));
             else compiler.addInstruction(new BNE(trueLabel));
 
             compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
             compiler.addInstruction(new CMP_A(0, Register.A));
-            if (isInTrue) compiler.addInstruction(new BEQ(trueLabel));
+            if (isInTrue) {
+                compiler.addInstruction(new BNE(falseLabel));
+                compiler.addInstruction(new BRA(trueLabel));
+            }
             else compiler.addInstruction(new BNE(trueLabel));
 
             compiler.addLabel(falseLabel);

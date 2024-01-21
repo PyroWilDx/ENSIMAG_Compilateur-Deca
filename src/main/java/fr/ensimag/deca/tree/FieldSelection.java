@@ -134,8 +134,10 @@ public class FieldSelection extends AbstractLValue {
         GPRegister gpReg = rM.getLastReg();
         int fieldOffset = vTM.getCurrFieldOffset(fieldName);
         for (int i = 0; i < fieldOffset * 2; i++) {
-            compiler.addInstruction(new DEC_REG(gpReg));
+            compiler.addInstruction(new INC_REG(gpReg));
         }
+        compiler.addInstruction(new INC_REG(gpReg));
+
         rM.freeReg(gpReg);
 
         vTM.exitClass();

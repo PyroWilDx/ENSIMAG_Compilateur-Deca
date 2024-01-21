@@ -60,7 +60,7 @@ public class ListDeclField extends TreeList<AbstractDeclField> {
         VTable superClassVTable = vTable.getVTableOfSuperClass(vTM);
         vTable.addAllFields(superClassVTable);
 
-        int fieldOffset = superClassVTable.getFieldsCount() + 1;
+        int fieldOffset = superClassVTable.getFieldsCount();
         for (AbstractDeclField declField : getList()) {
             declField.codeGenVTableGb(compiler, vTable, fieldOffset);
             fieldOffset++;

@@ -5,13 +5,13 @@ import fr.ensimag.ima.pseudocode.UnaryInstruction;
 
 import java.io.PrintStream;
 
-public class DEC_REG extends UnaryInstruction {
-    public DEC_REG(GPRegister op) {
+public class INC_REG extends UnaryInstruction {
+    public INC_REG(GPRegister op) {
         super(op);
     }
 
     @Override
     public String getGameBoyAsm() {
-        return "dec";
+        return "inc";
     }
 }
