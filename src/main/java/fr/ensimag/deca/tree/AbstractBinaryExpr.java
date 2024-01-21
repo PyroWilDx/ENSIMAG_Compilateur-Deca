@@ -208,7 +208,9 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                 compiler.addInstruction(new POP(regLeft));
             } else {
                 int methodVarOffset = gbM.getCurrMethodVarCount(vTM);
+                System.out.println("1 " + methodVarOffset);
                 methodVarOffset += sM.getTmpVar();
+                System.out.println("2 " + sM.getTmpVar());
                 compiler.addInstruction(new SUBSP(methodVarOffset * 2 + 2));
                 compiler.addInstruction(new POP(regLeft));
                 compiler.addInstruction(new ADDSP(methodVarOffset * 2));

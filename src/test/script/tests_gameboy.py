@@ -78,7 +78,7 @@ def doTests():
     # doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
     # doVerify("gameboy/object/mid/varInMethod.deca")
     # doVerify("gameboy/object/mid/methodCallMethod.deca")
-    # doVerify("gameboy/object/mid/recursiveMethod.deca") # 3
+    doVerify("gameboy/object/mid/recursiveMethod.deca")
     #
     # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
     # doVerify("gameboy/object/extends/extendsFields.deca")
@@ -93,7 +93,7 @@ def doTests():
     # doVerify("gameboy/object/hard/recursiveReturn.deca")
     # doVerify("gameboy/object/hard/linkedList.deca")
     # doVerify("gameboy/object/hard/newInMethod.deca")
-    # doVerify("gameboy/object/hard/binaryTree.deca") #4
+    # doVerify("gameboy/object/hard/binaryTree.deca")
 
     # doVerify("gameboy/plot/init.deca")
 

@@ -7,7 +7,7 @@ class A {
     void recMethod(int i) {
         int v = (2 * y + (this.z + (2 * y + (this.z + (2 +
              (2 * 1 + (4 / 2 + (12 / 6 + (z + (2 * z / 2 +
-             (8 * y / 4 + (y * this.z + (z * z / 2 + (2 + (z * this.z * this.z * z / 8 +
+             (8 * y / 4 + (y * this.z + (z * z / 2 + (2 + (z * this.z * this.z * z / 8
              (z / 2 * 2 + ((2 * 4 * y * this.y) / (y * this.z * z) + (2 + (2 + (2
              )))))
              )))))
