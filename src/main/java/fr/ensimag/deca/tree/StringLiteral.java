@@ -15,12 +15,17 @@ import org.apache.commons.lang.Validate;
  */
 public class StringLiteral extends AbstractStringLiteral {
 
+    private final String value;
+
     @Override
     public String getValue() {
         return value;
     }
 
-    private final String value;
+    @Override
+    public boolean isZero() {
+        return value.isEmpty();
+    }
 
     public StringLiteral(String value) {
         Validate.notNull(value);

@@ -21,11 +21,16 @@ import org.apache.commons.lang.Validate;
  */
 public class FloatLiteral extends AbstractLiteral {
 
+    private final float value;
+
     public float getValue() {
         return value;
     }
 
-    private final float value;
+    @Override
+    public boolean isZero() {
+        return value == 0.f;
+    }
 
     public FloatLiteral(float value) {
         Validate.isTrue(!Float.isInfinite(value),
