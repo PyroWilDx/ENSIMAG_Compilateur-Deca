@@ -117,6 +117,8 @@ public class CompilerOptions {
                             GameBoyManager.debugMode = true;
                         }
                         break;
+                    case 'I':
+                        GameBoyManager.doIncludeUtils = true;
                     default:
                         throwError(arg + " is not a valid option.");
                 }
