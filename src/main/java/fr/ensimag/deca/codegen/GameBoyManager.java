@@ -29,7 +29,6 @@ public class GameBoyManager {
 
     private int printId;
     private int fieldId;
-    //    private Integer currNewFieldCount;
     private final HashMap<String, Integer> globalVars;
     private int dynamicFieldsCount;
     private final HashMap<String, HashMap<String, Integer>> methodsVars;
@@ -40,7 +39,6 @@ public class GameBoyManager {
     public GameBoyManager() {
         this.printId = 0;
         this.fieldId = 0;
-//        this.currNewFieldCount = null;
         this.globalVars = new HashMap<>();
         this.dynamicFieldsCount = 0;
         this.methodsVars = new HashMap<>();
@@ -52,27 +50,8 @@ public class GameBoyManager {
         return printId++;
     }
 
-//    public void setCurrNewFieldCount(int value) {
-//        currNewFieldCount = value;
-//    }
-//
-//    public boolean didNew() {
-//        return currNewFieldCount != null;
-//    }
-//
-//    public int getAndResetNewFieldCount() {
-//        int fieldCount = currNewFieldCount;
-//        currNewFieldCount = null;
-//        return fieldCount;
-//    }
-
     public void addGlobalVar(String varName) {
         globalVars.put(varName, globalVars.size());
-    }
-
-    public void addGlobalFieldVar() {
-        addGlobalVar(fieldId + "F");
-        fieldId++;
     }
 
     public Integer getGlobalVarAddr(String varName) {

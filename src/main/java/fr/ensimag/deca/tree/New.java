@@ -75,28 +75,13 @@ public class New extends AbstractExpr {
         vTM.exitClass();
 
         int currFieldAddr = gbM.getNextDynamicFieldAddr();
-
-//        for (int i = 0; i < fieldsCount; i++) {
-////            if (vTM.isInMethod()) {
-////                gbM.addCurrMethodFieldVar(vTM);
-////            } else {
-//                gbM.addGlobalFieldVar();
-////            }
-//        }
         gbM.addDynamicFields(fieldsCount);
 
-//        gbM.setCurrNewFieldCount(fieldsCount);
-
         GPRegister gpReg = rM.getFreeReg();
-
         compiler.addInstruction(new LOAD_INT(currFieldAddr, Register.HL));
-//        compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, -1));
-//        compiler.addInstruction(new SUBSP(fieldsCount * 2 + 2)); // WTF ??
         compiler.addInstruction(new PUSH(Register.HL));
         compiler.addInstruction(new BSR(initMethodLabel));
         compiler.addInstruction(new POP(gpReg));
-//        compiler.addInstruction(new ADDSP(fieldsCount * 2 + 2)); // WTF ??
-
         rM.freeReg(gpReg);
     }
 
