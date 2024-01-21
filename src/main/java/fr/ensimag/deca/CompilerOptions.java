@@ -119,6 +119,7 @@ public class CompilerOptions {
                         break;
                     case 'I':
                         GameBoyManager.doIncludeUtils = true;
+                        break;
                     default:
                         throwError(arg + " is not a valid option.");
                 }
