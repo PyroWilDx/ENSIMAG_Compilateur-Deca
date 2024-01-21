@@ -46,13 +46,14 @@ public class InstanceOf extends AbstractExpr {
             gpReg = rM.getFreeReg();
             compiler.addInstruction(new LOAD(Register.R0, gpReg));
         }
-        compiler.addInstruction(new LEA(vTM.getClassAddr(type.getName().getName()), Register.R0));
 
         long idCpt = cM.getUniqueId();
         Label startLabel = new Label("startInstanceOf" + idCpt);
         Label endTrueLabel = new Label("endTrueInstanceOf" + idCpt);
         Label endFalseLabel = new Label("endFalseInstanceOf" + idCpt);
         Label endLabel = new Label("endInstanceOf" + idCpt);
+
+        compiler.addInstruction(new LEA(vTM.getClassAddr(type.getName().getName()), Register.R0));
 
         if (cM.isDoingCond() && branchLabel != null) {
             compiler.addLabel(startLabel);

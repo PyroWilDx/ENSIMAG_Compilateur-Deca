@@ -314,8 +314,7 @@ def doTests():
              expectedResult=b"OK1 OK2 OK3 OK4 OK5 OK6 OK7 OK8 OK9 OK10 OK11 OK12 OK13 OK14 OK15 OK16 OK17 OK18 OK19 OK20\n")
 
     doVerify("codegen/valid/objects/others/castObj.deca",
-             expectedResult=b"\n",
-             doAssert=False)
+             expectedResult=b"1.00000e+01 20 10 30 60 4.20000e+01 42 1.00000e+01\n")
 
     doVerify("codegen/valid/registers/opRegOverflow.deca",
              expectedResult=b"52 52\n",
@@ -428,6 +427,10 @@ def doTests():
 
     doVerify("codegen/invalid/errors/missingReturn.deca",
              expectedResult=b"Error: Exiting function A.missingReturn() without return\n",
+             execError=True)
+
+    doVerify("codegen/invalid/errors/invalidCast.deca",
+             expectedResult=b"Error: Failed to cast variable of type 'A' to class 'B'\n",
              execError=True)
 
     """
