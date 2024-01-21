@@ -135,7 +135,9 @@ class Utils {
             ld a, b
             or a, c
             jp nz, setBackGroundInTileMapLoop ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
-        mmmmm:
+    ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
+    ld [rLCDC], a
+    mmmmm:
             halt
             jp mmmmm
         ret

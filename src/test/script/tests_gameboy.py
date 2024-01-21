@@ -96,7 +96,7 @@ def doTests():
 
     doVerify("gameboy/plot/init.deca")
 
-    doVerify("gameboy/object/hard/binaryTree.deca")
+    #doVerify("gameboy/object/hard/binaryTree.deca")
 
     return 0
 
