@@ -83,20 +83,13 @@ class GameBoy {
     Color DARK = new Color();
     Color BLACK = new Color();
     protected boolean firstUpdate = true;
-    int getWidth() {
-        return this.width;
-    }
-
-    int getHeight() {
-        return this.height;
-    }
 
     void init() {
         WHITE.setWhite();
         BLACK.setBlack();
         DARK.setDark();
         LIGHT.setLight();
-        this.setBackgroundColor(LIGHT);
+        this.setBackgroundColor(WHITE);
         this.asmInit();
 
         // TODO faudra en fait mettre tous ces trucs au début du fichier avec le compilateur
@@ -113,22 +106,24 @@ class GameBoy {
 
     boolean updateScreen() {
         DrawEvent event = this.drawEvents.getFirst();
-        //if (true) {
+        if (this.isInVBlank()) {
             if (this.firstUpdate) {
                 this.initDisplayRegisters();
                 this.firstUpdate = false;
             }
             this.turnScreenOff();
-            //if (this.map.hasChanged()) {
-                this.copyColorIntoMap(BLACK);
-            //}
-            //while (event.hasNext()) {
-            //    this.utils.pushInTileMap(event.getX(), event.getY(), event.getTileIndex());
-            //    event = event.getNext();
-            //}
+            if (this.map.hasChanged()) {
+                this.map.setStateUpdated();
+                this.copyColorIntoMap(map.getColor());
+            }
+            while (event != null) {
+                this.utils.pushInTileMap(10, 10, 127);
+                //this.utils.pushInTileMap(event.getX(), event.getY(), event.getTileIndex());
+                event = event.getNext();
+            }
             this.turnScreenOn();
             return true;
-        //}
+        }
         return false;
     }
     boolean isInVBlank() asm (
@@ -146,7 +141,7 @@ class GameBoy {
     );
     void turnScreenOff() asm (
         "
-        call WaitForOneVBlank
+        ;call WaitForOneVBlank
         ; Turn the LCD off
         ld a, 0
         ld [rLCDC], a
@@ -182,7 +177,7 @@ class GameBoy {
     }
     void copyColorIntoMap(Color color) {
         int index = color.getTileIndex();
-        index = 127;
+        //index = 127;
         //println();
         //this.testtt(index);
         //this.stop();
