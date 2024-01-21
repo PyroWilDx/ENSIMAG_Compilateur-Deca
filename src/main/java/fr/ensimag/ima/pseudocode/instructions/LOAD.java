@@ -1,9 +1,6 @@
 package fr.ensimag.ima.pseudocode.instructions;
 
-import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.ima.pseudocode.*;
-
-import java.io.PrintStream;
 
 /**
  * @author Ensimag

@@ -9,15 +9,12 @@ import fr.ensimag.deca.tools.SymbolTable;
 import fr.ensimag.deca.tools.SymbolTable.Symbol;
 import fr.ensimag.deca.tree.AbstractProgram;
 import fr.ensimag.deca.tree.LocationException;
-import fr.ensimag.deca.tree.Program;
 import fr.ensimag.ima.pseudocode.AbstractLine;
 import fr.ensimag.ima.pseudocode.IMAProgram;
 import fr.ensimag.ima.pseudocode.Instruction;
 import fr.ensimag.ima.pseudocode.Label;
 
 import java.io.*;
-import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.antlr.v4.runtime.CharStreams;

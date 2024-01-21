@@ -8,7 +8,6 @@ import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
-import javax.management.loading.MLet;
 import java.io.PrintStream;
 import java.util.List;
 
@@ -123,6 +122,7 @@ public class MethodCall extends AbstractMethodCall {
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        StackManager sM = compiler.getStackManager();
         CondManager cM = compiler.getCondManager();
         VTableManager vTM = compiler.getVTableManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
@@ -141,6 +141,8 @@ public class MethodCall extends AbstractMethodCall {
         int parentMethodVarOffset = 0;
         if (vTM.isInMethod()) {
             parentMethodVarOffset = gbM.getCurrMethodVarCount(vTM);
+            parentMethodVarOffset += sM.getTmpVar();
+
             compiler.addInstruction(new SUBSP(parentMethodVarOffset * 2));
             gbM.setCurrMethodSpOffset(parentMethodVarOffset * 2);
             // Normalement, après ça c'est pas possible d'avoir "ld hl, SP+e8" avec e8 négatif

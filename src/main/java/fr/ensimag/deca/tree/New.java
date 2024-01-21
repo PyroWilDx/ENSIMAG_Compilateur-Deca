@@ -75,11 +75,11 @@ public class New extends AbstractExpr {
         vTM.exitClass();
 
         for (int i = 0; i < fieldsCount; i++) {
-            if (vTM.isInMethod()) {
-                gbM.addCurrMethodFieldVar(vTM);
-            } else {
+//            if (vTM.isInMethod()) {
+//                gbM.addCurrMethodFieldVar(vTM);
+//            } else {
                 gbM.addGlobalFieldVar();
-            }
+//            }
         }
         gbM.setCurrNewFieldCount(fieldsCount);
 

@@ -1,12 +1,8 @@
 package fr.ensimag.ima.pseudocode.instructions;
 
-import fr.ensimag.deca.codegen.GameBoyManager;
 import fr.ensimag.ima.pseudocode.BinaryInstruction;
 import fr.ensimag.ima.pseudocode.DAddr;
 import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
-
-import java.io.PrintStream;
 
 /**
  * @author Ensimag

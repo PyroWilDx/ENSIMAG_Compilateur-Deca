@@ -3,9 +3,6 @@ package fr.ensimag.ima.pseudocode.instructions;
 import fr.ensimag.ima.pseudocode.BinaryInstructionDValToReg;
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateInteger;
-
-import java.io.PrintStream;
 
 /**
  * @author Ensimag

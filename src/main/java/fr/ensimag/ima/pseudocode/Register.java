@@ -1,7 +1,5 @@
 package fr.ensimag.ima.pseudocode;
 
-import fr.ensimag.deca.codegen.GameBoyManager;
-
 /**
  * Register operand (including special registers like SP).
  *

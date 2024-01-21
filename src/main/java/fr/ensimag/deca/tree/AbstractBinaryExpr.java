@@ -9,7 +9,6 @@ import java.io.PrintStream;
 
 import fr.ensimag.ima.pseudocode.DVal;
 import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.ImmediateFloat;
 import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 import org.apache.commons.lang.Validate;
@@ -174,6 +173,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                     compiler.addInstruction(new PUSH(regLeft));
                 } else {
                     int methodVarOffset = gbM.getCurrMethodVarCount(vTM);
+                    methodVarOffset += sM.getTmpVar();
                     compiler.addInstruction(new SUBSP(methodVarOffset * 2));
                     compiler.addInstruction(new PUSH(regLeft));
                     compiler.addInstruction(new ADDSP(methodVarOffset * 2 + 2));
@@ -202,15 +202,17 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
                     new LOAD_REG(regRight.getLowReg(), Register.HL.getLowReg()));
             regLeft = regRight;
             regRight = Register.HL;
+
+            sM.decrTmpVar();
             if (!vTM.isInMethod()) {
                 compiler.addInstruction(new POP(regLeft));
             } else {
                 int methodVarOffset = gbM.getCurrMethodVarCount(vTM);
+                methodVarOffset += sM.getTmpVar();
                 compiler.addInstruction(new SUBSP(methodVarOffset * 2 + 2));
                 compiler.addInstruction(new POP(regLeft));
                 compiler.addInstruction(new ADDSP(methodVarOffset * 2));
             }
-            sM.decrTmpVar();
         }
 
         DVal dVal = (lastImmRight == null) ? regRight.getLowReg() : lastImmRight;

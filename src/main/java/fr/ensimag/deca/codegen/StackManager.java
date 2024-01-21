@@ -48,6 +48,10 @@ public class StackManager {
         updateMaxStackSize();
     }
 
+    public int getTmpVar() {
+        return tmpCpt;
+    }
+
     public void decrTmpVar() {
         if (!doingDeclarations) tmpCpt--;
     }
