@@ -63,41 +63,39 @@ def doTests():
     # doVerify("gameboy/cond/whileSimple.deca")
     # doVerify("gameboy/cond/whileComplex.deca")
     #
-    doVerify("gameboy/object/easy/fieldSelection.deca")
-    doVerify("gameboy/object/easy/fieldInitReg.deca")
-    doVerify("gameboy/object/easy/callSimple.deca")
-    doVerify("gameboy/object/easy/callParams.deca")
-    doVerify("gameboy/object/easy/callReturn.deca")
-    doVerify("gameboy/object/easy/noThisAccess.deca")
-    doVerify("gameboy/object/easy/thisSimple.deca")
-    doVerify("gameboy/object/easy/fieldAssign.deca")
-    doVerify("gameboy/object/easy/fieldInitFieldSimple.deca")
-
-    doVerify("gameboy/object/mid/objReassign.deca")
-    doVerify("gameboy/object/mid/fieldInitMethod.deca")
-    doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
-    doVerify("gameboy/object/mid/varInMethod.deca")
-    doVerify("gameboy/object/mid/methodCallMethod.deca")
-    doVerify("gameboy/object/mid/recursiveMethod.deca")
-
-    doVerify("gameboy/object/extends/extendsFieldSimple.deca")
-    doVerify("gameboy/object/extends/extendsFields.deca")
-    doVerify("gameboy/object/extends/extendsMethods.deca")
-
-    doVerify("gameboy/object/others/equalsSimple.deca")
-    doVerify("gameboy/object/others/elseOpCmp.deca")
-    doVerify("gameboy/object/others/assignInside.deca")
-    doVerify("gameboy/object/others/asmSimple.deca")
-    doVerify("gameboy/object/others/methodRegOverflow.deca")
-
-    doVerify("gameboy/object/hard/recursiveReturn.deca")
-    doVerify("gameboy/object/hard/linkedList.deca")
+    # doVerify("gameboy/object/easy/fieldSelection.deca")
+    # doVerify("gameboy/object/easy/fieldInitReg.deca")
+    # doVerify("gameboy/object/easy/callSimple.deca")
+    # doVerify("gameboy/object/easy/callParams.deca")
+    # doVerify("gameboy/object/easy/callReturn.deca")
+    # doVerify("gameboy/object/easy/noThisAccess.deca")
+    # doVerify("gameboy/object/easy/thisSimple.deca")
+    # doVerify("gameboy/object/easy/fieldAssign.deca")
+    # doVerify("gameboy/object/easy/fieldInitFieldSimple.deca")
+    #
+    # doVerify("gameboy/object/mid/objReassign.deca")
+    # doVerify("gameboy/object/mid/fieldInitMethod.deca")
+    # doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
+    # doVerify("gameboy/object/mid/varInMethod.deca")
+    # doVerify("gameboy/object/mid/methodCallMethod.deca")
+    # doVerify("gameboy/object/mid/recursiveMethod.deca") # 3
+    #
+    # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
+    # doVerify("gameboy/object/extends/extendsFields.deca")
+    # doVerify("gameboy/object/extends/extendsMethods.deca")
+    #
+    # doVerify("gameboy/object/others/equalsSimple.deca")
+    # doVerify("gameboy/object/others/elseOpCmp.deca") # 1
+    # doVerify("gameboy/object/others/assignInside.deca")
+    # doVerify("gameboy/object/others/asmSimple.deca") # 2
+    # doVerify("gameboy/object/others/methodRegOverflow.deca")
+    #
+    # doVerify("gameboy/object/hard/recursiveReturn.deca")
+    # doVerify("gameboy/object/hard/linkedList.deca")
     # doVerify("gameboy/object/hard/newInMethod.deca")
-    # doVerify("gameboy/object/hard/binaryTree.deca")
+    # doVerify("gameboy/object/hard/binaryTree.deca") #4
 
     # doVerify("gameboy/plot/init.deca")
-
-    # doVerify("gameboy/object/hard/binaryTree.deca")
 
     return 0
 

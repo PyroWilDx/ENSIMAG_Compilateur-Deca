@@ -106,11 +106,11 @@ public class DeclVar extends AbstractDeclVar {
         }
 
         rM.freeReg(gpReg);
-
-        if (gbM.didNew()) {
-            int fieldCount = gbM.getAndResetNewFieldCount();
-            compiler.addInstruction(new SUBSP(fieldCount * 2));
-        }
+//
+//        if (gbM.didNew()) {
+//            int fieldCount = gbM.getAndResetNewFieldCount();
+//            compiler.addInstruction(new SUBSP(fieldCount * 2));
+//        }
     }
 
     @Override

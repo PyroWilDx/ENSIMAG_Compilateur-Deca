@@ -8,9 +8,35 @@ class A {
         if (a.x != 1) {
             println();
         }
-        if (a.y == 2) {
+        if (a.y != 2) {
             println();
         }
+        a.x = 8;
+        a.y = 10;
+        if (a.x != 8) {
+            println();
+        }
+        if (a.y != 10) {
+            println();
+        }
+    }
+
+    A returnNewObj() {
+        A a = new A();
+        a.x = 4;
+        a.y = 6;
+        return a;
+    }
+
+    A callMethodNewObj() {
+        A a = new A();
+        setAFields(a);
+        return a;
+    }
+
+    void setAFields(A a) {
+        a.x = 42;
+        a.y = 44;
     }
 
 }
@@ -23,6 +49,22 @@ class A {
         println();
     }
     if (a.y != 2) {
+        println();
+    }
+
+    a = a.returnNewObj();
+    if (a.x != 4) {
+        println();
+    }
+    if (a.y != 6) {
+        println();
+    }
+
+    a = a.callMethodNewObj();
+    if (a.x != 42) {
+        println();
+    }
+    if (a.y != 44) {
         println();
     }
 }
