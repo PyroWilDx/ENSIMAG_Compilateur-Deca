@@ -52,8 +52,8 @@ def doTests():
     # doVerify("gameboy/bin/fastTest.deca")
     #
     # doVerify("gameboy/base/declVar.deca")
-    # doVerify("gameboy/base/opArith.deca")
-    # doVerify("gameboy/base/opRegOverflow.deca")
+    doVerify("gameboy/base/opArith.deca")
+    doVerify("gameboy/base/opRegOverflow.deca")
     # doVerify("gameboy/base/assign.deca")
     #
     # doVerify("gameboy/cond/boolLazyEval.deca")
@@ -78,7 +78,7 @@ def doTests():
     # doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
     # doVerify("gameboy/object/mid/varInMethod.deca")
     # doVerify("gameboy/object/mid/methodCallMethod.deca")
-    doVerify("gameboy/object/mid/recursiveMethod.deca")
+    # doVerify("gameboy/object/mid/recursiveMethod.deca")
     #
     # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
     # doVerify("gameboy/object/extends/extendsFields.deca")
@@ -95,7 +95,7 @@ def doTests():
     # doVerify("gameboy/object/hard/newInMethod.deca")
     # doVerify("gameboy/object/hard/binaryTree.deca")
 
-    doVerify("gameboy/plot/init.deca")
+    # doVerify("gameboy/plot/init.deca")
 
     return 0
 

@@ -145,7 +145,7 @@ public class Assign extends AbstractBinaryExpr {
             compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
         }
 
-        sM.decrTmpVar();
+        sM.decrTmpVarGb();
         if (!vTM.isInMethod()) {
             compiler.addInstruction(new POP(Register.HL));
         } else {
