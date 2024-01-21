@@ -7,6 +7,7 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.util.HashMap;
+import java.util.Stack;
 
 public class GameBoyManager {
 
@@ -102,8 +103,13 @@ public class GameBoyManager {
         fieldId++;
     }
 
-    public int getCurrMethodVarCount(VTableManager vTM) {
-        return methodsVars.get(getCurrMethodKey(vTM)).size();
+    public Integer getCurrMethodVarCount(VTableManager vTM) {
+        for (String className : vTM.getCurrClassNameStack()) {
+            String currKey = getMethodKey(className, vTM.getCurrMethodName());
+            if (!methodsVars.containsKey(currKey)) continue;
+            return methodsVars.get(currKey).size();
+        }
+        return null;
     }
 
     public Integer getCurrMethodVarOffset(VTableManager vTM, String varName) {
@@ -149,7 +155,8 @@ public class GameBoyManager {
             } else {
                 varAddr = getCurrMethodVarOffset(vTM, identName);
                 if (varAddr != null) {
-                    compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, -varAddr * 2 - 1));
+                    varAddr = (-varAddr * 2 - 1) + getCurrMethodSpOffset();
+                    compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL, varAddr));
                 }
             }
         }

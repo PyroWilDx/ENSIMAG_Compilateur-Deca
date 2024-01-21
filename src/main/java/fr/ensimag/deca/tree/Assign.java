@@ -110,6 +110,7 @@ public class Assign extends AbstractBinaryExpr {
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
 
@@ -129,14 +130,12 @@ public class Assign extends AbstractBinaryExpr {
             compiler.addInstruction(new PUSH(Register.HL));
         } else {
             int methodVarOffset = gbM.getCurrMethodVarCount(vTM);
+            methodVarOffset += sM.getTmpVar();
             compiler.addInstruction(new SUBSP(methodVarOffset * 2));
             compiler.addInstruction(new PUSH(Register.HL));
             compiler.addInstruction(new ADDSP(methodVarOffset * 2 + 2));
         }
-//        compiler.addInstruction(new PUSH(Register.HL));
-//        if (vTM.isInMethod()) {
-//            compiler.addInstruction(new ADDSP(2));
-//        }
+        sM.incrTmpVar();
 
         getRightOperand().codeGenInstGb(compiler);
         GPRegister regRight = rM.getLastRegOrImm(compiler);
@@ -146,14 +145,12 @@ public class Assign extends AbstractBinaryExpr {
             compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
         }
 
-//        if (vTM.isInMethod()) {
-//            compiler.addInstruction(new SUBSP(2));
-//        }
-//        compiler.addInstruction(new POP(Register.HL));
+        sM.decrTmpVar();
         if (!vTM.isInMethod()) {
             compiler.addInstruction(new POP(Register.HL));
         } else {
             int methodVarOffset = gbM.getCurrMethodVarCount(vTM);
+            methodVarOffset += sM.getTmpVar();
             compiler.addInstruction(new SUBSP(methodVarOffset * 2 + 2));
             compiler.addInstruction(new POP(Register.HL));
             compiler.addInstruction(new ADDSP(methodVarOffset * 2));
