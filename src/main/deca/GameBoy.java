@@ -62,9 +62,9 @@
 
 class GameBoy {
     protected DrawEventList drawEvents = new DrawEventList();
-    protected int width = 20;
+    int WIDTH = 20;
     protected int pixelWidth = 160;
-    protected int height = 18;
+    int HEIGHT = 18;
     protected int pixelHeight = 144;
 
 
@@ -262,7 +262,7 @@ class GameBoy {
         SECTION \"suite\", ROM0
         "
     ); //
-    boolean KeyPressed(int pad) asm(
+    boolean keyPressed(int pad) asm(
         "
         ld a, [wNewKeys]
         ld b, a
