@@ -56,6 +56,10 @@ public class StackManager {
         if (!doingDeclarations) tmpCpt--;
     }
 
+    public void decrTmpVarGb() {
+        tmpCpt--;
+    }
+
     public void incrGbVarCpt() {
         incrStackSize();
         varCpt++;

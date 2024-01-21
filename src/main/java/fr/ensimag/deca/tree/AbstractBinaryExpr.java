@@ -203,7 +203,7 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             regLeft = regRight;
             regRight = Register.HL;
 
-            sM.decrTmpVar();
+            sM.decrTmpVarGb();
             if (!vTM.isInMethod()) {
                 compiler.addInstruction(new POP(regLeft));
             } else {
