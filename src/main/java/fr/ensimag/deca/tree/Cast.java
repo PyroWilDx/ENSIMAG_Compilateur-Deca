@@ -46,7 +46,7 @@ public class Cast extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-        //to do
+        // oui
     }
 
     @Override

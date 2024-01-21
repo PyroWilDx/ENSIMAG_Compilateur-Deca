@@ -7,10 +7,7 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.deca.context.EnvironmentExp;
 import fr.ensimag.deca.context.Type;
 import fr.ensimag.deca.tools.IndentPrintStream;
-import fr.ensimag.ima.pseudocode.DAddr;
-import fr.ensimag.ima.pseudocode.GPRegister;
-import fr.ensimag.ima.pseudocode.Register;
-import fr.ensimag.ima.pseudocode.RegisterOffset;
+import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
@@ -38,43 +35,66 @@ public class InstanceOf extends AbstractExpr {
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
-//        RegManager rM = compiler.getRegManager();
-//        CondManager cM = compiler.getCondManager();
-//        VTableManager vTM = compiler.getVTableManager();
-//
-//        compiler.addInstruction(
-//                new LOAD(vTM.getAddrOfClass(targetClassName), Register.R0));
-//        GPRegister gpReg = rM.getFreeReg();
-//        compiler.addInstruction(
-//                new LOAD(identifier.getExpDefinition().getOperand(), gpReg));
-//        int idCpt = cM.getAndIncrIdCpt();
-//        Label startLabel = new Label("startInstanceOf" + idCpt);
-//        Label endTrueLabel = new Label("endTrueInstanceOf" + idCpt);
-//        Label endFalseLabel = new Label("endFalseInstanceOf" + idCpt);
-//        Label endLabel = new Label("endInstanceOf" + idCpt);
-//
-//        compiler.addLabel(startLabel);
-//
-//        compiler.addInstruction(
-//                new LOAD(new RegisterOffset(0, gpReg), gpReg));
-//
-//        compiler.addInstruction(new CMP(new NullOperand(), gpReg));
-//        compiler.addInstruction(new BEQ(endFalseLabel));
-//
-//        compiler.addInstruction(new CMP(Register.R0, gpReg));
-//        compiler.addInstruction(new BEQ(endTrueLabel));
-//
-//        compiler.addInstruction(new BRA(startLabel));
-//
-//        compiler.addLabel(endTrueLabel);
-//        compiler.addInstruction(new LOAD(1, gpReg));
-//        compiler.addInstruction(new BRA(endLabel));
-//
-//        compiler.addLabel(endFalseLabel);
-//        compiler.addInstruction(new LOAD(0, gpReg));
-//
-//        compiler.addLabel(endLabel);
-//        rM.freeReg(gpReg);
+        RegManager rM = compiler.getRegManager();
+        CondManager cM = compiler.getCondManager();
+        VTableManager vTM = compiler.getVTableManager();
+
+        expr.codeGenInst(compiler);
+
+        GPRegister gpReg = rM.getLastReg();
+        if (gpReg == Register.R0) {
+            gpReg = rM.getFreeReg();
+            compiler.addInstruction(new LOAD(Register.R0, gpReg));
+        }
+        compiler.addInstruction(new LEA(vTM.getClassAddr(type.getName().getName()), Register.R0));
+
+        long idCpt = cM.getUniqueId();
+        Label startLabel = new Label("startInstanceOf" + idCpt);
+        Label endTrueLabel = new Label("endTrueInstanceOf" + idCpt);
+        Label endFalseLabel = new Label("endFalseInstanceOf" + idCpt);
+        Label endLabel = new Label("endInstanceOf" + idCpt);
+
+        if (cM.isDoingCond() && branchLabel != null) {
+            compiler.addLabel(startLabel);
+
+            compiler.addInstruction(new LOAD(new RegisterOffset(0, gpReg), gpReg));
+
+            compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+            if (isInTrue) compiler.addInstruction(new BEQ(endLabel));
+            else compiler.addInstruction(new BEQ(branchLabel));
+
+            compiler.addInstruction(new CMP(Register.R0, gpReg));
+            if (isInTrue) compiler.addInstruction(new BEQ(branchLabel));
+            else compiler.addInstruction(new BEQ(endLabel));
+
+            compiler.addInstruction(new BRA(startLabel));
+
+            compiler.addLabel(endLabel);
+        } else {
+            compiler.addLabel(startLabel);
+            compiler.addInstruction(new LOAD(new RegisterOffset(0, gpReg), gpReg));
+
+            compiler.addInstruction(new CMP(new NullOperand(), gpReg));
+            if (isInTrue) compiler.addInstruction(new BEQ(endFalseLabel));
+            else compiler.addInstruction(new BEQ(endTrueLabel));
+
+            compiler.addInstruction(new CMP(Register.R0, gpReg));
+            if (isInTrue) compiler.addInstruction(new BEQ(endTrueLabel));
+            else compiler.addInstruction(new BEQ(endFalseLabel));
+
+            compiler.addInstruction(new BRA(startLabel));
+
+            compiler.addLabel(endTrueLabel);
+            compiler.addInstruction(new LOAD(1, gpReg));
+            compiler.addInstruction(new BRA(endLabel));
+
+            compiler.addLabel(endFalseLabel);
+            compiler.addInstruction(new LOAD(0, gpReg));
+
+            compiler.addLabel(endLabel);
+        }
+
+        rM.freeReg(gpReg);
     }
 
     @Override

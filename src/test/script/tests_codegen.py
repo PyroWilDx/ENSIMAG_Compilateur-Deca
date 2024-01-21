@@ -310,6 +310,13 @@ def doTests():
     doVerify("codegen/valid/objects/others/asmSimple.deca",
              expectedResult=b"10 180 2 4\n")
 
+    doVerify("codegen/valid/objects/others/instanceOf.deca",
+             expectedResult=b"OK1 OK2 OK3 OK4 OK5 OK6 OK7 OK8 OK9 OK10 OK11 OK12 OK13 OK14 OK15 OK16 OK17 OK18 OK19 OK20\n")
+
+    doVerify("codegen/valid/objects/others/castObj.deca",
+             expectedResult=b"\n",
+             doAssert=False)
+
     doVerify("codegen/valid/registers/opRegOverflow.deca",
              expectedResult=b"52 52\n",
              decacOptions="-r 4")
