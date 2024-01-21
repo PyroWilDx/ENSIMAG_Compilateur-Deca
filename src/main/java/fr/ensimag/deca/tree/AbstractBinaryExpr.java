@@ -106,7 +106,17 @@ public abstract class AbstractBinaryExpr extends AbstractExpr {
             } // Else, don't need to PUSH because Literal don't need Registers.
         }
 
-        getRightOperand().codeGenInst(compiler);
+        if (getRightOperand() instanceof AbstractOpArith) {
+            AbstractOpArith rOp = (AbstractOpArith) getRightOperand();
+            FloatLiteral rOpFL = rOp.isFloatLiteral();
+            if (rOpFL != null) {
+                rOpFL.codeGenInst(compiler);
+            } else {
+                getRightOperand().codeGenInst(compiler);
+            }
+        } else {
+            getRightOperand().codeGenInst(compiler);
+        }
         DVal lastImmRight = rM.getLastImm();
         GPRegister regRight = null;
         if (lastImmRight == null) {
