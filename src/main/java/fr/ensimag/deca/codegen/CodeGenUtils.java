@@ -5,8 +5,6 @@ import fr.ensimag.deca.tree.AbstractIdentifier;
 import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.LOAD;
 
-import java.util.LinkedList;
-
 public class CodeGenUtils {
 
     private CodeGenUtils() {

@@ -89,10 +89,10 @@ def doTests():
     # doVerify("gameboy/object/others/assignInside.deca")
     # doVerify("gameboy/object/others/asmSimple.deca")
     # doVerify("gameboy/object/others/methodRegOverflow.deca")
-    # #
-    # doVerify("gameboy/object/hard/newInMethod.deca")
+    #
     # doVerify("gameboy/object/hard/recursiveReturn.deca")
-    doVerify("gameboy/object/hard/linkedList.deca")
+    # doVerify("gameboy/object/hard/linkedList.deca")
+    doVerify("gameboy/object/hard/newInMethod.deca")
     # doVerify("gameboy/object/hard/binaryTree.deca")
 
     # doVerify("gameboy/plot/init.deca")

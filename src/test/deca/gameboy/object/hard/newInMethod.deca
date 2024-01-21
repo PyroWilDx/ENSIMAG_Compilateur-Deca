@@ -4,13 +4,13 @@ class A {
     int y = 2;
 
     void newInMethod() {
-        // A a = new A();
-        // if (a.x != 1) {
-        //     println();
-        // }
-        // if (a.y == 2) {
-        //     println();
-        // }
+        A a = new A();
+        if (a.x != 1) {
+            println();
+        }
+        if (a.y == 2) {
+            println();
+        }
     }
 
 }

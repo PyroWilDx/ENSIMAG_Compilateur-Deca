@@ -7,7 +7,6 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.util.HashMap;
-import java.util.Stack;
 
 public class GameBoyManager {
 

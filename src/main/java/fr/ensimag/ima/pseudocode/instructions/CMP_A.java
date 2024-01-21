@@ -2,8 +2,6 @@ package fr.ensimag.ima.pseudocode.instructions;
 
 import fr.ensimag.ima.pseudocode.*;
 
-import java.io.PrintStream;
-
 public class CMP_A extends BinaryInstructionDValToReg {
 
     public CMP_A(DVal op1, GPRegister op2) {
