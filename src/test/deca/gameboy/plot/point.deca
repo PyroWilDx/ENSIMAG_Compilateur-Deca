@@ -1,9 +1,12 @@
 #include "GameBoy.java"
 
 {
-    int i = 0;
+    boolean updated = false;
     GameBoy gb = new GameBoy();
     gb.init();
-    gb.setTile(125, 10, 10);
-    gb.updateScreen();
+    gb.setBackgroundColor(gb.LIGHT);
+    gb.setColor(gb.BLACK, 10, 10);
+    while (!updated) {
+        updated = gb.updateScreen();
+    }
 }

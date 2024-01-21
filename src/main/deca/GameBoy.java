@@ -83,13 +83,6 @@ class GameBoy {
     Color DARK = new Color();
     Color BLACK = new Color();
     protected boolean firstUpdate = true;
-    int getWidth() {
-        return this.width;
-    }
-
-    int getHeight() {
-        return this.height;
-    }
 
     void init() {
         WHITE.setWhite();
@@ -120,6 +113,7 @@ class GameBoy {
             }
             this.turnScreenOff();
             if (this.map.hasChanged()) {
+                this.map.setStateUpdated();
                 this.copyColorIntoMap(this.map.getColor());
             }
             while (event.hasNext()) {

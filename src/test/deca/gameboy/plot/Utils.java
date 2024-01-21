@@ -10,12 +10,12 @@ class Color {
     void setDark() {
         this.bit1 = false;
         this.bit2 = true;
-        this.index = 126;
+        this.index = 125;
     }
     void setLight() {
         this.bit1 = true;
         this.bit2 = false;
-        this.index = 125;
+        this.index = 126;
     }
     void setWhite() {
         this.bit1 = true;
@@ -56,10 +56,10 @@ class BackgroundMapMod {
         this.user = true;
     }
     boolean hasChanged() {
-        if (changed) {
-            changed = false;
-        }
         return changed;
+    }
+    void setStateUpdated() {
+        this.changed = false;
     }
 
     Color getColor() {
@@ -103,8 +103,8 @@ class DrawEvent {
 class DrawEventList {
     protected DrawEvent first = null;
     protected DrawEvent last = null;
+    DrawEvent event = new DrawEvent();
     void add(int index, int x, int y) {
-        DrawEvent event = new DrawEvent();
         event.init(index, x, y);
         if (this.first == null) {
             this.first = event;
@@ -125,7 +125,7 @@ class Utils {
         "
         ld hl, sp + 4
         ld e, [hl]
-        ld e, $7f
+        ;ld e, $7f
         ld hl, $9800
         ld bc, $240
         setBackGroundInTileMapLoop:
@@ -135,30 +135,28 @@ class Utils {
             ld a, b
             or a, c
             jp nz, setBackGroundInTileMapLoop ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
-    ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
-    ld [rLCDC], a
-    mmmmm:
-            halt
-            jp mmmmm
-        ret
+
         "
     );
     void pushInTileMap(int x, int y, int tileIndex) asm(
             "
+            ld hl, $994a
+            ld hl, $7c
+
             ; a = y
             ld hl, sp + 6
             ld a, [hl]
-            ld a, 10
+            ;ld a, 10
 
             ; b = x
             ld hl, sp + 4
             ld b, [hl]
-            ld b, 10
+            ;ld b, 10
 
             ; c = value
             ld hl, sp + 8
             ld c, [hl]
-            ld c, $7e
+            ;ld c, $7e
 
             ; si y == 0 on passe à la boucle des colonnes
             or a, a

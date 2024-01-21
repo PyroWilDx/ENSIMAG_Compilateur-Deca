@@ -56,12 +56,11 @@ class BackgroundMapMod {
         this.user = true;
     }
     boolean hasChanged() {
-        if (changed) {
-            changed = false;
-        }
         return changed;
     }
-
+    void setStateUpdated() {
+        this.changed = false;
+    }
     Color getColor() {
         return this.color;
     }
