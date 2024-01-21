@@ -125,10 +125,18 @@ public class Assign extends AbstractBinaryExpr {
             rM.freeReg(gpReg);
         }
 
-        compiler.addInstruction(new PUSH(Register.HL));
-        if (vTM.isInMethod()) {
-            compiler.addInstruction(new ADDSP(2)); // TODO (GB)
+        if (!vTM.isInMethod()) {
+            compiler.addInstruction(new PUSH(Register.HL));
+        } else {
+            int methodVarOffset = gbM.getCurrMethodVarCount(vTM);
+            compiler.addInstruction(new SUBSP(methodVarOffset * 2));
+            compiler.addInstruction(new PUSH(Register.HL));
+            compiler.addInstruction(new ADDSP(methodVarOffset * 2 + 2));
         }
+//        compiler.addInstruction(new PUSH(Register.HL));
+//        if (vTM.isInMethod()) {
+//            compiler.addInstruction(new ADDSP(2));
+//        }
 
         getRightOperand().codeGenInstGb(compiler);
         GPRegister regRight = rM.getLastRegOrImm(compiler);
@@ -138,10 +146,18 @@ public class Assign extends AbstractBinaryExpr {
             compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), regRight.getLowReg()));
         }
 
-        if (vTM.isInMethod()) {
-            compiler.addInstruction(new SUBSP(2));
+//        if (vTM.isInMethod()) {
+//            compiler.addInstruction(new SUBSP(2));
+//        }
+//        compiler.addInstruction(new POP(Register.HL));
+        if (!vTM.isInMethod()) {
+            compiler.addInstruction(new POP(Register.HL));
+        } else {
+            int methodVarOffset = gbM.getCurrMethodVarCount(vTM);
+            compiler.addInstruction(new SUBSP(methodVarOffset * 2 + 2));
+            compiler.addInstruction(new POP(Register.HL));
+            compiler.addInstruction(new ADDSP(methodVarOffset * 2));
         }
-        compiler.addInstruction(new POP(Register.HL));
 
         compiler.addInstruction(new STORE_REG(regRight.getHighReg(), Register.HL));
         compiler.addInstruction(new DEC_REG(Register.HL));
