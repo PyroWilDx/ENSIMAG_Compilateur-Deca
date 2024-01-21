@@ -39,7 +39,7 @@ class Color {
 class BackgroundMapMod {
     protected Color color = new Color();
     protected boolean user = false;
-    protected boolean changed = false;
+    protected boolean changed = true;
     int WIDTH = 32;
     int HEIGHT = 32;
 
