@@ -125,7 +125,7 @@ class Utils {
         "
         ld hl, sp + 4
         ld e, [hl]
-        ;ld e, $7f
+        ld e, $7f
         ld hl, $9800
         ld bc, $240
         setBackGroundInTileMapLoop:
@@ -148,14 +148,17 @@ class Utils {
             ; a = y
             ld hl, sp + 6
             ld a, [hl]
+            ld a, 10
 
             ; b = x
             ld hl, sp + 4
             ld b, [hl]
+            ld b, 10
 
             ; c = value
             ld hl, sp + 8
             ld c, [hl]
+            ld c, $7e
 
             ; si y == 0 on passe à la boucle des colonnes
             or a, a

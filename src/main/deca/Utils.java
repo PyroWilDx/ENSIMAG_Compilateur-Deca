@@ -120,27 +120,15 @@ class DrawEventList {
 }
 
 class Utils {
-    int pow(int x, int exposant) {
-        int resultat = 1;
-        if (exposant == 0) {
-            return 1;
-        }
-        while (exposant > 0) {
-            if (exposant % 2 == 1) {
-                resultat = resultat * x;
-            }
-            x = x * x;
-            exposant = exposant / 2;
-        }
-    }
+
     void setBackGroundInTileMap(int index) asm (
         "
         ld hl, sp + 4
-        ld a, [hl]
+        ld e, [hl]
         ld hl, $9800
-        ld bc, $400
+        ld bc, $240
         setBackGroundInTileMapLoop:
-            ld [hli], a
+            ld [hli], e
             dec bc
             ld a, b
             or a, c
