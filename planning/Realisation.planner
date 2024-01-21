@@ -188,8 +188,16 @@
     <task id="39" name="Suivi 2" note="" work="0" start="20241210T000000Z" end="20241210T000000Z" work-start="20241210T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
       <constraint type="must-start-on" time="20241210T000000Z"/>
     </task>
-    <task id="40" name="Suivi 3" note="" work="28800" start="20240119T000000Z" end="20240119T170000Z" work-start="20240119T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+    <task id="40" name="Suivi 3" note="" work="0" start="20240119T000000Z" end="20240119T000000Z" work-start="20240119T080000Z" percent-complete="0" priority="0" type="milestone" scheduling="fixed-work">
       <constraint type="must-start-on" time="20240119T000000Z"/>
+    </task>
+    <task id="41" name="Extension" note="" work="403200" start="20240108T000000Z" end="20240121T170000Z" work-start="20240108T080000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+      <constraint type="must-start-on" time="20240108T000000Z"/>
+    </task>
+    <task id="42" name="Documentation" note="" work="338400" start="20240115T100000Z" end="20240126T170000Z" work-start="20240115T100000Z" percent-complete="0" priority="0" type="normal" scheduling="fixed-work">
+      <predecessors>
+        <predecessor id="1" predecessor-id="19" type="FS"/>
+      </predecessors>
     </task>
   </tasks>
   <resource-groups/>
