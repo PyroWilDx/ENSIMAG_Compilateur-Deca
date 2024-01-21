@@ -59,6 +59,19 @@ class C extends A {
 
     a = null;
     c = (C)(a);
+
+    if (c != null) {
+        println("FAIL");
+    }
+
+    c = new C();
     c = (C)(null);
     b = (B)(null);
+
+    if (c != null) {
+        println("FAIL");
+    }
+    if (b != null) {
+        println("FAIL");
+    }
 }
