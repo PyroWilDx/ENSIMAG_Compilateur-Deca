@@ -129,7 +129,8 @@ public class Program extends AbstractProgram {
 
         compiler.add(new LineGb("INCLUDE \"hardware.inc\""));
 
-        if (!GameBoyManager.debugMode) {
+        if (false) {
+            compiler.add(new LineGb("INCLUDE \"utils.asm\""));
             compiler.add(new LineGb("INCLUDE \"variables.asm\""));
         }
 
@@ -137,8 +138,7 @@ public class Program extends AbstractProgram {
         compiler.add(new LineGb("SECTION \"Header\", ROM0[$100]"));
         compiler.add(new LineGb(""));
 
-        if (!GameBoyManager.debugMode) {
-            compiler.add(new LineGb("INCLUDE \"utils.asm\""));
+        if (false) {
             compiler.add(new LineGb("call initVariables"));
         }
 

@@ -134,13 +134,17 @@ class GameBoy {
     boolean isInVBlank() asm (
         "
         ld h, 0
-
+        ld l, 0
+        ld a, [rLY]
+        cp 144
+        jp c, notVBlank
+        ld l, 1
+        notVBlank:
         ret
         "
     );
     void turnScreenOff() asm (
         "
-        call WaitForOneVBlank
         ; Turn the LCD off
         ld a, 0
         ld [rLCDC], a
