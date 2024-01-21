@@ -96,7 +96,7 @@ class GameBoy {
         BLACK.setBlack();
         DARK.setDark();
         LIGHT.setLight();
-        this.setBackgroundColor(WHITE);
+        this.setBackgroundColor(LIGHT);
         this.asmInit();
 
         // TODO faudra en fait mettre tous ces trucs au début du fichier avec le compilateur
@@ -113,28 +113,34 @@ class GameBoy {
 
     boolean updateScreen() {
         DrawEvent event = this.drawEvents.getFirst();
-        if (this.isInVBlank()) {
+        //if (true) {
             if (this.firstUpdate) {
                 this.initDisplayRegisters();
                 this.firstUpdate = false;
             }
             this.turnScreenOff();
-            if (this.map.hasChanged()) {
-                this.copyColorIntoMap(this.map.getColor());
-            }
-            while (event.hasNext()) {
-                this.utils.pushInTileMap(event.getX(), event.getY(), event.getTileIndex());
-                event = event.getNext();
-            }
+            //if (this.map.hasChanged()) {
+                this.copyColorIntoMap(BLACK);
+            //}
+            //while (event.hasNext()) {
+            //    this.utils.pushInTileMap(event.getX(), event.getY(), event.getTileIndex());
+            //    event = event.getNext();
+            //}
             this.turnScreenOn();
             return true;
-        }
+        //}
         return false;
     }
     boolean isInVBlank() asm (
         "
         ld h, 0
-
+        ld l, 0
+        ld a, [rLY]
+        cp 144
+        jp c, notVBlank
+        ld l, $ff
+        ld h, $ff
+        notVBlank:
         ret
         "
     );
@@ -144,13 +150,15 @@ class GameBoy {
         ; Turn the LCD off
         ld a, 0
         ld [rLCDC], a
+        ret
         "
     );
     void turnScreenOn() asm (
         "
-        ; Turn the LCD on
-        ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
-        ld [rLCDC], a
+    ; Turn the LCD on
+    ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
+    ld [rLCDC], a
+    ret
         "
     );
     void initDisplayRegisters() asm (
@@ -158,6 +166,7 @@ class GameBoy {
         ; During the first (blank) frame, initialize display registers
         ld a, %11100100
         ld [rBGP], a
+        ret
         "
     );
     void setTile(int tileIndex, int x, int y) {
@@ -173,6 +182,7 @@ class GameBoy {
     }
     void copyColorIntoMap(Color color) {
         int index = color.getTileIndex();
+        index = 127;
         this.utils.setBackGroundInTileMap(index);
     }
     void asmInit () asm (
@@ -180,18 +190,80 @@ class GameBoy {
         ; On met les tiles elementaires dans la mémoire
         ld de, ElementaryTiles
         ld hl, $97c0; Ce seront les quatres dernières tiles
-        ld bc, ElementaryTiles - ElementaryTilesEnd
+        ld bc, ElementaryTilesEnd - ElementaryTiles
         call CopyDEintoMemoryAtHL
 
         ret; comme ça on essaie pas d executer la suite
 
-        ; Les tiles élémentaire
-        ElementaryTiles:
-        db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
-        db $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff
-        db $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00
-        db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
-        ElementaryTilesEnd:
+    SECTION \"Elementary Tile data\", ROM0
+    ; Les tiles élémentaire
+    ElementaryTiles:
+    db $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00, $00,$00
+    db $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff
+    db $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00
+    db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
+    ElementaryTilesEnd:
+
+    SECTION \"Utils\", ROM0
+    call initVariables
+    jp EntryPoint
+    initVariables::
+    ld a, 0
+    ld [wFrameCounter], a
+    ld [wCurKeys], a
+    ld [wNewKeys], a
+            ret
+    CopyDEintoMemoryAtHL::
+    ld a, [de]
+    ld [hli], a
+    inc de
+    dec bc
+    ld a, b
+    or a, c
+    jp nz, CopyDEintoMemoryAtHL ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
+    ret;
+    SECTION \"VBlankVariables\", WRAM0
+
+    wVBlankCount:: db
+
+    SECTION \"VBlankFunctions\", ROM0
+
+    WaitForOneVBlank::
+
+    ; Wait a small amount of time
+            ; Save our count in this variable
+    ld a, 1
+    ld [wVBlankCount], a
+
+    WaitForVBlankFunction::
+
+    WaitForVBlankFunction_Loop::
+
+    ld a, [rLY] ; Copy the vertical line to a
+    cp 144 ; Check if the vertical line (in a) is 0
+    jp c, WaitForVBlankFunction_Loop ; A conditional jump. The condition is that 'c' is set, the last operation overflowed
+
+    ld a, [wVBlankCount]
+    sub a, 1
+    ld [wVBlankCount], a
+    ret z
+
+    WaitForVBlankFunction_Loop2::
+
+    ld a, [rLY] ; Copy the vertical line to a
+    cp 144 ; Check if the vertical line (in a) is 0
+    jp nc, WaitForVBlankFunction_Loop2 ; A conditional jump. The condition is that 'c' is set, the last operation overflowed
+
+    jp WaitForVBlankFunction_Loop
+
+            ; ANCHOR_END: vblank-utils
+
+    SECTION \"Counter\", WRAM0
+    wFrameCounter:: db
+    wCurKeys:: db
+    wNewKeys:: db
+
+    SECTION \"suite\", ROM0
         "
     ); //
     boolean KeyPressed(int pad) asm(
