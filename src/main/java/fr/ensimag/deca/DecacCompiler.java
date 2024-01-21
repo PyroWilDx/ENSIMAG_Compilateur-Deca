@@ -288,14 +288,21 @@ public class DecacCompiler {
 
             if (GameBoyManager.doCpRgbds) {
                 // Generating the .o file
+                if (GameBoyManager.debugMode)
+                    LOG.setLevel(org.apache.log4j.Level.DEBUG);
                 try {
+                    ProcessBuilder pb;
                     LOG.debug("Source file: " + destName);
                     String includePath = System.getProperty("user.dir").split("src")[0] + "src/main/bin/include";
-                    new ProcessBuilder().command("rgbasm", "-L", "-I", includePath, "-o", destName.replace(".asm",
-                                    ".o"), destName)
-//                        .inheritIO()
-                            .start();
-                } catch (IOException e) {
+                    LOG.debug("Include path: " + includePath);
+                    LOG.debug("Dest file: " + destName.replace(".asm", ".o"));
+                    pb = new ProcessBuilder().command("rgbasm", "-L", "-I", includePath, "-o", destName.replace(".asm",
+                            ".o"), destName);
+                    if (GameBoyManager.debugMode) {
+                        pb.inheritIO();
+                    }
+                    pb.start().waitFor();
+                } catch (IOException | InterruptedException e) {
                     LOG.info("Failed to assemble generated files with rgbasm", e);
                     throw new DecacInternalError("Failed to assemble generated files with rgbasm");
                 }
@@ -304,22 +311,28 @@ public class DecacCompiler {
 
                 // Generating the .gb file
                 try {
-                    new ProcessBuilder().command("rgblink", "-o", destName.replace(".asm", ".gb"),
-                                    destName.replace(".asm", ".o"))
-//                        .inheritIO()
-                            .start().waitFor();
+                    ProcessBuilder pb;
+                    pb = new ProcessBuilder().command("rgblink", "-o", destName.replace(".asm", ".gb"),
+                            destName.replace(".asm", ".o"));
+                    if (GameBoyManager.debugMode) {
+                        pb.inheritIO();
+                    }
+                    pb.start().waitFor();
                 } catch (IOException | InterruptedException e) {
                     LOG.debug("Failed to link generated files with rgblink", e);
                     throw new DecacInternalError("Failed to assemble generated files with rgblink");
                 } finally {
-                    new File(destName.replace(".asm", ".o")).delete();
+//                    new File(destName.replace(".asm", ".o")).delete();
                 }
 
                 // Running rgbfix
                 try {
-                    new ProcessBuilder().command("rgbfix", "-v", "-p", "0xFF", destName.replace(".asm", ".gb"))
-//                        .inheritIO()
-                            .start();
+                    ProcessBuilder pb;
+                    pb = new ProcessBuilder().command("rgbfix", "-v", "-p", "0xFF", destName.replace(".asm", ".gb"));
+                    if (GameBoyManager.debugMode) {
+                        pb.inheritIO();
+                    }
+                    pb.start();
                 } catch (IOException e) {
                     LOG.debug("Failed to run rgbfix", e);
                     throw new DecacInternalError("Failed to run rgbfix");
