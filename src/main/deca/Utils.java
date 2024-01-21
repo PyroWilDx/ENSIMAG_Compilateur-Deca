@@ -135,7 +135,7 @@ class Utils {
     ld a, b
     or a, c
     jp nz, setBackGroundInTileMapLoop ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
-
+    ret
             "
             );
     void pushInTileMap(int x, int y, int tileIndex) asm(
@@ -161,6 +161,11 @@ class Utils {
             ; si y == 0 on passe à la boucle des colonnes
     or a, a
     jp z, yEqualsZero
+
+            ; a = y
+    ld hl, sp + 6
+    ld a, [hl]
+    ;ld a, 10
 
             ; hl c est la premiere adresse de la map
     ld hl, $9800
