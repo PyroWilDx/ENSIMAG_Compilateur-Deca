@@ -43,11 +43,6 @@ public class StackManager {
         updateMaxStackSize();
     }
 
-    public void incrStackSizeByValue(int value) {
-        stackSize += value;
-        updateMaxStackSize();
-    }
-
     public void incrTmpVar() {
         tmpCpt++;
         updateMaxStackSize();
@@ -60,11 +55,6 @@ public class StackManager {
     public void incrGbVarCpt() {
         incrStackSize();
         varCpt++;
-    }
-
-    public void incrGbVarByValue(int value) {
-        incrStackSizeByValue(value);
-        varCpt += value;
     }
 
     public void incrVTableCpt() {

@@ -40,7 +40,15 @@ public abstract class AbstractOpCmp extends AbstractBinaryExpr {
                              DVal valReg, GPRegister saveReg) {
         CondManager cM = compiler.getCondManager();
 
-        compiler.addInstruction(new CMP(valReg, saveReg));
+        boolean isLeftZero = (getLeftOperand() instanceof AbstractLiteral) &&
+                ((AbstractLiteral) getLeftOperand()).isZero();
+        boolean isRightZero = (getRightOperand() instanceof AbstractLiteral) &&
+                ((AbstractLiteral) getRightOperand()).isZero();
+        boolean areBothLiteral = (getLeftOperand() instanceof AbstractLiteral) &&
+                (getRightOperand() instanceof AbstractLiteral);
+        if (!(isLeftZero || isRightZero) || areBothLiteral) {
+            compiler.addInstruction(new CMP(valReg, saveReg));
+        }
         if (cM.isDoingCond() && branchLabel != null) {
             if (isInTrue) compiler.addInstruction(getBranchOpCmpInst(branchLabel));
             else compiler.addInstruction(getBranchInvOpCmpInst(branchLabel));

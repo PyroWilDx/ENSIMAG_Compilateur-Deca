@@ -18,7 +18,7 @@ public class ADDSP extends UnaryInstructionImmInt {
     }
 
     public ADDSP(int i) {
-        super(i);
+        this(new ImmediateInteger(i));
     }
 
     @Override

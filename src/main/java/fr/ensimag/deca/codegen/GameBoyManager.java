@@ -16,6 +16,7 @@ public class GameBoyManager {
 
     public static boolean doCp = false;
     public static boolean doCpRgbds = false;
+    public static boolean doIncludeUtils = false;
     public static boolean debugMode = false;
 
     public static String getImmToken() {

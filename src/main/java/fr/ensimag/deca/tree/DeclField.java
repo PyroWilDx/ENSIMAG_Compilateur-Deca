@@ -102,7 +102,7 @@ public class DeclField extends AbstractDeclField {
 
 //        TypeCode returnValue = null;
 
-        init.setVarTypeCode(getInitTypeCode());
+//        init.setVarTypeCode(getInitTypeCode());
         init.codeGenInit(compiler);
 
         GPRegister regValue;
@@ -145,7 +145,6 @@ public class DeclField extends AbstractDeclField {
 
         int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
 
-        init.setVarTypeCode(getInitTypeCode());
         init.codeGenInitGb(compiler);
 
         GPRegister regValue = rM.getLastRegOrImm(compiler);

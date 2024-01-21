@@ -30,6 +30,11 @@ public class BooleanLiteral extends AbstractLiteral {
     }
 
     @Override
+    public boolean isZero() {
+        return !value;
+    }
+
+    @Override
     public Type verifyExpr(DecacCompiler compiler, EnvironmentExp localEnv,
                            ClassDefinition currentClass) throws ContextualError {
         Type exprType = compiler.environmentType.BOOLEAN;

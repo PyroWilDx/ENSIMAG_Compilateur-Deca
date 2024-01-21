@@ -179,7 +179,7 @@ def doTests():
                             b"4 / 3.0 = 1.33333e+00\n")
 
     doVerify("codegen/valid/operations/opShift.deca",
-             expectedResult=b"14 14 112 112 1792 896 224 832 104 0 0 14336\n")
+             expectedResult=b"14 14 112 112 1792 896 224 832 104 0 0 14336 28672 25 50 100 0 0 64\n")
 
     doVerify("codegen/valid/conditions/boolLazyEval.deca",
              expectedResult=b"")
@@ -310,6 +310,12 @@ def doTests():
     doVerify("codegen/valid/objects/others/asmSimple.deca",
              expectedResult=b"10 180 2 4\n")
 
+    doVerify("codegen/valid/objects/others/instanceOf.deca",
+             expectedResult=b"OK1 OK2 OK3 OK4 OK5 OK6 OK7 OK8 OK9 OK10 OK11 OK12 OK13 OK14 OK15 OK16 OK17 OK18 OK19 OK20\n")
+
+    doVerify("codegen/valid/objects/others/castObj.deca",
+             expectedResult=b"1.00000e+01 20 10 30 60 4.20000e+01 42 1.00000e+01\n")
+
     doVerify("codegen/valid/registers/opRegOverflow.deca",
              expectedResult=b"52 52\n",
              decacOptions="-r 4")
@@ -382,7 +388,23 @@ def doTests():
                             b"Error: Division by 0\n",
              execError=True)
 
+    doVerify("codegen/invalid/errors/moduloBy0Const.deca",
+             expectedResult=b"Error: Division by 0\n",
+             execError=True)
+
     doVerify("codegen/invalid/errors/floatOverflow.deca",
+             expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
+    doVerify("codegen/invalid/errors/floatOverflowConstIntFloat.deca",
+             expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
+    doVerify("codegen/invalid/errors/floatOverflowConstFloatInt.deca",
+             expectedResult=b"Error: Float Operation Overflow\n",
+             execError=True)
+
+    doVerify("codegen/invalid/errors/floatOverflowConstFloatFloat.deca",
              expectedResult=b"Error: Float Operation Overflow\n",
              execError=True)
 
@@ -405,6 +427,10 @@ def doTests():
 
     doVerify("codegen/invalid/errors/missingReturn.deca",
              expectedResult=b"Error: Exiting function A.missingReturn() without return\n",
+             execError=True)
+
+    doVerify("codegen/invalid/errors/invalidCast.deca",
+             expectedResult=b"Error: Failed to cast variable of type 'A' to class 'B'\n",
              execError=True)
 
     """
@@ -453,6 +479,18 @@ def doTests():
 
     doVerify("codegen/options/optionNoCheck.deca",
              expectedResult=b"1\n",
+             decacOptions="-n")
+
+    doVerify("codegen/options/floatOverflowConstIntFloat.deca",
+             expectedResult=b"",
+             decacOptions="-n")
+
+    doVerify("codegen/options/floatOverflowConstFloatInt.deca",
+             expectedResult=b"",
+             decacOptions="-n")
+
+    doVerify("codegen/options/floatOverflowConstFloatFloat.deca",
+             expectedResult=b"",
              decacOptions="-n")
 
     doVerify("codegen/options/optionDebugInfo.deca",

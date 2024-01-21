@@ -62,7 +62,9 @@ public abstract class AbstractPrint extends AbstractInst {
 
     @Override
     public void decompile(IndentPrintStream s) {
-        s.print("print" + getSuffix() + "(");
+        s.print("print" + getSuffix());
+        if (printHex) s.print("x");
+        s.print("(");
         Iterator<AbstractExpr> iterator = arguments.iterator();
         if (iterator.hasNext()) {
             AbstractExpr arg = iterator.next();

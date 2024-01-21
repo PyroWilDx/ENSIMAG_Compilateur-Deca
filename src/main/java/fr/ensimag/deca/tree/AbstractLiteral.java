@@ -8,4 +8,6 @@ package fr.ensimag.deca.tree;
  */
 public abstract class AbstractLiteral extends AbstractExpr {
 
+    public abstract boolean isZero();
+
 }

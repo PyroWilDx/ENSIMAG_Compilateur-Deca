@@ -12,9 +12,4 @@ public class PEA extends UnaryInstruction {
     public PEA(DAddr operand) {
         super(operand);
     }
-
-    @Override
-    public String getGameBoyAsm() {
-        return null;
-    }
 }

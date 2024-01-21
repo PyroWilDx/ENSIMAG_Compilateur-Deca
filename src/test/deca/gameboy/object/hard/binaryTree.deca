@@ -84,8 +84,8 @@ class BinaryTree {
     // tree.addCell(20);
 
     tree.checkNotIn(15);
-    tree.checkNotIn(5);
-    // tree.checkIn(2);
+    tree.checkIn(5);
+    tree.checkIn(98);
     // tree.checkIn(9);
     // tree.checkIn(3);
     tree.checkNotIn(100);

@@ -31,8 +31,8 @@ def doVerify(decaFilePath):
     os.system(f"rgblink -o {decaFileNameNoExt}.gb {decaFileNameNoExt}.o")
     os.system(f"rgbfix -v -p 0xFF {decaFileNameNoExt}.gb")
 
-    os.system(f"Emulicious.jar {decaFileNameNoExt}.gb &")
-    # os.system(f"Emulicious.jar {decaFileNameNoExt}.gb > /dev/null 2>&1 &")
+    #os.system(f"Emulicious.jar {decaFileNameNoExt}.gb &")
+    os.system(f"Emulicious.jar {decaFileNameNoExt}.gb > /dev/null 2>&1 &")
 
     os.chdir(lastDir)
 
@@ -96,6 +96,7 @@ def doTests():
 
     doVerify("gameboy/plot/init.deca")
 
+    doVerify("gameboy/object/hard/binaryTree.deca")
 
     return 0
 

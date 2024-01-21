@@ -12,9 +12,4 @@ public class FMA extends BinaryInstructionDValToReg {
     public FMA(DVal op1, GPRegister op2) {
         super(op1, op2);
     }
-
-    @Override
-    public String getGameBoyAsm() {
-        return null;
-    }
 }

@@ -21,7 +21,6 @@ public class VTableManager {
     }
 
     public void addVTable(String className, VTable vTable) {
-        assert (!vTables.containsKey(className));
         vTables.put(className, vTable);
     }
 

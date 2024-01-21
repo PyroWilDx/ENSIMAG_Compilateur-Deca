@@ -19,12 +19,19 @@ import java.io.PrintStream;
  */
 public class IntLiteral extends AbstractLiteral {
 
+    private int value;
+
     public void setValue(int value) {
         this.value = value;
     }
 
     public int getValue() {
         return value;
+    }
+
+    @Override
+    public boolean isZero() {
+        return value == 0;
     }
 
     public boolean isPowerOf2() {
@@ -40,8 +47,6 @@ public class IntLiteral extends AbstractLiteral {
         }
         return power;
     }
-
-    private int value;
 
     public IntLiteral(int value) {
         this.value = value;

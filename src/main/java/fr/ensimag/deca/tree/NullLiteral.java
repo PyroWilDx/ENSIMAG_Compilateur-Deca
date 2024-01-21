@@ -21,6 +21,11 @@ import java.io.PrintStream;
  */
 public class NullLiteral extends AbstractLiteral {
 
+    @Override
+    public boolean isZero() {
+        return true;
+    }
+
     public NullLiteral() {
 
     }

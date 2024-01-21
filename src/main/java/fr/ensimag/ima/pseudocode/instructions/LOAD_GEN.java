@@ -8,10 +8,6 @@ public class LOAD_GEN extends BinaryInstructionDValToReg {
         super(op1, op2);
     }
 
-    public LOAD_GEN(int i, GPRegister r) {
-        this(new ImmediateInteger(i), r);
-    }
-
     @Override
     public String getGameBoyAsm() {
         return "ld";

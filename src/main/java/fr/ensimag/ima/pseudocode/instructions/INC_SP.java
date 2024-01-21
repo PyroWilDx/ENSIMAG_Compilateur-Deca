@@ -10,8 +10,6 @@ public class INC_SP extends UnaryInstruction {
 
     public INC_SP(Operand operand) {
         super(operand);
-
-        assert (operand == Register.SP);
     }
 
     @Override
