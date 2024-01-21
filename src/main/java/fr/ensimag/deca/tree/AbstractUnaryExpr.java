@@ -22,11 +22,15 @@ import org.apache.commons.lang.Validate;
  */
 public abstract class AbstractUnaryExpr extends AbstractExpr {
 
+    public void setOperand(AbstractExpr value) {
+        operand = value;
+    }
+
     public AbstractExpr getOperand() {
         return operand;
     }
 
-    private final AbstractExpr operand;
+    private AbstractExpr operand;
 
     public AbstractUnaryExpr(AbstractExpr operand) {
         Validate.notNull(operand);
