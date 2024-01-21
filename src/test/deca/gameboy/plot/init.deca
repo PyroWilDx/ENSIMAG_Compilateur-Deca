@@ -4,6 +4,6 @@
     int i = 0;
     GameBoy gb = new GameBoy();
     gb.init();
-    //gb.setTile(124, 1, 1);
+    //gb.setTile(125, 1, 1);
     gb.updateScreen();
 }

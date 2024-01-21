@@ -183,8 +183,24 @@ class GameBoy {
     void copyColorIntoMap(Color color) {
         int index = color.getTileIndex();
         index = 127;
+        //println();
+        //this.testtt(index);
+        //this.stop();
         this.utils.setBackGroundInTileMap(index);
     }
+    void testtt(int i) {
+        if (i == 127) {
+            println();
+            this.stop();
+        }
+    }
+    void stop() asm (
+            "
+    stoppp:
+            halt
+            jp stoppp
+        "
+                );
     void asmInit () asm (
         "
         ; On met les tiles elementaires dans la mémoire

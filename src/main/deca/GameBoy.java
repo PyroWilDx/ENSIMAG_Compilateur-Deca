@@ -148,6 +148,7 @@ class GameBoy {
         ; Turn the LCD off
         ld a, 0
         ld [rLCDC], a
+        ret
         "
     );
     void turnScreenOn() asm (
@@ -155,6 +156,7 @@ class GameBoy {
         ; Turn the LCD on
         ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
         ld [rLCDC], a
+        ret
         "
     );
     void initDisplayRegisters() asm (
@@ -162,6 +164,7 @@ class GameBoy {
         ; During the first (blank) frame, initialize display registers
         ld a, %11100100
         ld [rBGP], a
+        ret
         "
     );
     void setTile(int tileIndex, int x, int y) {
@@ -196,6 +199,67 @@ class GameBoy {
         db $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00, $ff,$00
         db $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff, $ff,$ff
         ElementaryTilesEnd:
+
+        SECTION \"Utils\", ROM0
+        call initVariables
+        jp EntryPoint
+        initVariables::
+        ld a, 0
+        ld [wFrameCounter], a
+        ld [wCurKeys], a
+        ld [wNewKeys], a
+                ret
+        CopyDEintoMemoryAtHL::
+        ld a, [de]
+        ld [hli], a
+        inc de
+        dec bc
+        ld a, b
+        or a, c
+        jp nz, CopyDEintoMemoryAtHL ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
+        ret;
+        SECTION \"VBlankVariables\", WRAM0
+
+        wVBlankCount:: db
+
+        SECTION \"VBlankFunctions\", ROM0
+
+        WaitForOneVBlank::
+
+        ; Wait a small amount of time
+                ; Save our count in this variable
+        ld a, 1
+        ld [wVBlankCount], a
+
+        WaitForVBlankFunction::
+
+        WaitForVBlankFunction_Loop::
+
+        ld a, [rLY] ; Copy the vertical line to a
+        cp 144 ; Check if the vertical line (in a) is 0
+        jp c, WaitForVBlankFunction_Loop ; A conditional jump. The condition is that 'c' is set, the last operation overflowed
+
+        ld a, [wVBlankCount]
+        sub a, 1
+        ld [wVBlankCount], a
+        ret z
+
+        WaitForVBlankFunction_Loop2::
+
+        ld a, [rLY] ; Copy the vertical line to a
+        cp 144 ; Check if the vertical line (in a) is 0
+        jp nc, WaitForVBlankFunction_Loop2 ; A conditional jump. The condition is that 'c' is set, the last operation overflowed
+
+        jp WaitForVBlankFunction_Loop
+
+                ; ANCHOR_END: vblank-utils
+
+        SECTION \"Counter\", WRAM0
+        wFrameCounter:: db
+        wCurKeys:: db
+        wNewKeys:: db
+
+        SECTION \"suite\", ROM0
         "
     ); //
     boolean KeyPressed(int pad) asm(
