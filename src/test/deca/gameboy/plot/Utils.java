@@ -166,24 +166,25 @@ class DrawEventList {
         int i = 0;
         int x;
         int y;
+        int tileIndex;
         DrawEvent current = first;
-        nextIndex = 42;
-        this.test = 1;
-        if (test == 1) {
-            utils.pushInTileMap(10,10, 127);
+        //nextIndex = 42;
+        //this.test = 1;
+        //if (test == 1) {
+        //    utils.pushInTileMap(10,10, 127);
+        //}
+        //if (test == 0) {
+         //   utils.pushInTileMap(10,15, 126);
+        //}
+        while(i < nextIndex){
+            tileIndex = current.getTileIndex();
+            x = current.getX();
+            y = current.getY();
+            utils.pushInTileMap(x,y, tileIndex);
+            current = current.getNext();
+            i = i + 1;
         }
-        if (test == 0) {
-            utils.pushInTileMap(10,15, 126);
-        }
-        while(false){
-            //tileIndex = current.getTileIndex();
-            //x = current.getX();
-            //y = current.getY();
-            //utils.pushInTileMap(x,y, tileIndex);
-            //current = current.getNext();
-            //i = i + 1;
-        }
-        //nextIndex = 0;
+        nextIndex = 0;
     }
     void debug(int i) asm(
             "ld hl, sp + 4

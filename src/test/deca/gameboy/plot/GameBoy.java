@@ -66,7 +66,7 @@ class GameBoy {
                 this.copyColorIntoMap(cc);
                 //this.copyColorIntoMap(126);
             }
-            this.utils.pushInTileMap(1, 10, WHITE);
+            //this.utils.pushInTileMap(1, 10, WHITE);
             this.drawEvents.drawList();
             this.turnScreenOn();
             return true;
@@ -184,6 +184,7 @@ class GameBoy {
         "
         call WaitForOneVBlank
 
+
                 ; init display reg
     ; During the first (blank) frame, initialize display registers
     ld a, %11100100
@@ -194,8 +195,15 @@ class GameBoy {
     ld bc, ElementaryTilesEnd - ElementaryTiles
     call CopyDEintoMemoryAtHL
 
+    ;ld de, wLetters
+    ;ld hl, $9620; Ce seront les quatres dernières tiles
+    ;ld bc, wLetters - wLettersEnd
+    ;call CopyDEintoMemoryAtHL
+
     call initVariables
             ;ld [hl], $ff
+
+            ret
 
 
     ;ld hl, $97f0

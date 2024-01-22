@@ -116,8 +116,8 @@ def doTests():
 
 
     # doVerify("gameboy/plot/init.deca")
-    doVerify("gameboy/plot/point.deca")
-    #doVerify("gameboy/plot/ClasslessbouncingBallEasy.deca")
+    #doVerify("gameboy/plot/point.deca")
+    doVerify("gameboy/plot/ClasslessbouncingBallEasy.deca")
 
     return 0
 
