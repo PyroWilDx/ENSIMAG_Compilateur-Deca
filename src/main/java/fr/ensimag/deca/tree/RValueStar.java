@@ -49,7 +49,7 @@ public class RValueStar extends TreeList<AbstractExpr> {
         this.set(0, rValue.verifyRValue(compiler, localEnv, currentClass, expectedType));
 
         RValueStar rValueStarWithoutFirst = this.copyWithoutFirst();
-        rValueStarWithoutFirst.setLocation(getLocation()); // TODO peut être amélioré en disant précisemment la colonne.
+        rValueStarWithoutFirst.setLocation(getLocation());
         Signature sigWithoutFirst = sig.copyWithoutFirst();
         rValueStarWithoutFirst.verifyRValueStar(compiler, localEnv, currentClass, sigWithoutFirst);
     }

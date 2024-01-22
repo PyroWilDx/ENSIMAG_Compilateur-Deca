@@ -27,8 +27,7 @@ public class Main extends AbstractMain {
         this.declVariables = declVariables;
         this.insts = insts;
     }
-
-    // TODO: Peut etre penser a creer une nouveelle classe bloc pour factorisation
+    
     @Override
     protected void verifyMain(DecacCompiler compiler) throws ContextualError {
         LOG.debug("verify Main: start");

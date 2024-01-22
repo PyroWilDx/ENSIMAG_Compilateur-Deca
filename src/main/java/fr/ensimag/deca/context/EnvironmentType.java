@@ -100,7 +100,6 @@ public class EnvironmentType {
                 typeBinaryOp.put(new KeyTypeBinaryOp("!=", type1, type2), BOOLEAN);
             }
         }
-        // TODO finir ces machins pour le langage avec objets
     }
     private final DecacCompiler compiler;
     private final Map<Symbol, TypeDefinition> envTypes;
