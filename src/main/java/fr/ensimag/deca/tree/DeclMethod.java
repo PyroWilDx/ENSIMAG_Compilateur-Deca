@@ -105,8 +105,8 @@ public class DeclMethod extends AbstractDeclMethod {
 
         if (!type.getType().isVoid()) {
             if (compiler.getCompilerOptions().doCheck()) {
-                compiler.addInstruction(new WSTR("Error: Exiting function " + className +
-                        "." + methodName + "() without return"));
+                compiler.addInstruction(new WSTR("Error: Exiting function '" + className +
+                        "." + methodName + "()' without return"));
                 compiler.addInstruction(new WNL());
                 compiler.addInstruction(new ERROR());
             }
