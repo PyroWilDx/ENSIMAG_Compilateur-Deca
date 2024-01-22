@@ -146,7 +146,15 @@ public class DeclField extends AbstractDeclField {
 
         int fieldOffset = vTM.getCurrFieldOffset(getName().getName());
 
+        if (((Initialization) init).getExpression() instanceof New) {
+            compiler.addInstruction(new SUBSP(4));
+        }
+
         init.codeGenInitGb(compiler);
+
+        if (((Initialization) init).getExpression() instanceof New) {
+            compiler.addInstruction(new ADDSP(4));
+        }
 
         GPRegister regValue = rM.getLastRegOrImm(compiler);
 

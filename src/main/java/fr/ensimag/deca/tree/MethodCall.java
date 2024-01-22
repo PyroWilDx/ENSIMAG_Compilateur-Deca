@@ -144,8 +144,6 @@ public class MethodCall extends AbstractMethodCall {
             if (lastSpOffset == null) {
                 parentMethodVarOffset = gbM.getCurrMethodVarCount(vTM);
                 parentMethodVarOffset += sM.getTmpVar();
-            } else {
-                parentMethodVarOffset = 0;
             }
 
             gbM.pushCurrMethodSpOffset(parentMethodVarOffset * 2);

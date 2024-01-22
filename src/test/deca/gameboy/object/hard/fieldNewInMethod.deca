@@ -1,13 +1,14 @@
 class A {
-    B b = new B();
+    B b;
 
     void init() {
+        b = new B();
         if (b.x != 1) {
             println();
         }
-        // if (b.y != 42) {
-            // println();
-        // }
+        if (b.y != 42) {
+            println();
+        }
     }
 
     void check() {
@@ -27,12 +28,12 @@ class B {
 {
     A a = new A();
     a.init();
-    // a.check();
+    a.check();
 
-    // if (a.b.x != 1) {
-    //     println();
-    // }
-    // if (a.b.y != 42) {
-    //     println();
-    // }
+    if (a.b.x != 1) {
+        println();
+    }
+    if (a.b.y != 42) {
+        println();
+    }
 }

@@ -66,7 +66,9 @@ public class New extends AbstractExpr {
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) {
         RegManager rM = compiler.getRegManager();
+        StackManager sM = compiler.getStackManager();
         VTableManager vTM = compiler.getVTableManager();
+        GameBoyManager gbM = compiler.getGameBoyManager();
 
         vTM.enterClass(type.getType().getName().getName());
         int fieldsCount = vTM.getCurrFieldCountOfClass();
@@ -76,6 +78,13 @@ public class New extends AbstractExpr {
         // Pour faire un New statique (Décommenter aussi dans GameBoyManager)
 //        int currFieldAddr = gbM.getNextDynamicFieldAddr();
 //        gbM.addDynamicFields(fieldsCount);
+
+        int parentMethodVarOffset = 0;
+        if (vTM.isInMethod()) {
+            parentMethodVarOffset = gbM.getCurrMethodVarCount(vTM);
+            parentMethodVarOffset += sM.getTmpVar();
+            compiler.addInstruction(new SUBSP(parentMethodVarOffset * 2));
+        }
 
         compiler.addInstruction(new LOAD_INT(GameBoyManager.dynamicFieldsCptAddr, Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
@@ -104,6 +113,11 @@ public class New extends AbstractExpr {
         compiler.addInstruction(new STORE_REG(Register.A, gpReg));
 
         compiler.addInstruction(new POP(gpReg));
+
+        if (vTM.isInMethod()) {
+            compiler.addInstruction(new ADDSP(parentMethodVarOffset * 2));
+        }
+
         rM.freeReg(gpReg);
     }
 
