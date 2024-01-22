@@ -167,7 +167,8 @@ class DrawEventList {
         int x;
         int y;
         DrawEvent current = first;
-        nextIndex = 1;
+        nextIndex = 42;
+        this.test = 1;
         if (test == 1) {
             utils.pushInTileMap(10,10, 127);
         }

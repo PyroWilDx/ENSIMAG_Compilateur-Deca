@@ -1,0 +1,22 @@
+class A {
+    B b = new B();
+
+    void f() {
+        b.g();
+    }
+}
+
+class B {
+    int x = 1;
+
+    void g() {
+        if (x != 1) {
+            println();
+        }
+    }
+}
+
+{
+    A a = new A();
+    a.f();
+}
