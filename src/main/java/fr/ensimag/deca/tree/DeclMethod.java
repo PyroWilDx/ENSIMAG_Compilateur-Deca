@@ -13,8 +13,6 @@ public class DeclMethod extends AbstractDeclMethod {
     private final AbstractIdentifier type;
     private final AbstractIdentifier name;
     private final ListDeclParam params;
-    // TODO peutetre creer une classe bloc pour factoriser avec Main et se rapprocher du sujet
-    // TODO mais dans ce cas penser à changer le parser
     private final ListDeclVar listDeclVar;
     private final ListInst listInst;
 

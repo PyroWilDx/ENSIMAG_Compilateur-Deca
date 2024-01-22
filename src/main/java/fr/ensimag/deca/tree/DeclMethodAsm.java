@@ -68,7 +68,6 @@ public class DeclMethodAsm extends AbstractDeclMethod {
                                      ClassDefinition currentClass) throws ContextualError{
         this.type.verifyType(compiler);
         this.params.verifyListDeclParamBody(compiler);
-        // TODO faut pas faire un truc là ? Je pense pas
     }
 
     @Override

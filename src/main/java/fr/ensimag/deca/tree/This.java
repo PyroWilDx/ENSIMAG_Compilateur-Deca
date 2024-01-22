@@ -22,7 +22,7 @@ public class This extends AbstractExpr {
             throw new ContextualError("'this' cannot refer to Object class.", getLocation());
         }
         this.setType(currentClass.getType());
-        return currentClass.getType(); // TODO aucun moyen que ce soit pas un ClassType donc je comprends pas trop l'autre condition dans la regle 3.43
+        return currentClass.getType();
         // Done
     }
 
@@ -58,11 +58,11 @@ public class This extends AbstractExpr {
 
     @Override
     protected void prettyPrintChildren(PrintStream s, String prefix) {
-        // TODO
+
     }
 
     @Override
     protected void iterChildren(TreeFunction f) {
-        // TODO
+
     }
 }

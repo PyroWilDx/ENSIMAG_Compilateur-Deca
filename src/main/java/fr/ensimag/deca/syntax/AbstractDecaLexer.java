@@ -191,7 +191,7 @@ public abstract class AbstractDecaLexer extends Lexer {
             return CharStreams.fromReader(new InputStreamReader(url.openStream()), url.getFile());
         }
 
-        throw new IncludeFileNotFound(name, this, getInputStream()); // TODO: check this
+        throw new IncludeFileNotFound(name, this, getInputStream());
     }
 
     InputStream getFileInputStream(String name) throws IOException, IncludeFileNotFound {
@@ -210,13 +210,13 @@ public abstract class AbstractDecaLexer extends Lexer {
         }
 
         // ... and fall back to the standard library path if not found.
-        final URL url = ClassLoader.getSystemResource("include/" + name); // TODO: if needed, Modify tiles library here later
+        final URL url = ClassLoader.getSystemResource("include/" + name);
         if (url != null) {
             LOG.debug("Using library " + url);
             return url.openStream();
         }
 
-        throw new IncludeFileNotFound(name, this, getInputStream()); // TODO: check this
+        throw new IncludeFileNotFound(name, this, getInputStream());
     }
 
     /**
@@ -288,7 +288,7 @@ public abstract class AbstractDecaLexer extends Lexer {
         Validate.notNull(name);
         Validate.notEmpty(name);
         StringBuilder tileContent = readIncludeFile(name);
-        // TODO: Verify that the tile is valid with a regexp
+
         if (this.decacCompiler != null) {
             if (!GameBoyManager.doCp)
                 throw new NonAuthorizedIncludeTiles(this, this.getInputStream());
@@ -313,7 +313,7 @@ public abstract class AbstractDecaLexer extends Lexer {
         Validate.notNull(name);
         Validate.notEmpty(name);
         StringBuilder tilemapContent = readIncludeFile(name);
-        // TODO: Verify that the tilemap is valid with a regexp
+
         if (this.decacCompiler != null) {
             if (!GameBoyManager.doCp)
                 throw new NonAuthorizedIncludeTiles(this, this.getInputStream());
