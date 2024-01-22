@@ -95,7 +95,6 @@ public class New extends AbstractExpr {
         GPRegister gpReg = rM.getFreeReg();
 //        compiler.addInstruction(new LOAD_INT(currFieldAddr, Register.HL));
         compiler.addInstruction(new PUSH(Register.HL));
-        compiler.addInstruction(new BSR(initMethodLabel));
 
         compiler.addInstruction(new LOAD_INT(GameBoyManager.dynamicFieldsCptAddr, Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A)); // High
@@ -111,6 +110,8 @@ public class New extends AbstractExpr {
         compiler.addInstruction(new DEC_REG(gpReg));
         compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), Register.A));
         compiler.addInstruction(new STORE_REG(Register.A, gpReg));
+
+        compiler.addInstruction(new BSR(initMethodLabel));
 
         compiler.addInstruction(new POP(gpReg));
 
