@@ -1,7 +1,7 @@
 class Color {
     boolean bit1 = true;
     boolean bit2 = true;
-    int index = 124;
+    protected int index = 124;
     void setBlack() {
         this.bit1 = false;
         this.bit2 = false;
@@ -10,7 +10,7 @@ class Color {
     void setDark() {
         this.bit1 = false;
         this.bit2 = true;
-        this.index = 125;
+        this.index = 127;
     }
     void setLight() {
         this.bit1 = true;
@@ -29,7 +29,7 @@ class Color {
         return !this.bit1 && !this.bit1;
     }
     int getTileIndex() {
-        return index;
+        return this.index;
     }
     boolean isSameColor(Color color) {
         return this.bit1 == color.bit1 && this.bit2 == color.bit2;
@@ -37,14 +37,14 @@ class Color {
 
 }
 class BackgroundMapMod {
-    protected Color color = new Color();
+    protected int color = 124;
     protected boolean user = false;
     protected boolean changed = true;
     int WIDTH = 32;
     int HEIGHT = 32;
 
-    void setColor(Color c) {
-        if (!this.color.isSameColor(c)) {
+    void setColor(int c) {
+        if (this.color != c) {
             this.changed = true;
             this.color = c;
         }
@@ -62,7 +62,7 @@ class BackgroundMapMod {
         this.changed = false;
     }
 
-    Color getColor() {
+    int getColor() {
         return this.color;
     }
 }
@@ -125,7 +125,7 @@ class Utils {
         "
         ld hl, sp + 4
         ld e, [hl]
-        ;ld e, $7f
+        ;ld e, $7e
         ld hl, $9800
         ld bc, $240
         setBackGroundInTileMapLoop:

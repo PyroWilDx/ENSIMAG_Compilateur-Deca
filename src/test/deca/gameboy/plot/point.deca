@@ -5,7 +5,7 @@
     int a = 1;
     GameBoy gb = new GameBoy();
     gb.init();
-    gb.setBackgroundColor(gb.LIGHT);
+    gb.setBackgroundColor(gb.DARK);
     //gb.setColor(gb.BLACK, 10, 10);
     while (!updated) {
         updated = gb.updateScreen();

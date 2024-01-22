@@ -78,18 +78,18 @@ class GameBoy {
     int START_KEY = 8;
     protected Utils utils = new Utils();
     protected BackgroundMapMod map = new BackgroundMapMod();
-    Color WHITE = new Color();
-    Color LIGHT = new Color();
-    Color DARK = new Color();
-    Color BLACK = new Color();
+    int WHITE = 124;
+    int LIGHT = 126;
+    int BLACK = 127;
+    int DARK = 125;
     protected boolean firstUpdate = true;
 
     void init() {
-        WHITE.setWhite();
-        BLACK.setBlack();
-        DARK.setDark();
-        LIGHT.setLight();
-        //this.setBackgroundColor(WHITE);
+        //WHITE.setWhite();
+        //BLACK.setBlack();
+        //DARK.setDark();
+        //LIGHT.setLight();
+        //this.setBackgroundColor(DARK);
         this.asmInit();
 
         // TODO faudra en fait mettre tous ces trucs au début du fichier avec le compilateur
@@ -167,19 +167,21 @@ class GameBoy {
     void setTile(int tileIndex, int x, int y) {
         this.drawEvents.add(tileIndex, x, y);
     }
-    void setColor(Color color, int x, int y) {
+    void setColor(int color, int x, int y) {
         int a = 1;
         a = a + 1;
         //this.setTile(color.getTileIndex(), x, y);
+        this.setTile(color, x, y);
     }
 
     //
-    void setBackgroundColor(Color color) {
+    void setBackgroundColor(int color) {
         this.map.setColor(color);
     }
-    void copyColorIntoMap(Color color) {
-        int index = color.getTileIndex();
-        //index = 127;
+    void copyColorIntoMap(int c) {
+        //int index = c.getTileIndex();
+        int index = c;
+        //index = 126;
         //println();
         //this.testtt(index);
         //this.stop();
