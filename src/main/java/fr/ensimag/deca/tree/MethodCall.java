@@ -144,10 +144,13 @@ public class MethodCall extends AbstractMethodCall {
             if (lastSpOffset == 0) {
                 parentMethodVarOffset = gbM.getCurrMethodVarCount(vTM);
                 parentMethodVarOffset += sM.getTmpVar();
+                parentMethodVarOffset *= 2;
+            } else {
+                parentMethodVarOffset = 0;
             }
 
-            gbM.pushCurrMethodSpOffset(parentMethodVarOffset * 2);
-            compiler.addInstruction(new SUBSP(parentMethodVarOffset * 2));
+            gbM.pushCurrMethodSpOffset(parentMethodVarOffset);
+            compiler.addInstruction(new SUBSP(parentMethodVarOffset));
             // Normalement, après ça c'est pas possible d'avoir "ld hl, SP+e8" avec e8 négatif
         }
 
@@ -170,7 +173,7 @@ public class MethodCall extends AbstractMethodCall {
         compiler.addInstruction(new BSR(mLabel));
 
         if (vTM.isInMethod()) {
-            compiler.addInstruction(new ADDSP(parentMethodVarOffset * 2));
+            compiler.addInstruction(new ADDSP(parentMethodVarOffset));
             gbM.popCurrMethodSpOffset();
         }
 

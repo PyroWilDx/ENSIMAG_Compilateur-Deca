@@ -45,12 +45,12 @@ class C {
         //     println();
         // }
 
-        if (b.getSum(a.add10(x), b.add30(y)) == 70) {
-            println();
-        }
+        // if (b.getSum(a.add10(x), b.add30(y)) != 70) {
+        //     println();
+        // }
  
-        return 140;
-        // return c.getSum(b.getSum(a.add10(x), b.add30(y)), a.add10(z), a.add20(x));
+        // return 140;
+        return c.getSum(b.getSum(a.add10(x), b.add30(y)), a.add10(z), a.add20(x));
     }
 
 }
@@ -59,7 +59,7 @@ class C {
 {
     C c = new C();
     int x = c.getSum(10, 20, 30);
-    // if (x == 140) {
-        // println();
-    // }
+    if (x == 140) {
+        println();
+    }
 }

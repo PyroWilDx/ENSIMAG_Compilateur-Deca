@@ -14,6 +14,9 @@ class A {
         if (b.x != 1) {
             println();
         }
+        if (b.y != 42) {
+            println();
+        }
     }
 
 }
