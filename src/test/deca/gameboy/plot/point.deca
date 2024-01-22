@@ -7,12 +7,15 @@
     gb.init();
     gb.setBackgroundColor(gb.DARK);
     gb.setColor(gb.LIGHT, 15, 5);
-    gb.sleep(1);
-    gb.setColor(gb.DARK, 15, 5);
-    gb.setColor(gb.LIGHT, 6, 5);
-    gb.sleep(1);
-    gb.setColor(gb.DARK, 6, 5);
-    gb.setColor(gb.LIGHT, 7, 5);
+    while (!updated) {
+        updated = gb.updateScreen();
+    }
+    //gb.sleep(1);
+    //gb.setColor(gb.DARK, 15, 5);
+    //gb.setColor(gb.LIGHT, 6, 5);
+    //gb.sleep(1);
+    //gb.setColor(gb.DARK, 6, 5);
+    //gb.setColor(gb.LIGHT, 7, 5);
     //gb.sleep(1);
     //while (!updated) {
     //    updated = gb.updateScreen();

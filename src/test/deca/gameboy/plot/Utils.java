@@ -114,10 +114,10 @@ class DrawEvent {
     }
 }
 class DrawEventList {
-    int test = 1;
     protected DrawEvent first = null;
     protected DrawEvent last = null;
-    int nextIndex;
+    int nextIndex = 0;
+    int test = 1;
     int size = 3;
     Utils utils = new Utils();
 
@@ -163,20 +163,16 @@ class DrawEventList {
         return this.first;
     }
     void drawList(){
-        //int i = 0;
-        //int tileIndex;
-        //int x;
-        //int y;
-        //int lim = 1;
-        //DrawEvent current = first;
-        //nextIndex = 1;
-        // debug(nextIndex);
-        test = 1;
-        if (test != 1) {
+        int i = 0;
+        int x;
+        int y;
+        DrawEvent current = first;
+        nextIndex = 1;
+        if (test == 1) {
             utils.pushInTileMap(10,10, 127);
         }
-        if (test == 1) {
-            utils.pushInTileMap(10,15, 127);
+        if (test == 0) {
+            utils.pushInTileMap(10,15, 126);
         }
         while(false){
             //tileIndex = current.getTileIndex();

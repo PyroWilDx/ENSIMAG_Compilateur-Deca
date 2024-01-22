@@ -18,7 +18,7 @@ class GameBoy {
     int SELECT_KEY = 4;
     int START_KEY = 8;
     protected Utils utils = new Utils();
-    protected BackgroundMapMod map;
+    protected BackgroundMapMod map = new BackgroundMapMod();
     int WHITE = 124;
     int LIGHT = 126;
     int BLACK = 127;
@@ -27,12 +27,12 @@ class GameBoy {
 
     void init() {
         //Utils u = new Utils();
-        BackgroundMapMod b = new BackgroundMapMod();
+        //BackgroundMapMod b = new BackgroundMapMod();
         DrawEventList d = new DrawEventList();
-        //utils = u;
-        map = b;
-        d.init();
         drawEvents = d;
+        //utils = u;
+        //map = b;
+        drawEvents.init();
         //this.drawEvents.init();
         //WHITE.setWhite();
         //BLACK.setBlack();
@@ -68,8 +68,8 @@ class GameBoy {
                 this.copyColorIntoMap(cc);
                 //this.copyColorIntoMap(126);
             }
-            //this.utils.pushInTileMap(10, 10, BLACK);
-            //this.drawEvents.drawList();
+            this.utils.pushInTileMap(1, 10, WHITE);
+            this.drawEvents.drawList();
             this.turnScreenOn();
             return true;
         }
@@ -144,19 +144,19 @@ class GameBoy {
         this.drawEvents.add(tileIndex, x, y);
     }
     void setColor(int color, int x, int y) {
-        //
+        this.setTile(color, x, y);
         //this.setTile(color, x, y);
-        int cc;
-        this.waitVBlank();
-        this.turnScreenOff();
-        if (this.map.hasChanged()) {
-            this.map.setStateUpdated();
-            cc = map.getColor();
-            this.copyColorIntoMap(cc);
-            //this.copyColorIntoMap(126);
-        }
-        utils.pushInTileMap(x, y, color);
-        this.turnScreenOn();
+        //int cc;
+        //this.waitVBlank();
+        //this.turnScreenOff();
+        //if (this.map.hasChanged()) {
+        //    this.map.setStateUpdated();
+        //    cc = map.getColor();
+        //    this.copyColorIntoMap(cc);
+        //    //this.copyColorIntoMap(126);
+        //}
+        //utils.pushInTileMap(x, y, color);
+        //this.turnScreenOn();
     }
     void rien() {}
 
