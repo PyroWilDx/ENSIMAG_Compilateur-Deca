@@ -39,7 +39,7 @@ class Color {
 class BackgroundMapMod {
     protected Color color = new Color();
     protected boolean user = false;
-    protected boolean changed = false;
+    protected boolean changed = true;
     int WIDTH = 32;
     int HEIGHT = 32;
 
@@ -135,13 +135,12 @@ class Utils {
             ld a, b
             or a, c
             jp nz, setBackGroundInTileMapLoop ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
-
+        ret
         "
     );
     void pushInTileMap(int x, int y, int tileIndex) asm(
             "
-            ld hl, $994a
-            ld hl, $7c
+
 
             ; a = y
             ld hl, sp + 6
@@ -162,6 +161,11 @@ class Utils {
             or a, a
             jp z, yEqualsZero
 
+            ; a = y
+            ld hl, sp + 6
+            ld a, [hl]
+            ;ld a, 10
+
             ; hl c est la premiere adresse de la map
             ld hl, $9800
             ; de = 32
@@ -177,7 +181,7 @@ class Utils {
             yEqualsZero:
             ld e, b
             add hl, de ;hl += x;
-            ld [hl], c
+            ;ld [hl], c
             ret
             "
             ); // TODO VRAIMENT PAS SÛR

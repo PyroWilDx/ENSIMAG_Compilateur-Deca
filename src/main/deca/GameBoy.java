@@ -89,7 +89,7 @@ class GameBoy {
         BLACK.setBlack();
         DARK.setDark();
         LIGHT.setLight();
-        this.setBackgroundColor(WHITE);
+        //this.setBackgroundColor(WHITE);
         this.asmInit();
 
         // TODO faudra en fait mettre tous ces trucs au début du fichier avec le compilateur
