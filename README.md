@@ -2,7 +2,7 @@
 gl47, 01/01/2024.  
 
 
-Nos scripts de tests pour chaque étape du compilateur se trouvent dans le répertoire src/test/script/ :  
+Nos scripts de tests pour chaque étape du compilateur et pour l'extension se trouvent dans le répertoire src/test/script/ :  
 
 **tests_lexico.sh** : script des tests de la lexicographie de l'étape A.  
 **tests_syntaxe.sh** : script des tests de la syntaxe de l'étape A.  
@@ -12,3 +12,5 @@ Nos scripts de tests pour chaque étape du compilateur se trouvent dans le répe
 **tests_context_failed.sh** : liste des tests invalides de l'étape B qui affichent une erreur incorrecte.  
 
 **tests_codegen.sh** : script des tests de l'étape C.  
+
+**tests_gameboy.sh** : script des tests de l'extension GameBoy.
