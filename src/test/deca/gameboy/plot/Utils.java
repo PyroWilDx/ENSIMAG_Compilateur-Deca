@@ -63,6 +63,7 @@ class BackgroundMapMod {
     }
 
     int getColor() {
+        //this.color = 126;
         return this.color;
     }
 }
@@ -71,6 +72,18 @@ class DrawEvent {
     protected int x;
     protected int y;
     protected DrawEvent next = null;
+
+    void setTileIndex(int tileIndex) {
+        this.tileIndex = tileIndex;
+    }
+
+    void setX(int x) {
+        this.x = x;
+    }
+
+    void setY(int y) {
+        this.y = y;
+    }
 
     int getTileIndex() {
         return tileIndex;
@@ -101,11 +114,43 @@ class DrawEvent {
     }
 }
 class DrawEventList {
+    int test = 1;
     protected DrawEvent first = null;
     protected DrawEvent last = null;
-    DrawEvent event = new DrawEvent();
-    void add(int index, int x, int y) {
-        event.init(index, x, y);
+    int nextIndex;
+    int size = 3;
+    Utils utils = new Utils();
+
+    void init() {
+        int i = 0;
+        DrawEvent event;
+        this.nextIndex = 1;
+        while (i < size) {
+            event = new DrawEvent();
+            this.addInit(event);
+            i = i + 1;
+        }
+        // event.setNext(first);
+    }
+    /*private*/void set(int i, int tileIndex, int x, int y) {
+        int k = 0;
+        DrawEvent current = first;
+        while (k < i) {
+            current = current.getNext();
+            k=k+1;
+        }
+        current.setX(x);
+        current.setY(y);
+        current.setTileIndex(tileIndex);
+    }
+    void add(int tileIndex, int x, int y) {
+        if (nextIndex == this.size + 1) {
+            nextIndex = 0;
+        }
+        set(nextIndex, tileIndex, x, y);
+        nextIndex = nextIndex + 1;
+    }
+    /*private*/ void addInit(DrawEvent event) {
         if (this.first == null) {
             this.first = event;
             this.last = event;
@@ -117,6 +162,39 @@ class DrawEventList {
     DrawEvent getFirst() {
         return this.first;
     }
+    void drawList(){
+        //int i = 0;
+        //int tileIndex;
+        //int x;
+        //int y;
+        //int lim = 1;
+        //DrawEvent current = first;
+        //nextIndex = 1;
+        // debug(nextIndex);
+        test = 1;
+        if (test != 1) {
+            utils.pushInTileMap(10,10, 127);
+        }
+        if (test == 1) {
+            utils.pushInTileMap(10,15, 127);
+        }
+        while(false){
+            //tileIndex = current.getTileIndex();
+            //x = current.getX();
+            //y = current.getY();
+            //utils.pushInTileMap(x,y, tileIndex);
+            //current = current.getNext();
+            //i = i + 1;
+        }
+        nextIndex = 0;
+    }
+    void debug(int i) asm(
+            "ld hl, sp + 4
+            ld a, [hl]
+            loop:
+            jp loop
+            "
+            );
 }
 
 class Utils {
@@ -140,22 +218,22 @@ class Utils {
     );
     void pushInTileMap(int x, int y, int tileIndex) asm(
             "
-
-
+    ;loop:
+    ;jp loop
             ; a = y
             ld hl, sp + 6
             ld a, [hl]
-            ;ld a, 10
+            ld a, 10
 
             ; b = x
             ld hl, sp + 4
             ld b, [hl]
-            ;ld b, 10
+            ld b, 10
 
             ; c = value
             ld hl, sp + 8
             ld c, [hl]
-            ;ld c, $7e
+            ld c, $7f
 
             ; si y == 0 on passe à la boucle des colonnes
             or a, a
@@ -164,7 +242,7 @@ class Utils {
             ; a = y
             ld hl, sp + 6
             ld a, [hl]
-            ;ld a, 10
+            ld a, 10
 
             ; hl c est la premiere adresse de la map
             ld hl, $9800
@@ -181,7 +259,7 @@ class Utils {
             yEqualsZero:
             ld e, b
             add hl, de ;hl += x;
-            ;ld [hl], c
+            ld [hl], c
             ret
             "
             ); // TODO VRAIMENT PAS SÛR
