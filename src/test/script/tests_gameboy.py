@@ -43,7 +43,11 @@ def doVerify(decaFilePath):
     os.system(f"rgblink -o {decaFileNameNoExt}.gb {decaFileNameNoExt}.o")
     os.system(f"rgbfix -v -p 0xFF {decaFileNameNoExt}.gb")
 
+<<<<<<< HEAD
     # os.system(f"Emulicious.jar {decaFileNameNoExt}.gb &")
+=======
+    #os.system(f"Emulicious.jar {decaFileNameNoExt}.gb &")
+>>>>>>> a61de09b1bb5d0d814fc1dd35096bbcae6c17e26
     os.system(f"Emulicious.jar {decaFileNameNoExt}.gb > /dev/null 2>&1 &")
 
     os.chdir(lastDir)
@@ -64,6 +68,7 @@ def doTests():
     prettyPrint("TEST GameBoy")
 
     #doVerify("gameboy/bin/fastTest.deca")
+<<<<<<< HEAD
     #
     # doVerify("gameboy/base/declVar.deca")
     # doVerify("gameboy/base/opArith.deca")
@@ -111,9 +116,56 @@ def doTests():
     # doVerify("gameboy/object/hard/linkedList.deca")
     # doVerify("gameboy/object/hard/binaryTreeV1.deca")
     # doVerify("gameboy/object/hard/binaryTreeV2.deca")
+=======
 
-    # doVerify("gameboy/plot/init.deca")
-    # doVerify("gameboy/plot/point.deca")
+    #doVerify("gameboy/base/declVar.deca")
+    #doVerify("gameboy/base/opArith.deca")
+    #doVerify("gameboy/base/opRegOverflow.deca")
+    #doVerify("gameboy/base/assign.deca")
+
+    #doVerify("gameboy/cond/boolLazyEval.deca")
+    #doVerify("gameboy/cond/elseOpCmp.deca")
+    #doVerify("gameboy/cond/ifThenElseSimple.deca")
+    #doVerify("gameboy/cond/ifThenElseComplex.deca")
+    #doVerify("gameboy/cond/whileSimple.deca")
+    #doVerify("gameboy/cond/whileComplex.deca")
+
+    #doVerify("gameboy/object/easy/fieldSelection.deca")
+    #doVerify("gameboy/object/easy/fieldInitReg.deca")
+    #doVerify("gameboy/object/easy/callSimple.deca")
+    #doVerify("gameboy/object/easy/callParams.deca")
+    #doVerify("gameboy/object/easy/callReturn.deca")
+    #doVerify("gameboy/object/easy/noThisAccess.deca")
+    #doVerify("gameboy/object/easy/thisSimple.deca")
+    #doVerify("gameboy/object/easy/fieldAssign.deca")
+    #doVerify("gameboy/object/easy/fieldInitFieldSimple.deca")
+
+    #doVerify("gameboy/object/mid/objReassign.deca")
+    #doVerify("gameboy/object/mid/fieldInitMethod.deca")
+    #doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
+    #doVerify("gameboy/object/mid/varInMethod.deca")
+    #doVerify("gameboy/object/mid/methodCallMethod.deca")
+    #doVerify("gameboy/object/mid/recursiveMethod.deca")
+
+    #doVerify("gameboy/object/extends/extendsFieldSimple.deca")
+    #doVerify("gameboy/object/extends/extendsFields.deca")
+    #doVerify("gameboy/object/extends/extendsMethods.deca")
+
+    #doVerify("gameboy/object/others/equalsSimple.deca")
+    #doVerify("gameboy/object/others/elseOpCmp.deca")
+    #doVerify("gameboy/object/others/assignInside.deca")
+    #doVerify("gameboy/object/others/asmSimple.deca")
+    #doVerify("gameboy/object/others/methodRegOverflow.deca")
+
+    #doVerify("gameboy/object/hard/recursiveReturn.deca")
+    #doVerify("gameboy/object/hard/linkedList.deca")
+    #doVerify("gameboy/object/hard/newInMethod.deca")
+    #doVerify("gameboy/object/hard/binaryTreeV1.deca")
+    #doVerify("gameboy/object/hard/binaryTreeV2.deca")
+>>>>>>> a61de09b1bb5d0d814fc1dd35096bbcae6c17e26
+
+    # #doVerify("gameboy/plot/init.deca")
+    doVerify("gameboy/plot/point.deca")
 
     return 0
 

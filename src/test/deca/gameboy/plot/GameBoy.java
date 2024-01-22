@@ -1,71 +1,12 @@
 #include "Utils.java"
 
-
-
-//class Tile {
-//    protected int index;
-//    protected int firstTileAdress = 36864;
-//    protected Utils utils = new Utils();
-//    void placeForeGround(){
-//
-//    }
-//    void place(boolean foreground, int x, int y) {
-//        int mapOffset = (y * 32) + x;
-//
-//        // TODO
-//    }
-//    void setTilePixel(int x, int y, Color color) {
-//        int tileAddr = this.firstTileAdress + this.index * 16; // une tile c'est 16 octets
-//        int addr1 = tileAddr + 2*y;
-//        int addr2 = addr1 + 1;
-//        int oct1 = utils.get(addr1);
-//        int oct2 = utils.get(addr2);
-//        int newValue1 = oct1;
-//        int newValue2 = oct2;
-//        int powerOfTwo = this.utils.pow(2, 7 - x);
-//        boolean bit1 = ((oct1 / powerOfTwo) % 2) == 1;
-//        boolean bit2 = ((oct2 / powerOfTwo) % 2) == 1;
-//        if (bit1 != color.bit1) {
-//            if (color.bit1) {
-//                newValue1 = newValue1 + powerOfTwo;
-//            }
-//            else {
-//                newValue1 = newValue1 - powerOfTwo;
-//            }
-//        }
-//        if (bit2 != color.bit2) {
-//            if (color.bit2) {
-//                newValue2 = newValue2 + powerOfTwo;
-//            }
-//            else {
-//                newValue2 = newValue2 - powerOfTwo;
-//            }
-//        }
-//        utils.push(addr1, newValue1);
-//        utils.push(addr2, newValue2);
-//    }
-//    void setBlack() {
-//        this.index = 0;
-//    }
-//    void setDark() {
-//        this.index = 1;
-//    }
-//    void setLight() {
-//        this.index = 2;
-//    }
-//    void setWhite() {
-//        this.index = 3;
-//    }
-//
-//}
-
-
 class GameBoy {
-    protected DrawEventList drawEvents = new DrawEventList();
+    protected DrawEventList drawEvents;
     int WIDTH = 20;
     protected int pixelWidth = 160;
     int HEIGHT = 18;
     protected int pixelHeight = 144;
+
 
 
     int UP_KEY = 64;
@@ -77,7 +18,7 @@ class GameBoy {
     int SELECT_KEY = 4;
     int START_KEY = 8;
     protected Utils utils = new Utils();
-    protected BackgroundMapMod map = new BackgroundMapMod();
+    protected BackgroundMapMod map;
     int WHITE = 124;
     int LIGHT = 126;
     int BLACK = 127;
@@ -85,6 +26,14 @@ class GameBoy {
     protected boolean firstUpdate = true;
 
     void init() {
+        //Utils u = new Utils();
+        BackgroundMapMod b = new BackgroundMapMod();
+        DrawEventList d = new DrawEventList();
+        //utils = u;
+        map = b;
+        d.init();
+        drawEvents = d;
+        //this.drawEvents.init();
         //WHITE.setWhite();
         //BLACK.setBlack();
         //DARK.setDark();
@@ -105,7 +54,8 @@ class GameBoy {
 
 
     boolean updateScreen() {
-        DrawEvent event = this.drawEvents.getFirst();
+        int cc;
+        int xxx, yyy, indexxx;
         if (this.isInVBlank()) {
             if (this.firstUpdate) {
                 this.initDisplayRegisters();
@@ -114,13 +64,12 @@ class GameBoy {
             this.turnScreenOff();
             if (this.map.hasChanged()) {
                 this.map.setStateUpdated();
-                this.copyColorIntoMap(map.getColor());
+                cc = map.getColor();
+                this.copyColorIntoMap(cc);
+                //this.copyColorIntoMap(126);
             }
-            //while (false) {
-                //this.utils.pushInTileMap(10, 10, 127);
-                //this.utils.pushInTileMap(event.getX(), event.getY(), event.getTileIndex());
-            //    event = null;
-            //}
+            //this.utils.pushInTileMap(10, 10, BLACK);
+            //this.drawEvents.drawList();
             this.turnScreenOn();
             return true;
         }
@@ -148,6 +97,11 @@ class GameBoy {
         ret
         "
     );
+    void waitVBlank() asm (
+            "
+    call WaitForOneVBlank
+        "
+    );
     void turnScreenOn() asm (
         "
     ; Turn the LCD on
@@ -165,14 +119,27 @@ class GameBoy {
         "
     );
     void setTile(int tileIndex, int x, int y) {
+        //DrawEvent e = new DrawEvent();
+        //e.init(tileIndex, x, y);
         this.drawEvents.add(tileIndex, x, y);
     }
     void setColor(int color, int x, int y) {
-        int a = 1;
-        a = a + 1;
-        //this.setTile(color.getTileIndex(), x, y);
-        this.setTile(color, x, y);
+        //
+        //this.setTile(color, x, y);
+        int cc;
+        this.waitVBlank();
+        this.turnScreenOff();
+        //f (this.map.hasChanged()) {
+           // this.map.setStateUpdated();
+            //cc = map.getColor();
+            this.copyColorIntoMap(WHITE);
+            //this.copyColorIntoMap(126);
+        //}
+        utils.pushInTileMap(x, y, LIGHT);
+        this.turnScreenOn();
     }
+    void rien() {}
+
 
     //
     void setBackgroundColor(int color) {
@@ -187,12 +154,7 @@ class GameBoy {
         //this.stop();
         this.utils.setBackGroundInTileMap(index);
     }
-    void testtt(int i) {
-        if (i == 127) {
-            println();
-            this.stop();
-        }
-    }
+
     void stop() asm (
             "
     stoppp:
@@ -202,12 +164,18 @@ class GameBoy {
                 );
     void asmInit () asm (
         "
-        ; On met les tiles elementaires dans la mémoire
+        call initVariables
+        call WaitForOneVBlank
+            ; On met les tiles elementaires dans la mémoire
         ld de, ElementaryTiles
         ld hl, $97c0; Ce seront les quatres dernières tiles
         ld bc, ElementaryTilesEnd - ElementaryTiles
         call CopyDEintoMemoryAtHL
 
+
+
+    ld hl, $97f0
+    ld [hl], $ff
         ret; comme ça on essaie pas d executer la suite
 
     SECTION \"Elementary Tile data\", ROM0
@@ -220,15 +188,13 @@ class GameBoy {
     ElementaryTilesEnd:
 
     SECTION \"Utils\", ROM0
-    call initVariables
-    jp EntryPoint
-    initVariables::
+    initVariables:
     ld a, 0
     ld [wFrameCounter], a
     ld [wCurKeys], a
     ld [wNewKeys], a
             ret
-    CopyDEintoMemoryAtHL::
+    CopyDEintoMemoryAtHL:
     ld a, [de]
     ld [hli], a
     inc de
@@ -237,9 +203,13 @@ class GameBoy {
     or a, c
     jp nz, CopyDEintoMemoryAtHL ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
     ret;
-    SECTION \"VBlankVariables\", WRAM0
+    SECTION \"Variables\", WRAM0
 
-    wVBlankCount:: db
+    wVBlankCount: db
+    wFrameCounter: db
+    wCurKeys: db
+    wNewKeys: db
+
 
     SECTION \"VBlankFunctions\", ROM0
 
@@ -272,13 +242,6 @@ class GameBoy {
     jp WaitForVBlankFunction_Loop
 
             ; ANCHOR_END: vblank-utils
-
-    SECTION \"Counter\", WRAM0
-    wFrameCounter:: db
-    wCurKeys:: db
-    wNewKeys:: db
-
-    SECTION \"suite\", ROM0
         "
     ); //
     boolean keyPressed(int pad) asm(
