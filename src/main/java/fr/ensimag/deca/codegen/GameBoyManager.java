@@ -137,11 +137,13 @@ public class GameBoyManager {
 //    }
 
     public Integer getCurrMethodSpOffset() {
+//        if (currMethodSpOffset.isEmpty()) return 0;
         int totalSpOffset = 0;
         for (Integer spOffset : currMethodSpOffset) {
             totalSpOffset += spOffset;
         }
         return totalSpOffset;
+//        return currMethodSpOffset.peekFirst();
     }
 
     public void loadIdentAddrIntoHL(DecacCompiler compiler, AbstractIdentifier ident) {

@@ -146,7 +146,7 @@ public class MethodCall extends AbstractMethodCall {
                 parentMethodVarOffset += sM.getTmpVar();
                 parentMethodVarOffset *= 2;
             } else {
-                parentMethodVarOffset = 0;
+                parentMethodVarOffset = 2;
             }
 
             gbM.pushCurrMethodSpOffset(parentMethodVarOffset);
