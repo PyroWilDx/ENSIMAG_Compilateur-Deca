@@ -178,6 +178,8 @@ class GameBoy {
     }
     void asmInit () asm (
         "
+
+        call WaitForOneVBlank
         ; On met les tiles elementaires dans la mémoire
         ld de, ElementaryTiles
         ld hl, $97c0; Ce seront les quatres dernières tiles
