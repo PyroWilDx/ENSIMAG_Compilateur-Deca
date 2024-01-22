@@ -7,7 +7,6 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.ADD;
 import fr.ensimag.ima.pseudocode.instructions.ADD_A;
 import fr.ensimag.ima.pseudocode.instructions.LOAD_REG;
-import fr.ensimag.ima.pseudocode.instructions.SUB_A;
 
 /**
  * @author gl47

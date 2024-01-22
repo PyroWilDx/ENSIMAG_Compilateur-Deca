@@ -22,6 +22,16 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
     public AbstractOpArith(AbstractExpr leftOperand, AbstractExpr rightOperand) {
         super(leftOperand, rightOperand);
     }
+    
+    public FloatLiteral isFloatLiteral() {
+        if ((getLeftOperand() instanceof FloatLiteral) &&
+                (getRightOperand() instanceof FloatLiteral)) {
+            FloatLiteral fLL = (FloatLiteral) getLeftOperand();
+            FloatLiteral fLR = (FloatLiteral) getRightOperand();
+            return new FloatLiteral(doOpFloat(fLL.getValue(), fLR.getValue()));
+        }
+        return null;
+    }
 
     @Override
     protected void codeGenInst(DecacCompiler compiler) {
@@ -133,9 +143,7 @@ public abstract class AbstractOpArith extends AbstractBinaryExpr {
                         compiler.addInstruction(new LOAD(Register.R0, gpReg));
                     }
                     for (int i = 0; i < twoExp; i++) {
-                        if (this instanceof Multiply) {
-                            compiler.addInstruction(new SHL(gpReg));
-                        }
+                        compiler.addInstruction(new SHL(gpReg));
                     }
                     rM.freeReg(gpReg);
 

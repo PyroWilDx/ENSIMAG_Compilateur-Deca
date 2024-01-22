@@ -123,13 +123,15 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgramGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(false);
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
 
         compiler.add(new LineGb("INCLUDE \"hardware.inc\""));
 
-        if (!GameBoyManager.debugMode) {
+        if (false) {
+            compiler.add(new LineGb("INCLUDE \"utils.asm\""));
             compiler.add(new LineGb("INCLUDE \"variables.asm\""));
         }
 
@@ -137,8 +139,7 @@ public class Program extends AbstractProgram {
         compiler.add(new LineGb("SECTION \"Header\", ROM0[$100]"));
         compiler.add(new LineGb(""));
 
-        if (!GameBoyManager.debugMode) {
-            compiler.add(new LineGb("INCLUDE \"utils.asm\""));
+        if (false) {
             compiler.add(new LineGb("call initVariables"));
         }
 
@@ -152,6 +153,12 @@ public class Program extends AbstractProgram {
         compiler.add(new LineGb("ld [rNR52], a"));
 
         compiler.add(new LineGb("ld SP, " + GameBoyManager.Addr0));
+        GPRegister gpReg = rM.getFreeReg();
+        compiler.addInstruction(new LOAD_INT(GameBoyManager.AddrMax, gpReg));
+        compiler.addInstruction(new LOAD_INT(GameBoyManager.dynamicFieldsCptAddr, Register.HL));
+        compiler.addInstruction(new STORE_REG(gpReg.getHighReg(), Register.HL));
+        compiler.addInstruction(new DEC_REG(Register.HL));
+        compiler.addInstruction(new STORE_REG(gpReg.getLowReg(), Register.HL));
 
         boolean generateObjectClass = !classes.getList().isEmpty();
 

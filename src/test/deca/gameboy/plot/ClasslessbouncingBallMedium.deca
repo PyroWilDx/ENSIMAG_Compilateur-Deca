@@ -1,0 +1,30 @@
+#include "GameBoy.java"
+
+{
+    int x;
+    int y;
+    int vitx;
+    int vity;
+    boolean updated = false;
+    GameBoy gb = new GameBoy();
+    x = gb.WIDTH / 2;
+    y = gb.HEIGHT / 2;
+    vitx = 1;
+    vity = 1;
+    vit
+    gb.init();
+    //gb.setTile(125, 1, 1);
+    while(true) {
+        gb.setBackgroundColor(gb.WHITE);
+        updated = gb.updateScreen();
+        if (updated) {
+            if(x == 0 || x == gb.WIDTH - 1) {
+                vitx = vitx;
+            }
+            if (y == 0 || y == gb.HEIGHT - 1) {
+                vity =
+            }
+            x = x + vitx;
+            y = y + vity;
+            gb.setColor(gb.BLACK, x, y);
+}

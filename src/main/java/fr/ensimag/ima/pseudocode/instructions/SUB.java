@@ -2,8 +2,6 @@ package fr.ensimag.ima.pseudocode.instructions;
 
 import fr.ensimag.ima.pseudocode.*;
 
-import java.io.PrintStream;
-
 /**
  * @author Ensimag
  * @date 01/01/2024

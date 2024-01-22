@@ -3,10 +3,8 @@ package fr.ensimag.deca.tree;
 import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.deca.codegen.*;
 import fr.ensimag.deca.context.*;
-import fr.ensimag.deca.tools.DecacInternalError;
 import fr.ensimag.deca.tools.IndentPrintStream;
 import fr.ensimag.deca.tools.SymbolTable;
-import fr.ensimag.ima.pseudocode.*;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.io.PrintStream;
@@ -107,8 +105,8 @@ public class DeclMethod extends AbstractDeclMethod {
 
         if (!type.getType().isVoid()) {
             if (compiler.getCompilerOptions().doCheck()) {
-                compiler.addInstruction(new WSTR("Error: Exiting function " + className +
-                        "." + methodName + "() without return"));
+                compiler.addInstruction(new WSTR("Error: Exiting function '" + className +
+                        "." + methodName + "()' without return"));
                 compiler.addInstruction(new WNL());
                 compiler.addInstruction(new ERROR());
             }

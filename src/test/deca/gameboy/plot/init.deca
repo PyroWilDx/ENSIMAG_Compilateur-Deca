@@ -4,9 +4,10 @@
     boolean updated = false;
     GameBoy gb = new GameBoy();
     gb.init();
-    gb.setBackgroundColor(gb.LIGHT);
-    gb.setColor(gb.BLACK, 10, 10);
+    gb.setBackgroundColor(gb.BLACK);
+    //gb.setTile(125, 1, 1);
     while (!updated) {
         updated = gb.updateScreen();
+        //i = i + 1;
     }
 }

@@ -5,14 +5,25 @@
 //    10
 
 class A {
-    int earlyReturn() {
+    int earlyReturn1() {
         println(10);
-        return 0;
+        return 41;
+        println(20);
+    }
+    int earlyReturn2() {
+        return 40;
         println(20);
     }
 }
 
 {
     A a = new A();
-    a.earlyReturn();
+    int x = a.earlyReturn1() % 2;
+    if (x != 1) {
+        println("FAIL");
+    }
+    x = a.earlyReturn2() % 2;
+    if (x != 0) {
+        println("FAIL");
+    }
 }

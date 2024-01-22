@@ -3,7 +3,6 @@ package fr.ensimag.deca.syntax;
 import java.io.*;
 import java.net.URL;
 import java.util.Stack;
-import java.util.stream.Stream;
 
 import fr.ensimag.deca.codegen.GameBoyManager;
 import org.antlr.v4.runtime.CharStream;

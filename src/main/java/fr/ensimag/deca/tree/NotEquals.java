@@ -47,18 +47,24 @@ public class NotEquals extends AbstractOpExactCmp {
     public void codeGenCmpNullGb(DecacCompiler compiler, GPRegister gpReg) {
         CondManager cM = compiler.getCondManager();
 
+        long id = cM.getUniqueId();
         if (cM.isDoingCond() && branchLabel != null) {
+            Label endLabel = new Label("endCmpDiffNull" + id);
             compiler.addInstruction(new LOAD_REG(gpReg.getHighRegOfLow(), Register.A));
             compiler.addInstruction(new CMP_A(0, Register.A));
             if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
-            else compiler.addInstruction(new BEQ(branchLabel));
+            else compiler.addInstruction(new BNE(endLabel));
 
             compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
             compiler.addInstruction(new CMP_A(0, Register.A));
             if (isInTrue) compiler.addInstruction(new BNE(branchLabel));
-            else compiler.addInstruction(new BEQ(branchLabel));
+            else {
+                compiler.addInstruction(new BNE(endLabel));
+                compiler.addInstruction(new BRA(branchLabel));
+            }
+
+            compiler.addLabel(endLabel);
         } else {
-            long id = cM.getUniqueId();
             Label trueLabel = new Label("SccTrue" + id);
             Label falseLabel = new Label("SccFalse" + id);
             Label endLabel = new Label("SccEnd" + id);
@@ -66,12 +72,15 @@ public class NotEquals extends AbstractOpExactCmp {
             compiler.addInstruction(new LOAD_REG(gpReg.getHighRegOfLow(), Register.A));
             compiler.addInstruction(new CMP_A(0, Register.A));
             if (isInTrue) compiler.addInstruction(new BNE(trueLabel));
-            else compiler.addInstruction(new BEQ(trueLabel));
+            else compiler.addInstruction(new BNE(falseLabel));
 
             compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.A));
             compiler.addInstruction(new CMP_A(0, Register.A));
             if (isInTrue) compiler.addInstruction(new BNE(trueLabel));
-            else compiler.addInstruction(new BEQ(trueLabel));
+            else {
+                compiler.addInstruction(new BNE(falseLabel));
+                compiler.addInstruction(new BRA(trueLabel));
+            }
 
             compiler.addLabel(falseLabel);
             compiler.addInstruction(new LOAD_INT(0, gpReg.getLowReg()));

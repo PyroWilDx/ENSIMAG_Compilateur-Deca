@@ -55,16 +55,15 @@ public class Divide extends AbstractOpArith {
         compiler.addInstruction(new BEQ(endLabel));
 
         compiler.addInstruction(new LOAD_INT(0, Register.A));
-        compiler.addInstruction(new LOAD_REG(saveReg, GPRegister.L));
 
         compiler.addLabel(startLabel);
         compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
-        compiler.addInstruction(new LOAD_REG(GPRegister.L, Register.A));
+        compiler.addInstruction(new LOAD_REG(saveReg.getLowReg(), Register.A));
 
         compiler.addInstruction(new SUB_A(valReg, Register.A));
         compiler.addInstruction(new BLT(endLabel));
 
-        compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.L));
+        compiler.addInstruction(new LOAD_REG(Register.A, saveReg.getLowReg()));
         compiler.addInstruction(new LOAD_REG(GPRegister.H, Register.A));
 
         compiler.addInstruction(new ADD_A(1, Register.A));

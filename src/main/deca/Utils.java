@@ -1,11 +1,11 @@
 class Color {
     boolean bit1 = true;
     boolean bit2 = true;
-    int index = 127;
+    int index = 124;
     void setBlack() {
         this.bit1 = false;
         this.bit2 = false;
-        this.index = 124;
+        this.index = 127;
     }
     void setDark() {
         this.bit1 = false;
@@ -20,7 +20,7 @@ class Color {
     void setWhite() {
         this.bit1 = true;
         this.bit2 = true;
-        this.index = 127;
+        this.index = 124;
     }
     boolean isWhite() {
         return this.bit1 && this.bit2;
@@ -39,7 +39,7 @@ class Color {
 class BackgroundMapMod {
     protected Color color = new Color();
     protected boolean user = false;
-    protected boolean changed = false;
+    protected boolean changed = true;
     int WIDTH = 32;
     int HEIGHT = 32;
 
@@ -56,10 +56,10 @@ class BackgroundMapMod {
         this.user = true;
     }
     boolean hasChanged() {
-        if (changed) {
-            changed = false;
-        }
         return changed;
+    }
+    void setStateUpdated() {
+        this.changed = false;
     }
 
     Color getColor() {
@@ -103,8 +103,8 @@ class DrawEvent {
 class DrawEventList {
     protected DrawEvent first = null;
     protected DrawEvent last = null;
+    DrawEvent event = new DrawEvent();
     void add(int index, int x, int y) {
-        DrawEvent event = new DrawEvent();
         event.init(index, x, y);
         if (this.first == null) {
             this.first = event;
@@ -120,71 +120,72 @@ class DrawEventList {
 }
 
 class Utils {
-    int pow(int x, int exposant) {
-        int resultat = 1;
-        if (exposant == 0) {
-            return 1;
-        }
-        while (exposant > 0) {
-            if (exposant % 2 == 1) {
-                resultat = resultat * x;
-            }
-            x = x * x;
-            exposant = exposant / 2;
-        }
-    }
+
     void setBackGroundInTileMap(int index) asm (
-        "
-        ld hl, sp + 4
-        ld a, [hl]
-        ld hl, $9800
-        ld bc, $400
-        setBackGroundInTileMapLoop:
-            ld [hli], a
-            dec bc
-            ld a, b
-            or a, c
-            jp nz, setBackGroundInTileMapLoop ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
-        ret
-        "
-    );
+            "
+    ld hl, sp + 4
+    ld e, [hl]
+    ;ld e, $7f
+    ld hl, $9800
+    ld bc, $240
+    setBackGroundInTileMapLoop:
+    ld [hl], e
+    inc hl
+    dec bc
+    ld a, b
+    or a, c
+    jp nz, setBackGroundInTileMapLoop ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
+    ret
+            "
+            );
     void pushInTileMap(int x, int y, int tileIndex) asm(
             "
+    ld hl, $994a
+    ld hl, $7c
+
             ; a = y
-            ld hl, sp + 6
-            ld a, [hl]
+    ld hl, sp + 6
+    ld a, [hl]
+    ;ld a, 10
 
-            ; b = x
-            ld hl, sp + 4
-            ld b, [hl]
+    ; b = x
+    ld hl, sp + 4
+    ld b, [hl]
+    ;ld b, 10
 
-            ; c = value
-            ld hl, sp + 8
-            ld c, [hl]
+    ; c = value
+    ld hl, sp + 8
+    ld c, [hl]
+    ;ld c, $7e
 
             ; si y == 0 on passe à la boucle des colonnes
-            or a, a
-            jp z, yEqualsZero
+    or a, a
+    jp z, yEqualsZero
+
+            ; a = y
+    ld hl, sp + 6
+    ld a, [hl]
+    ;ld a, 10
 
             ; hl c est la premiere adresse de la map
-            ld hl, $9800
+    ld hl, $9800
             ; de = 32
-            ld e, 32
-            ld d, 0
+    ld e, 32
+    ld d, 0
 
-            ; on incremente hl de y * 32
-            yLinesLoop:
-                add hl, de
-                dec a
-                jp nz, yLinesLoop
+    ; on incremente hl de y * 32
+    yLinesLoop:
+    add hl, de
+    dec a
+    jp nz, yLinesLoop
 
-            yEqualsZero:
-            ld e, b
-            add hl, de ;hl += x;
-            ld [hl], c
+    yEqualsZero:
+    ld e, b
+    add hl, de ;hl += x;
+    ld [hl], c
             ret
             "
-            ); // TODO VRAIMENT PAS SÛR
+                    ); // TODO VRAIMENT PAS SÛR
 
 
 

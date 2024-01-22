@@ -28,6 +28,17 @@ public class ConvFloat extends AbstractUnaryExpr {
     }
 
     @Override
+    protected void codeGenInst(DecacCompiler compiler) {
+        if (getOperand() instanceof IntLiteral) {
+            IntLiteral op = (IntLiteral) getOperand();
+            setOperand(new FloatLiteral((float) op.getValue()));
+            getOperand().codeGenInst(compiler);
+        } else {
+            super.codeGenInst(compiler);
+        }
+    }
+
+    @Override
     protected void codeGenOpUnary(DecacCompiler compiler, GPRegister gpReg) {
         compiler.addInstruction(new FLOAT(gpReg, gpReg));
         // Done
