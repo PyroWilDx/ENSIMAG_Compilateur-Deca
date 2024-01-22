@@ -140,7 +140,6 @@ public class GameBoyManager {
             totalSpOffset += spOffset;
         }
         return totalSpOffset;
-//        return currMethodSpOffset.peekFirst();
     }
 
     public void loadIdentAddrIntoHL(DecacCompiler compiler, AbstractIdentifier ident) {

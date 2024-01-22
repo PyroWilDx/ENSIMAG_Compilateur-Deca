@@ -86,16 +86,19 @@ public class New extends AbstractExpr {
             compiler.addInstruction(new SUBSP(parentMethodVarOffset * 2));
         }
 
+        // Load Next Dynamic Field Addr and PUSH
         compiler.addInstruction(new LOAD_INT(GameBoyManager.dynamicFieldsCptAddr, Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A));
         compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
         compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
-
-        GPRegister gpReg = rM.getFreeReg();
-//        compiler.addInstruction(new LOAD_INT(currFieldAddr, Register.HL));
         compiler.addInstruction(new PUSH(Register.HL));
 
+//        compiler.addInstruction(new LOAD_INT(currFieldAddr, Register.HL)); // New Statique
+
+        GPRegister gpReg = rM.getFreeReg();
+
+        // Increment Next Dynamic Field Addr
         compiler.addInstruction(new LOAD_INT(GameBoyManager.dynamicFieldsCptAddr, Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, Register.A)); // High
         compiler.addInstruction(new DEC_REG(Register.HL));
@@ -111,8 +114,10 @@ public class New extends AbstractExpr {
         compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), Register.A));
         compiler.addInstruction(new STORE_REG(Register.A, gpReg));
 
+        // Call Init
         compiler.addInstruction(new BSR(initMethodLabel));
 
+        // Pop Addr
         compiler.addInstruction(new POP(gpReg));
 
         if (vTM.isInMethod()) {
