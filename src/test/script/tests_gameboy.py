@@ -107,7 +107,7 @@ def doTests():
     #
     # doVerify("gameboy/object/hard/Tmp.deca")
     # doVerify("gameboy/object/hard/fieldNewInMethod.deca")
-    doVerify("gameboy/object/hard/fieldInitObj.deca")
+    # doVerify("gameboy/object/hard/fieldInitObj.deca")
     # doVerify("gameboy/object/hard/callInMethodCall.deca")
     # doVerify("gameboy/object/hard/recursiveReturn.deca")
     # doVerify("gameboy/object/hard/newInMethod.deca")

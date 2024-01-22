@@ -14,7 +14,9 @@ public class GameBoyManager {
     public static final int nRegs = 4;
     public static final int dynamicFieldsCptAddr = 57343;
     public static final int Addr0 = 57342;
-    public static final int AddrMax = 49152; // Oui c'est inversé en GameBoy sinon ce serait trop facile
+    public static final int TrueAddrMax = 49152; // Oui c'est inversé en GameBoy sinon ce serait trop facile
+    public static final int AddrMax = TrueAddrMax + 48;
+    // 48 Pour les variables de la librarie
 
     public static boolean doCp = false;
     public static boolean doCpRgbds = false;

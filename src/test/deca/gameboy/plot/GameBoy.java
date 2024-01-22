@@ -1,7 +1,7 @@
 #include "Utils.java"
 
 class GameBoy {
-    protected DrawEventList drawEvents;
+    DrawEventList drawEvents = new DrawEventList();
     int WIDTH = 20;
     protected int pixelWidth = 160;
     int HEIGHT = 18;
@@ -28,8 +28,6 @@ class GameBoy {
     void init() {
         //Utils u = new Utils();
         //BackgroundMapMod b = new BackgroundMapMod();
-        DrawEventList d = new DrawEventList();
-        drawEvents = d;
         //utils = u;
         //map = b;
         drawEvents.init();
