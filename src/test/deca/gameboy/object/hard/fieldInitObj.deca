@@ -1,0 +1,29 @@
+class A {
+    // B b = new B();
+    B b;
+
+    void init() {
+        b = new B();
+        if (b.x == 0) {
+            println();
+        }
+    }
+
+    void check() {
+        if (b.x != 1) {
+            println();
+        }
+    }
+
+}
+
+class B {
+    int x = 1;
+}
+
+
+{
+    A a = new A();
+    a.init();
+    // a.check();
+}

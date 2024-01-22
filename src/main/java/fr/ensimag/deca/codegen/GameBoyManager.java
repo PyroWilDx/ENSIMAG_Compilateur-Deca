@@ -7,6 +7,7 @@ import fr.ensimag.ima.pseudocode.Register;
 import fr.ensimag.ima.pseudocode.instructions.*;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 public class GameBoyManager {
 
@@ -31,11 +32,11 @@ public class GameBoyManager {
     private int printId;
     private int fieldId;
     private final HashMap<String, Integer> globalVars;
-//    private int dynamicFieldsCount;
+    //    private int dynamicFieldsCount;
     private final HashMap<String, HashMap<String, Integer>> methodsVars;
     // HashMap<ClassName.MethodName, HashMap<VarName, VarOffset>
     private String currDeclaringIdentName;
-    private int currMethodSpOffset; // OH LA PURGE PUTAIN
+    private LinkedList<Integer> currMethodSpOffset; // OH LA PURGE PUTAIN ++
 
     public GameBoyManager() {
         this.printId = 0;
@@ -44,7 +45,7 @@ public class GameBoyManager {
 //        this.dynamicFieldsCount = 0;
         this.methodsVars = new HashMap<>();
         this.currDeclaringIdentName = null;
-        this.currMethodSpOffset = 0;
+        this.currMethodSpOffset = new LinkedList<>();
     }
 
     public int getAndIncrPrintId() {
@@ -115,16 +116,31 @@ public class GameBoyManager {
         currDeclaringIdentName = value;
     }
 
-    public void setCurrMethodSpOffset(int value) {
-        currMethodSpOffset = value;
+    public void pushCurrMethodSpOffset(int initialValue) {
+        currMethodSpOffset.addFirst(initialValue);
+    }
+
+    public void popCurrMethodSpOffset() {
+        currMethodSpOffset.removeFirst();
     }
 
     public void incr2CurrMethodSpOffset() {
-        currMethodSpOffset += 2;
+        if (!currMethodSpOffset.isEmpty()) {
+            currMethodSpOffset.set(0, currMethodSpOffset.peekFirst() + 2);
+        }
     }
 
-    public int getCurrMethodSpOffset() {
-        return currMethodSpOffset;
+//    public Integer getCurrMethodSpOffset() {
+//        return currMethodSpOffset.peekFirst();
+//    }
+
+    public Integer getCurrMethodSpOffset() {
+        int totalSpOffset = 0;
+        for (Integer spOffset : currMethodSpOffset) {
+            totalSpOffset += spOffset;
+        }
+        return totalSpOffset;
+//        return currMethodSpOffset.peekFirst();
     }
 
     public void loadIdentAddrIntoHL(DecacCompiler compiler, AbstractIdentifier ident) {
@@ -154,7 +170,8 @@ public class GameBoyManager {
         if (varAddr != null) return;
 
         Integer paramOffset = vTM.getCurrParamOffsetOfMethod(identName);
-        int spOffset = gbM.getCurrMethodSpOffset();
+        Integer spOffset = gbM.getCurrMethodSpOffset();
+        if (spOffset == null) spOffset = 0;
         if (paramOffset != null) { // It's a Method Param
             compiler.addInstruction(new LOAD_SP(Register.SP, Register.HL,
                     3 + spOffset + (-paramOffset - 2) * 2));

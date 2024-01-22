@@ -44,7 +44,15 @@ def doVerify(decaFilePath):
     os.system(f"rgblink -o {decaFileNameNoExt}.gb {decaFileNameNoExt}.o")
     os.system(f"rgbfix -v -p 0xFF {decaFileNameNoExt}.gb")
 
+<<<<<<< HEAD
     # os.system(f"Emulicious.jar {decaFileNameNoExt}.gb &")
+=======
+<<<<<<< HEAD
+    # os.system(f"Emulicious.jar {decaFileNameNoExt}.gb &")
+=======
+    #os.system(f"Emulicious.jar {decaFileNameNoExt}.gb &")
+>>>>>>> a61de09b1bb5d0d814fc1dd35096bbcae6c17e26
+>>>>>>> refs/remotes/origin/master
     os.system(f"Emulicious.jar {decaFileNameNoExt}.gb > /dev/null 2>&1 &")
 
     os.chdir(lastDir)
@@ -70,14 +78,14 @@ def doTests():
     # doVerify("gameboy/base/opArith.deca")
     # doVerify("gameboy/base/opRegOverflow.deca")
     # doVerify("gameboy/base/assign.deca")
-
+    #
     # doVerify("gameboy/cond/boolLazyEval.deca")
     # doVerify("gameboy/cond/elseOpCmp.deca")
     # doVerify("gameboy/cond/ifThenElseSimple.deca")
     # doVerify("gameboy/cond/ifThenElseComplex.deca")
     # doVerify("gameboy/cond/whileSimple.deca")
     # doVerify("gameboy/cond/whileComplex.deca")
-
+    #
     # doVerify("gameboy/object/easy/fieldSelection.deca")
     # doVerify("gameboy/object/easy/fieldInitReg.deca")
     # doVerify("gameboy/object/easy/callSimple.deca")
@@ -87,27 +95,29 @@ def doTests():
     # doVerify("gameboy/object/easy/thisSimple.deca")
     # doVerify("gameboy/object/easy/fieldAssign.deca")
     # doVerify("gameboy/object/easy/fieldInitFieldSimple.deca")
-
+    #
     # doVerify("gameboy/object/mid/objReassign.deca")
     # doVerify("gameboy/object/mid/fieldInitMethod.deca")
     # doVerify("gameboy/object/mid/fieldInitFieldComplex.deca")
     # doVerify("gameboy/object/mid/varInMethod.deca")
     # doVerify("gameboy/object/mid/methodCallMethod.deca")
     # doVerify("gameboy/object/mid/recursiveMethod.deca")
-
+    #
     # doVerify("gameboy/object/extends/extendsFieldSimple.deca")
     # doVerify("gameboy/object/extends/extendsFields.deca")
     # doVerify("gameboy/object/extends/extendsMethods.deca")
-
+    #
     # doVerify("gameboy/object/others/equalsSimple.deca")
     # doVerify("gameboy/object/others/elseOpCmp.deca")
     # doVerify("gameboy/object/others/assignInside.deca")
     # doVerify("gameboy/object/others/asmSimple.deca")
     # doVerify("gameboy/object/others/methodRegOverflow.deca")
-
+    #
+    doVerify("gameboy/object/hard/fieldInitObj.deca")
     # doVerify("gameboy/object/hard/recursiveReturn.deca")
-    # doVerify("gameboy/object/hard/linkedList.deca")
+    # doVerify("gameboy/object/hard/callInMethodCall.deca")
     # doVerify("gameboy/object/hard/newInMethod.deca")
+    # doVerify("gameboy/object/hard/linkedList.deca")
     # doVerify("gameboy/object/hard/binaryTreeV1.deca")
     # doVerify("gameboy/object/hard/binaryTreeV2.deca")
 
@@ -126,9 +136,9 @@ def main():
     os.system("find ./src/test/deca/gameboy/ -name \"*.asm\" -type f -delete")
     # os.system("\\rm ./src/test/deca/gameboy/bin/*.asm")
     print("\033[1mRemoving .o files...\033[0m")
-    # os.system("\\rm ./src/test/deca/gameboy/bin/*.o")
+    os.system("\\rm ./src/test/deca/gameboy/bin/*.o")
     print("\033[1mRemoving .gb files...\033[0m")
-    # os.system("\\rm ./src/test/deca/gameboy/bin/*.gb")
+    os.system("\\rm ./src/test/deca/gameboy/bin/*.gb")
     print("\033[1mRemove Successful\033[0m")
 
     doTests()
