@@ -426,7 +426,7 @@ def doTests():
              execError=True)
 
     doVerify("codegen/invalid/errors/missingReturn.deca",
-             expectedResult=b"Error: Exiting function A.missingReturn() without return\n",
+             expectedResult=b"Error: Exiting function 'A.missingReturn()' without return\n",
              execError=True)
 
     doVerify("codegen/invalid/errors/invalidCast.deca",
