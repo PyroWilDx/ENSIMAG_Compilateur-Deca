@@ -14,3 +14,13 @@ Nos scripts de tests pour chaque étape du compilateur et pour l'extension se tr
 **tests_codegen.sh** : script des tests de l'étape C.  
 
 **tests_gameboy.sh** : script des tests de l'extension GameBoy.
+
+Explication des tests GameBoy : Ici, nous avons commenté le lancement de l'émulateur, le script lance juste la compilation des fichiers et s'arrête.
+Pour lancer les tests avec l'émulateur, il faut faire les installations de RGBDS et Emulicious comme indiqué sur la documentation utilisateur.
+Ensuite, il faut décommenter les lignes suivantes dans la fonction doVerify() de tests_gameboy.py :
+- os.system(f"rgbasm -L -o {decaFileNameNoExt}.o {decaFileNameNoExt}.asm")
+- os.system(f"rgblink -o {decaFileNameNoExt}.gb {decaFileNameNoExt}.o")
+- os.system(f"rgbfix -v -p 0xFF {decaFileNameNoExt}.gb")
+- os.system(f"Emulicious.jar {decaFileNameNoExt}.gb &")
+Pour chaque fenêtre, si "Nintendo" s'affiche, le test est bon. Si "Hello World" s'affiche, le test n'est pas bon.
+- 
