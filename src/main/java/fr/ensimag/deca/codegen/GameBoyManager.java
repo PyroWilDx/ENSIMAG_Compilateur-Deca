@@ -31,7 +31,7 @@ public class GameBoyManager {
     private int printId;
     private int fieldId;
     private final HashMap<String, Integer> globalVars;
-    private int dynamicFieldsCount;
+//    private int dynamicFieldsCount;
     private final HashMap<String, HashMap<String, Integer>> methodsVars;
     // HashMap<ClassName.MethodName, HashMap<VarName, VarOffset>
     private String currDeclaringIdentName;
@@ -41,7 +41,7 @@ public class GameBoyManager {
         this.printId = 0;
         this.fieldId = 0;
         this.globalVars = new HashMap<>();
-        this.dynamicFieldsCount = 0;
+//        this.dynamicFieldsCount = 0;
         this.methodsVars = new HashMap<>();
         this.currDeclaringIdentName = null;
         this.currMethodSpOffset = 0;
@@ -60,13 +60,13 @@ public class GameBoyManager {
         return (Addr0 - 1) - (globalVars.get(varName) * 2);
     }
 
-    public void addDynamicFields(int value) {
-        dynamicFieldsCount += value;
-    }
-
-    public int getNextDynamicFieldAddr() {
-        return AddrMax + dynamicFieldsCount * 2;
-    }
+//    public void addDynamicFields(int value) {
+//        dynamicFieldsCount += value;
+//    }
+//
+//    public int getNextDynamicFieldAddr() {
+//        return AddrMax + dynamicFieldsCount * 2;
+//    }
 
     public String getMethodKey(String className, String methodName) {
         return className + "." + methodName;

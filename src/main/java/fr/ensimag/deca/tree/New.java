@@ -73,6 +73,7 @@ public class New extends AbstractExpr {
         Label initMethodLabel = LabelUtils.getClassInitLabel(vTM.getCurrClassName());
         vTM.exitClass();
 
+        // Pour faire un New statique (Décommenter aussi dans GameBoyManager)
 //        int currFieldAddr = gbM.getNextDynamicFieldAddr();
 //        gbM.addDynamicFields(fieldsCount);
 
