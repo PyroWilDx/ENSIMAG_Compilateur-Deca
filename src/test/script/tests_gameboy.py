@@ -93,7 +93,8 @@ def doTests():
     # doVerify("gameboy/object/hard/recursiveReturn.deca")
     # doVerify("gameboy/object/hard/linkedList.deca")
     # doVerify("gameboy/object/hard/newInMethod.deca")
-    doVerify("gameboy/object/hard/binaryTree.deca")
+    # doVerify("gameboy/object/hard/binaryTreeV1.deca")
+    doVerify("gameboy/object/hard/binaryTreeV2.deca")
 
     # doVerify("gameboy/plot/init.deca")
 
@@ -106,7 +107,8 @@ def main():
     print()
 
     print("\033[1mRemoving .asm files...\033[0m")
-    os.system("\\rm ./src/test/deca/gameboy/bin/*.asm")
+    os.system("find ./src/test/deca/gameboy/ -name \"*.asm\" -type f -delete")
+    # os.system("\\rm ./src/test/deca/gameboy/bin/*.asm")
     print("\033[1mRemoving .o files...\033[0m")
     os.system("\\rm ./src/test/deca/gameboy/bin/*.o")
     print("\033[1mRemoving .gb files...\033[0m")

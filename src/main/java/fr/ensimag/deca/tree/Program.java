@@ -123,6 +123,7 @@ public class Program extends AbstractProgram {
 
     @Override
     public void codeGenProgramGb(DecacCompiler compiler) {
+        RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(false);
         compiler.setStackManager(sM);
         VTableManager vTM = compiler.getVTableManager();
@@ -152,6 +153,12 @@ public class Program extends AbstractProgram {
         compiler.add(new LineGb("ld [rNR52], a"));
 
         compiler.add(new LineGb("ld SP, " + GameBoyManager.Addr0));
+        GPRegister gpReg = rM.getFreeReg();
+        compiler.addInstruction(new LOAD_INT(GameBoyManager.AddrMax, gpReg));
+        compiler.addInstruction(new LOAD_INT(GameBoyManager.dynamicFieldsCptAddr, Register.HL));
+        compiler.addInstruction(new STORE_REG(gpReg.getHighReg(), Register.HL));
+        compiler.addInstruction(new DEC_REG(Register.HL));
+        compiler.addInstruction(new STORE_REG(gpReg.getLowReg(), Register.HL));
 
         boolean generateObjectClass = !classes.getList().isEmpty();
 

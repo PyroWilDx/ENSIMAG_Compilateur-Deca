@@ -11,7 +11,8 @@ import java.util.HashMap;
 public class GameBoyManager {
 
     public static final int nRegs = 4;
-    public static final int Addr0 = 57344;
+    public static final int dynamicFieldsCptAddr = 57343;
+    public static final int Addr0 = 57342;
     public static final int AddrMax = 49152; // Oui c'est inversé en GameBoy sinon ce serait trop facile
 
     public static boolean doCp = false;
