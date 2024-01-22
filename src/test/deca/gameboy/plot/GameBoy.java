@@ -50,6 +50,10 @@ class GameBoy {
         //this.includeVBlankUtils();
     }
 
+    int getBackgroundColor() {
+        return this.map.getColor();
+    }
+
 
     boolean updateScreen() {
         int cc;
@@ -312,11 +316,10 @@ class GameBoy {
         ld a, [hl]
         and a, b
         ld h, 0
-        jp nz ,notPressed
-        ld l, 1
-        ret
-        notPressed:
         ld l, 0
+        jp nz ,notPressed
+        ld hl, $ff
+        notPressed:
         ret
         "
     );
