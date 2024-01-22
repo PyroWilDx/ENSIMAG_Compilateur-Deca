@@ -90,7 +90,7 @@ class GameBoy {
     );
     void turnScreenOff() asm (
         "
-        ;call WaitForOneVBlank
+        call WaitForOneVBlank
         ; Turn the LCD off
         ld a, 0
         ld [rLCDC], a
@@ -100,6 +100,7 @@ class GameBoy {
     void waitVBlank() asm (
             "
     call WaitForOneVBlank
+            ret
         "
     );
     void turnScreenOn() asm (
@@ -110,6 +111,25 @@ class GameBoy {
     ret
         "
     );
+
+    void sleep(int i) asm (
+            "
+            ld hl, sp + 4
+            ld c, [hl]
+            sleepLoop1:
+                ld hl, $a3a; une centi seconde;
+                sleepLoop2:
+                    dec hl
+                    ld a, l
+                    or a, h
+                    jp nz, sleepLoop2
+                dec c
+                ld a, c
+                or a, a
+                jp nz, sleepLoop1
+            ret
+            "
+            );
     void initDisplayRegisters() asm (
         "
         ; During the first (blank) frame, initialize display registers
@@ -129,13 +149,13 @@ class GameBoy {
         int cc;
         this.waitVBlank();
         this.turnScreenOff();
-        //f (this.map.hasChanged()) {
-           // this.map.setStateUpdated();
-            //cc = map.getColor();
-            this.copyColorIntoMap(WHITE);
+        if (this.map.hasChanged()) {
+            this.map.setStateUpdated();
+            cc = map.getColor();
+            this.copyColorIntoMap(cc);
             //this.copyColorIntoMap(126);
-        //}
-        utils.pushInTileMap(x, y, LIGHT);
+        }
+        utils.pushInTileMap(x, y, color);
         this.turnScreenOn();
     }
     void rien() {}
@@ -164,18 +184,23 @@ class GameBoy {
                 );
     void asmInit () asm (
         "
-        call initVariables
         call WaitForOneVBlank
+
+                ; init display reg
+    ; During the first (blank) frame, initialize display registers
+    ld a, %11100100
+    ld [rBGP], a
             ; On met les tiles elementaires dans la mémoire
-        ld de, ElementaryTiles
-        ld hl, $97c0; Ce seront les quatres dernières tiles
-        ld bc, ElementaryTilesEnd - ElementaryTiles
-        call CopyDEintoMemoryAtHL
+    ld de, ElementaryTiles
+    ld hl, $97c0; Ce seront les quatres dernières tiles
+    ld bc, ElementaryTilesEnd - ElementaryTiles
+    call CopyDEintoMemoryAtHL
+
+    call initVariables
+            ;ld [hl], $ff
 
 
-
-    ld hl, $97f0
-    ld [hl], $ff
+    ;ld hl, $97f0
         ret; comme ça on essaie pas d executer la suite
 
     SECTION \"Elementary Tile data\", ROM0
