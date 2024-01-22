@@ -116,11 +116,11 @@ class GameBoy {
                 this.map.setStateUpdated();
                 this.copyColorIntoMap(map.getColor());
             }
-            while (event != null) {
-                this.utils.pushInTileMap(10, 10, 127);
+            //while (false) {
+                //this.utils.pushInTileMap(10, 10, 127);
                 //this.utils.pushInTileMap(event.getX(), event.getY(), event.getTileIndex());
-                event = event.getNext();
-            }
+            //    event = null;
+            //}
             this.turnScreenOn();
             return true;
         }
@@ -168,7 +168,9 @@ class GameBoy {
         this.drawEvents.add(tileIndex, x, y);
     }
     void setColor(Color color, int x, int y) {
-        this.setTile(color.getTileIndex(), x, y);
+        int a = 1;
+        a = a + 1;
+        //this.setTile(color.getTileIndex(), x, y);
     }
 
     //
