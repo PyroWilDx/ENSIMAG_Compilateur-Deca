@@ -223,17 +223,17 @@ class Utils {
             ; a = y
             ld hl, sp + 6
             ld a, [hl]
-            ld a, 10
+            ;ld a, 10
 
             ; b = x
             ld hl, sp + 4
             ld b, [hl]
-            ld b, 10
+            ;ld b, 10
 
             ; c = value
             ld hl, sp + 8
             ld c, [hl]
-            ld c, $7f
+            ;ld c, $7f
 
             ; si y == 0 on passe à la boucle des colonnes
             or a, a
@@ -242,7 +242,7 @@ class Utils {
             ; a = y
             ld hl, sp + 6
             ld a, [hl]
-            ld a, 10
+            ;ld a, 10
 
             ; hl c est la premiere adresse de la map
             ld hl, $9800

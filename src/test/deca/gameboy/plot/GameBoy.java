@@ -68,7 +68,7 @@ class GameBoy {
                 this.copyColorIntoMap(cc);
                 //this.copyColorIntoMap(126);
             }
-            this.utils.pushInTileMap(10, 10, BLACK);
+            //this.utils.pushInTileMap(10, 10, BLACK);
             //this.drawEvents.drawList();
             this.turnScreenOn();
             return true;
@@ -90,11 +90,16 @@ class GameBoy {
     );
     void turnScreenOff() asm (
         "
-        call WaitForOneVBlank
+        ;call WaitForOneVBlank
         ; Turn the LCD off
         ld a, 0
         ld [rLCDC], a
         ret
+        "
+    );
+    void waitVBlank() asm (
+            "
+    call WaitForOneVBlank
         "
     );
     void turnScreenOn() asm (
@@ -121,7 +126,17 @@ class GameBoy {
     void setColor(int color, int x, int y) {
         //
         //this.setTile(color, x, y);
-        utils.pushInTileMap(10,15, 127);
+        int cc;
+        this.waitVBlank();
+        this.turnScreenOff();
+        //f (this.map.hasChanged()) {
+           // this.map.setStateUpdated();
+            //cc = map.getColor();
+            this.copyColorIntoMap(WHITE);
+            //this.copyColorIntoMap(126);
+        //}
+        utils.pushInTileMap(x, y, LIGHT);
+        this.turnScreenOn();
     }
     void rien() {}
 

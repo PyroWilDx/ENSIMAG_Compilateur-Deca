@@ -6,13 +6,8 @@
     GameBoy gb = new GameBoy();
     gb.init();
     gb.setBackgroundColor(gb.LIGHT);
-<<<<<<< HEAD
-    //gb.setColor(gb.BLACK, 5, 5);
-    gb.rien();
-=======
-    // gb.setColor(gb.BLACK, 10, 10);
->>>>>>> 2f48639cb732fba3c8d420e5c3cece3f0c4a5087
-    while (!updated) {
-        updated = gb.updateScreen();
-    }
+    gb.setColor(gb.DARK, 5, 5);
+    //while (!updated) {
+    //    updated = gb.updateScreen();
+    //}
 }
