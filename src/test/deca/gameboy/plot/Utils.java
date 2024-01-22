@@ -183,7 +183,7 @@ class DrawEventList {
             //current = current.getNext();
             //i = i + 1;
         }
-        nextIndex = 0;
+        //nextIndex = 0;
     }
     void debug(int i) asm(
             "ld hl, sp + 4
