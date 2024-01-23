@@ -44,9 +44,9 @@ class Ball {
             x = x - vitx;
         }
         if (!down) {
-            y = y + vity;
-        } else {
             y = y - vity;
+        } else {
+            y = y + vity;
         }
         //gb.setColor(gb.WHITE, oldX, oldY);
         gb.setColor(backgroundColor, oldX, oldY);
