@@ -94,7 +94,7 @@ def doVerify(decaFilePath,
 
         os.system(decacCmd)
 
-    if ("-v" in decacOptions):
+    if "-v" in decacOptions:
         print(f"\033[32m Passed\033[0m")
         return 0
 
