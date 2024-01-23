@@ -1,13 +1,14 @@
 #include "GameBoy.java"
 
 {
-    boolean updated = false;
+    //boolean updated = false;
     GameBoy gb = new GameBoy();
     gb.init();
-    gb.setBackgroundColor(gb.BLACK);
+    gb.setBackgroundColor(gb.DARK);
     //gb.setTile(125, 1, 1);
-    while (!updated) {
-        updated = gb.updateScreen();
+    while (true) {
+        gb.updateScreen();
+        //gb.sleep(2);
         //i = i + 1;
     }
 }

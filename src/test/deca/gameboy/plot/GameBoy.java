@@ -63,15 +63,16 @@ class GameBoy {
                 this.initDisplayRegisters();
                 this.firstUpdate = false;
             }
-            this.turnScreenOff();
-            if (this.map.hasChanged()) {
+            //this.turnScreenOff();
+            //if (this.map.hasChanged()) {
                 this.map.setStateUpdated();
                 cc = map.getColor();
                 this.copyColorIntoMap(cc);
                 //this.copyColorIntoMap(126);
-            }
+            //}
             //this.utils.pushInTileMap(1, 10, WHITE);
             this.drawEvents.drawList();
+            this.sleep(2);
             this.turnScreenOn();
             return true;
         }
