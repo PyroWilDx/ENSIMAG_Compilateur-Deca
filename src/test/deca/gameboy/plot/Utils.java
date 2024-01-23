@@ -199,6 +199,9 @@ class Utils {
 
     void setBackGroundInTileMap(int index) asm (
         "
+    ;ld a, [rLY]
+    ;cp 224
+    ;ret nc
         ld hl, sp + 4
         ld e, [hl]
         ;ld e, $7e
@@ -216,6 +219,9 @@ class Utils {
     );
     void pushInTileMap(int x, int y, int tileIndex) asm(
             "
+    ld a, [rLY]
+    cp 224
+    ret nc
     ;loop:
     ;jp loop
             ; a = y

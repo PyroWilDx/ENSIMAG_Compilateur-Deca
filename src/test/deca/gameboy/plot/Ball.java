@@ -48,9 +48,10 @@ class Ball {
         } else {
             y = y - vity;
         }
-        gb.setColor(this.color, x, y);
-        gb.sleep(5);
+        //gb.setColor(gb.WHITE, oldX, oldY);
         gb.setColor(backgroundColor, oldX, oldY);
+        //gb.setColor(gb.BLACK, x, y);
+        gb.setColor(this.color, x, y);
     }
 
     void setX(int x) {

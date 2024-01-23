@@ -38,6 +38,7 @@ class GameBoy {
         //LIGHT.setLight();
         //this.setBackgroundColor(DARK);
         this.asmInit();
+        this.turnScreenOn();
 
         // TODO faudra en fait mettre tous ces trucs au début du fichier avec le compilateur
         //this.includeHardware();
@@ -58,22 +59,28 @@ class GameBoy {
     boolean updateScreen() {
         int cc;
         int xxx, yyy, indexxx;
-        if (this.isInVBlank()) {
+        if (this.isInVBlank() && this.notTooMuchVBlank()) {
             if (this.firstUpdate) {
                 this.initDisplayRegisters();
                 this.firstUpdate = false;
             }
+            //this.waitVDraw();
+            //this.waitVBlank();
+            //
             this.turnScreenOff();
+            //this.sleep(1);
+            //this.waitVBlank();
             //if (this.map.hasChanged()) {
-                this.map.setStateUpdated();
-                cc = map.getColor();
-                this.copyColorIntoMap(cc);
-                //this.copyColorIntoMap(126);
+            this.map.setStateUpdated();
+            cc = map.getColor();
+            this.copyColorIntoMap(cc);
+            //this.copyColorIntoMap(126);
             //}
             //this.utils.pushInTileMap(1, 10, WHITE);
             this.drawEvents.drawList();
             this.turnScreenOn();
-            this.sleep(20);
+            this.waitVDraw();
+            //this.sleep(2);
             return true;
         }
         return false;
@@ -91,9 +98,22 @@ class GameBoy {
         ret
         "
     );
+    boolean notTooMuchVBlank() asm (
+            "
+    ld h, 0
+    ld l, 0
+    ld a, [rLY]
+    cp 224
+    jp nc, notTooMuchVBlank
+    ld l, $ff
+    ld h, $ff
+    notTooMuchVBlank:
+    ret
+        "
+                );
     void turnScreenOff() asm (
         "
-        call WaitForOneVBlank
+        ;call WaitForOneVBlank
         ; Turn the LCD off
         ld a, 0
         ld [rLCDC], a
@@ -106,6 +126,16 @@ class GameBoy {
             ret
         "
     );
+    void waitVDraw() asm (
+            "
+    waitVDrawLoop:
+
+    ld a, [rLY] ; Copy the vertical line to a
+    or a, a; Check if the vertical line (in a) is 0
+    jp z, waitVDrawLoop
+    ret
+        "
+                );
     void turnScreenOn() asm (
         "
     ; Turn the LCD on
