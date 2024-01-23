@@ -118,7 +118,7 @@ class DrawEventList {
     protected DrawEvent last = null;
     int nextIndex = 0;
     int test = 1;
-    int size = 3;
+    int size = 10;
     Utils utils = new Utils();
 
     void init() {

@@ -1,0 +1,22 @@
+#include "GameBoy.java"
+#include "Snake.java"
+{
+    boolean update = false;
+    Snake snake = new Snake();
+    boolean a = true;
+    int i=0;
+    GameBoy gb = new GameBoy();
+    gb.init();
+    gb.setBackgroundColor(gb.DARK);
+    snake.initSnake(6,6,20,18,15,15,gb,gb.LIGHT,gb.WHITE);
+
+    while(a == true){
+        update = gb.updateScreen();
+         if(update){
+         //input
+         a = snake.move(i);//en argument le input
+         gb.sleep(5);
+         i = (i+2) % 4;
+         }
+    }
+}

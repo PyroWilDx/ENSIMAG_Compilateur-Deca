@@ -20,6 +20,7 @@
 //        float y = 2;
 //        float z = 0x1.3851ecp0;
 //        boolean bool = false;
+//        println((1 / 0));
 //        if (((class1 != null) && (!bool))) {
 //            (class1.a = 1);
 //            (z = class1.method(x, z));
@@ -72,6 +73,7 @@ class A {
     float y = 2;
     float z = 1.22000e+00;
     boolean bool = false;
+    println(1 / 0);
     if(class1 != null && !bool){
         class1.a = 1;
         z = class1.method(x,z);
