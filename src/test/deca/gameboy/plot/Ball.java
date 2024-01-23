@@ -29,10 +29,10 @@ class Ball {
         int backgroundColor = gb.getBackgroundColor();
         int oldX;
         int oldY;
-        if (x <= vitx || x >= gb.WIDTH - 1) {
+        if (x <= vitx || x >= gb.WIDTH - vitx) {
             forward = !forward;
         }
-        if (y <= vity || y >= gb.HEIGHT - 1) {
+        if (y <= vity || y >= gb.HEIGHT - vity) {
             down = !down;
         }
         oldX = x;

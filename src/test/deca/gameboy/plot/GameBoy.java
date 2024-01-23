@@ -64,23 +64,26 @@ class GameBoy {
                 this.initDisplayRegisters();
                 this.firstUpdate = false;
             }
-            //this.waitVDraw();
-            //this.waitVBlank();
+
             //
             this.turnScreenOff();
             //this.sleep(1);
             //this.waitVBlank();
-            //if (this.map.hasChanged()) {
-            this.map.setStateUpdated();
-            cc = map.getColor();
-            this.copyColorIntoMap(cc);
+            if (this.map.hasChanged()) {
+                //this.turnScreenOff();
+                this.map.setStateUpdated();
+                cc = map.getColor();
+                this.copyColorIntoMap(cc);
+                //this.turnScreenOn();
             //this.copyColorIntoMap(126);
-            //}
+            }
+            //this.waitVDraw();
+            //this.waitVBlank();
             //this.utils.pushInTileMap(1, 10, WHITE);
             this.drawEvents.drawList();
             this.turnScreenOn();
-            this.waitVDraw();
-            //this.sleep(2);
+            //this.waitVDraw();
+            //his.sleep(2);
             return true;
         }
         return false;
