@@ -64,7 +64,7 @@ class Snake{
         this.reward=new Reward();
         this.reward.initReward(xR, yR,xMax,yMax);
         this.gb.setColor(color, xH, yH);
-        this.gb.setColor(color, xH-1, yH-1);
+        this.gb.setColor(color, xH-1, yH);
         this.gb.setColor(colorReward, xR, yR);
     }
 
@@ -107,6 +107,7 @@ class Snake{
                 gb.setColor(this.colorReward, this.reward.getX(), this.reward.getY());
             }
             else{
+                gb.setColor(backgroundColor, this.tail.getX(), this.tail.getY());
                 newHead = this.tail;
                 this.tail = this.tail.getNext();
                 this.head.setNext(newHead);
@@ -116,7 +117,7 @@ class Snake{
                 this.tail.setPrevious(null);
                 this.head.setX(this.xPositionHead);
                 this.head.setY(this.yPositionHead);
-                gb.setColor(backgroundColor, this.tail.getX(), this.tail.getY());
+
             }
             return a;
     }
@@ -182,10 +183,10 @@ class Reward {
     void changeParams(){
         this.x = ((this.a* this.x +this.c)% m)%100 % this.maxX;
         this.y = (((this.a*s+ this.y + this.c)% this.m)%100 -10) % this.maxY ;
-        print("reward :");
-        print(this.x);
-        print("-");
-        println(this.y);
+//        print("reward :");
+//        print(this.x);
+//        print("-");
+//        println(this.y);
     }
 }
 
