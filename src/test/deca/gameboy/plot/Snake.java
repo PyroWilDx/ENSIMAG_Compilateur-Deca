@@ -45,8 +45,14 @@ class Snake{
     protected int maxX;
     protected int maxY;
     protected Reward reward;
+    protected int color;
+    protected int colorReward;
+    protected GameBoy gb;
 
-    void initSnake(int xH,int yH,int xMax,int yMax, int xR,int yR){
+    void initSnake(int xH,int yH,int xMax,int yMax, int xR,int yR,GameBoy g,int color,int color2){
+        this.gb = g;
+        this.color = color;
+        this.colorReward = color2;
         this.head = new SnakeCell();
         this.tail = new SnakeCell();
         this.xPositionHead=xH;
@@ -57,6 +63,9 @@ class Snake{
         this.tail.initSnakeCase(this.head,null,xH-1,yH);
         this.reward=new Reward();
         this.reward.initReward(xR, yR,xMax,yMax);
+        this.gb.setColor(color, xH, yH);
+        this.gb.setColor(color, xH-1, yH-1);
+        this.gb.setColor(colorReward, xR, yR);
     }
 
     int getHeadX(){
@@ -70,6 +79,7 @@ class Snake{
 
     boolean move(int i){
             boolean a;
+            int backgroundColor = gb.getBackgroundColor();
             SnakeCell newHead;
             if(i==0){
                 goUp();
@@ -84,6 +94,7 @@ class Snake{
                 goLeft();
                 }
             a = this.collusion();
+            gb.setColor(this.color, this.xPositionHead, this.yPositionHead);
             //si la position du head est celle de la reward
             if(xPositionHead==this.reward.x && yPositionHead==this.reward.y){
                 newHead=new SnakeCell();
@@ -93,6 +104,7 @@ class Snake{
                 this.head=newHead;
                 this.head.setNext(null);
                 this.reward.changeParams();
+                gb.setColor(this.colorReward, this.reward.getX(), this.reward.getY());
             }
             else{
                 newHead = this.tail;
@@ -104,6 +116,7 @@ class Snake{
                 this.tail.setPrevious(null);
                 this.head.setX(this.xPositionHead);
                 this.head.setY(this.yPositionHead);
+                gb.setColor(backgroundColor, this.tail.getX(), this.tail.getY());
             }
             return a;
     }
@@ -144,13 +157,21 @@ class Snake{
 class Reward {
     int x ;
     int y ;
-    int maxX;
-    int maxY;
+    int maxX = 20;
+    int maxY = 18;
     // ces params pour la fonction random
     int s = 5;
     int a = 166;
     int c = 51 ;
     int m = 532 ;
+
+    int getX(){
+        return this.x;
+    }
+
+    int getY(){
+        return this.y;
+    }
 
     void initReward(int x,int y, int maxX , int maxY){
         this.x = x;
@@ -168,24 +189,3 @@ class Reward {
     }
 }
 
-{
-Snake snake = new Snake();
-boolean a = true;
-int i=0;
-snake.initSnake(6,6,20,18,5,5);
-//draw snake
-while(a == true){
-             println("n:");
-             i = readInt();
-             a = snake.move(i);
-             snake.printSnake();
-             //ajouter un while pour rendre le snake avance d'une manière continue
-             /*
-             while(a == true){
-             a = snake.move(i);
-             i = readInt(); // ça depends si on a un input ou non
-             //add draw in the move function
-             }
-             */
-             }
-}
