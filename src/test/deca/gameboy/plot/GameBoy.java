@@ -393,14 +393,16 @@ class GameBoy {
     ); //
     boolean keyPressed(int pad) asm(
         "
+        ;call UpdateKeys
+        ;ld b, l; b = newKey;
         ld a, [wNewKeys]
         ld b, a
         ld hl, sp + 4
-        ld a, [hl]
+        ld a, [hl]; a = pad;
+
+        ld hl, 0
         and a, b
-        ld h, 0
-        ld l, 0
-        jp nz ,notPressed
+        jp z ,notPressed
         ld hl, $ff
         notPressed:
         ret
