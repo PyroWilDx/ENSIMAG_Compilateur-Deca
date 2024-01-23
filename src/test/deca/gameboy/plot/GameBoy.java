@@ -63,7 +63,7 @@ class GameBoy {
                 this.initDisplayRegisters();
                 this.firstUpdate = false;
             }
-            //this.turnScreenOff();
+            this.turnScreenOff();
             //if (this.map.hasChanged()) {
                 this.map.setStateUpdated();
                 cc = map.getColor();
@@ -72,8 +72,8 @@ class GameBoy {
             //}
             //this.utils.pushInTileMap(1, 10, WHITE);
             this.drawEvents.drawList();
-            this.sleep(2);
             this.turnScreenOn();
+            this.sleep(20);
             return true;
         }
         return false;
@@ -190,7 +190,8 @@ class GameBoy {
         call WaitForOneVBlank
 
 
-                ; init display reg
+
+            ; init display reg
     ; During the first (blank) frame, initialize display registers
     ld a, %11100100
     ld [rBGP], a
@@ -204,6 +205,14 @@ class GameBoy {
     ;ld hl, $9620; Ce seront les quatres dernières tiles
     ;ld bc, wLetters - wLettersEnd
     ;call CopyDEintoMemoryAtHL
+
+    ld b, 160
+    ld hl, _OAMRAM
+
+    ClearOAM:
+    ld [hli], a
+    dec b
+    jp nz, ClearOAM
 
     call initVariables
             ;ld [hl], $ff
