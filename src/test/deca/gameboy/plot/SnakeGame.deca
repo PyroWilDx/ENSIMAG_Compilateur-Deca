@@ -14,9 +14,21 @@
         update = gb.updateScreen();
          if(update){
          //input
+         if(gb.keyPressed(gb.UP_KEY)){
+            i = 0;
+         }
+         if(gb.keyPressed(gb.DOWN_KEY)){
+            i = 1;
+         }
+         if(gb.keyPressed(gb.RIGHT_KEY)){
+            i = 2;
+         }
+         if(gb.keyPressed(gb.LEFT_KEY)){
+            i = 3;
+         }
          a = snake.move(i);//en argument le input
-         gb.sleep(5);
-         i = (i+2) % 4;
+         gb.sleep(3);
+         //i = (i+2) % 4;
          }
     }
 }
