@@ -118,7 +118,7 @@ class DrawEventList {
     protected DrawEvent last = null;
     int nextIndex = 0;
     int test = 1;
-    int size = 10;
+    int size = 3;
     Utils utils = new Utils();
 
     void init() {
@@ -219,6 +219,7 @@ class Utils {
     );
     void pushInTileMap(int x, int y, int tileIndex) asm(
             "
+
     ld a, [rLY]
     cp 224
     ret nc
@@ -263,9 +264,10 @@ class Utils {
             yEqualsZero:
             ld e, b
             add hl, de ;hl += x;
-    ;call waitVDrawLoop
-            call WaitForOneVBlank
+    call WaitForOneVBlank
             ld [hl], c
+
+    call waitVDrawLoop
             ret
             "
             ); // TODO VRAIMENT PAS SÛR

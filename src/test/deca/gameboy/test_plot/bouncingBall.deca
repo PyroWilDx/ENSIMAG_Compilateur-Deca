@@ -23,7 +23,7 @@
         updated = gb.updateScreen();
         if (updated) {
             ball.moveAndDraw();
-            gb.sleep(2);
+            gb.sleep(10);
 
         }
     }

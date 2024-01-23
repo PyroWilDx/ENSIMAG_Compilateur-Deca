@@ -90,7 +90,6 @@ class GameBoy {
     }
     boolean isInVBlank() asm (
         "
-        call UpdateKeys
         ld h, 0
         ld l, 0
         ld a, [rLY]
@@ -135,6 +134,7 @@ class GameBoy {
     waitVDrawLoop:
 
     ld a, [rLY] ; Copy the vertical line to a
+    dec a
     or a, a; Check if the vertical line (in a) is 0
     jp z, waitVDrawLoop
     ret
@@ -223,6 +223,9 @@ class GameBoy {
         "
         call WaitForOneVBlank
 
+                ; Turn the LCD off
+    ld a, 0
+    ld [rLCDC], a
 
 
             ; init display reg
@@ -235,10 +238,13 @@ class GameBoy {
     ld bc, ElementaryTilesEnd - ElementaryTiles
     call CopyDEintoMemoryAtHL
 
-    ;ld de, wLetters
-    ;ld hl, $9620; Ce seront les quatres dernières tiles
-    ;ld bc, wLetters - wLettersEnd
-    ;call CopyDEintoMemoryAtHL
+    ;call waitVDrawLoop
+    ;call WaitForOneVBlank
+
+    ld de, wLetters
+    ld hl, $9620; Ce seront les quatres dernières tiles
+    ld bc, wLettersEnd - wLetters
+    call CopyDEintoMemoryAtHL
 
     ld b, 160
     ld hl, _OAMRAM
@@ -250,6 +256,10 @@ class GameBoy {
 
     call initVariables
             ;ld [hl], $ff
+
+    ; Turn the LCD on
+    ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
+    ld [rLCDC], a
 
             ret
 
@@ -311,45 +321,6 @@ class GameBoy {
     or a, c
     jp nz, CopyDEintoMemoryAtHL ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
     ret;
-
-    UpdateKeys:
-    ; Poll half the controller
-    ld a, P1F_GET_BTN
-    call .onenibble
-    ld b, a ; B7-4 = 1; B3-0 = unpressed buttons
-
-            ; Poll the other half
-    ld a, P1F_GET_DPAD
-    call .onenibble
-    swap a ; A3-0 = unpressed directions; A7-4 = 1
-    xor a, b ; A = pressed buttons + directions
-    ld b, a ; B = pressed buttons + directions
-
-    ; And release the controller
-    ld a, P1F_GET_NONE
-    ldh [rP1], a
-
-    ; Combine with previous wCurKeys to make wNewKeys
-    ld a, [wCurKeys]
-    xor a, b ; A = keys that changed state
-    and a, b ; A = keys that changed to pressed
-    ld l, a
-    ld [wNewKeys], a
-    ld a, b
-    ld h, a
-    ld [wCurKeys], a
-            ret
-
-  .onenibble
-    ldh [rP1], a ; switch the key matrix
-    call .knownret ; burn 10 cycles calling a known ret
-    ldh a, [rP1] ; ignore value while waiting for the key matrix to settle
-    ldh a, [rP1]
-    ldh a, [rP1] ; this read counts
-    or a, $F0 ; A7-4 = 1; A3-0 = unpressed keys
-    ret
-            .knownret
-            ret
     SECTION \"Variables\", WRAM0
 
     wVBlankCount: db
@@ -393,16 +364,14 @@ class GameBoy {
     ); //
     boolean keyPressed(int pad) asm(
         "
-        ;call UpdateKeys
-        ;ld b, l; b = newKey;
         ld a, [wNewKeys]
         ld b, a
         ld hl, sp + 4
-        ld a, [hl]; a = pad;
-
-        ld hl, 0
+        ld a, [hl]
         and a, b
-        jp z ,notPressed
+        ld h, 0
+        ld l, 0
+        jp nz ,notPressed
         ld hl, $ff
         notPressed:
         ret

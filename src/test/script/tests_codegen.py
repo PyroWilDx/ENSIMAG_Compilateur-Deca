@@ -471,7 +471,7 @@ def doTests():
              decacOptions="-p")
 
     doVerify("codegen/valid/options/optionParseEmptyMain.deca",
-             decacExpected=b"{\n}\n",
+             decacExpected=b"\n",
              decacOptions="-p")
 
     doVerify("codegen/valid/options/optionVerification.deca",

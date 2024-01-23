@@ -4,19 +4,35 @@
     boolean update = false;
     Snake snake = new Snake();
     boolean a = true;
+    int frameCount = 0;
     int i=0;
     GameBoy gb = new GameBoy();
     gb.init();
-    gb.setBackgroundColor(gb.WHITE);
-    snake.initSnake(6,6,20,18,15,15,gb,gb.LIGHT,gb.DARK);
-
+    gb.setBackgroundColor(gb.DARK);
+    snake.initSnake(6,6,20,18,15,15,gb,gb.LIGHT,gb.WHITE);
     while(a == true){
         update = gb.updateScreen();
-         if(update){
          //input
-         a = snake.move(i);//en argument le input
-         gb.sleep(5);
-         i = (i+2) % 4;
+         if(gb.keyPressed(gb.UP_KEY)){
+            i = 0;
+         }
+         if(gb.keyPressed(gb.DOWN_KEY)){
+            i = 1;
+         }
+         if(gb.keyPressed(gb.RIGHT_KEY)){
+            i = 2;
+         }
+         if(gb.keyPressed(gb.LEFT_KEY)){
+            i = 3;
+         }
+         if(update){
+         frameCount = frameCount+1;
+         if(frameCount == 10){
+            frameCount = 0;
+             a = snake.move(i);//en argument le input
+         }
+         //gb.sleep(3);
+         //i = (i+2) % 4;
          }
     }
 }
