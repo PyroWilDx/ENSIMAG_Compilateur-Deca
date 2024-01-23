@@ -48,8 +48,15 @@ class Snake{
     protected int color;
     protected int colorReward;
     protected GameBoy gb;
+    int VerticalDirection = 0;
+    int HorizontalDirection = 1;
+    int direction;
 
-    void initSnake(int xH,int yH,int xMax,int yMax, int xR,int yR,GameBoy g,int color,int color2){
+    int getDirection() {
+        return direction;
+    }
+
+    void initSnake(int xH, int yH, int xMax, int yMax, int xR, int yR, GameBoy g, int color, int color2){
         this.gb = g;
         this.color = color;
         this.colorReward = color2;
@@ -61,6 +68,7 @@ class Snake{
         this.maxY=yMax;
         this.head.initSnakeCase(null,this.tail,xH,yH);
         this.tail.initSnakeCase(this.head,null,xH-1,yH);
+        this.direction = this.VerticalDirection;
         this.reward=new Reward();
         this.reward.initReward(xR, yR,xMax,yMax);
         this.gb.setColor(color, xH, yH);
@@ -124,15 +132,19 @@ class Snake{
 
     // Le modulo c'est pour que si on sort d'un coté (exp le coté droit) on sort depuis l'autre coté ( coté gauche)
     void goUp(){
+        this.direction = this.VerticalDirection;
         this.yPositionHead = (this.yPositionHead - 1 + maxY)% maxY;
     }
     void goDown(){
+        this.direction = this.VerticalDirection;
         this.yPositionHead = (this.yPositionHead + 1) %maxY;
     }
      void goRight(){
+        this.direction = this.HorizontalDirection;
         this.xPositionHead = (this.xPositionHead +1 ) % maxX;
      }
      void goLeft(){
+        this.direction = this.HorizontalDirection;
         this.xPositionHead = (this.xPositionHead -1 + maxX) %maxX;
      }
      boolean collusion(){
