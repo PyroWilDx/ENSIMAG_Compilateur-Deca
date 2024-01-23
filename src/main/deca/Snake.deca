@@ -172,11 +172,20 @@ class Reward {
 Snake snake = new Snake();
 boolean a = true;
 int i=0;
-snake.initSnake(6,6,10,10,5,5);
+snake.initSnake(6,6,20,18,5,5);
+//draw snake
 while(a == true){
              println("n:");
              i = readInt();
              a = snake.move(i);
              snake.printSnake();
+             //ajouter un while pour rendre le snake avance d'une manière continue
+             /*
+             while(a == true){
+             a = snake.move(i);
+             i = readInt(); // ça depends si on a un input ou non
+             //add draw in the move function
+             }
+             */
              }
 }

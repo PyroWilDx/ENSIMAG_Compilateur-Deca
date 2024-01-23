@@ -29,10 +29,10 @@ class Ball {
         int backgroundColor = gb.getBackgroundColor();
         int oldX;
         int oldY;
-        if (x <= vitx || x >= gb.WIDTH - 1) {
+        if (x <= vitx || x >= gb.WIDTH - vitx) {
             forward = !forward;
         }
-        if (y <= vity || y >= gb.HEIGHT - 1) {
+        if (y <= vity || y >= gb.HEIGHT - vity) {
             down = !down;
         }
         oldX = x;
@@ -48,9 +48,10 @@ class Ball {
         } else {
             y = y - vity;
         }
-        gb.setColor(this.color, x, y);
-        gb.sleep(5);
+        //gb.setColor(gb.WHITE, oldX, oldY);
         gb.setColor(backgroundColor, oldX, oldY);
+        //gb.setColor(gb.BLACK, x, y);
+        gb.setColor(this.color, x, y);
     }
 
     void setX(int x) {
