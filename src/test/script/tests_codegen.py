@@ -462,46 +462,46 @@ def doTests():
     if not doParallel:
         prettyPrint("TEST DE L'ÉTAPE C (OPTION)")
 
-    doVerify("codegen/options/optionBanner.deca",
+    doVerify("codegen/valid/options/optionBanner.deca",
              decacExpected=b"== Banner : Gr10 / Gl47 ==\n",
              decacOptions="-b")
 
-    doVerify("codegen/options/optionParse.deca",
-             decacExpected=b"class A extends Object {\n\tint a;\n\tfloat method(int b, float c) {\n\t\t(this.a = b);\n\t\treturn c;\n\t}\n\tvoid methodAsm()\n\tasm(\"CODE ASS\");\n}\n{\n\tA class1 = new A();\n\tint x = 1;\n\tfloat y = 2;\n\tfloat z = 0x1.3851ecp0;\n\tboolean bool = false;\n\tif (((class1 != null) && (!bool))) {\n\t\t(class1.a = 1);\n\t\t(z = class1.method(x, z));\n\t} else {\n\t}\n\t;\n\t(z = ((x + y) - (x * (x + y))));\n\tprint(x, y, z);\n\tprintln(\"z = \", z);\n\tprintlnx(y, z);\n\tif ((y == z)) {\n\t\t(y = z);\n\t} else {\n\t\t(y = (z - 1));\n\t}\n\twhile (false) {\n\t\tif ((y != z)) {\n\t\t\tif ((y < z)) {\n\t\t\t\tif ((y > z)) {\n\t\t\t\t\t(x = readInt());\n\t\t\t\t} else {\n\t\t\t\t\t(y = 4);\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t}\n\t\t} else {\n\t\t\twhile (false) {\n\t\t\t\tprint();\n\t\t\t}\n\t\t}\n\t\t(y = readFloat());\n\t}\n\tx;\n\ty;\n\tz;\n}\n",
+    doVerify("codegen/invalid/options/optionParse.deca",
+             decacExpected=b"class A extends Object {\n\tint a;\n\tfloat method(int b, float c) {\n\t\t(this.a = b);\n\t\treturn c;\n\t}\n\tvoid methodAsm()\n\tasm(\"CODE ASS\");\n}\n{\n\tA class1 = new A();\n\tint x = 1;\n\tfloat y = 2;\n\tfloat z = 0x1.3851ecp0;\n\tboolean bool = false;\n\tprintln((1 / 0));\n\tif (((class1 != null) && (!bool))) {\n\t\t(class1.a = 1);\n\t\t(z = class1.method(x, z));\n\t} else {\n\t}\n\t;\n\t(z = ((x + y) - (x * (x + y))));\n\tprint(x, y, z);\n\tprintln(\"z = \", z);\n\tprintlnx(y, z);\n\tif ((y == z)) {\n\t\t(y = z);\n\t} else {\n\t\t(y = (z - 1));\n\t}\n\twhile (false) {\n\t\tif ((y != z)) {\n\t\t\tif ((y < z)) {\n\t\t\t\tif ((y > z)) {\n\t\t\t\t\t(x = readInt());\n\t\t\t\t} else {\n\t\t\t\t\t(y = 4);\n\t\t\t\t}\n\t\t\t} else {\n\t\t\t}\n\t\t} else {\n\t\t\twhile (false) {\n\t\t\t\tprint();\n\t\t\t}\n\t\t}\n\t\t(y = readFloat());\n\t}\n\tx;\n\ty;\n\tz;\n}\n",
              decacOptions="-p")
 
-    doVerify("codegen/options/optionParseEmptyMain.deca",
+    doVerify("codegen/valid/options/optionParseEmptyMain.deca",
              decacExpected=b"{\n}\n",
              decacOptions="-p")
 
-    doVerify("codegen/options/optionVerification.deca",
+    doVerify("codegen/valid/options/optionVerification.deca",
              decacOptions="-v")
 
-    doVerify("codegen/options/optionNoCheck.deca",
+    doVerify("codegen/invalid/options/optionNoCheck.deca",
              expectedResult=b"1\n",
              decacOptions="-n")
 
-    doVerify("codegen/options/floatOverflowConstIntFloat.deca",
+    doVerify("codegen/invalid/options/floatOverflowConstIntFloat.deca",
              expectedResult=b"",
              decacOptions="-n")
 
-    doVerify("codegen/options/floatOverflowConstFloatInt.deca",
+    doVerify("codegen/invalid/options/floatOverflowConstFloatInt.deca",
              expectedResult=b"",
              decacOptions="-n")
 
-    doVerify("codegen/options/floatOverflowConstFloatFloat.deca",
+    doVerify("codegen/invalid/options/floatOverflowConstFloatFloat.deca",
              expectedResult=b"",
              decacOptions="-n")
 
-    doVerify("codegen/options/optionDebugInfo.deca",
+    doVerify("codegen/valid/options/optionDebugInfo.deca",
              expectedResult=b"Lexing and parsing of",
              decacOptions="-d")
 
-    doVerify("codegen/options/optionDebugDebug.deca",
+    doVerify("codegen/valid/options/optionDebugDebug.deca",
              expectedResult=b"Generated assembly code",
              decacOptions="-d -d")
 
-    doVerify("codegen/options/optionDebugTrace.deca",
+    doVerify("codegen/valid/options/optionDebugTrace.deca",
              expectedResult=b"You can now use ima to execute",
              decacOptions="-d -d -d")
 
