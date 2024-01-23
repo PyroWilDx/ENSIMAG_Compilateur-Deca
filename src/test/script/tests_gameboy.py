@@ -5,7 +5,7 @@ import sys
 import subprocess
 
 nbTest = 0
-maxTest = 8
+maxTest = 200
 
 
 def prettyPrint(msg):
@@ -40,12 +40,12 @@ def doVerify(decaFilePath):
     lastDir = os.getcwd()
     os.chdir(bin)
 
-    os.system(f"rgbasm -L -o {decaFileNameNoExt}.o {decaFileNameNoExt}.asm")
-    os.system(f"rgblink -o {decaFileNameNoExt}.gb {decaFileNameNoExt}.o")
-    os.system(f"rgbfix -v -p 0xFF {decaFileNameNoExt}.gb")
+    # os.system(f"rgbasm -L -o {decaFileNameNoExt}.o {decaFileNameNoExt}.asm")
+    # os.system(f"rgblink -o {decaFileNameNoExt}.gb {decaFileNameNoExt}.o")
+    # os.system(f"rgbfix -v -p 0xFF {decaFileNameNoExt}.gb")
 
     # os.system(f"Emulicious.jar {decaFileNameNoExt}.gb &")
-    os.system(f"Emulicious.jar {decaFileNameNoExt}.gb > /dev/null 2>&1 &")
+    # os.system(f"Emulicious.jar {decaFileNameNoExt}.gb > /dev/null 2>&1 &")
 
     os.chdir(lastDir)
 
@@ -138,5 +138,5 @@ if __name__ == '__main__':
     os.system("pkill -f Emulicious.jar")
     main()
     print()
-    input("Enter to Exit...")
+    # input("Enter to Exit...")
     os.system("pkill -f Emulicious.jar")
