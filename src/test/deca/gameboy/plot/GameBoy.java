@@ -60,6 +60,7 @@ class GameBoy {
         int cc;
         int xxx, yyy, indexxx;
         //if (this.isInVBlank() && this.notTooMuchVBlank()) {
+        this.updateKeys();
             if (this.firstUpdate) {
                 this.initDisplayRegisters();
                 this.firstUpdate = false;
@@ -88,6 +89,11 @@ class GameBoy {
         //}
         return false;
     }
+    void updateKeys() asm(
+            "call UpdateKeys
+            ret
+            "
+            );
     boolean isInVBlank() asm (
         "
         call UpdateKeys
