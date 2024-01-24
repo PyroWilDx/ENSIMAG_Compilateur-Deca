@@ -62,7 +62,7 @@ public class Print extends AbstractPrint {
             int addrInTileMap = 38912 + y*32 + x;
             compiler.add(new LineGb("ld hl, " + addrInTileMap));
             compiler.add(new LineGb("ld [hl], " + tileIndex));
-            if (x == 19) x += 12;
+            if (x%32 == 19) x += 12;
             x++;
         }
 
