@@ -193,7 +193,7 @@ public class DeclClass extends AbstractDeclClass {
     }
 
     @Override
-    public void codeGenDeclClassGb(DecacCompiler compiler) {
+    public void codeGenDeclClassGb(DecacCompiler compiler) throws ContextualError {
         RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(true);
         compiler.setStackManager(sM);

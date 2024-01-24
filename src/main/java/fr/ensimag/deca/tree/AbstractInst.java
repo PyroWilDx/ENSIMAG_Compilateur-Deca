@@ -34,7 +34,7 @@ public abstract class AbstractInst extends Tree {
      */
     protected abstract void codeGenInst(DecacCompiler compiler);
 
-    protected abstract void codeGenInstGb(DecacCompiler compiler);
+    protected abstract void codeGenInstGb(DecacCompiler compiler) throws ContextualError;
 
     /**
      * Decompile the tree, considering it as an instruction.

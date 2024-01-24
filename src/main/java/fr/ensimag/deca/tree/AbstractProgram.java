@@ -14,5 +14,5 @@ public abstract class AbstractProgram extends Tree {
 
     public abstract void codeGenProgram(DecacCompiler compiler);
 
-    public abstract void codeGenProgramGb(DecacCompiler compiler);
+    public abstract void codeGenProgramGb(DecacCompiler compiler) throws ContextualError;
 }

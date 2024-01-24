@@ -1,0 +1,9 @@
+#include "GameBoy.java"
+
+{
+    GameBoy gb = new GameBoy();
+    gb.init();
+    gb.setBackgroundColor(gb.DARK);
+    //println();
+    print("test de depassement de l ecran j espere ca marche",2,2);
+}

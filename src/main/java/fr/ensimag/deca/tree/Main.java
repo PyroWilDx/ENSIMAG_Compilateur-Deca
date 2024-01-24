@@ -51,7 +51,7 @@ public class Main extends AbstractMain {
     }
 
     @Override
-    protected void codeGenMainGb(DecacCompiler compiler) {
+    protected void codeGenMainGb(DecacCompiler compiler) throws ContextualError {
         compiler.addComment("Beginning of Main Declarations:");
         declVariables.codeGenListDeclVarGb(compiler);
         compiler.addComment("Beginning of Main Instructions:");
