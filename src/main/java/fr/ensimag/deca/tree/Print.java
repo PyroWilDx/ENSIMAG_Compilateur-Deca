@@ -7,8 +7,6 @@ import fr.ensimag.deca.context.ContextualError;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.LineGb;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -39,8 +37,8 @@ public class Print extends AbstractPrint {
             x = 5;
             y = 5;
         } else {
-            x = argumentList.get(1).asInLiteral("Print second argument must be an int literal.", getLocation()).getValue();
-            y = argumentList.get(2).asInLiteral("Print third argument must be an int literal.", getLocation()).getValue();
+            x = argumentList.get(1).asIntLiteral("Print second argument must be an int literal.", getLocation()).getValue();
+            y = argumentList.get(2).asIntLiteral("Print third argument must be an int literal.", getLocation()).getValue();
         }
 
         GameBoyManager gbM = compiler.getGameBoyManager();
