@@ -59,7 +59,7 @@ class GameBoy {
     boolean updateScreen() {
         int cc;
         int xxx, yyy, indexxx;
-        if (this.isInVBlank() && this.notTooMuchVBlank()) {
+        //if (this.isInVBlank() && this.notTooMuchVBlank()) {
             if (this.firstUpdate) {
                 this.initDisplayRegisters();
                 this.firstUpdate = false;
@@ -85,7 +85,7 @@ class GameBoy {
             //this.waitVDraw();
             //his.sleep(2);
             return true;
-        }
+        //}
         return false;
     }
     boolean isInVBlank() asm (
