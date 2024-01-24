@@ -260,6 +260,13 @@ class GameBoy {
     ; During the first (blank) frame, initialize display registers
     ld a, %11100100
     ld [rBGP], a
+
+    ; On met les tiles de l utilisateur en memoire
+    ld de, Tiles
+    ld hl, $9000; Ce seront les quatres dernières tiles
+    ld bc, TilesEnd - Tiles
+    call CopyDEintoMemoryAtHL
+
             ; On met les tiles elementaires dans la mémoire
     ld de, ElementaryTiles
     ld hl, $97c0; Ce seront les quatres dernières tiles

@@ -63,7 +63,7 @@ public class GameBoyUtils {
         compiler.add(new LineGb("SECTION \"Tile data\", ROM0"));
         compiler.add(new LineGb(""));
 
-        compiler.addLabel(new Label("Tiles"));
+        compiler.addLabel(new Label("PrintTiles"));
         compiler.add(new LineGb("db $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff, $00,$ff\n" +
                 "\tdb $00,$ff, $00,$80, $00,$80, $00,$80, $00,$80, $00,$80, $00,$80, $00,$80\n" +
                 "\tdb $00,$ff, $00,$7e, $00,$7e, $00,$7e, $00,$7e, $00,$7e, $00,$7e, $00,$7e\n" +
@@ -134,13 +134,13 @@ public class GameBoyUtils {
                 "\tdb $54,$ff, $aa,$ff, $54,$ff, $aa,$ff, $54,$ff, $aa,$ff, $54,$ff, $00,$ff\n" +
                 "\tdb $15,$ff, $2a,$ff, $15,$ff, $0a,$ff, $15,$ff, $0a,$ff, $01,$ff, $00,$ff\n" +
                 "\tdb $01,$ff, $80,$ff, $01,$ff, $80,$ff, $01,$ff, $80,$ff, $01,$ff, $00,$ff"));
-        compiler.addLabel(new Label("TilesEnd"));
+        compiler.addLabel(new Label("PrintTilesEnd"));
 
         compiler.add(new LineGb(""));
         compiler.add(new LineGb("SECTION \"Tilemap\", ROM0"));
         compiler.add(new LineGb(""));
 
-        compiler.addLabel(new Label("Tilemap"));
+        compiler.addLabel(new Label("PrintTilemap"));
         compiler.add(new LineGb("db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,  0,0,0,0,0,0,0,0,0,0,0,0\n" +
                 "\tdb $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,  0,0,0,0,0,0,0,0,0,0,0,0\n" +
                 "\tdb $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,  0,0,0,0,0,0,0,0,0,0,0,0\n" +
@@ -159,7 +159,7 @@ public class GameBoyUtils {
                 "\tdb $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,  0,0,0,0,0,0,0,0,0,0,0,0\n" +
                 "\tdb $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,  0,0,0,0,0,0,0,0,0,0,0,0\n" +
                 "\tdb $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00,  0,0,0,0,0,0,0,0,0,0,0,0"));
-        compiler.addLabel(new Label("TilemapEnd"));
+        compiler.addLabel(new Label("PrintTilemapEnd"));
     }
 
 }

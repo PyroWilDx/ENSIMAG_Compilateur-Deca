@@ -39,9 +39,9 @@ public class Println extends AbstractPrint {
         compiler.add(new LineGb("jp c, " + waitVBlankLabel));
         compiler.add(new LineGb("ld a, 0"));
         compiler.add(new LineGb("ld [rLCDC], a"));
-        compiler.add(new LineGb("ld de, Tiles"));
+        compiler.add(new LineGb("ld de, PrintTiles"));
         compiler.add(new LineGb("ld hl, $9000"));
-        compiler.add(new LineGb("ld bc, TilesEnd - Tiles"));
+        compiler.add(new LineGb("ld bc, PrintTilesEnd - PrintTiles"));
 
         Label copyTilesLabel = new Label("CopyTiles" + printId);
         compiler.addLabel(copyTilesLabel);
@@ -52,9 +52,9 @@ public class Println extends AbstractPrint {
         compiler.add(new LineGb("ld a, b"));
         compiler.add(new LineGb("or a, c"));
         compiler.add(new LineGb("jp nz, " + copyTilesLabel));
-        compiler.add(new LineGb("ld de, Tilemap"));
+        compiler.add(new LineGb("ld de, PrintTilemap"));
         compiler.add(new LineGb("ld hl, $9800"));
-        compiler.add(new LineGb("ld bc, TilemapEnd - Tilemap"));
+        compiler.add(new LineGb("ld bc, PrintTilemapEnd - PrintTilemap"));
 
         Label copyTilemapLabel = new Label("CopyTilemap" + printId);
         compiler.addLabel(copyTilemapLabel);

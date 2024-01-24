@@ -1,5 +1,8 @@
 #include "GameBoy.java"
 #include "Snake.java"
+
+#includeTiles "snake_tiles"
+
 {
     boolean update = false;
     Snake snake = new Snake();
@@ -7,10 +10,29 @@
     int frameCount = 0;
     int i=0;
     GameBoy gb = new GameBoy();
+    int limiteFrameCount = 30;
+    boolean initScreen = true;
+
     gb.init();
-    gb.setBackgroundColor(gb.DARK);
+    gb.setBackgroundColor(5);
     gb.updateScreen();
-    snake.initSnake(6,6,20,18,15,15,gb,gb.LIGHT,gb.WHITE);
+    print(" a for easy mode ", 1, 7);
+    gb.setColor(gb.WHITE, 18, 7);
+    gb.setColor(gb.WHITE, 18, 10);
+    print(" b for hard mode ", 1, 10);
+    while (initScreen) {
+     update = gb.updateScreen();
+     if(gb.keyPressed(gb.A_KEY)) {
+        limiteFrameCount = 90;
+        initScreen = false;
+     }
+     if(gb.keyPressed(gb.B_KEY)) {
+         initScreen = false;
+      }
+    }
+    gb.setBackgroundColor(gb.WHITE);
+    gb.updateScreen();
+    snake.initSnake(gb,6,6,20,18,15,15);
     while(a == true){
         update = gb.updateScreen();
          //input
@@ -28,12 +50,10 @@
          }
          if(update){
          frameCount = frameCount+1;
-         if(frameCount == 100){
+         if(frameCount == limiteFrameCount){
             frameCount = 0;
              a = snake.move(i);//en argument le input
          }
-         //gb.sleep(3);
-         //i = (i+2) % 4;
          }
     }
 }
