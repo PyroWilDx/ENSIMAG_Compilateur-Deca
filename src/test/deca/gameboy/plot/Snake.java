@@ -51,7 +51,6 @@ class Snake{
     int VerticalDirection = 0;
     int HorizontalDirection = 1;
     int direction;
-
     int getDirection() {
         return direction;
     }
@@ -128,7 +127,6 @@ class Snake{
                 this.tail.setPrevious(null);
                 this.head.setX(this.xPositionHead);
                 this.head.setY(this.yPositionHead);
-
             }
             return a;
     }
