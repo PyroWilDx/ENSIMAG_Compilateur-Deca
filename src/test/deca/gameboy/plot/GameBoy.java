@@ -298,7 +298,6 @@ class GameBoy {
     SECTION \"Utils\", ROM0
     initVariables:
     ld a, 0
-    ld [wFrameCounter], a
     ld [wCurKeys], a
     ld [wNewKeys], a
             ret
@@ -348,14 +347,31 @@ class GameBoy {
     ldh a, [rP1] ; this read counts
     or a, $F0 ; A7-4 = 1; A3-0 = unpressed keys
     ret
-            .knownret
-            ret
+    .knownret
+    ret
+
+    rand:
+    ; Add 0xB3 then multiply by 0x01010101
+    ld hl, randstate+0
+    ld a, [hl]
+    add a, $B3
+    ld [hl+], a
+    adc a, [hl]
+    ld [hl+], a
+    adc a, [hl]
+    ld [hl+], a
+    ld c, a
+    adc a, [hl]
+    ld [hl], a
+    ld b, a
+    ret
+
     SECTION \"Variables\", WRAM0
 
     wVBlankCount: db
-    wFrameCounter: db
     wCurKeys: db
     wNewKeys: db
+    randstate: ds 4
 
 
     SECTION \"VBlankFunctions\", ROM0

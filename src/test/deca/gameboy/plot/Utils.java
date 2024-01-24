@@ -270,6 +270,14 @@ class Utils {
             "
             ); // TODO VRAIMENT PAS SÛR
 
+    int random() asm(
+            "
+            call rand
+            ld l, a
+            ld h, c
+            ret
+            "
+            );
 
 
 }
