@@ -208,6 +208,9 @@ public class DecacCompiler {
     private final GameBoyManager gameBoyManager;
     private final StringBuilder tileIncludes = new StringBuilder();
     private final StringBuilder tilemapIncludes = new StringBuilder();
+    public boolean noTileInclude() {
+        return tileIncludes.length() == 0;
+    }
 
     /**
      * Internal function that does the job of compiling (i.e. calling lexer,

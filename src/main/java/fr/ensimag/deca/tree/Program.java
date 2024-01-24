@@ -223,7 +223,12 @@ public class Program extends AbstractProgram {
         classes.codeGenListDeclClassGb(compiler);
 
         GameBoyUtils.putHelloWorld(compiler);
-    }
+        if (compiler.noTileInclude()) {
+            compiler.add(new LineGb("Tiles:"));
+            compiler.add(new LineGb("db $00,$00,$00,$00,$00,$00,$00,$00"));
+            compiler.add(new LineGb("TilesEnd:"));
+        }
+     }
 
     @Override
     public void decompile(IndentPrintStream s) {
