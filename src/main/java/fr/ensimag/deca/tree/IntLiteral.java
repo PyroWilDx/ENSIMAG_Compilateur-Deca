@@ -20,6 +20,8 @@ import java.io.PrintStream;
 public class IntLiteral extends AbstractLiteral {
 
     private int value;
+    @Override
+    IntLiteral asInLiteral(String errorMessage, Location location) {return this;}
 
     public void setValue(int value) {
         this.value = value;

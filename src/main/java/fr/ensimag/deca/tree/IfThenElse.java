@@ -69,7 +69,7 @@ public class IfThenElse extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInstGb(DecacCompiler compiler) {
+    protected void codeGenInstGb(DecacCompiler compiler) throws ContextualError {
         CondManager cM = compiler.getCondManager();
 
         Label startElseLabel = cM.getUniqueLabel();

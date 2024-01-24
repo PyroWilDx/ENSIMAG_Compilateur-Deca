@@ -52,7 +52,7 @@ public abstract class AbstractPrint extends AbstractInst {
     }
 
     @Override
-    protected void codeGenInstGb(DecacCompiler compiler) {
+    protected void codeGenInstGb(DecacCompiler compiler) throws ContextualError {
         // Non
     }
 

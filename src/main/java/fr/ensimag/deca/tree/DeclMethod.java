@@ -120,7 +120,7 @@ public class DeclMethod extends AbstractDeclMethod {
     }
 
     @Override
-    public void codeGenDeclMethodGb(DecacCompiler compiler) {
+    public void codeGenDeclMethodGb(DecacCompiler compiler) throws ContextualError {
         RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(true);
         compiler.setStackManager(sM);

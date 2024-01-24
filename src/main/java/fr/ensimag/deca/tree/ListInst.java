@@ -38,7 +38,7 @@ public class ListInst extends TreeList<AbstractInst> {
         // Done
     }
 
-    public void codeGenListInstGb(DecacCompiler compiler) {
+    public void codeGenListInstGb(DecacCompiler compiler) throws ContextualError {
         for (AbstractInst i : getList()) {
             i.codeGenInstGb(compiler);
         }

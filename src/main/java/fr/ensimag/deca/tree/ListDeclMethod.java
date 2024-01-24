@@ -169,7 +169,7 @@ public class ListDeclMethod extends TreeList<AbstractDeclMethod> {
         }
     }
 
-    public void codeGenListDeclMethodGb(DecacCompiler compiler) {
+    public void codeGenListDeclMethodGb(DecacCompiler compiler) throws ContextualError {
         for (AbstractDeclMethod method : getListOrdered()) {
             method.codeGenDeclMethodGb(compiler);
         }

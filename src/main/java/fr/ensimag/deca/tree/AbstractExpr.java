@@ -32,6 +32,12 @@ public abstract class AbstractExpr extends AbstractInst {
     boolean isImplicit() {
         return false;
     }
+    IntLiteral asInLiteral(String message, Location location) throws ContextualError{
+        throw new ContextualError(message, location);
+    }
+    StringLiteral asStringLiteral(String message, Location location) throws ContextualError{
+        throw new ContextualError(message, location);
+    }
 
     /**
      * Get the type decoration associated to this expression (i.e. the type computed by contextual verification).

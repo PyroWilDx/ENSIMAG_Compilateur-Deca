@@ -122,7 +122,7 @@ public class Program extends AbstractProgram {
     }
 
     @Override
-    public void codeGenProgramGb(DecacCompiler compiler) {
+    public void codeGenProgramGb(DecacCompiler compiler) throws ContextualError{
         RegManager rM = compiler.getRegManager();
         StackManager sM = new StackManager(false);
         compiler.setStackManager(sM);

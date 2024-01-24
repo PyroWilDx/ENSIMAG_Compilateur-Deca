@@ -223,6 +223,9 @@ class GameBoy {
         "
         call WaitForOneVBlank
 
+        ; Turn the LCD off
+        ld a, 0
+        ld [rLCDC], a
 
 
             ; init display reg
@@ -235,10 +238,10 @@ class GameBoy {
     ld bc, ElementaryTilesEnd - ElementaryTiles
     call CopyDEintoMemoryAtHL
 
-    ;ld de, wLetters
-    ;ld hl, $9620; Ce seront les quatres dernières tiles
-    ;ld bc, wLetters - wLettersEnd
-    ;call CopyDEintoMemoryAtHL
+    ld de, wLetters
+    ld hl, $9620; Ce seront les quatres dernières tiles
+    ld bc, wLettersEnd - wLetters
+    call CopyDEintoMemoryAtHL
 
     ld b, 160
     ld hl, _OAMRAM
@@ -249,7 +252,10 @@ class GameBoy {
     jp nz, ClearOAM
 
     call initVariables
-            ;ld [hl], $ff
+
+            ; Turn the LCD on
+    ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
+    ld [rLCDC], a
 
             ret
 

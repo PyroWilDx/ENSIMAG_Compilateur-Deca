@@ -18,6 +18,10 @@ public class StringLiteral extends AbstractStringLiteral {
     private final String value;
 
     @Override
+    StringLiteral asStringLiteral(String message, Location location) throws ContextualError{
+        return  this;
+    }
+    @Override
     public String getValue() {
         return value;
     }

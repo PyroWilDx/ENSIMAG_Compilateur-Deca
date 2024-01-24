@@ -4,8 +4,46 @@ import fr.ensimag.deca.DecacCompiler;
 import fr.ensimag.ima.pseudocode.Label;
 import fr.ensimag.ima.pseudocode.LineGb;
 
+import java.util.HashMap;
+
 public class GameBoyUtils {
 
+    private final static HashMap<Character, String> lettersAdresses = new HashMap<>();
+    public static String getLetterAdress(char letter) {
+        if(lettersAdresses.isEmpty()) {
+            lettersAdresses.put('a', "$62");
+            lettersAdresses.put('b', "$63");
+            lettersAdresses.put('c', "$64");
+            lettersAdresses.put('d', "$65");
+            lettersAdresses.put('e', "$66");
+            lettersAdresses.put('f', "$67");
+            lettersAdresses.put('g', "$68");
+            lettersAdresses.put('h', "$69");
+            lettersAdresses.put('i', "$6a");
+            lettersAdresses.put('j', "$6b");
+            lettersAdresses.put('k', "$6c");
+            lettersAdresses.put('l', "$6d");
+            lettersAdresses.put('m', "$6e");
+            lettersAdresses.put('n', "$6f");
+            lettersAdresses.put('o', "$70");
+            lettersAdresses.put('p', "$71");
+            lettersAdresses.put('q', "$72");
+            lettersAdresses.put('r', "$73");
+            lettersAdresses.put('s', "$74");
+            lettersAdresses.put('t', "$75");
+            lettersAdresses.put('u', "$76");
+            lettersAdresses.put('v', "$77");
+            lettersAdresses.put('w', "$78");
+            lettersAdresses.put('x', "$79");
+            lettersAdresses.put('y', "$7a");
+            lettersAdresses.put('z', "$7b");
+            lettersAdresses.put(' ', "$7c");
+        }
+        if(!lettersAdresses.containsKey(letter)) {
+            return "$7f";
+        }
+        return lettersAdresses.get(letter);
+    }
     private GameBoyUtils() {
 
     }

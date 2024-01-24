@@ -218,7 +218,8 @@ class GameBoy {
             halt
             jp stoppp
         "
-                );
+        );
+
     void asmInit () asm (
         "
         call WaitForOneVBlank

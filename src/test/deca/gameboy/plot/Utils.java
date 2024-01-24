@@ -199,9 +199,6 @@ class Utils {
 
     void setBackGroundInTileMap(int index) asm (
         "
-    ;ld a, [rLY]
-    ;cp 224
-    ;ret nc
         ld hl, sp + 4
         ld e, [hl]
         ;ld e, $7e
@@ -219,11 +216,6 @@ class Utils {
     );
     void pushInTileMap(int x, int y, int tileIndex) asm(
             "
-    ld a, [rLY]
-    cp 224
-    ret nc
-    ;loop:
-    ;jp loop
             ; a = y
             ld hl, sp + 6
             ld a, [hl]
@@ -239,13 +231,15 @@ class Utils {
             ld c, [hl]
             ;ld c, $7f
 
+            PushInTileMap:
+
             ; si y == 0 on passe à la boucle des colonnes
-            or a, a
+            and a, a
             jp z, yEqualsZero
 
             ; a = y
-            ld hl, sp + 6
-            ld a, [hl]
+            ;ld hl, sp + 6
+            ;ld a, [hl]
             ;ld a, 10
 
             ; hl c est la premiere adresse de la map
