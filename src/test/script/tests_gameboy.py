@@ -65,11 +65,6 @@ def doTests():
     prettyPrint("TEST GameBoy")
 
     # doVerify("gameboy/bin/fastTest.deca")
-    #
-    doVerify("gameboy/base/declVar.deca")
-    doVerify("gameboy/base/opArith.deca")
-    doVerify("gameboy/base/opRegOverflow.deca")
-    doVerify("gameboy/base/assign.deca")
 
     doVerify("gameboy/cond/boolLazyEval.deca")
     doVerify("gameboy/cond/elseOpCmp.deca")
@@ -77,6 +72,11 @@ def doTests():
     doVerify("gameboy/cond/ifThenElseComplex.deca")
     doVerify("gameboy/cond/whileSimple.deca")
     doVerify("gameboy/cond/whileComplex.deca")
+
+    doVerify("gameboy/base/declVar.deca")
+    doVerify("gameboy/base/opArith.deca")
+    doVerify("gameboy/base/opRegOverflow.deca")
+    doVerify("gameboy/base/assign.deca")
 
     doVerify("gameboy/object/easy/fieldSelection.deca")
     doVerify("gameboy/object/easy/fieldInitReg.deca")
