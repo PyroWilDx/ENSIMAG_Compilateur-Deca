@@ -68,7 +68,7 @@ class Snake{
         this.maxY=yMax;
         this.head.initSnakeCase(null,this.tail,xH,yH);
         this.tail.initSnakeCase(this.head,null,xH-1,yH);
-        this.direction = this.VerticalDirection;
+        this.direction = this.HorizontalDirection;
         this.reward=new Reward();
         this.reward.initReward(xR, yR,xMax,yMax);
         this.gb.setColor(color, xH, yH);
