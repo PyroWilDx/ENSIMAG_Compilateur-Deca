@@ -113,7 +113,7 @@ class Snake{
             gb.setColor(this.color, this.xPositionHead, this.yPositionHead);
             //si la position du head est celle de la reward
             if(xPositionHead==this.reward.x && yPositionHead==this.reward.y){
-                print("score", 2, 0);
+                //print("score", 2, 0);
                 score = score + 1;
                 gb.printNumber(score, 2, 1);
                 newHead=new SnakeCell();
