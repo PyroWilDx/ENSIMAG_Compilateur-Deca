@@ -3,8 +3,6 @@ package fr.ensimag.ima.pseudocode.instructions;
 import fr.ensimag.ima.pseudocode.GPRegister;
 import fr.ensimag.ima.pseudocode.UnaryInstruction;
 
-import java.io.PrintStream;
-
 public class INC_REG extends UnaryInstruction {
     public INC_REG(GPRegister op) {
         super(op);
