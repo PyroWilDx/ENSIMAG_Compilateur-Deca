@@ -38,7 +38,7 @@ public class GameBoyManager {
     private final HashMap<String, HashMap<String, Integer>> methodsVars;
     // HashMap<ClassName.MethodName, HashMap<VarName, VarOffset>
     private String currDeclaringIdentName;
-    private LinkedList<Integer> currMethodSpOffset; // OH LA PURGE PUTAIN ++
+    private final LinkedList<Integer> currMethodSpOffset; // OH LA PURGE PUTAIN ++
 
     public GameBoyManager() {
         this.printId = 0;
@@ -108,7 +108,7 @@ public class GameBoyManager {
         for (String className : vTM.getCurrClassNameStack()) {
             String mKey = getMethodKey(className, vTM.getCurrMethodName());
             if (!methodsVars.containsKey(mKey)) continue;
-            ;
+
             return methodsVars.get(mKey).get(varName);
         }
         return null;
