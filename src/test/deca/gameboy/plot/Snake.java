@@ -101,7 +101,7 @@ class Snake{
             else if(i==3){
                 goLeft();
                 }
-            a = this.collusion();
+            a = this.collusion(this.xPositionHead, this.yPositionHead);
             gb.setColor(this.color, this.xPositionHead, this.yPositionHead);
             //si la position du head est celle de la reward
             if(xPositionHead==this.reward.x && yPositionHead==this.reward.y){
@@ -112,6 +112,9 @@ class Snake{
                 this.head=newHead;
                 this.head.setNext(null);
                 this.reward.changeParams();
+                while (!this.collusion(this.reward.x, this.reward.y)){
+                    this.reward.changeParams();
+                }
                 gb.setColor(this.colorReward, this.reward.getX(), this.reward.getY());
             }
             else{
@@ -147,10 +150,10 @@ class Snake{
         this.direction = this.HorizontalDirection;
         this.xPositionHead = (this.xPositionHead -1 + maxX) %maxX;
      }
-     boolean collusion(){
+     boolean collusion(int x, int y){
         SnakeCell current = this.tail;
         while(current != null){
-            if(current.getX() == this.xPositionHead && current.getY() == this.yPositionHead){
+            if(current.getX() == x && current.getY() == y){
                 return false;
             }
             current = current.getNext();
