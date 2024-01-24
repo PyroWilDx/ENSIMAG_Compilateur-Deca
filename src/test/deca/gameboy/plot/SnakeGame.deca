@@ -9,6 +9,7 @@
     GameBoy gb = new GameBoy();
     gb.init();
     gb.setBackgroundColor(gb.DARK);
+    gb.updateScreen();
     snake.initSnake(6,6,20,18,15,15,gb,gb.LIGHT,gb.WHITE);
     while(a == true){
         update = gb.updateScreen();

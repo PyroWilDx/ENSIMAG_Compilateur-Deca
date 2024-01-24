@@ -48,6 +48,7 @@ class Snake{
     protected int color;
     protected int colorReward;
     protected GameBoy gb;
+    //protected boolean printFirst = true;
     int VerticalDirection = 0;
     int HorizontalDirection = 1;
     int direction;
@@ -74,6 +75,8 @@ class Snake{
         this.gb.setColor(color, xH, yH);
         this.gb.setColor(color, xH-1, yH);
         this.gb.setColor(colorReward, xR, yR);
+        print("score", 2, 0);
+        this.gb.printNumber(this.score,2,1);
     }
 
     int getHeadX(){
@@ -101,13 +104,18 @@ class Snake{
             else if(i==3){
                 goLeft();
                 }
+            /*if(printFirst){
+                print("score ", 2, 0);
+                gb.printNumber(this.score, 3, 1);
+                this.printFirst = false;
+            }*/
             a = this.collusion(this.xPositionHead, this.yPositionHead);
             gb.setColor(this.color, this.xPositionHead, this.yPositionHead);
             //si la position du head est celle de la reward
             if(xPositionHead==this.reward.x && yPositionHead==this.reward.y){
-                print("score ", 2, 0);
-                gb.printNumber(score, 3, 1);
+                print("score", 2, 0);
                 score = score + 1;
+                gb.printNumber(score, 2, 1);
                 newHead=new SnakeCell();
                 newHead.initSnakeCase(null, null,xPositionHead,yPositionHead);
                 this.head.setNext(newHead);
@@ -139,10 +147,16 @@ class Snake{
     void goUp(){
         this.direction = this.VerticalDirection;
         this.yPositionHead = (this.yPositionHead - 1 + maxY)% maxY;
+        if(this.yPositionHead < 2){
+            this.yPositionHead = maxY -1;
+        }
     }
     void goDown(){
         this.direction = this.VerticalDirection;
         this.yPositionHead = (this.yPositionHead + 1) %maxY;
+        if(this.yPositionHead < 2){
+            this.yPositionHead = 2;
+        }
     }
      void goRight(){
         this.direction = this.HorizontalDirection;
@@ -196,6 +210,9 @@ class Reward {
     void changeParams(){
         this.x = this.utils.random() % this.maxX;
         this.y = this.utils.random() % this.maxY;
+        if(this.y < 2) {
+            this.y = 2;
+        }
 //        print("reward :");
 //        print(this.x);
 //        print("-");
