@@ -48,8 +48,14 @@ class Snake{
     protected int color;
     protected int colorReward;
     protected GameBoy gb;
+    int VerticalDirection = 0;
+    int HorizontalDirection = 1;
+    int direction;
+    int getDirection() {
+        return direction;
+    }
 
-    void initSnake(int xH,int yH,int xMax,int yMax, int xR,int yR,GameBoy g,int color,int color2){
+    void initSnake(int xH, int yH, int xMax, int yMax, int xR, int yR, GameBoy g, int color, int color2){
         this.gb = g;
         this.color = color;
         this.colorReward = color2;
@@ -61,6 +67,7 @@ class Snake{
         this.maxY=yMax;
         this.head.initSnakeCase(null,this.tail,xH,yH);
         this.tail.initSnakeCase(this.head,null,xH-1,yH);
+        this.direction = this.HorizontalDirection;
         this.reward=new Reward();
         this.reward.initReward(xR, yR,xMax,yMax);
         this.gb.setColor(color, xH, yH);
@@ -93,7 +100,7 @@ class Snake{
             else if(i==3){
                 goLeft();
                 }
-            a = this.collusion();
+            a = this.collusion(this.xPositionHead, this.yPositionHead);
             gb.setColor(this.color, this.xPositionHead, this.yPositionHead);
             //si la position du head est celle de la reward
             if(xPositionHead==this.reward.x && yPositionHead==this.reward.y){
@@ -104,6 +111,9 @@ class Snake{
                 this.head=newHead;
                 this.head.setNext(null);
                 this.reward.changeParams();
+                while (!this.collusion(this.reward.x, this.reward.y)){
+                    this.reward.changeParams();
+                }
                 gb.setColor(this.colorReward, this.reward.getX(), this.reward.getY());
             }
             else{
@@ -117,28 +127,31 @@ class Snake{
                 this.tail.setPrevious(null);
                 this.head.setX(this.xPositionHead);
                 this.head.setY(this.yPositionHead);
-
             }
             return a;
     }
 
     // Le modulo c'est pour que si on sort d'un coté (exp le coté droit) on sort depuis l'autre coté ( coté gauche)
     void goUp(){
+        this.direction = this.VerticalDirection;
         this.yPositionHead = (this.yPositionHead - 1 + maxY)% maxY;
     }
     void goDown(){
+        this.direction = this.VerticalDirection;
         this.yPositionHead = (this.yPositionHead + 1) %maxY;
     }
      void goRight(){
+        this.direction = this.HorizontalDirection;
         this.xPositionHead = (this.xPositionHead +1 ) % maxX;
      }
      void goLeft(){
+        this.direction = this.HorizontalDirection;
         this.xPositionHead = (this.xPositionHead -1 + maxX) %maxX;
      }
-     boolean collusion(){
+     boolean collusion(int x, int y){
         SnakeCell current = this.tail;
         while(current != null){
-            if(current.getX() == this.xPositionHead && current.getY() == this.yPositionHead){
+            if(current.getX() == x && current.getY() == y){
                 return false;
             }
             current = current.getNext();
@@ -160,11 +173,7 @@ class Reward {
     int y ;
     int maxX = 20;
     int maxY = 18;
-    // ces params pour la fonction random
-    int s = 5;
-    int a = 166;
-    int c = 51 ;
-    int m = 532 ;
+    Utils utils = new Utils();
 
     int getX(){
         return this.x;
@@ -181,8 +190,8 @@ class Reward {
         this.maxY = maxY;
     }
     void changeParams(){
-        this.x = ((this.a* this.x +this.c)% m)%100 % this.maxX;
-        this.y = (((this.a*s+ this.y + this.c)% this.m)%100 -10) % this.maxY ;
+        this.x = this.utils.random() % this.maxX;
+        this.y = this.utils.random() % this.maxY;
 //        print("reward :");
 //        print(this.x);
 //        print("-");

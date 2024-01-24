@@ -64,14 +64,13 @@ def doTests():
 
     prettyPrint("TEST Librarie GameBoy")
 
-    #doVerify("gameboy/plot/init.deca")
-    #doVerify("gameboy/plot/point.deca")
-    #doVerify("gameboy/plot/ClasslessbouncingBallEasy.deca")
-    #doVerify("gameboy/plot/bouncingBall.deca")
-#     doVerify("gameboy/plot/input_easy.java")
-    #doVerify("gameboy/plot/SnakeGame.deca")
+    # doVerify("gameboy/plot/init.deca")
+    # doVerify("gameboy/plot/point.deca")
+    # doVerify("gameboy/plot/ClasslessbouncingBallEasy.deca")
+    # doVerify("gameboy/plot/bouncingBall.deca")
+    # doVerify("gameboy/plot/input_easy.java")
+    # doVerify("gameboy/plot/SnakeGame.deca")
     doVerify("gameboy/plot/print.deca")
-
 
     return 0
 

@@ -124,7 +124,7 @@ class DrawEventList {
     void init() {
         int i = 0;
         DrawEvent event;
-        this.nextIndex = 1;
+        this.nextIndex = 0;
         while (i < size) {
             event = new DrawEvent();
             this.addInit(event);
@@ -168,21 +168,21 @@ class DrawEventList {
         int y;
         int tileIndex;
         DrawEvent current = first;
-        //nextIndex = 42;
-        //this.test = 1;
-        //if (test == 1) {
-        //    utils.pushInTileMap(10,10, 127);
-        //}
-        //if (test == 0) {
-         //   utils.pushInTileMap(10,15, 126);
-        //}
-        while(i < nextIndex){
-            tileIndex = current.getTileIndex();
-            x = current.getX();
-            y = current.getY();
-            utils.pushInTileMap(x,y, tileIndex);
-            current = current.getNext();
-            i = i + 1;
+        boolean currentNotNull = true;
+        while (i < nextIndex) {
+            if (current == null) {
+                currentNotNull = false;
+                i = nextIndex;
+                nextIndex = 0;
+            }
+            if (currentNotNull == true) {
+                tileIndex = current.getTileIndex();
+                x = current.getX();
+                y = current.getY();
+                utils.pushInTileMap(x, y, tileIndex);
+                current = current.getNext();
+                i = i + 1;
+            }
         }
         nextIndex = 0;
     }
@@ -264,6 +264,14 @@ class Utils {
             "
             ); // TODO VRAIMENT PAS SÛR
 
+    int random() asm(
+            "
+            call rand
+            ld l, a
+            ld h, c
+            ret
+            "
+            );
 
 
 }

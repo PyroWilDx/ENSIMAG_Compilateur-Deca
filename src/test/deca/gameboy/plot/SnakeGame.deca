@@ -13,16 +13,16 @@
     while(a == true){
         update = gb.updateScreen();
          //input
-         if(gb.keyPressed(gb.UP_KEY)){
+         if(gb.keyPressed(gb.UP_KEY) && snake.getDirection() == snake.HorizontalDirection){
             i = 0;
          }
-         if(gb.keyPressed(gb.DOWN_KEY)){
+         if(gb.keyPressed(gb.DOWN_KEY) && snake.getDirection() == snake.HorizontalDirection){
             i = 1;
          }
-         if(gb.keyPressed(gb.RIGHT_KEY)){
+         if(gb.keyPressed(gb.RIGHT_KEY) && snake.getDirection() == snake.VerticalDirection){
             i = 2;
          }
-         if(gb.keyPressed(gb.LEFT_KEY)){
+         if(gb.keyPressed(gb.LEFT_KEY) && snake.getDirection() == snake.VerticalDirection){
             i = 3;
          }
          if(update){
