@@ -38,6 +38,16 @@ public class GameBoyUtils {
             lettersAdresses.put('y', "$7a");
             lettersAdresses.put('z', "$7b");
             lettersAdresses.put(' ', "$7c");
+            lettersAdresses.put('0', "$58");
+            lettersAdresses.put('1', "$59");
+            lettersAdresses.put('2', "$5a");
+            lettersAdresses.put('3', "$5b");
+            lettersAdresses.put('4', "$5c");
+            lettersAdresses.put('5', "$5d");
+            lettersAdresses.put('6', "$5e");
+            lettersAdresses.put('7', "$5f");
+            lettersAdresses.put('8', "$60");
+            lettersAdresses.put('9', "$61");
         }
         if(!lettersAdresses.containsKey(letter)) {
             return "$7f";

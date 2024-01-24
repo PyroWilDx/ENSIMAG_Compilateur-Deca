@@ -24,10 +24,10 @@ public class Print extends AbstractPrint {
 
     @Override
     protected void codeGenInstGb(DecacCompiler compiler) throws ContextualError {
+        GameBoyManager gbM = compiler.getGameBoyManager();
         List<AbstractExpr> argumentList = this.getArguments().getList();
         if (argumentList.isEmpty()) return;
-        String message = argumentList.get(0).asStringLiteral("Print first argument must be a string literal.",
-                getLocation()).getValue();
+
         int numberOfArguments = argumentList.size();
         int x, y;
         if (numberOfArguments != 3 && numberOfArguments != 1) {
@@ -41,8 +41,6 @@ public class Print extends AbstractPrint {
             y = argumentList.get(2).asIntLiteral("Print third argument must be an int literal.", getLocation()).getValue();
         }
 
-        GameBoyManager gbM = compiler.getGameBoyManager();
-
         int printId = gbM.getAndIncrPrintId();
 
         Label waitVBlankLabel = new Label("WaitVBlank" + printId);
@@ -52,15 +50,22 @@ public class Print extends AbstractPrint {
         compiler.add(new LineGb("ld a, 0"));
         compiler.add(new LineGb("ld [rLCDC], a"));
 
+        AbstractExpr firstArg = argumentList.get(0);
+        String message;
+        message = firstArg.asStringLiteral("Print first argument must be a string literal.",
+                getLocation()).getValue();
+
+
         for (int i = 1; i < message.length() - 1; i++) {
             char l = message.charAt(i);
             String tileIndex = GameBoyUtils.getLetterAdress(l);
             int addrInTileMap = 38912 + y * 32 + x;
             compiler.add(new LineGb("ld hl, " + addrInTileMap));
             compiler.add(new LineGb("ld [hl], " + tileIndex));
-            if (x%32 == 19) x += 12;
+            if (x % 32 == 19) x += 12;
             x++;
         }
+
 
         compiler.add(new LineGb("; Turn the LCD on"));
         compiler.add(new LineGb("ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON"));

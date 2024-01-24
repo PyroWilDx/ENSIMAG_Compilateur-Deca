@@ -2,8 +2,12 @@
 
 {
     GameBoy gb = new GameBoy();
+    int x;
     gb.init();
-    gb.setBackgroundColor(gb.DARK);
+    //gb.setBackgroundColor(gb.DARK);
     //println();
-    print("test de depassement de l ecran j espere ca marche",2,2);
+    //print("test de depassement de l ecran j espere ca marche",2,2);
+    x = 124;
+    print("score ", 2, 2);
+    gb.printNumber(3, 10, 2);
 }
