@@ -93,4 +93,5 @@ class BinaryTree {
     tree.checkIn(1);
     tree.checkIn(20);
     tree.checkNotIn(42);
+    // tree.checkIn(200);
 }

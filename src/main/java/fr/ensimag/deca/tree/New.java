@@ -104,9 +104,7 @@ public class New extends AbstractExpr {
         compiler.addInstruction(new DEC_REG(Register.HL));
         compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L)); // Low
         compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
-        for (int i = 0; i < fieldsCount * 2; i++) {
-            compiler.addInstruction(new INC_REG(Register.HL));
-        }
+        GameBoyManager.incHLByValue(compiler, fieldsCount * 2);
         compiler.addInstruction(new LOAD_INT(GameBoyManager.dynamicFieldsCptAddr, gpReg));
         compiler.addInstruction(new LOAD_REG(Register.HL.getHighReg(), Register.A));
         compiler.addInstruction(new STORE_REG(Register.A, gpReg));

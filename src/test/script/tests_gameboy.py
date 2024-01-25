@@ -2,7 +2,6 @@
 
 import os
 import sys
-import subprocess
 
 nbTest = 0
 maxTest = 8
@@ -53,6 +52,7 @@ def doVerify(decaFilePath):
 
     if nbTest == maxTest:
         input("Enter to Continue...")
+
         os.system("pkill -f Emulicious.jar")
         nbTest = 0
 

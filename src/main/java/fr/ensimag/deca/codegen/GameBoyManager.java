@@ -146,6 +146,50 @@ public class GameBoyManager {
 //        return currMethodSpOffset.peekFirst();
     }
 
+    public static void incHLByValue(DecacCompiler compiler, int value) {
+        RegManager rM = compiler.getRegManager();
+        int maxLine = (rM.isUsingAllRegs()) ? 10 : 4;
+
+        if (value < maxLine) {
+            for (int i = 0; i < value; i++) {
+                compiler.addInstruction(new INC_REG(Register.HL));
+            }
+        } else {
+            if (rM.isUsingAllRegs()) {
+                compiler.addInstruction(new LOAD_REG(GPRegister.L, Register.A));
+                compiler.addInstruction(new LOAD_INT(value, GPRegister.L));
+                compiler.addInstruction(new ADD_A(GPRegister.L, Register.A));
+                compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.L));
+                compiler.addInstruction(new LOAD_REG(GPRegister.H, Register.A));
+                compiler.addInstruction(new LOAD_INT(0, GPRegister.H));
+                compiler.addInstruction(new ADC_A(GPRegister.H, Register.A));
+                compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
+            } else {
+                GPRegister gpReg = rM.getFreeReg();
+                compiler.addInstruction(new LOAD_INT(value, gpReg));
+                compiler.addInstruction(new ADD_HL(gpReg, Register.HL));
+                rM.freeReg(gpReg);
+            }
+        }
+    }
+
+    public static void incReg16ByValue(DecacCompiler compiler, GPRegister gpReg, int value) {
+        int maxLine = 8;
+
+        if (value < maxLine) {
+            for (int i = 0; i < value; i++) {
+                compiler.addInstruction(new INC_REG(gpReg));
+            }
+        } else {
+            compiler.addInstruction(new LOAD_REG(gpReg.getHighReg(), Register.HL.getHighReg()));
+            compiler.addInstruction(new LOAD_REG(gpReg.getLowReg(), Register.HL.getLowReg()));
+            compiler.addInstruction(new LOAD_INT(value, gpReg));
+            compiler.addInstruction(new ADD_HL(gpReg, Register.HL));
+            compiler.addInstruction(new LOAD_REG(Register.HL.getHighReg(), gpReg.getHighReg()));
+            compiler.addInstruction(new LOAD_REG(Register.HL.getLowReg(), gpReg.getLowReg()));
+        }
+    }
+
     public void loadIdentAddrIntoHL(DecacCompiler compiler, AbstractIdentifier ident) {
         VTableManager vTM = compiler.getVTableManager();
         GameBoyManager gbM = compiler.getGameBoyManager();
@@ -185,10 +229,7 @@ public class GameBoyManager {
             compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
             compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
             int fieldOffset = vTM.getCurrFieldOffset(identName);
-            for (int i = 0; i < fieldOffset * 2; i++) {
-                compiler.addInstruction(new INC_REG(Register.HL));
-            }
-            compiler.addInstruction(new INC_REG(Register.HL)); // Pour se mettre sur le high
+            GameBoyManager.incHLByValue(compiler, fieldOffset * 2 + 1);
         }
     }
 }
