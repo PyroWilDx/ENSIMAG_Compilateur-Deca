@@ -47,6 +47,8 @@ class Snake{
     protected int maxX;
     protected int maxY;
     protected Reward reward;
+    //protected int color;
+    //protected int colorReward;
     protected GameBoy gb;
 
     protected int tailTile = 0;
@@ -54,7 +56,12 @@ class Snake{
     protected int leftHeadTile = 2;
     protected int downHeadTile = 3;
     protected int upHeadTile = 4;
-    protected int appleTile = 5;
+    protected int appleTile = 9;
+
+    int compteurAdder = 0;
+    int adder = 0;
+
+
 
     //protected boolean printFirst = true;
     int VerticalDirection = 0;
@@ -66,7 +73,11 @@ class Snake{
     }
 
     void initSnake( GameBoy g, int xH, int yH, int xMax, int yMax, int xR, int yR){
+        int compteurWhile = 8;
         this.gb = g;
+
+        //this.color = 126;
+        //this.colorReward = 124;
         this.head = new SnakeCell();
         this.tail = new SnakeCell();
         this.xPositionHead=xH;
@@ -81,8 +92,14 @@ class Snake{
         this.gb.setColor(upHeadTile, xH, yH);
         this.gb.setColor(tailTile, xH-1, yH);
         this.gb.setColor(appleTile, xR, yR);
-        print("score", 2, 0);
-        this.gb.printNumber(this.score,2,1);
+        gb.updateScreen();
+        while (compteurWhile <= 19) {
+            gb.setColor(10, compteurWhile, 1);
+            compteurWhile  = compteurWhile + 1;
+        }
+
+        print("score", 0, 1);
+        this.gb.printNumber(this.score,6,1);
     }
 
     int getHeadX(){
@@ -93,66 +110,77 @@ class Snake{
         return yPositionHead;
     }
 
-    int getScore(){
-        return this.score;
-    }
-
 
     boolean move(int i){
-        boolean a;
-        int backgroundColor = gb.getBackgroundColor();
-        SnakeCell newHead;
-        int tile = upHeadTile;
-        xPreviousPositionHead = xPositionHead;
-        yPreviousPositionHead = yPositionHead;
-        if(i==0){
-            goUp();
-            tile = upHeadTile;
-        }
-        else if (i==1){
-            goDown();
-            tile = downHeadTile;
-        }
-        else if(i==2){
-            goRight();
-            tile = rightHeadTile;
-        }
-        else if(i==3){
-            goLeft();
-            tile = leftHeadTile;
-        }
-        a = this.collusion(this.xPositionHead, this.yPositionHead);
-        gb.setColor(tile, this.xPositionHead, this.yPositionHead);
-        gb.setColor(tailTile, this.xPreviousPositionHead, this.yPreviousPositionHead);
-        //si la position du head est celle de la reward
-        if(xPositionHead==this.reward.x && yPositionHead==this.reward.y){
-            score = score + 1;
-            gb.printNumber(score, 2, 1);
-            newHead=new SnakeCell();
-            newHead.initSnakeCase(null, null,xPositionHead,yPositionHead);
-            this.head.setNext(newHead);
-            newHead.setPrevious(this.head);
-            this.head=newHead;
-            this.head.setNext(null);
-            this.reward.changeParams();
-            while (!this.collusion(this.reward.x, this.reward.y)){
-                this.reward.changeParams();
+            boolean a;
+            int backgroundColor = gb.getBackgroundColor();
+            SnakeCell newHead;
+            int tile = upHeadTile;
+            xPreviousPositionHead = xPositionHead;
+            yPreviousPositionHead = yPositionHead;
+            if(i==0){
+                goUp();
+                tile = upHeadTile;
             }
-            gb.setColor(appleTile, this.reward.getX(), this.reward.getY());
-        }
-        else{
-            gb.setColor(backgroundColor, this.tail.getX(), this.tail.getY());
-            newHead = this.tail;
-            this.tail = this.tail.getNext();
-            this.head.setNext(newHead);
-            newHead.setPrevious(this.head);
-            this.head = newHead ;
-            this.head.setNext(null);
-            this.tail.setPrevious(null);
-            this.head.setX(this.xPositionHead);
-            this.head.setY(this.yPositionHead);
-        }
-        return a;
+            else if (i==1){
+                goDown();
+                tile = downHeadTile;
+            }
+            else if(i==2){
+                goRight();
+                tile = rightHeadTile;
+            }
+            else if(i==3){
+                goLeft();
+                tile = leftHeadTile;
+                }
+            /*if(printFirst){
+                print("score ", 2, 0);
+                gb.printNumber(this.score, 3, 1);
+                this.printFirst = false;
+            }*/
+            compteurAdder  = compteurAdder + 1;
+            if (compteurAdder == 2) {
+                compteurAdder = 0;
+                if (adder == 0) {
+                    adder = 4;
+                } else {
+                    adder = 0;
+                }
+            }
+            a = this.collusion(this.xPositionHead, this.yPositionHead);
+            gb.setColor(tile + adder, this.xPositionHead, this.yPositionHead);
+            gb.setColor(tailTile, this.xPreviousPositionHead, this.yPreviousPositionHead);
+            //si la position du head est celle de la reward
+            if(xPositionHead==this.reward.x && yPositionHead==this.reward.y){
+                //print("score", 2, 0);
+                score = score + 1;
+                gb.printNumber(score, 6, 1);
+                newHead=new SnakeCell();
+                newHead.initSnakeCase(null, null,xPositionHead,yPositionHead);
+                this.head.setNext(newHead);
+                newHead.setPrevious(this.head);
+                this.head=newHead;
+                this.head.setNext(null);
+                this.reward.changeParams();
+                while (!this.collusion(this.reward.x, this.reward.y)){
+                    this.reward.changeParams();
+                }
+                gb.setColor(appleTile, this.reward.getX(), this.reward.getY());
+            }
+            else{
+                gb.setColor(backgroundColor, this.tail.getX(), this.tail.getY());
+                newHead = this.tail;
+                this.tail = this.tail.getNext();
+                this.head.setNext(newHead);
+                newHead.setPrevious(this.head);
+                this.head = newHead ;
+                this.head.setNext(null);
+                this.tail.setPrevious(null);
+                this.head.setX(this.xPositionHead);
+                this.head.setY(this.yPositionHead);
+            }
+            return a;
     }
 
     // Le modulo c'est pour que si on sort d'un coté (exp le coté droit) on sort depuis l'autre coté ( coté gauche)
@@ -170,15 +198,15 @@ class Snake{
             this.yPositionHead = 2;
         }
     }
-    void goRight(){
+     void goRight(){
         this.direction = this.HorizontalDirection;
         this.xPositionHead = (this.xPositionHead +1 ) % maxX;
-    }
-    void goLeft(){
+     }
+     void goLeft(){
         this.direction = this.HorizontalDirection;
         this.xPositionHead = (this.xPositionHead -1 + maxX) %maxX;
-    }
-    boolean collusion(int x, int y){
+     }
+     boolean collusion(int x, int y){
         SnakeCell current = this.tail;
         while(current != null){
             if(current.getX() == x && current.getY() == y){
@@ -187,14 +215,16 @@ class Snake{
             current = current.getNext();
         }
         return true ;
-    }
+     }
 
-    void printSnake(){
+     void printSnake(){
         SnakeCell current = this.head;
         while (current != null) {
+            //print(current.getX());
+            //println(current.getY());
             current = current.getPrevious();
         }
-    }
+     }
 }
 class Reward {
     int x ;

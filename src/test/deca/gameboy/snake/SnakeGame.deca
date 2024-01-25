@@ -1,7 +1,5 @@
-#include "GameboyUtils.decah"
 #include "GameBoy.decah"
 #include "Snake.deca"
-
 #includeTiles "snake_tiles"
 
 {
@@ -13,17 +11,18 @@
     GameBoy gb = new GameBoy();
     int limiteFrameCount = 30;
     boolean initScreen = true;
-    boolean easyMode = false;
-    int latestScore = 0;
 
 
     gb.init();
     gb.setBackgroundColor(5);
     gb.updateScreen();
-    print(" a for easy mode ", 1, 7);
-    gb.setColor(gb.WHITE, 18, 7);
-    gb.setColor(gb.WHITE, 18, 10);
-    print(" b for hard mode ", 1, 10);
+    print("            ", 4, 2);
+    print(" snake game ", 4, 3);
+    print("            ", 4, 4);
+    print(" a for easy mode ", 1, 9);
+    gb.setColor(gb.WHITE, 18, 9);
+    gb.setColor(gb.WHITE, 18, 11);
+    print(" b for hard mode ", 1, 11);
     while (initScreen) {
      update = gb.updateScreen();
      if(gb.keyPressed(gb.A_KEY)) {
@@ -32,11 +31,13 @@
      }
      if(gb.keyPressed(gb.B_KEY)) {
          initScreen = false;
-         easyMode = true;
       }
     }
+
     gb.setBackgroundColor(gb.WHITE);
     gb.updateScreen();
+
+
     snake.initSnake(gb,6,6,20,18,15,15);
     while(a == true){
         update = gb.updateScreen();
@@ -58,11 +59,6 @@
          if(frameCount == limiteFrameCount){
             frameCount = 0;
              a = snake.move(i);//en argument le input
-           if(easyMode && (snake.getScore() != latestScore)){
-                latestScore = snake.getScore();
-                limiteFrameCount = limiteFrameCount + 5;
-         }
-
          }
          }
     }
