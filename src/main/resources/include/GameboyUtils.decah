@@ -264,7 +264,7 @@ class Utils {
             ld [hl], c
             ret
             "
-            ); // TODO VRAIMENT PAS SÛR
+            );
 
     int random() asm(
             "

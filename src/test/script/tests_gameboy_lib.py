@@ -5,7 +5,7 @@ import sys
 import subprocess
 
 nbTest = 0
-maxTest = 10
+maxTest = 1
 
 
 def prettyPrint(msg):
@@ -69,9 +69,11 @@ def doTests():
     # doVerify("gameboy/plot/ClasslessbouncingBallEasy.deca")
     # doVerify("gameboy/plot/bouncingBall.deca")
     # doVerify("gameboy/plot/input_easy.java")
-    #doVerify("gameboy/plot/SnakeGame.deca")
+    # doVerify("gameboy/plot/SnakeGame.deca")
+    doVerify("gameboy/fonctionnalites/fonctionnalites.deca")
+    doVerify("gameboy/snake/SnakeGame.deca")
     #doVerify("gameboy/plot/print.deca")
-    doVerify("gameboy/plot/fonctionnalites.deca")
+    #doVerify("gameboy/plot/fonctionnalites.deca")
 
     return 0
 
