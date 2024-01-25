@@ -156,7 +156,7 @@ public class EnvironmentType {
         return (type1.isNull() && type2.isClass());
 
     }
-    public AbstractExpr assignCompatible(DecacCompiler compiler, Type type1,
+    public AbstractExpr assignCompatible(Type type1,
                                     AbstractExpr expr2) {
         Type type2 = expr2.getType();
         if (type1.isFloat() && type2.isInt()) {
