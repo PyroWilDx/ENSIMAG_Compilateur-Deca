@@ -1,3 +1,4 @@
+#include "GameboyUtils.decah"
 
 class GameBoy {
     DrawEventList drawEvents = new DrawEventList();
@@ -43,6 +44,7 @@ class GameBoy {
             this.initDisplayRegisters();
             this.firstUpdate = false;
         }
+
         if (this.map.hasChanged()) {
             this.turnScreenOff();
             this.map.setStateUpdated();
@@ -50,30 +52,31 @@ class GameBoy {
             this.copyColorIntoMap(cc);
             this.turnScreenOn();
         }
+
         this.drawEvents.drawList();
         return true;
     }
     void updateKeys() asm(
-        "call UpdateKeys
-    ret
-        "
-    );
+            "call UpdateKeys
+            ret
+            "
+            );
     boolean isInVBlank() asm (
         "
-    call UpdateKeys
-    ld h, 0
-    ld l, 0
-    ld a, [rLY]
-    cp 144
-    jp c, notVBlank
-    ld l, $ff
-    ld h, $ff
-    notVBlank:
-    ret
+        call UpdateKeys
+        ld h, 0
+        ld l, 0
+        ld a, [rLY]
+        cp 144
+        jp c, notVBlank
+        ld l, $ff
+        ld h, $ff
+        notVBlank:
+        ret
         "
     );
     boolean notTooMuchVBlank() asm (
-        "
+            "
     ld h, 0
     ld l, 0
     ld a, [rLY]
@@ -84,61 +87,65 @@ class GameBoy {
     notTooMuchVBlank:
     ret
         "
-    );
+                );
     void turnScreenOff() asm (
         "
-    ld a, 0
-    ld [rLCDC], a
-    ret
+        ;call WaitForOneVBlank
+        ; Turn the LCD off
+        ld a, 0
+        ld [rLCDC], a
+        ret
         "
     );
     void waitVBlank() asm (
-        "
+            "
     call WaitForOneVBlank
-    ret
+            ret
         "
     );
     void waitVDraw() asm (
-        "
+            "
     waitVDrawLoop:
+
     ld a, [rLY] ; Copy the vertical line to a
     or a, a; Check if the vertical line (in a) is 0
     jp z, waitVDrawLoop
     ret
         "
-    );
+                );
     void turnScreenOn() asm (
         "
+    ; Turn the LCD on
     ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
     ld [rLCDC], a
     ret
         "
     );
 
-//    void sleep(int i) asm (
-//        "
-//    ld hl, sp + 4
-//    ld c, [hl]
-//    sleepLoop1:
-//    ld hl, $a3a; une centi seconde;
-//    sleepLoop2:
-//    dec hl
-//    ld a, l
-//    or a, h
-//    jp nz, sleepLoop2
-//    dec c
-//    ld a, c
-//    or a, a
-//    jp nz, sleepLoop1
-//    ret
-//        "
-//                    );
+    void sleep(int i) asm (
+            "
+            ld hl, sp + 4
+            ld c, [hl]
+            sleepLoop1:
+                ld hl, $a3a; une centi seconde;
+                sleepLoop2:
+                    dec hl
+                    ld a, l
+                    or a, h
+                    jp nz, sleepLoop2
+                dec c
+                ld a, c
+                or a, a
+                jp nz, sleepLoop1
+            ret
+            "
+            );
     void initDisplayRegisters() asm (
         "
-    ; During the first (blank) frame, initialize display registers
-    ld a, %11100100
-    ld [rBGP], a
-    ret
+        ; During the first (blank) frame, initialize display registers
+        ld a, %11100100
+        ld [rBGP], a
+        ret
         "
     );
     void setTile(int tileIndex, int x, int y) {
@@ -151,10 +158,10 @@ class GameBoy {
     void printNumber(int n, int x, int y) {
         int d;
         int tileIndex = 88;
-        if (x%10 != 0) {
+        if (n/10 != 0) {
             x = x + 1;
         }
-        if (x%100 != 0) {
+        if (n/100 != 0) {
             x = x + 1;
         }
         if (n == 0) {
@@ -169,8 +176,6 @@ class GameBoy {
         }
 
     }
-    void rien() {}
-
 
     //
     void setBackgroundColor(int color) {
@@ -182,21 +187,22 @@ class GameBoy {
     }
 
     void stop() asm (
-        "
-    stoppp:
-    halt
-    jp stoppp
-        "
-    );
-    void asmInit () asm (
             "
-    call WaitForOneVBlank
+    stoppp:
+            halt
+            jp stoppp
+        "
+                );
+    void asmInit () asm (
+        "
+        call WaitForOneVBlank
 
-    ; Turn the LCD off
-    ld a, 0
-    ld [rLCDC], a
-    ; init display reg
+        ; Turn the LCD off
+        ld a, 0
+        ld [rLCDC], a
 
+
+            ; init display reg
     ; During the first (blank) frame, initialize display registers
     ld a, %11100100
     ld [rBGP], a
@@ -207,7 +213,7 @@ class GameBoy {
     ld bc, TilesEnd - Tiles
     call CopyDEintoMemoryAtHL
 
-    ; On met les tiles elementaires dans la mémoire
+            ; On met les tiles elementaires dans la mémoire
     ld de, ElementaryTiles
     ld hl, $97c0; Ce seront les quatres dernières tiles
     ld bc, ElementaryTilesEnd - ElementaryTiles
@@ -228,15 +234,15 @@ class GameBoy {
 
     call initVariables
 
-    ; Turn the LCD on
+            ; Turn the LCD on
     ld a, LCDCF_ON | LCDCF_BGON | LCDCF_OBJON
     ld [rLCDC], a
 
-    ret
+            ret
 
 
     ;ld hl, $97f0
-    ret; comme ça on essaie pas d executer la suite
+        ret; comme ça on essaie pas d executer la suite
 
     SECTION \"Elementary Tile data\", ROM0
     ; Les tiles élémentaire
@@ -291,8 +297,7 @@ class GameBoy {
     ld a, 0
     ld [wCurKeys], a
     ld [wNewKeys], a
-    ret
-
+            ret
     CopyDEintoMemoryAtHL:
     ld a, [de]
     ld [hli], a
@@ -339,8 +344,8 @@ class GameBoy {
     ldh a, [rP1] ; this read counts
     or a, $F0 ; A7-4 = 1; A3-0 = unpressed keys
     ret
-            .knownret
-            ret
+    .knownret
+    ret
 
     rand:
     ; Add 0xB3 then multiply by 0x01010101
@@ -400,20 +405,20 @@ class GameBoy {
         "
     ); //
     boolean keyPressed(int pad) asm(
-            "
-    ;call UpdateKeys
-            ;ld b, l; b = newKey;
-    ld a, [wNewKeys]
-    ld b, a
-    ld hl, sp + 4
-    ld a, [hl]; a = pad;
-
-    ld hl, 0
-    and a, b
-    jp z ,notPressed
-    ld hl, $ff
-    notPressed:
-    ret
         "
-);
+        ;call UpdateKeys
+        ;ld b, l; b = newKey;
+        ld a, [wNewKeys]
+        ld b, a
+        ld hl, sp + 4
+        ld a, [hl]; a = pad;
+
+        ld hl, 0
+        and a, b
+        jp z ,notPressed
+        ld hl, $ff
+        notPressed:
+        ret
+        "
+    );
 }

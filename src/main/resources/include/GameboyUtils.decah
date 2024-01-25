@@ -233,6 +233,8 @@ class Utils {
 
             PushInTileMap:
 
+            ; hl c est la premiere adresse de la map
+            ld hl, $9800
             ; si y == 0 on passe à la boucle des colonnes
             and a, a
             jp z, yEqualsZero
@@ -242,8 +244,7 @@ class Utils {
             ;ld a, [hl]
             ;ld a, 10
 
-            ; hl c est la premiere adresse de la map
-            ld hl, $9800
+
             ; de = 32
             ld e, 32
             ld d, 0
@@ -255,6 +256,7 @@ class Utils {
                 jp nz, yLinesLoop
 
             yEqualsZero:
+            ld d, 0
             ld e, b
             add hl, de ;hl += x;
     ;call waitVDrawLoop
@@ -262,7 +264,7 @@ class Utils {
             ld [hl], c
             ret
             "
-            );
+            ); // TODO VRAIMENT PAS SÛR
 
     int random() asm(
             "
