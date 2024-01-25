@@ -84,10 +84,7 @@ public class DeclField extends AbstractDeclField {
 
         compiler.addInstruction(new LOAD_INT(0, Register.A));
 
-        for (int i = 0; i < fieldOffset * 2; i++) {
-            compiler.addInstruction(new INC_REG(Register.HL));
-        }
-        compiler.addInstruction(new INC_REG(Register.HL));
+        GameBoyManager.incHLByValue(compiler, fieldOffset * 2 + 1);
 
         compiler.addInstruction(new STORE_REG(Register.A, Register.HL));
         compiler.addInstruction(new DEC_REG(Register.HL));
@@ -165,10 +162,11 @@ public class DeclField extends AbstractDeclField {
         compiler.addInstruction(new LOAD_VAL(Register.HL, GPRegister.L));
         compiler.addInstruction(new LOAD_REG(Register.A, GPRegister.H));
 
-        for (int i = 0; i < fieldOffset * 2; i++) {
-            compiler.addInstruction(new INC_REG(Register.HL));
-        }
-        compiler.addInstruction(new INC_REG(Register.HL));
+//        for (int i = 0; i < fieldOffset * 2; i++) {
+//            compiler.addInstruction(new INC_REG(Register.HL));
+//        }
+//        compiler.addInstruction(new INC_REG(Register.HL));
+        GameBoyManager.incHLByValue(compiler, fieldOffset * 2 + 1);
 
         compiler.addInstruction(new STORE_REG(regValue.getHighReg(), Register.HL));
         compiler.addInstruction(new DEC_REG(Register.HL));
