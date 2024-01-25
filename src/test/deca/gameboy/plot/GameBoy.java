@@ -26,29 +26,9 @@ class GameBoy {
     protected boolean firstUpdate = true;
 
     void init() {
-        //Utils u = new Utils();
-        //BackgroundMapMod b = new BackgroundMapMod();
-        //utils = u;
-        //map = b;
         drawEvents.init();
-        //this.drawEvents.init();
-        //WHITE.setWhite();
-        //BLACK.setBlack();
-        //DARK.setDark();
-        //LIGHT.setLight();
-        //this.setBackgroundColor(DARK);
         this.asmInit();
         this.turnScreenOn();
-
-        // TODO faudra en fait mettre tous ces trucs au début du fichier avec le compilateur
-        //this.includeHardware();
-        //this.includeTextMacro();
-        //this.includeTextUtils();
-        //this.includeMemoryUtils();
-        //this.includeInputUtils();
-        //this.includeBackGroundUtils();
-        //this.includeMath_asm();
-        //this.includeVBlankUtils();
     }
 
     int getBackgroundColor() {
@@ -59,35 +39,22 @@ class GameBoy {
     boolean updateScreen() {
         int cc;
         int xxx, yyy, indexxx;
-        //if (this.isInVBlank() && this.notTooMuchVBlank()) {
         this.updateKeys();
-            if (this.firstUpdate) {
-                this.initDisplayRegisters();
-                this.firstUpdate = false;
-            }
+        if (this.firstUpdate) {
+            this.initDisplayRegisters();
+            this.firstUpdate = false;
+        }
 
-            //
-            //this.turnScreenOff();
-            //this.sleep(1);
-            //this.waitVBlank();
-            if (this.map.hasChanged()) {
-                this.turnScreenOff();
-                this.map.setStateUpdated();
-                cc = map.getColor();
-                this.copyColorIntoMap(cc);
-                this.turnScreenOn();
-            //this.copyColorIntoMap(126);
-            }
-            //this.waitVDraw();
-            //this.waitVBlank();
-            //this.utils.pushInTileMap(1, 10, WHITE);
-            this.drawEvents.drawList();
-            //this.turnScreenOn();
-            //this.waitVDraw();
-            //his.sleep(2);
-            return true;
-        //}
-        return false;
+        if (this.map.hasChanged()) {
+            this.turnScreenOff();
+            this.map.setStateUpdated();
+            cc = map.getColor();
+            this.copyColorIntoMap(cc);
+            this.turnScreenOn();
+        }
+
+        this.drawEvents.drawList();
+        return true;
     }
     void updateKeys() asm(
             "call UpdateKeys
@@ -182,24 +149,10 @@ class GameBoy {
         "
     );
     void setTile(int tileIndex, int x, int y) {
-        //DrawEvent e = new DrawEvent();
-        //e.init(tileIndex, x, y);
         this.drawEvents.add(tileIndex, x, y);
     }
     void setColor(int color, int x, int y) {
         this.setTile(color, x, y);
-        //this.setTile(color, x, y);
-        //int cc;
-        //this.waitVBlank();
-        //this.turnScreenOff();
-        //if (this.map.hasChanged()) {
-        //    this.map.setStateUpdated();
-        //    cc = map.getColor();
-        //    this.copyColorIntoMap(cc);
-        //    //this.copyColorIntoMap(126);
-        //}
-        //utils.pushInTileMap(x, y, color);
-        //this.turnScreenOn();
     }
 
     void printNumber(int n, int x, int y) {
@@ -223,20 +176,13 @@ class GameBoy {
         }
 
     }
-    void rien() {}
-
 
     //
     void setBackgroundColor(int color) {
         this.map.setColor(color);
     }
     void copyColorIntoMap(int c) {
-        //int index = c.getTileIndex();
         int index = c;
-        //index = 126;
-        //println();
-        //this.testtt(index);
-        //this.stop();
         this.utils.setBackGroundInTileMap(index);
     }
 
