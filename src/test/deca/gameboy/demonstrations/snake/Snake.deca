@@ -71,6 +71,9 @@ class Snake{
     int getDirection() {
         return direction;
     }
+    int getScore(){
+        return this.score;
+    }
 
     void initSnake( GameBoy g, int xH, int yH, int xMax, int yMax, int xR, int yR){
         int compteurWhile = 8;

@@ -3,9 +3,8 @@
 #includeTiles "snake_tiles"
 
 {
-    boolean update = false;
     Snake snake = new Snake();
-    boolean a = true;
+    boolean gameEnded = false;
     int frameCount = 0;
     int i=0;
     GameBoy gb = new GameBoy();
@@ -24,7 +23,7 @@
     gb.setColor(gb.WHITE, 18, 11);
     print(" b for hard mode ", 1, 11);
     while (initScreen) {
-     update = gb.updateScreen();
+     gb.updateScreen();
      if(gb.keyPressed(gb.A_KEY)) {
         limiteFrameCount = 90;
         initScreen = false;
@@ -39,8 +38,8 @@
 
 
     snake.initSnake(gb,6,6,20,18,15,15);
-    while(a == true){
-        update = gb.updateScreen();
+    while(!gameEnded){
+        gb.updateScreen();
          //input
          if(gb.keyPressed(gb.UP_KEY) && snake.getDirection() == snake.HorizontalDirection){
             i = 0;
@@ -54,12 +53,11 @@
          if(gb.keyPressed(gb.LEFT_KEY) && snake.getDirection() == snake.VerticalDirection){
             i = 3;
          }
-         if(update){
+
          frameCount = frameCount+1;
          if(frameCount == limiteFrameCount){
             frameCount = 0;
-             a = snake.move(i);//en argument le input
-         }
+             gameEnded = !snake.move(i);    //on donne en argument le input, ca renvoie si on a perdu
          }
     }
 }

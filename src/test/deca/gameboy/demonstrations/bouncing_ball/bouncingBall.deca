@@ -1,0 +1,30 @@
+#include "GameBoy.decah"
+#include "Ball.deca"
+
+{
+    boolean updated = false;
+    int x;
+    int y;
+    int vitx;
+    int vity;
+    Ball ball = new Ball();
+
+    GameBoy gb = new GameBoy();
+    gb.init();
+    x = 8;
+    y = 10;
+    vitx = 1;
+    vity = 1;
+
+    ball.init(gb, x, y, vitx, vity, gb.LIGHT);
+    //gb.setTile(125, 1, 1);
+    gb.setBackgroundColor(gb.DARK);
+    while(true) {
+        updated = gb.updateScreen();
+        if (updated) {
+            ball.moveAndDraw();
+            gb.sleep(2);
+
+        }
+    }
+}
