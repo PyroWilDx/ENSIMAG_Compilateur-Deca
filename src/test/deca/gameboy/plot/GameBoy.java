@@ -158,10 +158,10 @@ class GameBoy {
     void printNumber(int n, int x, int y) {
         int d;
         int tileIndex = 88;
-        if (x%10 != 0) {
+        if (n/10 != 0) {
             x = x + 1;
         }
-        if (x%100 != 0) {
+        if (n/100 != 0) {
             x = x + 1;
         }
         if (n == 0) {

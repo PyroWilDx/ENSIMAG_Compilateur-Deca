@@ -7,7 +7,7 @@
     //gb.setBackgroundColor(gb.DARK);
     //println();
     //print("test de depassement de l ecran j espere ca marche",2,2);
-    x = 124;
-    print("score ", 2, 2);
-    gb.printNumber(3, 10, 2);
+    x = 12;
+    gb.printNumber(x, 2, 1);
+    print("score ", 2, 3);
 }

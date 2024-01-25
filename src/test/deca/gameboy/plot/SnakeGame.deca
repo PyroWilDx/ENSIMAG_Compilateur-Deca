@@ -13,6 +13,7 @@
     int limiteFrameCount = 30;
     boolean initScreen = true;
 
+
     gb.init();
     gb.setBackgroundColor(5);
     gb.updateScreen();
@@ -30,8 +31,11 @@
          initScreen = false;
       }
     }
+
     gb.setBackgroundColor(gb.WHITE);
     gb.updateScreen();
+
+
     snake.initSnake(gb,6,6,20,18,15,15);
     while(a == true){
         update = gb.updateScreen();

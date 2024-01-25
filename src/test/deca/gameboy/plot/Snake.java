@@ -58,7 +58,10 @@ class Snake{
     protected int upHeadTile = 4;
     protected int appleTile = 9;
 
+    int compteurAdder = 0;
     int adder = 0;
+
+
 
     //protected boolean printFirst = true;
     int VerticalDirection = 0;
@@ -70,7 +73,9 @@ class Snake{
     }
 
     void initSnake( GameBoy g, int xH, int yH, int xMax, int yMax, int xR, int yR){
+        int compteurWhile = 8;
         this.gb = g;
+
         //this.color = 126;
         //this.colorReward = 124;
         this.head = new SnakeCell();
@@ -87,8 +92,14 @@ class Snake{
         this.gb.setColor(upHeadTile, xH, yH);
         this.gb.setColor(tailTile, xH-1, yH);
         this.gb.setColor(appleTile, xR, yR);
-        print("score", 2, 0);
-        this.gb.printNumber(this.score,2,1);
+        gb.updateScreen();
+        while (compteurWhile <= 19) {
+            gb.setColor(10, compteurWhile, 1);
+            compteurWhile  = compteurWhile + 1;
+        }
+
+        print("score", 0, 1);
+        this.gb.printNumber(this.score,6,1);
     }
 
     int getHeadX(){
@@ -128,15 +139,23 @@ class Snake{
                 gb.printNumber(this.score, 3, 1);
                 this.printFirst = false;
             }*/
+            compteurAdder  = compteurAdder + 1;
+            if (compteurAdder == 2) {
+                compteurAdder = 0;
+                if (adder == 0) {
+                    adder = 4;
+                } else {
+                    adder = 0;
+                }
+            }
             a = this.collusion(this.xPositionHead, this.yPositionHead);
             gb.setColor(tile + adder, this.xPositionHead, this.yPositionHead);
-            adder = (adder + 3)%7;
             gb.setColor(tailTile, this.xPreviousPositionHead, this.yPreviousPositionHead);
             //si la position du head est celle de la reward
             if(xPositionHead==this.reward.x && yPositionHead==this.reward.y){
                 //print("score", 2, 0);
                 score = score + 1;
-                gb.printNumber(score, 2, 1);
+                gb.printNumber(score, 6, 1);
                 newHead=new SnakeCell();
                 newHead.initSnakeCase(null, null,xPositionHead,yPositionHead);
                 this.head.setNext(newHead);
