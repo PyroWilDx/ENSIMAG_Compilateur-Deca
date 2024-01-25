@@ -70,10 +70,11 @@ def doTests():
     # doVerify("gameboy/plot/bouncingBall.deca")
     # doVerify("gameboy/plot/input_easy.java")
     # doVerify("gameboy/plot/SnakeGame.deca")
-    doVerify("gameboy/fonctionnalites/fonctionnalites.deca")
-    doVerify("gameboy/snake/SnakeGame.deca")
+    doVerify("gameboy/demonstrations/fonctionnalites/fonctionnalites.deca")
+    doVerify("gameboy/demonstrations/bouncing_ball/bouncingBall.deca")
+    doVerify("gameboy/demonstrations/input/input.deca")
+    doVerify("gameboy/demonstrations/snake/SnakeGame.deca")
     #doVerify("gameboy/plot/print.deca")
-    #doVerify("gameboy/plot/fonctionnalites.deca")
 
     return 0
 
