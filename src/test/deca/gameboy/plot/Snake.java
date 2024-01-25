@@ -56,7 +56,9 @@ class Snake{
     protected int leftHeadTile = 2;
     protected int downHeadTile = 3;
     protected int upHeadTile = 4;
-    protected int appleTile = 5;
+    protected int appleTile = 9;
+
+    int adder = 0;
 
     //protected boolean printFirst = true;
     int VerticalDirection = 0;
@@ -127,7 +129,8 @@ class Snake{
                 this.printFirst = false;
             }*/
             a = this.collusion(this.xPositionHead, this.yPositionHead);
-            gb.setColor(tile, this.xPositionHead, this.yPositionHead);
+            gb.setColor(tile + adder, this.xPositionHead, this.yPositionHead);
+            adder = (adder + 3)%7;
             gb.setColor(tailTile, this.xPreviousPositionHead, this.yPreviousPositionHead);
             //si la position du head est celle de la reward
             if(xPositionHead==this.reward.x && yPositionHead==this.reward.y){
