@@ -1,4 +1,4 @@
-#include "GameBoy.java"
+#include "GameBoy.decah"
 #include "Ball.java"
 
 {
@@ -17,7 +17,6 @@
     vity = 0;
 
     ball.init(gb, x, y, vitx, vity, gb.LIGHT);
-    //gb.setTile(125, 1, 1);
     gb.setBackgroundColor(gb.DARK);
     while(true) {
         if (gb.keyPressed(gb.UP_KEY)) {
