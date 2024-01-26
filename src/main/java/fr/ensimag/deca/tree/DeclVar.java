@@ -44,6 +44,8 @@ public class DeclVar extends AbstractDeclVar {
         Type varType = this.type.verifyType(compiler);
         ExpDefinition def = new VariableDefinition(varType, this.getLocation());
         this.varName.setDefinition(def);
+        EnvironmentExp localEnvInit = EnvironmentExp.empile(localEnv, envExpSup);
+        this.initialization.verifyInitialization(compiler, varType, localEnvInit, currentClass);
         try {
             declEnv.declare(varName.getName(), def);
         } catch (EnvironmentExp.DoubleDefException e) {
@@ -56,8 +58,6 @@ public class DeclVar extends AbstractDeclVar {
         if (varType == compiler.environmentType.VOID) {
             throw new ContextualError("Variable type cannot be void.", this.getLocation());
         }
-        EnvironmentExp localEnvInit = EnvironmentExp.empile(localEnv, envExpSup);
-        this.initialization.verifyInitialization(compiler, varType, localEnvInit, currentClass);
         // Done
     }
 

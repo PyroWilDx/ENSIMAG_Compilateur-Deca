@@ -1,7 +1,7 @@
-#include "GameBoy.java"
-#include "Snake.java"
+#include "GameBoy.decah"
+#include "Snake.decah"
 
-#includeTiles "snake_tiles"
+#includeTiles "snakeTiles"
 
 {
     boolean update = false;

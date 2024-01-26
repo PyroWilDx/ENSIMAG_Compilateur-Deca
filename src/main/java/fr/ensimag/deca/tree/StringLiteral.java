@@ -50,6 +50,7 @@ public class StringLiteral extends AbstractStringLiteral {
     @Override
     protected void codeGenPrint(DecacCompiler compiler) {
         String printValue = value.substring(1, value.length() - 1);
+        printValue = printValue.replace("\\\"", "\"");
         compiler.addInstruction(new WSTR(printValue));
     }
 

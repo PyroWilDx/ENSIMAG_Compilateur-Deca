@@ -80,4 +80,5 @@ class BinaryTree {
     tree.checkIn(2);
     tree.checkNotIn(80);
     tree.checkNotIn(100);
+    tree.checkIn(6);
 }

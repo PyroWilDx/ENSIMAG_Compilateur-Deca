@@ -27,9 +27,6 @@ public class MethodCall extends AbstractMethodCall {
         TypeDefinition definition = compiler.environmentType.get(type.getName());
         ClassDefinition classDefinition = definition.asClassDefinition("Method call on native type.", getLocation());
 
-        if (!type.isClass()) {
-            throw new DecacInternalError("Inconsistent type, class or not class??");
-        }
         EnvironmentExp classEnv = classDefinition.getMembers();
         MethodIdentNonTerminalReturn sigAndType = this.methodIdent.verifyMethodIdent(classEnv);
         Signature sig = sigAndType.getSignature();

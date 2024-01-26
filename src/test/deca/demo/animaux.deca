@@ -1,10 +1,3 @@
-// Description :
-//    Test sur heritage et polymorphisme
-//
-// Resultats :
-// Cette vache meugle!!
-// Ce canard cancane!!
-
 class Animal {
     void crier(){
         println("Cet animal crie");
@@ -22,8 +15,8 @@ class Canard extends Animal{
 }
 
 {
-Animal vache = new Vache();
-Animal canard = new Canard();
-vache.crier();
-canard.crier();
+    Animal vache = new Vache();
+    Animal canard = new Canard();
+    vache.crier();
+    canard.crier();
 }

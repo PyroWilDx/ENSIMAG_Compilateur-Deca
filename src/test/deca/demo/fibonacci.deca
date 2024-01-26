@@ -1,6 +1,3 @@
-// Description :
-//    Test sur la suite de fibonacci
-
 class Fibonacci {
     int fibo(int n) {
         if (n <= 1) {

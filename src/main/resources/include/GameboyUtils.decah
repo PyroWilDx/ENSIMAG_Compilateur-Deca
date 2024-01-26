@@ -2,40 +2,49 @@ class Color {
     boolean bit1 = true;
     boolean bit2 = true;
     protected int index = 124;
+
     void setBlack() {
         this.bit1 = false;
         this.bit2 = false;
         this.index = 127;
     }
+
     void setDark() {
         this.bit1 = false;
         this.bit2 = true;
         this.index = 127;
     }
+
     void setLight() {
         this.bit1 = true;
         this.bit2 = false;
         this.index = 126;
     }
+
     void setWhite() {
         this.bit1 = true;
         this.bit2 = true;
         this.index = 124;
     }
+
     boolean isWhite() {
         return this.bit1 && this.bit2;
     }
+
     boolean isBlack() {
         return !this.bit1 && !this.bit1;
     }
+
     int getTileIndex() {
         return this.index;
     }
+
     boolean isSameColor(Color color) {
         return this.bit1 == color.bit1 && this.bit2 == color.bit2;
     }
 
 }
+
 class BackgroundMapMod {
     protected int color = 124;
     protected boolean user = false;
@@ -55,15 +64,16 @@ class BackgroundMapMod {
         this.changed = true;
         this.user = true;
     }
+
     boolean hasChanged() {
         return changed;
     }
+
     void setStateUpdated() {
         this.changed = false;
     }
 
     int getColor() {
-        //this.color = 126;
         return this.color;
     }
 }
@@ -113,6 +123,7 @@ class DrawEvent {
         return this.next != null;
     }
 }
+
 class DrawEventList {
     protected DrawEvent first = null;
     protected DrawEvent last = null;
@@ -130,9 +141,9 @@ class DrawEventList {
             this.addInit(event);
             i = i + 1;
         }
-        // event.setNext(first);
     }
-    /*private*/void set(int i, int tileIndex, int x, int y) {
+
+    void set(int i, int tileIndex, int x, int y) {
         int k = 0;
         DrawEvent current = first;
         while (k < i) {
@@ -143,6 +154,7 @@ class DrawEventList {
         current.setY(y);
         current.setTileIndex(tileIndex);
     }
+
     void add(int tileIndex, int x, int y) {
         if (nextIndex == this.size + 1) {
             nextIndex = 0;
@@ -150,7 +162,8 @@ class DrawEventList {
         set(nextIndex, tileIndex, x, y);
         nextIndex = nextIndex + 1;
     }
-    /*private*/ void addInit(DrawEvent event) {
+
+    void addInit(DrawEvent event) {
         if (this.first == null) {
             this.first = event;
             this.last = event;
@@ -159,9 +172,11 @@ class DrawEventList {
             this.last = event;
         }
     }
+
     DrawEvent getFirst() {
         return this.first;
     }
+
     void drawList(){
         int i = 0;
         int x;
@@ -186,85 +201,69 @@ class DrawEventList {
         }
         nextIndex = 0;
     }
+
     void debug(int i) asm(
-            "ld hl, sp + 4
+            "
+            ld hl, sp + 4
             ld a, [hl]
             loop:
             jp loop
             "
-            );
+    );
 }
 
 class Utils {
-
     void setBackGroundInTileMap(int index) asm (
-        "
-        ld hl, sp + 4
-        ld e, [hl]
-        ;ld e, $7e
-        ld hl, $9800
-        ld bc, $240
+            "
+            ld hl, sp + 4
+            ld e, [hl]
+            ld hl, $9800
+            ld bc, $240
         setBackGroundInTileMapLoop:
             ld [hl], e
             inc hl
             dec bc
             ld a, b
             or a, c
-            jp nz, setBackGroundInTileMapLoop ; Jump to COpyTiles, if the z flag is not set. (the last operation had a non zero result)
-        ret
-        "
+            jp nz, setBackGroundInTileMapLoop
+            ret
+            "
     );
+
     void pushInTileMap(int x, int y, int tileIndex) asm(
             "
-            ; a = y
             ld hl, sp + 6
             ld a, [hl]
-            ;ld a, 10
 
-            ; b = x
             ld hl, sp + 4
             ld b, [hl]
-            ;ld b, 10
 
-            ; c = value
             ld hl, sp + 8
             ld c, [hl]
-            ;ld c, $7f
 
-            PushInTileMap:
-
-            ; hl c est la premiere adresse de la map
+        PushInTileMap:
             ld hl, $9800
-            ; si y == 0 on passe à la boucle des colonnes
             and a, a
             jp z, yEqualsZero
 
-            ; a = y
-            ;ld hl, sp + 6
-            ;ld a, [hl]
-            ;ld a, 10
-
-
-            ; de = 32
             ld e, 32
             ld d, 0
 
-            ; on incremente hl de y * 32
-            yLinesLoop:
-                add hl, de
-                dec a
-                jp nz, yLinesLoop
+        yLinesLoop:
+            add hl, de
+            dec a
+            jp nz, yLinesLoop
 
-            yEqualsZero:
+        yEqualsZero:
             ld d, 0
             ld e, b
             add hl, de ;hl += x;
-    ;call waitVDrawLoop
+
             call WaitForOneVBlank
             ld [hl], c
             ret
             "
-            );
+    );
 
     int random() asm(
             "
@@ -273,7 +272,5 @@ class Utils {
             ld h, c
             ret
             "
-            );
-
-
+    );
 }

@@ -74,7 +74,7 @@ ASM : 'asm';
 
 COMMENT : ('//'.*? ('\n'|EOF)|'/*' .*? '*/') {skip();};
 
-STRING : '"'(STRING_CAR | '\\' | '\\\\')*'"';
+STRING : '"'(STRING_CAR | '\\' | '\\\\' | '\\"')*'"';
 INT : '0' | (POSITIVE_DIGIT DIGIT*);
 FLOAT : FLOATDEC | FLOATHEX;
 INCLUDE : '#include' (' ')* ' "'(LETTER | DIGIT | '.' | '-' | '_')+ '"'{doInclude(getText());};
