@@ -18,19 +18,19 @@
     ball.init(gb, x, y, vitx, vity, gb.LIGHT);
     gb.setBackgroundColor(gb.DARK);
     while(true) {
-        if (gb.keyPressed(gb.UP_KEY)) {
+        if (gb.keyIsPressed(gb.UP_KEY)) {
             ball.setVity(1);
             ball.setDown(false);
         }
-        if (gb.keyPressed(gb.DOWN_KEY)) {
+        if (gb.keyIsPressed(gb.DOWN_KEY)) {
             ball.setVity(1);
             ball.setDown(true);
         }
-        if (gb.keyPressed(gb.LEFT_KEY)) {
+        if (gb.keyIsPressed(gb.LEFT_KEY)) {
             ball.setVitx(1);
             ball.setForward(false);
         }
-        if (gb.keyPressed(gb.RIGHT_KEY)) {
+        if (gb.keyIsPressed(gb.RIGHT_KEY)) {
             ball.setVitx(1);
             ball.setForward(true);
         }

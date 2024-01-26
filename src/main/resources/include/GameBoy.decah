@@ -421,4 +421,22 @@ class GameBoy {
         ret
         "
     );
+
+    boolean keyIsPressed(int pad) asm(
+            "
+            ;call UpdateKeys
+            ;ld b, l; b = newKey;
+            ld a, [wCurKeys]
+            ld b, a
+            ld hl, sp + 4
+            ld a, [hl]; a = pad;
+
+            ld hl, 0
+            and a, b
+            jp z ,notIsPressed
+            ld hl, $ff
+            notIsPressed:
+            ret
+            "
+        );
 }
