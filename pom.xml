@@ -480,14 +480,12 @@
 
     <reporting>
         <plugins>
-
             <!-- cross-referencable pretty-print of the code. Nice combination with FindBugs -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jxr-plugin</artifactId>
                 <version>3.1.1</version>
             </plugin>
-
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

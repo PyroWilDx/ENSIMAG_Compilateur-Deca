@@ -23,6 +23,3 @@ docker/ima_sources/
 *.gb
 *.res
 !*resultatCorrect.res
-
-failed_files
-src/test/script/failed_files
