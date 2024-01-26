@@ -1,10 +1,10 @@
 class A {
-    int get10() {
-        println("Je vais renvoyer 10.");
+    int get20() {
+        println("Je vais renvoyer 20.");
     }
 }
 
 {
     A a = new A();
-    println(a.get10());
+    println(a.get20());
 }
