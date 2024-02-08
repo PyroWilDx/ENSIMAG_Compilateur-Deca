@@ -18,7 +18,7 @@ Le langage Deca peut alors être utilisé comme un langage de haut niveau (et or
 
 Nous avons notamment programmé un Snake sur la GameBoy en Deca :
 
-<img src="https://i.imgur.com/fQX4QGd.gif" width="420">
+<img src="https://i.imgur.com/0MYgNvD.gif" width="420">
 
 Un [Manuel Utilisateur](docs/Manuel-Utilisateur.pdf) est disponible pour apprendre à utiliser notre compilateur Deca.
 
