@@ -12,6 +12,7 @@
 //    true
 //    true
 //    false
+
 class Cell {
     Cell rightSon = null;
     Cell leftSon = null;
