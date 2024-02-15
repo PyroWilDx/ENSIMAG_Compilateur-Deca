@@ -14,7 +14,7 @@ Le compilateur peut générer du code pour une machine abstraite nommée IMA, ma
 
 En plus du compilateur, nous avons créé une librairie pour la GameBoy, permettant la gestion de l'écran et des touches.
 
-Le langage Deca peut alors être utilisé comme un langage de haut niveau (et orienté objet) pour programmer des jeux sur GameBoy.
+Le langage Deca peut alors être utilisé comme un langage orienté objet de haut niveau pour programmer des jeux sur GameBoy.
 
 Nous avons notamment programmé un Snake sur la GameBoy en Deca :
 
@@ -22,10 +22,6 @@ Nous avons notamment programmé un Snake sur la GameBoy en Deca :
 
 Un [Manuel Utilisateur](docs/Manuel-Utilisateur.pdf) est disponible pour apprendre à utiliser notre compilateur Deca.
 
-Le langage Deca est très ressemblant à Java. Des programmes Deca sont disponibles dans le dossier [```src/test/deca/```](src/test/deca/).
-
-#### ――――――――――
-
-Ce projet a été fait en équipe de 5, à l'ENSIMAG.
+Le langage Deca est très ressemblant à Java (cf. [```src/test/deca/codegen/valid```](src/test/deca/codegen/valid) pour voir la structure typique d'un programme Deca).
 
 #### ――――――――――
